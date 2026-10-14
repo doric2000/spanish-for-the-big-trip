@@ -1,0 +1,27 @@
+# Dependencies installed by the package manager
+node_modules/
+
+# Local Expo state and generated build/test output
+.expo/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Local environment values; keep a placeholder-only example trackable
+.env
+.env.*
+!.env.example
+
+# Local logs and operating-system files
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Private signing material and device provisioning profiles
+*.p8
+*.p12
+*.mobileprovision
+*.jks
+*.keystore
