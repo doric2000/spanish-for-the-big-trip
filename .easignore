@@ -1,0 +1,34 @@
+# Base exclusions from the repository .gitignore
+node_modules/
+.expo/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.p8
+*.p12
+*.mobileprovision
+*.jks
+*.keystore
+
+# Mobile template exclusions, explicitly applied from the Git root
+.claude/
+web-build/
+expo-env.d.ts
+.kotlin/
+*.orig.*
+*.key
+*.pem
+.metro-health-check*
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+/mobile/ios/
+/mobile/android/
