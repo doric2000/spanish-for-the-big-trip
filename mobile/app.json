@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "ספרדית לטיול הגדול",
+    "slug": "spanish-for-the-big-trip",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "eb8d7f0d-b9ba-4e95-9660-836a55a4a43c"
+      }
+    },
+    "owner": "doric2000",
+    "plugins": [
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "האפליקציה זקוקה לגישה למיקרופון כדי להקליט את התרגול שלך ולהשמיע אותו עבורך.",
+          "enableBackgroundPlayback": false,
+          "enableBackgroundRecording": false
+        }
+      ]
+    ]
+  }
+}
