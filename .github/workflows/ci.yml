@@ -7,6 +7,11 @@ on:
   push:
     branches: [main]
   pull_request:
+  # gitleaks scans only the new commits on push/PR. A manual run and the
+  # weekly run scan the whole history.
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1'
 
 # The workflow only needs to read the code.
 permissions:
@@ -61,7 +66,7 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      # Full history, so a secret committed and later deleted is still found.
+      # Full history is needed for the whole-history scan (manual and weekly runs).
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0

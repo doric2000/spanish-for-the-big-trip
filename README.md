@@ -49,7 +49,7 @@ npm.cmd --prefix mobile run typecheck
 npm.cmd --prefix mobile test
 ```
 
-אותן בדיקות רצות אוטומטית ב־GitHub Actions ([.github/workflows/ci.yml](.github/workflows/ci.yml)) בכל push ל־`main` ובכל pull request. באותה הרצה gitleaks סורק את כל ההיסטוריה ומחפש סודות שנכנסו בטעות.
+אותן בדיקות רצות אוטומטית ב־GitHub Actions ([.github/workflows/ci.yml](.github/workflows/ci.yml)) בכל push ל־`main` ובכל pull request. באותה הרצה gitleaks מחפש סודות שנכנסו בטעות ב־commits החדשים. פעם בשבוע, ובהפעלה ידנית (`gh workflow run CI`), הוא סורק את כל ההיסטוריה. בנוסף, המאגר ציבורי, ולכן סריקת הסודות ו־Push Protection של GitHub זמינות בו.
 
 כלי Supabase מותקן כתלות פיתוח בשורש. אחרי `npm.cmd install` בודקים אותו עם `npx.cmd supabase --version`. פרטי המיגרציות נמצאים ב־[supabase/README.md](supabase/README.md).
 
