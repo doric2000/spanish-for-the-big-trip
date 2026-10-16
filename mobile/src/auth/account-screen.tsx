@@ -4,6 +4,7 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { theme as t } from '../theme';
 import { providerLabel, savedProgressLabel } from './account-copy';
+import { GoogleSignin } from './google';
 import { supabase } from './supabase';
 
 // Layout and states follow Figma "מסכי מערכת" / "מסך חשבון" (approved by Dor, 2026-10-16).
@@ -33,7 +34,10 @@ export default function AccountScreen({ session, onBack }: { session: Session; o
     setSigningOut(true);
     // 'local' clears this device's saved session even when offline.
     const { error } = await supabase.auth.signOut({ scope: 'local' });
-    if (error) setSigningOut(false);
+    if (error) { setSigningOut(false); return; }
+    // Also forget the Google account remembered on this device, so the next
+    // Google sign-in asks which account to use. Best effort: we are already signed out.
+    if (session.user.app_metadata.provider === 'google') GoogleSignin.signOut().catch(() => {});
   }
 
   function confirmSignOut() {
@@ -46,8 +50,8 @@ export default function AccountScreen({ session, onBack }: { session: Session; o
   return <View style={[styles.root, { paddingTop: insets.top + t.space.md, paddingBottom: insets.bottom + t.space.md }]}>
     <Pressable accessibilityRole="button" accessibilityLabel="חזרה" onPress={onBack} hitSlop={12}
       style={({ pressed }) => [styles.back, { opacity: pressed ? 0.6 : 1 }]}>
-      <Text style={styles.backLabel}>חזרה</Text>
       <Text style={styles.backChevron} accessible={false}>›</Text>
+      <Text style={styles.backLabel}>חזרה</Text>
     </Pressable>
     <Text accessibilityRole="header" style={styles.title}>החשבון שלי</Text>
     <InfoCard label="מחוברים עם" value={providerLabel(session.user.app_metadata.provider)} detail={session.user.email} />
@@ -85,21 +89,21 @@ function Action({ title, onPress, small = false, disabled = false }: { title: st
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: t.colors.background, paddingHorizontal: t.space.lg, gap: t.space.md },
-  back: { alignSelf: 'flex-end', flexDirection: 'row', alignItems: 'center', gap: t.space.xs, minHeight: t.touchTarget },
+  back: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: t.space.xs, minHeight: t.touchTarget },
   backLabel: { fontSize: t.type.small, fontWeight: '600', color: t.colors.primary, writingDirection: 'rtl' },
-  backChevron: { fontSize: 24, lineHeight: 26, color: t.colors.primary },
-  title: { fontSize: t.type.title, fontWeight: '700', color: t.colors.ink, textAlign: 'right', writingDirection: 'rtl' },
-  card: { backgroundColor: t.colors.surface, borderColor: t.colors.border, borderWidth: 1, borderRadius: t.radius.card, paddingVertical: t.space.md, paddingHorizontal: 20, gap: t.space.xs, alignItems: 'flex-end' },
-  cardLabel: { fontSize: t.type.small, color: t.colors.muted, textAlign: 'right', writingDirection: 'rtl' },
-  cardValue: { fontSize: t.type.body, fontWeight: '700', color: t.colors.ink, textAlign: 'right', writingDirection: 'rtl' },
+  backChevron: { fontSize: 24, lineHeight: 26, color: t.colors.primary, writingDirection: 'ltr' },
+  title: { fontSize: t.type.title, fontWeight: '700', color: t.colors.ink, writingDirection: 'rtl' },
+  card: { backgroundColor: t.colors.surface, borderColor: t.colors.border, borderWidth: 1, borderRadius: t.radius.card, paddingVertical: t.space.md, paddingHorizontal: 20, gap: t.space.xs, alignItems: 'flex-start' },
+  cardLabel: { fontSize: t.type.small, color: t.colors.muted, writingDirection: 'rtl' },
+  cardValue: { fontSize: t.type.body, fontWeight: '700', color: t.colors.ink, writingDirection: 'rtl' },
   ltr: { writingDirection: 'ltr' },
   skeleton: { width: 120, height: 18, borderRadius: 9, backgroundColor: t.colors.soft, marginTop: t.space.xs },
-  error: { fontSize: t.type.body, color: t.colors.danger, textAlign: 'right', writingDirection: 'rtl' },
+  error: { fontSize: t.type.body, color: t.colors.danger, writingDirection: 'rtl' },
   devBox: { borderWidth: 1, borderStyle: 'dashed', borderColor: t.colors.muted, borderRadius: 12, paddingVertical: t.space.sm, paddingHorizontal: 12 },
-  devText: { fontSize: t.type.small, color: t.colors.muted, textAlign: 'right' },
+  devText: { fontSize: t.type.small, color: t.colors.muted, writingDirection: 'rtl' },
   spacer: { flex: 1 },
   action: { backgroundColor: t.colors.soft, borderRadius: t.radius.button, minHeight: t.touchTarget, alignItems: 'center', justifyContent: 'center', padding: t.space.md, alignSelf: 'stretch' },
-  smallAction: { alignSelf: 'flex-end', minHeight: 40, paddingVertical: t.space.sm, paddingHorizontal: t.space.md, marginTop: t.space.xs },
+  smallAction: { alignSelf: 'flex-start', minHeight: 40, paddingVertical: t.space.sm, paddingHorizontal: t.space.md, marginTop: t.space.xs },
   actionLabel: { fontSize: t.type.body, fontWeight: '600', color: t.colors.ink, writingDirection: 'rtl' },
   smallLabel: { fontSize: t.type.small },
 });

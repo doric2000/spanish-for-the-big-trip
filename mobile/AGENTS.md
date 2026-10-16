@@ -7,6 +7,7 @@
 - The unit 1A opening preview (`src/lesson/`) is a development-only authoring checkpoint. Keep unpublished content behind `__DEV__`; it is not a guest mode, a full lesson or saved progress.
 - Keep `src/audio-lab.tsx` and its tests (`tests/audio-flow.test.cjs`) working; they are the recording/playback proof.
 - Navigation: Expo Router (chosen by Dor, 2026-10-16). Routes live in `src/app/`; non-route code stays outside it.
+- Layout is native right-to-left: Hebrew is the only iOS language declared in `app.json`, so React Native mirrors the layout. Use `row`, `flex-start` and the natural alignment of Hebrew text (`writingDirection: 'rtl'`); never `row-reverse`, `flex-end` or `textAlign: 'right'` to fake RTL (tested in `tests/auth.test.cjs`).
 - Lint is not configured yet. Until it is, run TypeScript and the existing tests and say that lint was not run:
 
 ```bash

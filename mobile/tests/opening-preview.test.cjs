@@ -89,14 +89,18 @@ test('home route never loads the draft preview in production and links to record
   }
 });
 
-test('root layout: loading first, sign-in only when signed out, app screens only when signed in', () => {
+test('root layout: splash and loading first, sign-in only when signed out, app screens only when signed in', () => {
   let session;
+  const splash = { held: 0, hidden: 0 };
   function View() {}
   function ActivityIndicator() {}
   function Provider() {}
   const Stack = Object.assign(function Stack() {}, { Screen() {}, Protected() {} });
   const Layout = loadRoute('_layout.tsx', true, {
     'expo-router': () => ({ Stack }),
+    'expo-splash-screen': () => ({ preventAutoHideAsync: async () => { splash.held++; return true; }, hide: () => { splash.hidden++; } }),
+    // Effects run right away here: the layout is called as a plain function, not rendered by React.
+    react: () => ({ useEffect: effect => { effect(); } }),
     'react-native': () => ({ View, ActivityIndicator }),
     '../auth/session-context': () => ({ SessionContext: { Provider } }),
     '../auth/use-session': () => ({ useSession: () => session }),
@@ -109,14 +113,17 @@ test('root layout: loading first, sign-in only when signed out, app screens only
       app: appGroup.props.guard, appScreens: [appGroup.props.children].flat().map(s => s.props.name),
     };
   };
+  assert.equal(splash.held, 1, 'the splash is held from the moment the layout module loads');
   session = undefined;
   assert.equal(Layout().type, View, 'nothing is shown until the saved session is read');
+  assert.equal(splash.hidden, 0, 'the splash stays up while the session is unknown');
   session = null;
   let g = guards(Layout());
   assert.equal(g.signIn, true);
   assert.equal(g.app, false, 'no guest mode');
   assert.equal(JSON.stringify(g.signInScreens), JSON.stringify(['sign-in']));
   assert.equal(JSON.stringify(g.appScreens), JSON.stringify(['index', 'account', 'recorder']));
+  assert.equal(splash.hidden, 1, 'the splash hides once we know the user is signed out');
   session = { user: { id: 'user-a' } };
   const signedIn = Layout();
   g = guards(signedIn);

@@ -18,6 +18,7 @@ function compile(relative) {
 // Objects created inside vm have another realm's prototypes, so compare fields, not deepEqual.
 const storage = compile('../src/auth/chunked-storage.ts');
 const apple = compile('../src/auth/apple-sign-in.ts');
+const google = compile('../src/auth/google-sign-in.ts');
 
 function memoryStore() {
   const map = new Map();
@@ -104,6 +105,42 @@ test('cancel, missing token, Apple failure and Supabase rejection never sign in'
   assert.equal(r.message, 'Invalid nonce');
 });
 
+function googleDeps(overrides = {}) {
+  const calls = {};
+  return {
+    calls,
+    deps: {
+      requestGoogleCredential: async () => ({ type: 'success', idToken: 'google-id-token' }),
+      exchangeWithSupabase: async token => { calls.supabase = token; return { error: null }; },
+      ...overrides,
+    },
+  };
+}
+
+test('Google: the ID token from Google is exchanged with Supabase', async () => {
+  const { deps, calls } = googleDeps();
+  assert.equal((await google.signInWithGoogle(deps)).status, 'signed_in');
+  assert.equal(calls.supabase, 'google-id-token');
+});
+
+test('Google: cancel, missing token, Google failure and Supabase rejection never sign in', async () => {
+  const canceled = googleDeps({ requestGoogleCredential: async () => ({ type: 'cancelled' }) });
+  assert.equal((await google.signInWithGoogle(canceled.deps)).status, 'canceled');
+  assert.equal(canceled.calls.supabase, undefined);
+
+  const noToken = googleDeps({ requestGoogleCredential: async () => ({ type: 'success', idToken: null }) });
+  let r = await google.signInWithGoogle(noToken.deps);
+  assert.equal(r.status, 'error');
+  assert.equal(noToken.calls.supabase, undefined, 'nothing is sent to Supabase without a token');
+
+  r = await google.signInWithGoogle(googleDeps({ requestGoogleCredential: async () => { throw new Error('boom'); } }).deps);
+  assert.equal(r.status, 'error');
+
+  r = await google.signInWithGoogle(googleDeps({ exchangeWithSupabase: async () => ({ error: { message: 'Unacceptable audience' } }) }).deps);
+  assert.equal(r.status, 'error');
+  assert.equal(r.message, 'Unacceptable audience');
+});
+
 const copy = compile('../src/auth/account-copy.ts');
 const read = relative => fs.readFileSync(path.join(__dirname, '../src', relative), 'utf8');
 
@@ -124,9 +161,13 @@ test('sign-out asks for confirmation first, with a cancel and a destructive choi
   assert.match(account, /style: 'destructive', onPress: \(\) => \{ void signOut\(\); \}/);
 });
 
-test('sign-in offers no Google button before Google sign-in exists', () => {
-  // Comments may mention Google; no button label or Google sign-in module may appear.
-  assert.doesNotMatch(read('auth/sign-in-screen.tsx'), /עם Google|google-signin|GoogleSignin/i);
+test('sign-in offers Google next to Apple, and only one sign-in runs at a time', () => {
+  const screen = read('auth/sign-in-screen.tsx');
+  assert.match(screen, /AppleAuthenticationButton/, 'Apple stays');
+  assert.match(screen, /המשך עם Google/);
+  assert.match(screen, /signInWithGoogle\(googleDeps\)/);
+  // One shared guard: a second tap on either button while signing in does nothing.
+  assert.equal((screen.match(/if \(inProgress\.current\) return;/g) || []).length, 1);
 });
 
 test('screens take their top and bottom padding from the device safe areas', () => {
@@ -136,5 +177,24 @@ test('screens take their top and bottom padding from the device safe areas', () 
     assert.match(source, /insets\.top/, file);
     assert.match(source, /insets\.bottom/, file);
     assert.doesNotMatch(source, /paddingTop: \d/, `${file} has a hardcoded top padding`);
+  }
+});
+
+test('the app declares Hebrew only, so iOS lays it out right-to-left natively', () => {
+  const { expo } = JSON.parse(fs.readFileSync(path.join(__dirname, '../app.json'), 'utf8'));
+  assert.deepEqual([...expo.ios.infoPlist.CFBundleLocalizations], ['he']);
+  assert.equal(expo.ios.infoPlist.CFBundleDevelopmentRegion, 'he');
+  const names = expo.plugins.map(p => (Array.isArray(p) ? p[0] : p));
+  assert.equal(new Set(names).size, names.length, 'each config plugin is listed once');
+  const google = expo.plugins.find(p => Array.isArray(p) && p[0] === '@react-native-google-signin/google-signin');
+  assert.match(google[1].iosUrlScheme, /^com\.googleusercontent\.apps\.[\w-]+$/);
+});
+
+test('no screen fakes right-to-left by hand (React Native mirrors these in RTL)', () => {
+  // In native RTL, 'row-reverse' and 'flex-end' would put things back on the left,
+  // and textAlign 'right' is swapped to the left. Use 'row', 'flex-start' and the
+  // natural alignment of Hebrew text instead.
+  for (const file of ['auth/sign-in-screen.tsx', 'auth/account-screen.tsx', 'lesson/opening-preview.tsx', 'audio-lab.tsx']) {
+    assert.doesNotMatch(read(file), /row-reverse|'flex-end'|textAlign: 'right'/, file);
   }
 });

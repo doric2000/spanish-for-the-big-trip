@@ -5,7 +5,7 @@
     "scheme": "spanishforthebigtrip",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/brand/app-icon-d1.png",
     "userInterfaceStyle": "light",
     "ios": {
       "bundleIdentifier": "com.doric2000.spanishforthebigtrip",
@@ -13,6 +13,12 @@
       "supportsTablet": false,
       "config": {
         "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "he",
+        "CFBundleLocalizations": [
+          "he"
+        ]
       }
     },
     "android": {
@@ -44,10 +50,25 @@
         }
       ],
       "expo-secure-store",
-      "expo-router",
       "expo-asset",
       "expo-web-browser",
-      "expo-font"
+      "expo-font",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.955830111466-1d2i90vmc2mfolenqeaieg7rqa5u6brs"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#21655B",
+          "image": "./assets/brand/splash-mark-d1.png",
+          "imageWidth": 320,
+          "resizeMode": "contain"
+        }
+      ],
+      "expo-image"
     ]
   }
 }
