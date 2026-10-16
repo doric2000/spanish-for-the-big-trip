@@ -5,10 +5,10 @@ const test = require('node:test');
 const vm = require('node:vm');
 const ts = require('typescript');
 
-// Exercise the actual App handlers against native API timing contracts.
+// Exercise the preserved AudioLab handlers against native API timing contracts.
 // These tests cannot prove microphone capture or speaker output on a device.
 function createApp() {
-  const source = fs.readFileSync(path.join(__dirname, '../App.tsx'), 'utf8');
+  const source = fs.readFileSync(path.join(__dirname, '../src/audio-lab.tsx'), 'utf8');
   const { outputText } = ts.transpileModule(source, {
     compilerOptions: {
       module: ts.ModuleKind.CommonJS,
