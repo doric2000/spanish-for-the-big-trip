@@ -27,11 +27,11 @@
     {
       "area": "navigation_ui",
       "tools": [
-        "React Navigation",
+        "Expo Router (file-based, built on React Navigation)",
         "React Native components",
         "StyleSheet"
       ],
-      "status": "selected; navigation_not_installed"
+      "status": "Expo Router chosen by Dor on 2026-10-16 (replaces the earlier React Navigation entry); installed before the first development build"
     },
     {
       "area": "content",

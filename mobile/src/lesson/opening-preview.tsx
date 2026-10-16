@@ -73,7 +73,7 @@ function ApprovedAudio() {
     onPress={() => { void toggle(); }} secondary disabled={!status.isLoaded} busy={busy} />;
 }
 
-export default function OpeningPreview({ onOpenRecorder }: { onOpenRecorder: () => void }) {
+export default function OpeningPreview({ onOpenRecorder, onOpenAccount }: { onOpenRecorder: () => void; onOpenAccount?: () => void }) {
   const [index, setIndex] = useState(0);
   const step = steps[index];
   const finishedPreview = index === steps.length;
@@ -84,7 +84,12 @@ export default function OpeningPreview({ onOpenRecorder }: { onOpenRecorder: () 
     <ScrollView style={styles.root} contentInsetAdjustmentBehavior="automatic"
       contentContainerStyle={styles.page} key={step?.id ?? 'preview-boundary'}>
       <View style={styles.stack}>
-        <Text style={styles.previewLabel}>סקירת פתיחה · 1A</Text>
+        <View style={styles.topRow}>
+          <Text style={styles.previewLabel}>סקירת פתיחה · 1A</Text>
+          {onOpenAccount && <Pressable accessibilityRole="button" onPress={onOpenAccount} hitSlop={12}>
+            <Text style={styles.link}>החשבון שלי</Text>
+          </Pressable>}
+        </View>
         <Text style={styles.chapter}>פרק ראשון</Text>
         {finishedPreview ? <>
           <Text accessibilityRole="header" style={styles.title}>סיימתם את מקטע הסקירה</Text>
@@ -125,6 +130,8 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: t.colors.background },
   page: { flexGrow: 1, padding: t.space.lg, paddingTop: t.space.xl, gap: t.space.xl, width: '100%', maxWidth: 600, alignSelf: 'center' },
   stack: { gap: t.space.md },
+  topRow: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center' },
+  link: { fontSize: t.type.small, color: t.colors.primary, fontWeight: '600', writingDirection: 'rtl' },
   previewLabel: { fontSize: t.type.small, color: t.colors.muted, textAlign: 'right', writingDirection: 'rtl' },
   chapter: { fontSize: t.type.small, color: t.colors.primary, textAlign: 'right', writingDirection: 'rtl' },
   title: { fontSize: t.type.title, fontWeight: '700', color: t.colors.ink, textAlign: 'right', writingDirection: 'rtl' },

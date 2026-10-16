@@ -44,43 +44,92 @@ test('pending audio is unavailable even if a historical path exists; only the ap
   assert.equal(data.openingSteps(draft).filter(s => s.type === 'vocabulary').every(c => c.audioPath === null), true);
 });
 
-test('production App never loads the unpublished preview; development can switch to the preserved recorder and back', () => {
+function loadRoute(relative, development, modules) {
+  const source = fs.readFileSync(path.join(__dirname, '../src/app', relative), 'utf8');
+  const { outputText } = ts.transpileModule(source, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, target: ts.ScriptTarget.ES2022 },
+  });
+  const exports = {};
+  vm.runInNewContext(outputText, {
+    exports, __DEV__: development,
+    require(name) {
+      if (name === 'react/jsx-runtime') return { jsx: (type, props) => ({ type, props }), jsxs: (type, props) => ({ type, props }) };
+      if (name in modules) return modules[name]();
+      throw new Error(`Unexpected import ${name}`);
+    },
+  });
+  return exports.default;
+}
+
+test('home route never loads the draft preview in production and links to recorder/account in development', () => {
   for (const development of [false, true]) {
-    const source = fs.readFileSync(path.join(__dirname, '../App.tsx'), 'utf8');
-    const { outputText } = ts.transpileModule(source, {
-      compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, target: ts.ScriptTarget.ES2022 },
-    });
-    let recorderOpen = false;
+    const pushed = [];
     let previewLoads = 0;
     function AudioLab() {}
     function OpeningPreview() {}
-    const exports = {};
-    vm.runInNewContext(outputText, {
-      exports, __DEV__: development,
-      require(name) {
-        if (name === 'react') return { useState: () => [recorderOpen, value => { recorderOpen = value; }] };
-        if (name === 'react/jsx-runtime') return { jsx: (type, props) => ({ type, props }) };
-        if (name === './src/audio-lab') return { __esModule: true, default: AudioLab };
-        if (name === './src/lesson/opening-preview') {
-          assert.equal(development, true, 'release cannot require draft content');
-          previewLoads += 1;
-          return { default: OpeningPreview };
-        }
-        throw new Error(name);
+    const Home = loadRoute('index.tsx', development, {
+      'expo-router': () => ({ router: { push: href => pushed.push(href) } }),
+      '../audio-lab': () => ({ __esModule: true, default: AudioLab }),
+      '../lesson/opening-preview': () => {
+        assert.equal(development, true, 'release cannot require draft content');
+        previewLoads += 1;
+        return { default: OpeningPreview };
       },
     });
-    const first = exports.default();
+    const screen = Home();
     if (!development) {
-      assert.equal(first.type, AudioLab);
-      assert.equal(first.props.onBack, undefined);
+      assert.equal(screen.type, AudioLab);
       assert.equal(previewLoads, 0);
     } else {
-      assert.equal(first.type, OpeningPreview);
-      first.props.onOpenRecorder();
-      const recorder = exports.default();
-      assert.equal(recorder.type, AudioLab);
-      recorder.props.onBack();
-      assert.equal(exports.default().type, OpeningPreview);
+      assert.equal(screen.type, OpeningPreview);
+      screen.props.onOpenRecorder();
+      screen.props.onOpenAccount();
+      assert.equal(JSON.stringify(pushed), JSON.stringify(['/recorder', '/account']));
     }
   }
+});
+
+test('root layout: loading first, sign-in only when signed out, app screens only when signed in', () => {
+  let session;
+  function View() {}
+  function ActivityIndicator() {}
+  function Provider() {}
+  const Stack = Object.assign(function Stack() {}, { Screen() {}, Protected() {} });
+  const Layout = loadRoute('_layout.tsx', true, {
+    'expo-router': () => ({ Stack }),
+    'react-native': () => ({ View, ActivityIndicator }),
+    '../auth/session-context': () => ({ SessionContext: { Provider } }),
+    '../auth/use-session': () => ({ useSession: () => session }),
+    '../theme': () => ({ theme: { colors: { background: '#fff', primary: '#000' } } }),
+  });
+  const guards = tree => {
+    const [signInGroup, appGroup] = tree.props.children.props.children;
+    return {
+      signIn: signInGroup.props.guard, signInScreens: [signInGroup.props.children].flat().map(s => s.props.name),
+      app: appGroup.props.guard, appScreens: [appGroup.props.children].flat().map(s => s.props.name),
+    };
+  };
+  session = undefined;
+  assert.equal(Layout().type, View, 'nothing is shown until the saved session is read');
+  session = null;
+  let g = guards(Layout());
+  assert.equal(g.signIn, true);
+  assert.equal(g.app, false, 'no guest mode');
+  assert.equal(JSON.stringify(g.signInScreens), JSON.stringify(['sign-in']));
+  assert.equal(JSON.stringify(g.appScreens), JSON.stringify(['index', 'account', 'recorder']));
+  session = { user: { id: 'user-a' } };
+  const signedIn = Layout();
+  g = guards(signedIn);
+  assert.equal(g.signIn, false);
+  assert.equal(g.app, true);
+  assert.equal(signedIn.type, Provider);
+  assert.equal(signedIn.props.value, session);
+});
+
+test('every screen file under src/app is declared in the root layout', () => {
+  const routes = fs.readdirSync(path.join(__dirname, '../src/app'))
+    .filter(f => f.endsWith('.tsx') && f !== '_layout.tsx').map(f => f.replace(/\.tsx$/, '')).sort();
+  const layout = fs.readFileSync(path.join(__dirname, '../src/app/_layout.tsx'), 'utf8');
+  const declared = [...layout.matchAll(/Stack\.Screen name="([^"]+)"/g)].map(m => m[1]).sort();
+  assert.equal(JSON.stringify(routes), JSON.stringify(declared), 'an undeclared route would bypass the sign-in guard');
 });

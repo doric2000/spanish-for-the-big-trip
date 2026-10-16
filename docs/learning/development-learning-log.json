@@ -2709,12 +2709,63 @@
         "Debugging a failing test: compare expected vs actual error; a good test breaks one rule at a time"
       ],
       "dor_participation": "Committed before applying (migration in Git first), applied via CLI, ran the check twice and reported both outputs.",
-      "understanding_demonstrated": "Not yet checked for this increment.",
+      "understanding_demonstrated": "Yes. Dor (own words): the learner must not write progress directly so they cannot edit it; they may see where they are but not change it or cheat, and should have no write access. Claude added: the app runs on the learner's device with a public key, so anything the app could do directly, a user could do too; authorization must live in RLS and the server, which validates each step against the content.",
       "interview_takeaway": "Describe RLS own-row policies plus server-only writes as defense in depth, and how a failing check was diagnosed as a test-data problem rather than a schema bug.",
-      "open_questions": [
-        "Why should a learner not be allowed to write even their own progress row directly?"
-      ],
+      "open_questions": [],
       "next_step": "Own-words check, then choose the next stage 04 increment."
+    },
+    {
+      "id": "stage04-seed-1a-draft-2026-10-16",
+      "stage_id": "04",
+      "goal": "Load unit 1A into the development database as a draft revision generated from the validated content JSON.",
+      "practical_owner": "Claude wrote seed-sql.ts/seed-cli.ts (validation, digest, idempotent SQL, refusal to overwrite published revisions) and 3 tests; Dor generated the SQL, ran it in SQL Editor and committed.",
+      "practical_action": "Dor ran npm.cmd --prefix content run seed:sql, executed supabase/seed/generated/1a-draft.sql in the development SQL Editor and committed/pushed 1ac26c4 (CI success).",
+      "evidence": [
+        "Dor reported completing generation, SQL Editor execution and commit; the summary row values were not pasted",
+        "Commit 1ac26c4; CI run 38898614563 success; 60 content tests pass",
+        "Generated digest at authoring time: 2a5dbfd6e6665120302739225695f2356f730ccd24d0c8e50b6d3e5cc6922971"
+      ],
+      "concepts": [
+        "Generated seed from a single source of truth (no hand-maintained copy)",
+        "Idempotent inserts with ON CONFLICT",
+        "Content digest to detect any change",
+        "Drafts are stored but not learner-readable"
+      ],
+      "dor_participation": "Ran the generator and the SQL, committed and pushed.",
+      "understanding_demonstrated": "Not separately checked for the seed step.",
+      "interview_takeaway": "Lesson content is authored in validated JSON and loaded by a generated, idempotent SQL script that refuses to overwrite published revisions.",
+      "open_questions": [
+        "Confirm the summary row (C01-U01, 1, draft, 12 activities, digest_matches true)."
+      ],
+      "next_step": "Apple sign-in in Expo Go: enable the Apple provider in Supabase, then client, secure session storage and an own-progress read through RLS."
+    },
+    {
+      "id": "stage04-apple-sign-in-expo-go-2026-10-16",
+      "stage_id": "04",
+      "goal": "Mandatory sign-in with Apple in Expo Go, with the session stored in the Keychain and a proof that RLS returns only the user's own progress.",
+      "practical_owner": "Dor enabled the Supabase Apple provider (Client IDs host.exp.Exponent and the bundle id), created mobile/.env.local and installed four packages. Claude wrote src/auth/*, updated App.tsx and the preview, and added tests.",
+      "practical_action": "Claude checked the SDK 57 docs (apple-authentication, secure-store) and the supabase-js types (nonce semantics). Claude implemented the Keychain chunked storage, the nonce flow, the sign-in gate and the account screen. Verification: mobile typecheck, 11 mobile tests, 60 content tests and an iOS dev bundle export, all passing.",
+      "evidence": [
+        "Dor-reported Apple provider enabled (no screenshot)",
+        "Packages: @supabase/supabase-js 2.118.0, expo-apple-authentication 57.0.2, expo-secure-store 57.0.4, expo-crypto 57.0.4",
+        "Local: typecheck clean; mobile tests 11/11; content 60/60; expo export --platform ios --dev succeeded",
+        "iPhone (iOS 27.0) in Expo Go: sign-in screen showed 'Apple unavailable'; development diagnostic: isAvailableAsync=false on ios 27.0. In expo-apple-authentication 57.0.2 the native isAvailableAsync always returns true, and the JS fallback returns false only when the native module is missing. So the Expo Go build on Dor's phone does not include ExpoAppleAuthentication, despite the docs. Apple sign-in therefore needs a development build."
+      ],
+      "concepts": [
+        "ID-token sign-in (signInWithIdToken)",
+        "Nonce: hashed to Apple, raw to Supabase, prevents token replay",
+        "Keychain vs unencrypted storage (OWASP MASVS-STORAGE) and the 2 KB value limit",
+        "Public publishable key vs secret keys; EXPO_PUBLIC_ values are visible to users",
+        "Client reads without a user filter so RLS is the real control",
+        "Debugging by reading library source: a false result came from a JS fallback for a missing native module, not from the OS"
+      ],
+      "dor_participation": "Provider configuration, local env file and package installation.",
+      "understanding_demonstrated": "Not yet checked for sign-in.",
+      "interview_takeaway": "Explain native Apple sign-in with a nonce, why the session lives in the Keychain, and why the app relies on RLS instead of filtering by user id itself.",
+      "open_questions": [
+        "Apple sign-in cannot be tested in Expo Go on this device; a development build is needed (decision pending with Dor)."
+      ],
+      "next_step": "Dor runs the app in Expo Go and reports each case."
     }
   ],
   "entry_template": {

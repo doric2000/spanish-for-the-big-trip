@@ -63,3 +63,19 @@ node --test tests/audio-flow.test.cjs
 שלוש הבדיקות מאמתות שמירת מערכת השמע בזמן הקלטה, המתנה לאירוע השלמת הקובץ ושחרור כפתורים במקרה של היעדר אירוע. בדיקת TypeScript עברה גם אחרי התיקון. הבדיקות אינן מאמתות הקלטה או שמע בחומרת האייפון.
 
 בדיקות המקטע החדש מוסיפות בדיקת מקור נתונים, עצירה לפני אינטראקציה שלא נתמכת, חסימת אודיו שלא אושר ושער פיתוח שמונע טעינת הטיוטה בייצור. מתוך `mobile/` אפשר להריץ `npx.cmd --no-install tsc --noEmit` ו־`node --test tests/*.test.cjs`. ESLint אינו מותקן/מוגדר בשלב הזה. סטטוס האריזה ובדיקת המכשיר מתועדים ב־`../docs/evidence/checks/unit1a-mobile-opening-preview-2026-10-16.json`. הסטטוס הטכני הכללי נשאר ב־`work-plan.json#delivery`; אין בצעד הזה בנייה בענן או התקנת חבילות.
+
+## כניסה עם Apple (שלב 04)
+
+האפליקציה דורשת כניסה, ואין מצב אורח. הקבצים נמצאים ב־`src/auth/`:
+
+| קובץ | תפקיד |
+| --- | --- |
+| `supabase.ts` | יוצר את הלקוח לפי `EXPO_PUBLIC_SUPABASE_URL` ו־`EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` מתוך `mobile/.env.local`, שלא נשמר ב־Git. הלקוח מרענן את הסשן רק כשהאפליקציה פתוחה |
+| `chunked-storage.ts` | שומר את הסשן ב־Keychain (`expo-secure-store`, במצב `WHEN_UNLOCKED_THIS_DEVICE_ONLY`) בחלקים של עד 500 תווים, כי iOS עלול לדחות ערכים גדולים מ־2048 בתים |
+| `apple-sign-in.ts` | יוצר nonce: לוקח מחרוזת אקראית, שולח ל־Apple את ה־SHA-256 שלה ול־Supabase את המקור, ומחליף את תעודת Apple בסשן (`signInWithIdToken`) |
+| `sign-in-screen.tsx` | כפתור "המשך עם Apple". מבקש רק את ההרשאה לכתובת המייל |
+| `account-screen.tsx` | בדיקת שלב 04: קורא את `user_unit_progress` **בלי סינון לפי משתמש**, כדי שה־RLS הוא שיסנן. מציג את מספר השורות ומאפשר יציאה מהחשבון |
+
+ב־Expo Go, Apple מזהה את האפליקציה כ־`host.exp.Exponent`, ולכן המזהה הזה מופיע ב־Client IDs של ספק Apple ב־Supabase. ב־`app.json` מוגדר `ios.usesAppleSignIn` לבנייה העצמאית בהמשך. כניסה עם Google תתווסף יחד עם ה־Development Build.
+
+בדיקות מקומיות: `tests/auth.test.cjs` בודק את חלוקת הסשן ב־Keychain ואת מסלול ה־nonce, כולל ביטול וכשל. הוא לא מחליף בדיקה באייפון.

@@ -239,8 +239,8 @@
         "03"
       ],
       "goal": "Implement reviewed SQL and identity/access rules in a development environment.",
-      "status": "seed_1a_draft_tool_ready_awaiting_dor",
-      "current_next_action": "Dor chose on 2026-10-16 to keep working in Expo Go and defer the owned development build until Google sign-in, which needs native code. Order now: load 1A draft into the database, then Apple sign-in in Expo Go, then lesson screens, then build + Google. Current step: Dor runs npm.cmd --prefix content run seed:sql, runs the generated supabase/seed/generated/1a-draft.sql in the development SQL Editor and reports the summary row. Pending own-words question: why learners cannot write progress directly.",
+      "status": "preparing_first_development_build",
+      "current_next_action": "Dor chose a development build now (Apple sign-in needs it) and Expo Router for navigation. Build content: expo-router + safe-area-context + screens + linking + constants, expo-asset (missing peer of expo-audio per expo-doctor), expo-web-browser, expo patch 57.0.30; app.json scheme, iPhone-only, usesNonExemptEncryption=false, usesAppleSignIn. Google sign-in deferred to a separate build after Google Cloud OAuth setup. Next: Dor installs packages; Claude switches the entry to Expo Router and moves screens to src/app; then Dor runs the EAS development build.",
       "organization_setup": {
         "observed_on": "2026-10-16",
         "evidence": "Dor's screenshot codex-clipboard-2a125438-b19f-4939-b8bf-307276b60761.png shows the organization form with Personal and Free - $0/month selected.",
@@ -448,7 +448,8 @@
         "decided_on": "2026-10-16",
         "by": "Dor",
         "decision": "Continue with Expo Go; do the EAS development build when Google sign-in is implemented (Google native sign-in is not available in Expo Go). EAS Free plan; no payment.",
-        "tradeoff": "Build/provider surprises are found later; mitigated by doing Google right after the lesson screens."
+        "tradeoff": "Build/provider surprises are found later; mitigated by doing Google right after the lesson screens.",
+        "revisited": "2026-10-16: Apple sign-in also needs a development build (native module absent from Expo Go)."
       }
     },
     {
@@ -799,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "Dor chose on 2026-10-16 to keep working in Expo Go and defer the owned development build until Google sign-in, which needs native code. Order now: load 1A draft into the database, then Apple sign-in in Expo Go, then lesson screens, then build + Google. Current step: Dor runs npm.cmd --prefix content run seed:sql, runs the generated supabase/seed/generated/1a-draft.sql in the development SQL Editor and reports the summary row. Pending own-words question: why learners cannot write progress directly.",
+    "next_action": "Dor chose a development build now (Apple sign-in needs it) and Expo Router for navigation. Build content: expo-router + safe-area-context + screens + linking + constants, expo-asset (missing peer of expo-audio per expo-doctor), expo-web-browser, expo patch 57.0.30; app.json scheme, iPhone-only, usesNonExemptEncryption=false, usesAppleSignIn. Google sign-in deferred to a separate build after Google Cloud OAuth setup. Next: Dor installs packages; Claude switches the entry to Expo Router and moves screens to src/app; then Dor runs the EAS development build.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [

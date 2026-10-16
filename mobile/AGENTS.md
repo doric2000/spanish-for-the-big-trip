@@ -6,7 +6,7 @@
 
 - The unit 1A opening preview (`src/lesson/`) is a development-only authoring checkpoint. Keep unpublished content behind `__DEV__`; it is not a guest mode, a full lesson or saved progress.
 - Keep `src/audio-lab.tsx` and its tests (`tests/audio-flow.test.cjs`) working; they are the recording/playback proof.
-- Navigation library: not chosen yet. `toolchain.json` lists React Navigation as selected, while Expo's default is Expo Router. Decide with Dor before installing either.
+- Navigation: Expo Router (chosen by Dor, 2026-10-16). Routes live in `src/app/`; non-route code stays outside it.
 - Lint is not configured yet. Until it is, run TypeScript and the existing tests and say that lint was not run:
 
 ```bash

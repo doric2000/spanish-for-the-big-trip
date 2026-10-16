@@ -2,13 +2,18 @@
   "expo": {
     "name": "ספרדית לטיול הגדול",
     "slug": "spanish-for-the-big-trip",
+    "scheme": "spanishforthebigtrip",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
       "bundleIdentifier": "com.doric2000.spanishforthebigtrip",
-      "supportsTablet": true
+      "usesAppleSignIn": true,
+      "supportsTablet": false,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -29,6 +34,7 @@
     },
     "owner": "doric2000",
     "plugins": [
+      "expo-router",
       [
         "expo-audio",
         {
@@ -36,7 +42,12 @@
           "enableBackgroundPlayback": false,
           "enableBackgroundRecording": false
         }
-      ]
+      ],
+      "expo-secure-store",
+      "expo-router",
+      "expo-asset",
+      "expo-web-browser",
+      "expo-font"
     ]
   }
 }
