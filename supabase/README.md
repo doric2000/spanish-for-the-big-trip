@@ -96,3 +96,12 @@ npx.cmd --no-install supabase db push --linked --skip-vault
 הכול מבוטל ב־ROLLBACK.
 
 התוצאה הצפויה היא `PASS: progress constraints, own-row reading, blocked learner writes and account-deletion cascade; synthetic rows rolled back`. הבדיקה מדמה זהות בעזרת `request.jwt.claims` בתוך SQL. היא לא מוכיחה עדיין כניסה אמיתית עם Google או Apple, אימות JWT בשרת או זרימה באייפון.
+
+## טעינת טיוטת 1A
+
+התוכן לא מוקלד ידנית למסד. מריצים `npm.cmd --prefix content run seed:sql`, שמאמת את `content/units/unit1a.json` ויוצר את `seed/generated/1a-draft.sql` (ראו `../content/README.md`). את הקובץ מריצים **במלואו** ב־SQL Editor של פרויקט הפיתוח. הוא:
+1. יוצר או מעדכן את הקורס `spanish-for-the-big-trip`, את הפרק `C01` ואת היחידה `C01-U01` (כינוי `1A`).
+2. שומר את גרסה 1 כ־`draft` ב־`unit_revisions`.
+3. מסיים בשורת סיכום עם מספר הפעילויות ו־`digest_matches = true`.
+
+טיוטה לא נגישה ללומדים: `anon` ו־`authenticated` חסומים מ־`unit_revisions`, ופרסום עובר רק דרך בדיקת הפרק השלם.

@@ -1,6 +1,10 @@
 {
   "schemaVersion": 1,
   "curriculumVersion": 4,
+  "course": {
+    "id": "spanish-for-the-big-trip",
+    "titleHe": "ספרדית לטיול הגדול"
+  },
   "productionOrder": [
     "C01",
     "C02"

@@ -27,28 +27,28 @@ export async function checkMediaFiles(unit: Unit, root: string): Promise<string[
   return issues;
 }
 
+// Schema, approved media files and known skills. Shared by validate and seed:sql.
+export async function loadValidUnit(source: string, publish: boolean): Promise<{ unit: Unit; issues: [] } | { unit: null; issues: string[] }> {
+  const input: unknown = JSON.parse(await readFile(resolve(contentRoot, source), 'utf8'));
+  const result = validateUnit(input, publish);
+  if (!result.success) return { unit: null, issues: result.error.issues.map(issue => `${issue.path.join('.')}: ${issue.message}`) };
+  const missing = await checkMediaFiles(result.data, productRoot);
+  if (missing.length) return { unit: null, issues: missing };
+  const plan = JSON.parse(await readFile(resolve(contentRoot, 'release-plan.json'), 'utf8')) as { skillIds: string[] };
+  const unknownSkills = [...result.data.requires, ...result.data.provides].filter(skill => !plan.skillIds.includes(skill));
+  if (unknownSkills.length) return { unit: null, issues: [`unknown skills: ${unknownSkills.join(', ')}`] };
+  return { unit: result.data, issues: [] };
+}
+
 export async function main(args: string[]): Promise<number> {
   const source = args.find(a => a !== '--publish') ?? 'units/unit1a.json';
   try {
-    const input: unknown = JSON.parse(await readFile(resolve(contentRoot, source), 'utf8'));
-    const result = validateUnit(input, args.includes('--publish'));
-    if (!result.success) {
-      console.error('INVALID / נחסם:');
-      for (const issue of result.error.issues) console.error(`- ${issue.path.join('.')}: ${issue.message}`);
+    const loaded = await loadValidUnit(source, args.includes('--publish'));
+    if (!loaded.unit) {
+      console.error(`INVALID / נחסם:\n${loaded.issues.map(x => `- ${x}`).join('\n')}`);
       return 1;
     }
-    const missing = await checkMediaFiles(result.data, productRoot);
-    if (missing.length) {
-      console.error(`INVALID / נחסם:\n${missing.map(x => `- ${x}`).join('\n')}`);
-      return 1;
-    }
-    const unit = result.data;
-    const plan = JSON.parse(await readFile(resolve(contentRoot, 'release-plan.json'), 'utf8')) as { skillIds: string[] };
-    const unknownSkills = [...unit.requires, ...unit.provides].filter(skill => !plan.skillIds.includes(skill));
-    if (unknownSkills.length) {
-      console.error(`INVALID / נחסם: unknown skills: ${unknownSkills.join(', ')}`);
-      return 1;
-    }
+    const unit = loaded.unit;
     console.log(`VALID ${unit.status.toUpperCase()}: ${unit.id} / ${unit.aliases.join(', ')} — ${unit.activities.length} activities`);
     console.log(`Pending: ${unit.pendingStages.length} stages; ${unit.media.filter(a => a.status === 'pending').length} media assets; ${unit.activities.filter(a => a.review.status !== 'approved').length} activity reviews`);
     console.log('Local validation only. No content published and no cloud writes.');

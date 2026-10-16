@@ -5,8 +5,9 @@ import { checkSkillGraph } from './curriculum.js';
 import { unitDigest } from './digest.js';
 
 const id = z.string().min(1);
-const ChapterPlanSchema = z.strictObject({
+export const ChapterPlanSchema = z.strictObject({
   schemaVersion: z.literal(1), curriculumVersion: z.number().int().positive(),
+  course: z.strictObject({ id, titleHe: id }),
   productionOrder: z.array(id).min(1),
   skillIds: z.array(id).min(1),
   chapters: z.array(z.strictObject({ id, titleHe: id, unitIds: z.array(id).min(1) })).min(1),
@@ -21,6 +22,8 @@ const ChapterPlanSchema = z.strictObject({
     ctx.addIssue({ code: 'custom', message: 'Chapter list must match production order' });
   }
 });
+
+export type ChapterPlan = z.infer<typeof ChapterPlanSchema>;
 
 const check = z.strictObject({ status: z.enum(['pending', 'passed']), evidence: z.string().trim().min(1).nullable() });
 const ReviewsSchema = z.strictObject({

@@ -2689,6 +2689,32 @@
       "interview_takeaway": "Published lesson revisions are immutable; progress rows reference (unit_id, revision), so changing content never corrupts an in-progress learner, and old completions remain honest history.",
       "open_questions": [],
       "next_step": "Next stage 04 increment: user_unit_progress with own-row RLS, server-only writes and account-deletion cascade."
+    },
+    {
+      "id": "stage04-user-unit-progress-pass-2026-10-16",
+      "stage_id": "04",
+      "goal": "Create per-learner progress pinned to an exact revision, with own-row reading, server-only writes and account-deletion cascade.",
+      "practical_owner": "Claude wrote the migration and SQL check; Dor committed, applied the migration and ran the check.",
+      "practical_action": "Dor committed beea667, ran the dry-run and applied the migration, and ran the whole check. The first run failed on a test-data mistake. Claude explained the diagnosis: the expected foreign-key violation was preceded by the one-active unique index. Claude fixed the test, and Dor reran it to PASS and committed d2d07de.",
+      "evidence": [
+        "docs/evidence/checks/04-user-unit-progress-2026-10-16.json",
+        "Dor-reported first-run error: 23505 duplicate key on user_unit_progress_one_active",
+        "Dor-reported PASS on rerun"
+      ],
+      "concepts": [
+        "Row Level Security with auth.uid() for own-row reads",
+        "Least privilege: learners SELECT only, server writes",
+        "ON DELETE CASCADE for account deletion",
+        "Partial unique index for one active attempt",
+        "Debugging a failing test: compare expected vs actual error; a good test breaks one rule at a time"
+      ],
+      "dor_participation": "Committed before applying (migration in Git first), applied via CLI, ran the check twice and reported both outputs.",
+      "understanding_demonstrated": "Not yet checked for this increment.",
+      "interview_takeaway": "Describe RLS own-row policies plus server-only writes as defense in depth, and how a failing check was diagnosed as a test-data problem rather than a schema bug.",
+      "open_questions": [
+        "Why should a learner not be allowed to write even their own progress row directly?"
+      ],
+      "next_step": "Own-words check, then choose the next stage 04 increment."
     }
   ],
   "entry_template": {

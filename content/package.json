@@ -9,6 +9,7 @@
     "validate": "npm run build --silent && node dist/src/cli.js units/unit1a.json",
     "check:publish": "npm run build --silent && node dist/src/cli.js units/unit1a.json --publish",
     "check:chapters": "npm run build --silent && node dist/src/release-cli.js",
+    "seed:sql": "npm run build --silent && node dist/src/seed-cli.js units/unit1a.json",
     "demo:progress": "npm run build --silent && node dist/src/checkpoint.js",
     "test": "npm run build --silent && node --test dist/tests/*.test.js"
   },

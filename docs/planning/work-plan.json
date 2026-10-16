@@ -239,8 +239,8 @@
         "03"
       ],
       "goal": "Implement reviewed SQL and identity/access rules in a development environment.",
-      "status": "user_unit_progress_written_awaiting_dor_apply",
-      "current_next_action": "user_unit_progress migration (20261016113506) and checks/04_user_unit_progress.sql written by Claude: own-row RLS SELECT, server-only writes, one active attempt per user/unit, account-deletion cascade. Dor runs the dry-run (expect only this file), applies it, then runs the whole check in SQL Editor and reports the result. Revision-pinning own-words checkpoint closed 2026-10-16.",
+      "status": "seed_1a_draft_tool_ready_awaiting_dor",
+      "current_next_action": "Dor chose on 2026-10-16 to keep working in Expo Go and defer the owned development build until Google sign-in, which needs native code. Order now: load 1A draft into the database, then Apple sign-in in Expo Go, then lesson screens, then build + Google. Current step: Dor runs npm.cmd --prefix content run seed:sql, runs the generated supabase/seed/generated/1a-draft.sql in the development SQL Editor and reports the summary row. Pending own-words question: why learners cannot write progress directly.",
       "organization_setup": {
         "observed_on": "2026-10-16",
         "evidence": "Dor's screenshot codex-clipboard-2a125438-b19f-4939-b8bf-307276b60761.png shows the organization form with Personal and Free - $0/month selected.",
@@ -443,7 +443,13 @@
       ],
       "limits": "Keep credentials out of chat/logs. Use the chosen development environment; production deployment is a separate step. A local Docker/Supabase stack is an optional learning decision, not an assumed installation.",
       "prompt_addition": "השלב הנוכחי הוא 04. הסבר את ההבדל בין פרויקט Supabase, מסד הנתונים ומשתמש באפליקציה. תן לי פעולה אחת לביצוע בהקמה, והמתן לפלט או לתוצאה שלי.",
-      "deferred_from_stage01": "Complete the first owned EAS iPhone build/signing/install and media retest after adding required native login modules/config, before claiming Google/Apple sign-in device verification."
+      "deferred_from_stage01": "Complete the first owned EAS iPhone build/signing/install and media retest after adding required native login modules/config, before claiming Google/Apple sign-in device verification.",
+      "build_timing_decision": {
+        "decided_on": "2026-10-16",
+        "by": "Dor",
+        "decision": "Continue with Expo Go; do the EAS development build when Google sign-in is implemented (Google native sign-in is not available in Expo Go). EAS Free plan; no payment.",
+        "tradeoff": "Build/provider surprises are found later; mitigated by doing Google right after the lesson screens."
+      }
     },
     {
       "id": "05",
@@ -793,7 +799,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "user_unit_progress migration (20261016113506) and checks/04_user_unit_progress.sql written by Claude: own-row RLS SELECT, server-only writes, one active attempt per user/unit, account-deletion cascade. Dor runs the dry-run (expect only this file), applies it, then runs the whole check in SQL Editor and reports the result. Revision-pinning own-words checkpoint closed 2026-10-16.",
+    "next_action": "Dor chose on 2026-10-16 to keep working in Expo Go and defer the owned development build until Google sign-in, which needs native code. Order now: load 1A draft into the database, then Apple sign-in in Expo Go, then lesson screens, then build + Google. Current step: Dor runs npm.cmd --prefix content run seed:sql, runs the generated supabase/seed/generated/1a-draft.sql in the development SQL Editor and reports the summary row. Pending own-words question: why learners cannot write progress directly.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [

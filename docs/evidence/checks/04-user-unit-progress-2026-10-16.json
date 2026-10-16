@@ -1,0 +1,29 @@
+{
+  "stage_id": "04",
+  "recorded_on": "2026-10-16",
+  "kind": "Dated user-progress checkpoint evidence; live status is docs/planning/work-plan.json#delivery",
+  "migration": {
+    "file": "supabase/migrations/20261016113506_create_user_unit_progress.sql",
+    "sha256": "c92e119dd7c18f01d5a424b03df4a8ba08199e386dd6fa63b8d882d9e09feb65",
+    "commit": "beea667",
+    "application_evidence": "Dor applied it with supabase db push --linked --skip-vault; the table existed when the check ran (first run reached section 3)."
+  },
+  "sql_check": {
+    "file": "supabase/checks/04_user_unit_progress.sql",
+    "sha256": "772973af1bebc3d492b1333adf89b842f4069a642fe2ac8b5f81d8feb4cc6794",
+    "commit": "d2d07de",
+    "executor": "Dor, development SQL Editor as postgres",
+    "first_run": "Failed in section 3 with unique_violation on user_unit_progress_one_active: the missing-revision test row was also a second active row, and the unique index is checked before the foreign key. Test data fixed to break one rule only; table behavior was correct.",
+    "result": "PASS: progress constraints, own-row reading, blocked learner writes and account-deletion cascade; synthetic rows rolled back (reported by Dor)",
+    "coverage": [
+      "RLS enabled; anon has no privileges; authenticated has SELECT only; own-row SELECT policy exists",
+      "Synthetic users inserted into auth.users by the SQL Editor role",
+      "One active attempt per user/unit; completed revision coexists as history",
+      "State consistency, non-negative progress_version, array evidence, missing revision and missing user rejected",
+      "Learner A sees only own 2 rows, learner B only own 1 row, missing user id sees none, anon denied",
+      "Direct learner INSERT/UPDATE/DELETE denied",
+      "Deleting learner A in auth.users cascades only A's progress"
+    ]
+  },
+  "limits": "Identity simulated with request.jwt.claims; no real Google/Apple sign-in, server JWT verification, atomic submit function, activity_attempts table or iPhone flow."
+}

@@ -6,3 +6,6 @@
 .env.keys
 .env.local
 .env.*.local
+
+# Generated from content/ by npm run seed:sql; content JSON is the only source
+seed/generated/
