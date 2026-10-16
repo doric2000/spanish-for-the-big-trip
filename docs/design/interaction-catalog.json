@@ -169,6 +169,40 @@
         "continuation"
       ],
       "next_action": "One representative summary/resume design after outcome rules are reviewed."
+    },
+    {
+      "type": "app_system_screens",
+      "status": "approved_by_Dor_2026-10-16; implemented_in_mobile",
+      "figma_page_id": "57:236",
+      "figma_reference_ids": {
+        "sign_in_component_set": "57:302",
+        "apple_button_component_set": "57:243",
+        "account_component_set": "58:323",
+        "info_card_component": "58:242",
+        "sign_out_confirmation": "58:324",
+        "logo_refinement": "61:286",
+        "logo_export_mark": "62:358"
+      },
+      "states": {
+        "sign_in": [
+          "Default",
+          "Busy",
+          "Canceled",
+          "Error",
+          "Unavailable"
+        ],
+        "account": [
+          "Default",
+          "Loading",
+          "Error"
+        ],
+        "sign_out": [
+          "system confirmation"
+        ]
+      },
+      "logo": "Direction D1 (Hebrew ס with the ñ tilde drawn as a flight path ending in a sun) chosen by Dor after rejecting rounds 1 and 2; exported as mobile/assets/logo/logo-d1-mark.png (336px, transparent). App icon not yet replaced (needs a build).",
+      "runtime": "mobile/src/auth/sign-in-screen.tsx, mobile/src/auth/account-screen.tsx",
+      "next_action": "Add a Google button state when Google sign-in is built; reuse these templates for any other system screen."
     }
   ],
   "verification": {

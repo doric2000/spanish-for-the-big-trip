@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Unit } from '../../../content/src/schema';
 import source from '../../../content/units/unit1a.json';
 import { theme as t } from '../theme';
@@ -83,10 +84,14 @@ export default function OpeningPreview({ onOpenRecorder, onOpenAccount }: { onOp
   const finishedPreview = index === steps.length;
   const vocabularyIndex = steps.slice(0, index + 1).filter(item => item.type === 'vocabulary').length;
   const advance = () => setIndex(current => moveOpeningStep(current, 'next', steps.length));
+  // Safe areas are padded by hand: with 'automatic' insets iOS shifted the
+  // full-height content down by the top inset, pushing the footer under the
+  // home indicator.
+  const insets = useSafeAreaInsets();
   return <>
     <StatusBar style="dark" />
-    <ScrollView style={styles.root} contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={styles.page} key={step?.id ?? 'preview-boundary'}>
+    <ScrollView style={styles.root} contentInsetAdjustmentBehavior="never"
+      contentContainerStyle={[styles.page, { paddingTop: insets.top + t.space.xl, paddingBottom: insets.bottom + t.space.lg }]} key={step?.id ?? 'preview-boundary'}>
       <View style={styles.stack}>
         <View style={styles.topRow}>
           <Text style={styles.previewLabel}>סקירת פתיחה · 1A</Text>
@@ -132,7 +137,7 @@ export default function OpeningPreview({ onOpenRecorder, onOpenAccount }: { onOp
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: t.colors.background },
-  page: { flexGrow: 1, padding: t.space.lg, paddingTop: t.space.xl, gap: t.space.xl, width: '100%', maxWidth: 600, alignSelf: 'center' },
+  page: { flexGrow: 1, padding: t.space.lg, gap: t.space.xl, width: '100%', maxWidth: 600, alignSelf: 'center' },
   stack: { gap: t.space.md },
   topRow: { flexDirection: 'row-reverse', justifyContent: 'space-between', alignItems: 'center' },
   link: { fontSize: t.type.small, color: t.colors.primary, fontWeight: '600', writingDirection: 'rtl' },

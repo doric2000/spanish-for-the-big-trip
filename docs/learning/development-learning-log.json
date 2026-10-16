@@ -2798,6 +2798,60 @@
         "Per-step confirmation of the six sign-in checks."
       ],
       "next_step": "New chat: joint design of sign-in/account screens and fix the safe-area issues using the ui-ux-pro-max skill and the Figma gate; then Google sign-in (Google Cloud OAuth + second development build)."
+    },
+    {
+      "id": "stage04-safe-area-fix-2026-10-16",
+      "stage_id": "04",
+      "goal": "Keep buttons and headings out of the iPhone status bar and home indicator areas on the 1A preview, sign-in and account screens.",
+      "practical_owner": "Claude diagnosed the bug and wrote the fix after Dor chose the minimal fix (padding only, no pinned footer). Dor reloaded the JS on the development build and checked it on his iPhone.",
+      "practical_action": "The preview ScrollView used contentInsetAdjustmentBehavior=\"automatic\" with a full-height content container (flexGrow 1, footer at marginTop auto). iOS added the top inset (~59pt) above content that was already exactly one screen tall, so the footer ended below the screen edge. Fix: \"never\" plus useSafeAreaInsets padding (top + 32, bottom + 24). Sign-in and account replaced the hardcoded paddingTop 120/96 with insets.top-based padding and added insets.bottom.",
+      "evidence": [
+        "Local: mobile typecheck clean; mobile tests 13/13; lint not configured",
+        "Dor-reported on iPhone after JS reload (no rebuild): buttons sit above the home indicator and the heading does not touch the clock"
+      ],
+      "concepts": [
+        "Safe areas: status bar / Dynamic Island at the top, home indicator at the bottom",
+        "contentInsetAdjustmentBehavior \"automatic\" vs manual insets, and why a full-height content container conflicts with automatic insets",
+        "useSafeAreaInsets reads the device-specific inset sizes; Expo Router already provides the SafeAreaProvider",
+        "A JS-only change reaches the development build by reload; only new native code needs a new build"
+      ],
+      "dor_participation": "Chose the fix option; device check after reload.",
+      "understanding_demonstrated": "Not separately checked in this step.",
+      "interview_takeaway": "Explain how a layout that looked correct in code ended up under the home indicator: two mechanisms (native automatic inset and a full-height flex container) each added space, and the fix keeps a single source of inset padding.",
+      "open_questions": [
+        "Sign-in and account screens still await joint design in Figma (Dor chose Figma before building) plus an app logo for the sign-in screen.",
+        "The native Apple button label stays English until the app declares a Hebrew localization; that needs the next build."
+      ],
+      "next_step": "Design the sign-in and account screens (loading, cancel, error, signed-in states, sign-out confirmation) and 2-3 logo directions in Figma, get Dor's approval, then implement."
+    },
+    {
+      "id": "stage04-sign-in-account-design-2026-10-16",
+      "stage_id": "04",
+      "goal": "Replace the unreviewed sign-in and account placeholders with screens designed and approved jointly, including an app logo.",
+      "practical_owner": "Claude proposed a mockup, drew the screens and logo rounds in Figma and implemented the approved design. Dor connected the Figma connector, chose Figma before building, rejected two logo rounds and gave the direction (big trip + Hebrew + Spanish), chose D1 and approved both screens.",
+      "practical_action": "Figma page \"מסכי מערכת\": sign-in component set (Default, Busy, Canceled, Error, Unavailable), Apple button set, account set (Default, Loading, Error) built from one info-card component, iOS sign-out confirmation, three logo rounds. Code: sign-in with the logo, hero and action area, an error box, a locked busy button and no Google button yet; account with a back link at the top, info cards, a skeleton while loading, retry on error, a dev-only user id and Alert confirmation before sign-out. Learner copy for saved progress moved to a tested helper (account-copy.ts).",
+      "evidence": [
+        "Figma file vGKirilyDhMUJbKad16yU1, page 57:236; node ids recorded in docs/design/interaction-catalog.json",
+        "Local: mobile typecheck clean; mobile tests 17/17 (4 new: copy, sign-out confirmation, no Google button, safe-area padding); iOS dev bundle export succeeded with the logo asset; lint not configured",
+        "iPhone check after JS reload: pending (Dor)"
+      ],
+      "concepts": [
+        "Design gate: propose, review in Figma, approve, then build",
+        "Component sets with state variants as the single source for screen states",
+        "Skeleton placeholder vs spinner (no layout jump)",
+        "Confirming a reversible-but-surprising action with a native destructive alert",
+        "Keeping learner copy in a pure module so it can be unit-tested without React Native",
+        "Native-drawn controls (Apple button) follow the app localization, not our text"
+      ],
+      "dor_participation": "Connected Figma, design decisions, logo direction and approval.",
+      "understanding_demonstrated": "Not separately checked in this step.",
+      "interview_takeaway": "Walk through how a screen moved from a rejected placeholder to an approved Figma component set with explicit states, and how each state maps to a piece of React state in the implementation.",
+      "open_questions": [
+        "Copy decision to confirm: zero saved progress reads \"עדיין אין\".",
+        "App icon still the Expo default; replacing it with D1 (green background) needs the next build.",
+        "Native Apple button label stays English until a Hebrew localization is declared (next build)."
+      ],
+      "next_step": "Dor reloads the development build and checks each state; then commit. Then Google sign-in with the second development build (app icon and Hebrew localization in the same build)."
     }
   ],
   "entry_template": {

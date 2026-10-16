@@ -75,7 +75,7 @@
         "Figma Design",
         "Figma MCP"
       ],
-      "status": "existing_connection; no_canvas_changes"
+      "status": "Figma connected to Claude Code through the official Figma connector on 2026-10-16 (Dor); existing file vGKirilyDhMUJbKad16yU1"
     },
     {
       "area": "media",
@@ -222,7 +222,7 @@
         "name": "ui-ux-pro-max",
         "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
         "why": "Design decisions: palettes, type, UX and accessibility rules, React Native stack guidance. Local Python search over CSV data; scripts reviewed 2026-10-16.",
-        "status": "marketplace added by Dor; plugin install still needed (claude plugin list showed none on 2026-10-16)"
+        "status": "installed by Dor as plugin ui-ux-pro-max@ui-ux-pro-max-skill 2.15.0 and enabled for the project in .claude/settings.json (commit a272502); used 2026-10-16 for the sign-in/account proposal"
       }
     ],
     "later": [

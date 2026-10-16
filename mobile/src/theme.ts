@@ -4,6 +4,8 @@ export const theme = {
     background: '#FAF7EF', surface: '#FFFDF9', ink: '#173F3B',
     muted: '#547166', primary: '#22675D', onPrimary: '#FFFFFF',
     soft: '#E8EFE5', border: '#DBE5DA', danger: '#A3352B',
+    // Error box: danger at 8% fill / 30% border (Figma "מסך כניסה", State=Error).
+    dangerSoft: '#A3352B14', dangerBorder: '#A3352B4D',
   },
   space: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32 },
   radius: { button: 20, card: 28 },

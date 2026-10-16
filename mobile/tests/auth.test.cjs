@@ -103,3 +103,38 @@ test('cancel, missing token, Apple failure and Supabase rejection never sign in'
   assert.equal(r.status, 'error');
   assert.equal(r.message, 'Invalid nonce');
 });
+
+const copy = compile('../src/auth/account-copy.ts');
+const read = relative => fs.readFileSync(path.join(__dirname, '../src', relative), 'utf8');
+
+test('account copy: saved progress in natural Hebrew and a readable sign-in provider', () => {
+  assert.equal(copy.savedProgressLabel(0), 'עדיין אין');
+  assert.equal(copy.savedProgressLabel(1), 'יחידה אחת');
+  assert.equal(copy.savedProgressLabel(4), '4 יחידות');
+  assert.equal(copy.providerLabel('apple'), 'Apple');
+  assert.equal(copy.providerLabel('google'), 'Google');
+  assert.equal(copy.providerLabel(undefined), 'חשבון');
+});
+
+test('sign-out asks for confirmation first, with a cancel and a destructive choice', () => {
+  const account = read('auth/account-screen.tsx');
+  assert.match(account, /onPress=\{confirmSignOut\}/);
+  assert.match(account, /Alert\.alert\('לצאת מהחשבון\?'/);
+  assert.match(account, /style: 'cancel'/);
+  assert.match(account, /style: 'destructive', onPress: \(\) => \{ void signOut\(\); \}/);
+});
+
+test('sign-in offers no Google button before Google sign-in exists', () => {
+  // Comments may mention Google; no button label or Google sign-in module may appear.
+  assert.doesNotMatch(read('auth/sign-in-screen.tsx'), /עם Google|google-signin|GoogleSignin/i);
+});
+
+test('screens take their top and bottom padding from the device safe areas', () => {
+  for (const file of ['auth/sign-in-screen.tsx', 'auth/account-screen.tsx', 'lesson/opening-preview.tsx']) {
+    const source = read(file);
+    assert.match(source, /useSafeAreaInsets\(\)/, file);
+    assert.match(source, /insets\.top/, file);
+    assert.match(source, /insets\.bottom/, file);
+    assert.doesNotMatch(source, /paddingTop: \d/, `${file} has a hardcoded top padding`);
+  }
+});
