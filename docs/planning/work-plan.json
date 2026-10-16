@@ -800,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "2026-10-16 (later session): safe-area fix verified on Dor's iPhone. Sign-in and account screens designed in Figma (page \"מסכי מערכת\"), approved by Dor with logo D1, and implemented (typecheck clean, 17/17 tests); iPhone check of the new screens pending. Next: Dor checks the states on the development build and commits. Then Google sign-in: Google Cloud OAuth clients, Supabase Google provider, @react-native-google-signin plugin and a second development build; in the same build replace the app icon with D1 and declare a Hebrew localization so the native Apple button reads Hebrew. Still open in stage 04: confirm the six sign-in checks per step; account deletion flow before any public release.",
+    "next_action": "2026-10-16 (later session): safe-area fix verified on Dor's iPhone. Sign-in and account screens designed in Figma (page \"מסכי מערכת\"), approved by Dor with logo D1, and implemented (typecheck clean, 17/17 tests); verified on Dor's iPhone and committed by Dor. Next: Google sign-in: Google Cloud OAuth clients, Supabase Google provider, @react-native-google-signin plugin and a second development build; in the same build replace the app icon with D1 and declare a Hebrew localization so the native Apple button reads Hebrew. Still open in stage 04: confirm the six sign-in checks per step; account deletion flow before any public release.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [

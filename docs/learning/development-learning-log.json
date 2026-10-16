@@ -2816,7 +2816,7 @@
         "A JS-only change reaches the development build by reload; only new native code needs a new build"
       ],
       "dor_participation": "Chose the fix option; device check after reload.",
-      "understanding_demonstrated": "Not separately checked in this step.",
+      "understanding_demonstrated": "Partial, after explanation. First answer: did not know (guessed a layer above took space). After the box analogy, Dor answered the variation correctly: with a 100pt push instead of 59pt the button would go further below the screen edge. Not yet shown: explaining the fix (stop the automatic push, pad inside the box with the inset sizes) unprompted.",
       "interview_takeaway": "Explain how a layout that looked correct in code ended up under the home indicator: two mechanisms (native automatic inset and a full-height flex container) each added space, and the fix keeps a single source of inset padding.",
       "open_questions": [
         "Sign-in and account screens still await joint design in Figma (Dor chose Figma before building) plus an app logo for the sign-in screen.",
@@ -2833,7 +2833,7 @@
       "evidence": [
         "Figma file vGKirilyDhMUJbKad16yU1, page 57:236; node ids recorded in docs/design/interaction-catalog.json",
         "Local: mobile typecheck clean; mobile tests 17/17 (4 new: copy, sign-out confirmation, no Google button, safe-area padding); iOS dev bundle export succeeded with the logo asset; lint not configured",
-        "iPhone check after JS reload: pending (Dor)"
+        "Dor-reported on iPhone after JS reload: back link, cards, sign-out confirmation, canceled sign-in and full sign-in all work; Dor committed"
       ],
       "concepts": [
         "Design gate: propose, review in Figma, approve, then build",
@@ -2851,7 +2851,7 @@
         "App icon still the Expo default; replacing it with D1 (green background) needs the next build.",
         "Native Apple button label stays English until a Hebrew localization is declared (next build)."
       ],
-      "next_step": "Dor reloads the development build and checks each state; then commit. Then Google sign-in with the second development build (app icon and Hebrew localization in the same build)."
+      "next_step": "Google sign-in with the second development build (app icon D1 and Hebrew localization in the same build)."
     }
   ],
   "entry_template": {
