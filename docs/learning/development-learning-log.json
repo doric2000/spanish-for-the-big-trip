@@ -2766,6 +2766,38 @@
         "Apple sign-in cannot be tested in Expo Go on this device; a development build is needed (decision pending with Dor)."
       ],
       "next_step": "Dor runs the app in Expo Go and reports each case."
+    },
+    {
+      "id": "stage04-first-development-build-apple-sign-in-2026-10-16",
+      "stage_id": "04",
+      "goal": "First owned EAS development build with Expo Router, and Apple sign-in verified on the iPhone.",
+      "practical_owner": "Dor installed the libraries (and fixed version pins on Claude's diagnosis), fixed PATH for the Claude CLI, committed f97311a, enabled Developer Mode, ran the EAS build with Apple credentials, installed it and tested. Claude diagnosed the peer-version conflicts and expo-doctor findings, moved the screens to Expo Router with Stack.Protected guards, and added tests.",
+      "practical_action": "expo-doctor went from 2 failures to 21/21 after pinning react-dom 19.2.3, reanimated 4.5.1, worklets 0.10.1, gesture-handler 2.32.0, expo-font 57.0.4, adding expo-asset and moving expo to 57.0.30. The development build was installed. Dor reports the flow works, with visual bugs.",
+      "evidence": [
+        "Commit f97311a; CI success (run 38907605108)",
+        "Dor-reported: development build installed and sign-in flow working, with visual bugs; per-step results and build link not yet sent",
+        "Dependabot PR #1 (expo-router 58) failed CI with ERESOLVE, as intended; .github/dependabot.yml now blocks Expo SDK major bumps",
+        "Visual bug from Dor's screenshot: the 1A entry scene was drawn at its 1391px intrinsic width and overflowed, so only Juan's hand showed. Claude moved the sizing to a wrapping frame (aspectRatio 1391/1131, overflow hidden) with the image filling it. Dor's reload screenshot shows the full scene inside the screen."
+      ],
+      "concepts": [
+        "Development build vs Expo Go (native modules must be compiled in)",
+        "Transitive and peer dependency conflicts; pin SDK-compatible versions instead of --force",
+        "expo-doctor as a pre-build gate",
+        "Protected routes in Expo Router as a navigation-level sign-in guard",
+        "Code signing and provisioning handled by EAS; capability sync for Sign In with Apple",
+        "PATH and how Windows finds commands",
+        "Layout debugging from a screenshot: compare rendered size with intended size; size the container and let the image fill it"
+      ],
+      "dor_participation": "All installs, Git, EAS build with Apple credentials and device testing.",
+      "understanding_demonstrated": "Not separately checked in this step.",
+      "interview_takeaway": "Explain why Apple sign-in forced a development build, how peer-dependency conflicts were diagnosed and pinned, and how routes are guarded so there is no guest access.",
+      "open_questions": [
+        "Bottom call-to-action button sits under the iPhone home indicator (safe-area bottom inset missing).",
+        "Development-build tools button overlaps the header (development only).",
+        "Sign-in and account screens are temporary placeholders awaiting joint design.",
+        "Per-step confirmation of the six sign-in checks."
+      ],
+      "next_step": "New chat: joint design of sign-in/account screens and fix the safe-area issues using the ui-ux-pro-max skill and the Figma gate; then Google sign-in (Google Cloud OAuth + second development build)."
     }
   ],
   "entry_template": {

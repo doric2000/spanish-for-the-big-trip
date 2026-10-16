@@ -29,8 +29,12 @@ function Action({ title, onPress, secondary = false, disabled = false, busy = fa
 function Scene({ path }: { path: string | null }) {
   const [failed, setFailed] = useState(false);
   if (path !== scenePath || failed) return <Text accessibilityRole="alert" style={styles.note}>התמונה אינה זמינה כרגע.</Text>;
-  return <Image source={approvedScene} style={styles.scene} resizeMode="cover"
-    accessibilityLabel="חואן מברך אתכם בהוסטל" onError={() => setFailed(true)} />;
+  // The frame sets the size; the image only fills it. Sizing the Image itself
+  // with width '100%' let iOS draw it at its pixel size and overflow the screen.
+  return <View style={styles.sceneFrame}>
+    <Image source={approvedScene} style={styles.sceneImage} resizeMode="cover"
+      accessibilityLabel="חואן מברך אתכם בהוסטל" onError={() => setFailed(true)} />
+  </View>;
 }
 
 function ApprovedAudio() {
@@ -135,7 +139,8 @@ const styles = StyleSheet.create({
   previewLabel: { fontSize: t.type.small, color: t.colors.muted, textAlign: 'right', writingDirection: 'rtl' },
   chapter: { fontSize: t.type.small, color: t.colors.primary, textAlign: 'right', writingDirection: 'rtl' },
   title: { fontSize: t.type.title, fontWeight: '700', color: t.colors.ink, textAlign: 'right', writingDirection: 'rtl' },
-  scene: { width: '100%', aspectRatio: 1.24, borderRadius: t.radius.card },
+  sceneFrame: { alignSelf: 'stretch', aspectRatio: 1391 / 1131, borderRadius: t.radius.card, overflow: 'hidden' },
+  sceneImage: { width: '100%', height: '100%' },
   body: { fontSize: t.type.body, lineHeight: 30, color: t.colors.muted, textAlign: 'right', writingDirection: 'rtl' },
   card: { backgroundColor: t.colors.surface, borderColor: t.colors.border, borderWidth: 1, borderRadius: t.radius.card, padding: t.space.lg, gap: t.space.lg },
   cardHeader: { flexDirection: 'row-reverse', justifyContent: 'space-between', gap: t.space.md },

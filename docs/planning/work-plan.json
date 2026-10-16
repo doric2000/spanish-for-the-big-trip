@@ -239,8 +239,8 @@
         "03"
       ],
       "goal": "Implement reviewed SQL and identity/access rules in a development environment.",
-      "status": "preparing_first_development_build",
-      "current_next_action": "Dor chose a development build now (Apple sign-in needs it) and Expo Router for navigation. Build content: expo-router + safe-area-context + screens + linking + constants, expo-asset (missing peer of expo-audio per expo-doctor), expo-web-browser, expo patch 57.0.30; app.json scheme, iPhone-only, usesNonExemptEncryption=false, usesAppleSignIn. Google sign-in deferred to a separate build after Google Cloud OAuth setup. Next: Dor installs packages; Claude switches the entry to Expo Router and moves screens to src/app; then Dor runs the EAS development build.",
+      "status": "dev_build_installed_apple_sign_in_working",
+      "current_next_action": "Session of 2026-10-16 closed. Done: single repo + docs/, CI with gitleaks, public repo with secret scanning/push protection, user_unit_progress with RLS (PASS), 1A draft seeded, Apple sign-in with Keychain session, Expo Router with protected routes, first EAS development build installed and working on Dor's iPhone, 1A scene overflow fixed. Next chat: (1) joint design of sign-in and account screens (current ones are temporary placeholders) with the ui-ux-pro-max skill and the Figma gate in docs/design/interaction-catalog.json; (2) fix safe-area issues, e.g. the bottom call-to-action under the home indicator in src/lesson/opening-preview.tsx; (3) then Google sign-in: Google Cloud OAuth clients, Supabase Google provider, @react-native-google-signin plugin and a second development build. Still open in stage 04: confirm the six sign-in checks per step; account deletion flow before any public release.",
       "organization_setup": {
         "observed_on": "2026-10-16",
         "evidence": "Dor's screenshot codex-clipboard-2a125438-b19f-4939-b8bf-307276b60761.png shows the organization form with Personal and Free - $0/month selected.",
@@ -800,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "Dor chose a development build now (Apple sign-in needs it) and Expo Router for navigation. Build content: expo-router + safe-area-context + screens + linking + constants, expo-asset (missing peer of expo-audio per expo-doctor), expo-web-browser, expo patch 57.0.30; app.json scheme, iPhone-only, usesNonExemptEncryption=false, usesAppleSignIn. Google sign-in deferred to a separate build after Google Cloud OAuth setup. Next: Dor installs packages; Claude switches the entry to Expo Router and moves screens to src/app; then Dor runs the EAS development build.",
+    "next_action": "Session of 2026-10-16 closed. Done: single repo + docs/, CI with gitleaks, public repo with secret scanning/push protection, user_unit_progress with RLS (PASS), 1A draft seeded, Apple sign-in with Keychain session, Expo Router with protected routes, first EAS development build installed and working on Dor's iPhone, 1A scene overflow fixed. Next chat: (1) joint design of sign-in and account screens (current ones are temporary placeholders) with the ui-ux-pro-max skill and the Figma gate in docs/design/interaction-catalog.json; (2) fix safe-area issues, e.g. the bottom call-to-action under the home indicator in src/lesson/opening-preview.tsx; (3) then Google sign-in: Google Cloud OAuth clients, Supabase Google provider, @react-native-google-signin plugin and a second development build. Still open in stage 04: confirm the six sign-in checks per step; account deletion flow before any public release.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [

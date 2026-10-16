@@ -208,5 +208,35 @@
       "constraint": "ElevenLabs Free publication requires attribution and non-commercial use; verify chosen voice/assets and available credits before production.",
       "source": "https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform"
     }
+  },
+  "skill_review_2026_10_16": {
+    "source": "https://snyk.io/articles/top-claude-skills-ui-ux-engineers/",
+    "selected": [
+      {
+        "name": "vercel-react-native-skills",
+        "repo": "vercel-labs/agent-skills (skills/react-native-skills)",
+        "why": "Only skill in the list written for React Native/Expo. Its rules cover issues already seen here: safe-area scrolling, image handling (expo-image), Pressable, native navigators, list performance and Reanimated. Markdown only, no scripts; MIT in SKILL.md.",
+        "status": "recommended; not installed yet"
+      },
+      {
+        "name": "ui-ux-pro-max",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+        "why": "Design decisions: palettes, type, UX and accessibility rules, React Native stack guidance. Local Python search over CSV data; scripts reviewed 2026-10-16.",
+        "status": "Dor installing via the Claude CLI plugin marketplace"
+      }
+    ],
+    "later": [
+      {
+        "name": "vercel composition-patterns",
+        "why": "Useful when building the shared data-driven activity components (avoid boolean-prop sprawl); React patterns apply to React Native."
+      }
+    ],
+    "not_selected": [
+      "anthropic frontend-design (web HTML/CSS)",
+      "vercel web-design-guidelines (web audits)",
+      "vercel react-best-practices (Next.js)",
+      "bencium ux-designer (web, no license)",
+      "accesslint (web WCAG/HTML, extra MCP server)"
+    ]
   }
 }

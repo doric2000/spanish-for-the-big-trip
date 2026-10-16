@@ -1,0 +1,35 @@
+# Dependabot keeps security fixes flowing without moving the Expo SDK.
+# Expo/React Native versions must match one SDK, so SDK upgrades are done on
+# purpose with `npx expo install expo@^<next> --fix`, never by a bot.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /mobile
+    schedule:
+      interval: weekly
+    # 0 = no routine version-bump PRs; security update PRs still open.
+    open-pull-requests-limit: 0
+    ignore:
+      - dependency-name: "expo"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "expo-*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@expo/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
+      - dependency-name: "react-native"
+      - dependency-name: "react-native-*"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+
+  - package-ecosystem: npm
+    directory: /content
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+
+  # Keeps the SHA-pinned actions in .github/workflows up to date.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
