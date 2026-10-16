@@ -163,7 +163,10 @@ test('sign-out asks for confirmation first, with a cancel and a destructive choi
 
 test('sign-in offers Google next to Apple, and only one sign-in runs at a time', () => {
   const screen = read('auth/sign-in-screen.tsx');
-  assert.match(screen, /AppleAuthenticationButton/, 'Apple stays');
+  assert.match(screen, /signInWithApple\(appleDeps\)/, 'Apple stays');
+  assert.match(screen, /המשך עם Apple/);
+  // The native Apple button would follow the phone's language, not the app's Hebrew.
+  assert.doesNotMatch(screen, /AppleAuthenticationButton/);
   assert.match(screen, /המשך עם Google/);
   assert.match(screen, /signInWithGoogle\(googleDeps\)/);
   // One shared guard: a second tap on either button while signing in does nothing.

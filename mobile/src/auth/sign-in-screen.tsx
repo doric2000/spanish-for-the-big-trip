@@ -73,6 +73,19 @@ export default function SignInScreen() {
     inProgress.current = false; setBusy(null);
   }
 
+  // Our own Apple button instead of the native one: the native label follows the
+  // phone's language (Spanish on a phone set to Spanish, as learners often do), and
+  // this app is Hebrew everywhere. Apple's rules for a custom button: black, the
+  // Apple logo, the system font, "Continue with Apple" in the app's language.
+  const appleButton = <Pressable accessibilityRole="button" accessibilityLabel="המשך עם Apple"
+    accessibilityState={{ disabled: busy !== null, busy: busy === 'apple' }} disabled={busy !== null}
+    onPress={() => { void signIn('apple'); }}
+    style={({ pressed }) => [styles.buttonSlot, styles.appleButton, busy !== null ? styles.dimmedButton : pressed && styles.pressed]}>
+    {/* U+F8FF is drawn as the Apple logo by the iOS system font. */}
+    {busy !== 'apple' && <Text style={styles.appleLogo} accessible={false}>{'\uF8FF'}</Text>}
+    <Text style={styles.appleLabel}>{busy === 'apple' ? 'מתחברים…' : 'המשך עם Apple'}</Text>
+  </Pressable>;
+
   const googleButton = <Pressable accessibilityRole="button" accessibilityLabel="המשך עם Google"
     accessibilityState={{ disabled: busy !== null, busy: busy === 'google' }} disabled={busy !== null}
     onPress={() => { void signIn('google'); }}
@@ -100,19 +113,7 @@ export default function SignInScreen() {
           <Text style={styles.unavailable}>כניסה עם Apple אינה זמינה במכשיר הזה.</Text>
           {__DEV__ && unavailableReason && <Text selectable style={styles.note}>{unavailableReason}</Text>}
         </>
-        : <>
-          {busy === 'apple' ? <View accessibilityRole="button" accessibilityState={{ disabled: true, busy: true }} style={[styles.buttonSlot, styles.busyButton]}>
-            <Text style={styles.busyLabel}>מתחברים…</Text>
-          </View>
-          // The native button cannot be disabled, so it stops receiving touches instead.
-          : <View style={busy === 'google' ? [styles.dimmedButton, { pointerEvents: 'none' }] : undefined}>
-            <AppleAuthentication.AppleAuthenticationButton
-              buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
-              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-              cornerRadius={t.radius.button} style={styles.buttonSlot} onPress={() => { void signIn('apple'); }} />
-          </View>}
-          {googleButton}
-        </>}
+        : <>{appleButton}{googleButton}</>}
       <Text style={styles.note}>הכניסה נדרשת כדי לשמור את ההתקדמות שלכם.</Text>
     </View>
   </View>;
@@ -127,14 +128,16 @@ const styles = StyleSheet.create({
   tagline: { fontSize: t.type.body, lineHeight: 28, color: t.colors.muted, textAlign: 'center', writingDirection: 'rtl' },
   actions: { gap: 12, width: '100%', maxWidth: 600, alignSelf: 'center' },
   buttonSlot: { width: '100%', height: 52, alignItems: 'center', justifyContent: 'center' },
-  busyButton: { backgroundColor: '#000000', borderRadius: t.radius.button, opacity: 0.5 },
   dimmedButton: { opacity: 0.5 },
   pressed: { opacity: 0.75 },
+  // System font (no fontFamily), as Apple requires for a custom button.
+  appleButton: { flexDirection: 'row', gap: 8, backgroundColor: '#000000', borderRadius: t.radius.button },
+  appleLogo: { fontSize: 20, color: '#FFFFFF' },
+  appleLabel: { fontSize: t.type.body, fontWeight: '600', color: '#FFFFFF', writingDirection: 'rtl' },
   // Google branding, light theme: white fill, #747775 border, #1F1F1F label, the 4-color G.
   googleButton: { flexDirection: 'row', gap: 10, backgroundColor: '#FFFFFF', borderColor: '#747775', borderWidth: 1, borderRadius: t.radius.button },
   googleG: { width: 20, height: 20 },
   googleLabel: { fontSize: t.type.body, fontWeight: '500', color: '#1F1F1F', writingDirection: 'rtl' },
-  busyLabel: { fontSize: t.type.body, fontWeight: '700', color: '#FFFFFF', writingDirection: 'rtl' },
   errorBox: { backgroundColor: t.colors.dangerSoft, borderColor: t.colors.dangerBorder, borderWidth: 1, borderRadius: 16, paddingVertical: 12, paddingHorizontal: t.space.md },
   errorText: { fontSize: t.type.small, lineHeight: 20, color: t.colors.danger, writingDirection: 'rtl' },
   unavailable: { fontSize: t.type.body, color: t.colors.muted, textAlign: 'center', writingDirection: 'rtl' },
