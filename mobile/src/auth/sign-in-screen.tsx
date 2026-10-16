@@ -8,6 +8,7 @@ import { Grain } from '../retro/art';
 import { retro } from '../theme';
 import { signInWithApple } from './apple-sign-in';
 import { BoardingPass } from './boarding-pass';
+import { consumeAccountDeleted } from './delete-account';
 import { GoogleSignin } from './google';
 import { signInWithGoogle } from './google-sign-in';
 import { supabase } from './supabase';
@@ -42,12 +43,13 @@ const googleDeps = {
 };
 
 type Provider = 'apple' | 'google';
-type Notice = 'canceled' | 'error' | null;
+type Notice = 'canceled' | 'error' | 'deleted' | null;
 
 export default function SignInScreen() {
   const [appleAvailable, setAppleAvailable] = useState<boolean | null>(null);
   const [busy, setBusy] = useState<Provider | null>(null);
-  const [notice, setNotice] = useState<Notice>(null);
+  // After an account deletion the guard lands here; confirm it once (Apple 5.1.1(v)).
+  const [notice, setNotice] = useState<Notice>(() => (consumeAccountDeleted() ? 'deleted' : null));
   const inProgress = useRef(false);
   const insets = useSafeAreaInsets();
   // Development-only diagnostics: why Apple sign-in is unavailable.
@@ -109,6 +111,7 @@ export default function SignInScreen() {
     </View>
     <View style={styles.actions}>
       <Text style={styles.tagline}>לומדים מה שצריך לטיול, בתרגולים קצרים וממוקדים.</Text>
+      {notice === 'deleted' && <Text accessibilityLiveRegion="polite" style={styles.deleted}>החשבון נמחק.</Text>}
       {notice === 'canceled' && <Text accessibilityLiveRegion="polite" style={styles.canceled}>הכניסה בוטלה. אפשר לנסות שוב.</Text>}
       {notice === 'error' && <View accessibilityRole="alert" style={styles.errorBox}>
         <Text style={styles.errorText}>לא הצלחנו להתחבר. בדקו את החיבור לאינטרנט ונסו שוב.</Text>
@@ -142,6 +145,7 @@ const styles = StyleSheet.create({
   googleG: { width: 20, height: 20 },
   googleLabel: { fontFamily: f.medium, fontSize: 18, color: '#E3E3E3', writingDirection: 'rtl' },
   canceled: { fontFamily: f.body, fontSize: 14, color: c.pink, textAlign: 'center', writingDirection: 'rtl' },
+  deleted: { fontFamily: f.medium, fontSize: 15, color: c.cream, textAlign: 'center', writingDirection: 'rtl' },
   errorBox: { backgroundColor: '#F26B3A26', borderColor: '#F26B3A80', borderWidth: 1, borderRadius: 14, paddingVertical: 10, paddingHorizontal: 14 },
   errorText: { fontFamily: f.body, fontSize: 14, lineHeight: 20, color: '#FFD9CC', writingDirection: 'rtl' },
   note: { fontFamily: f.body, fontSize: 13, lineHeight: 20, color: '#FFF3DC99', textAlign: 'center', writingDirection: 'rtl' },

@@ -141,6 +141,49 @@ test('Google: cancel, missing token, Google failure and Supabase rejection never
   assert.equal(r.message, 'Unacceptable audience');
 });
 
+const deletion = compile('../src/auth/delete-account.ts');
+
+function deletionDeps(overrides = {}) {
+  const calls = [];
+  return { calls, deps: {
+    deleteOnServer: async () => { calls.push('server'); return { error: null }; },
+    forgetGoogle: async () => { calls.push('google'); },
+    signOutLocally: async () => { calls.push('signOut'); },
+    ...overrides,
+  } };
+}
+
+test('account deletion: server first, then local clean-up, then one sign-in confirmation', async () => {
+  const { deps, calls } = deletionDeps();
+  assert.equal((await deletion.deleteAccount(deps)).status, 'deleted');
+  assert.deepEqual([...calls], ['server', 'google', 'signOut']);
+  assert.equal(deletion.consumeAccountDeleted(), true, 'sign-in shows "the account was deleted"');
+  assert.equal(deletion.consumeAccountDeleted(), false, 'and only once');
+});
+
+test('account deletion: a server failure keeps the learner signed in and shows no confirmation', async () => {
+  const failed = deletionDeps({ deleteOnServer: async () => ({ error: { message: 'network' } }) });
+  const r = await deletion.deleteAccount(failed.deps);
+  assert.equal(r.status, 'error');
+  assert.deepEqual([...failed.calls], [], 'no sign-out and no Google revoke when nothing was deleted');
+  assert.equal(deletion.consumeAccountDeleted(), false);
+  const thrown = deletionDeps({ deleteOnServer: async () => { throw new Error('offline'); } });
+  assert.equal((await deletion.deleteAccount(thrown.deps)).status, 'error');
+  // A failing Google revoke or sign-out after a successful delete still counts as deleted.
+  const messy = deletionDeps({ forgetGoogle: async () => { throw new Error('not signed in to Google'); }, signOutLocally: async () => { throw new Error('x'); } });
+  assert.equal((await deletion.deleteAccount(messy.deps)).status, 'deleted');
+  deletion.consumeAccountDeleted();
+});
+
+test('account screen: delete asks first, with a cancel and a destructive choice, and calls the database function', () => {
+  const account = read('auth/account-screen.tsx');
+  assert.match(account, /onPress=\{confirmDelete\}/);
+  assert.match(account, /Alert\.alert\('למחוק את החשבון\?'/);
+  assert.match(account, /style: 'destructive', onPress: \(\) => \{ void removeAccount\(\); \}/);
+  assert.match(account, /supabase\.rpc\('delete_my_account'\)/);
+  assert.match(read('auth/sign-in-screen.tsx'), /consumeAccountDeleted\(\) \? 'deleted'/);
+});
+
 const copy = compile('../src/auth/account-copy.ts');
 const read = relative => fs.readFileSync(path.join(__dirname, '../src', relative), 'utf8');
 
@@ -151,6 +194,13 @@ test('account copy: saved progress in natural Hebrew and a readable sign-in prov
   assert.equal(copy.providerLabel('apple'), 'Apple');
   assert.equal(copy.providerLabel('google'), 'Google');
   assert.equal(copy.providerLabel(undefined), 'חשבון');
+});
+
+test('the passport stamp appears only for real saved progress', () => {
+  assert.equal(copy.showPassportStamp({ state: 'ok', rows: 1 }), true);
+  assert.equal(copy.showPassportStamp({ state: 'ok', rows: 0 }), false, 'none yet');
+  assert.equal(copy.showPassportStamp({ state: 'loading' }), false);
+  assert.equal(copy.showPassportStamp({ state: 'error' }), false);
 });
 
 test('sign-out asks for confirmation first, with a cancel and a destructive choice', () => {

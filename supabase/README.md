@@ -105,3 +105,9 @@ npx.cmd --no-install supabase db push --linked --skip-vault
 3. מסיים בשורת סיכום עם מספר הפעילויות ו־`digest_matches = true`.
 
 טיוטה לא נגישה ללומדים: `anon` ו־`authenticated` חסומים מ־`unit_revisions`, ופרסום עובר רק דרך בדיקת הפרק השלם.
+
+## התוספת החמישית: מחיקת חשבון
+
+`migrations/20261017080000_create_delete_my_account.sql` מוסיף את הפונקציה `public.delete_my_account()`, שמאפשרת ללומד למחוק את החשבון שלו מתוך האפליקציה (דרישת Apple, סעיף 5.1.1(v)). האפליקציה אינה מחזיקה את מפתח `service_role`, ולכן המחיקה רצה בתוך המסד: הפונקציה מוגדרת `security definer` (רצה בהרשאות הבעלים), עם `search_path` ריק, בלי פרמטרים, ומוחקת רק את `auth.uid()`, כלומר את המשתמש שהאסימון המאומת שלו מבצע את הקריאה. ההתקדמות נמחקת יחד איתו בזכות `on delete cascade`. ההרשאה ניתנת רק ל־`authenticated`; ל־`anon` ול־`PUBLIC` אין גישה. ביטול האסימון של Sign in with Apple הוא שלב נפרד לפני פרסום, ודורש שרת.
+
+`checks/05_delete_my_account.sql` רץ במלואו ב־SQL Editor אחרי ההחלה. הוא יוצר שני משתמשים סינתטיים עם התקדמות, מוודא ש־`anon` וקריאה בלי מזהה משתמש נחסמות, מוחק את משתמש A כ־A, ובודק ש־A וההתקדמות שלו נמחקו ו־B לא נפגע. התוצאה הצפויה: `PASS: only the calling user and their progress are deleted; anon and token-less calls refused; synthetic rows rolled back`. דור החיל את המיגרציה וקיבל PASS ב־2026-10-17.
