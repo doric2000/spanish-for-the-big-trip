@@ -10,9 +10,11 @@
 - Lint is not configured yet. Until it is, run TypeScript and the existing tests and say that lint was not run:
 
 ```bash
-npx tsc --noEmit
-node --test tests/*.cjs
+npm run typecheck
+npm test
 ```
+
+CI (`../.github/workflows/ci.yml`) runs the same commands on every push and pull request.
 
 ## Expo changes often — do not trust training data
 

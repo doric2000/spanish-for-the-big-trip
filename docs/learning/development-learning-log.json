@@ -2610,6 +2610,33 @@
         "Branch protection, secret scanning/push protection and CI are not configured on the GitHub repo yet."
       ],
       "next_step": "Decide how to version the workspace folder, then enable GitHub secret scanning and add a minimal CI workflow."
+    },
+    {
+      "id": "single-repo-docs-move-2026-10-16",
+      "stage_id": "cross-stage",
+      "goal": "Keep one repository: move the important planning, curriculum and learning records into docs/, make AGENTS.md the single instruction file, and stop the parent folder from being a second repository.",
+      "practical_owner": "Claude researched the common repository layout, moved the files and rewrote path references; Dor chose the single-repo option and ran every Git/GitHub command.",
+      "practical_action": "Claude moved 50 files into docs/ (planning, learning, curriculum, design, research, evidence, audits), fixed references in 68 files, shortened README, kept the legacy material outside Git with a zip backup, and verified 57 content tests, 6 mobile tests, tsc and links. Dor first ran the commit in the parent folder, which had become a second repository (spanish-for-trip-workspace). After diagnosis he committed and pushed in the product repo, archived the extra GitHub repository and removed the parent folder's .git.",
+      "evidence": [
+        "Dor terminal: [main b21a549] docs: move project docs into the repo..., 71 files changed; push 5d68222..b21a549",
+        "Dor terminal: Archived repository doric2000/spanish-for-trip-workspace; isArchived true",
+        "Dor terminal: parent folder status -> fatal: not a git repository; product repo -> nothing to commit, working tree clean"
+      ],
+      "concepts": [
+        "Single repository with docs/, root README and root AGENTS.md as the common layout",
+        "Git finds the nearest .git upward, so the folder a command runs in decides which repository it changes",
+        "A nested repository appears as a submodule entry in a parent repository",
+        "One logical change per commit, even when it touches many files",
+        "Archiving a GitHub repository as a read-only backup"
+      ],
+      "dor_participation": "Chose the structure, ran all commands, and reported terminal output.",
+      "understanding_demonstrated": "Not separately checked in this step; Dor earlier explained why topic-sized commits help. The 'which folder decides the repository' lesson came from a real mistake and is worth a short own-word check.",
+      "interview_takeaway": "Describe consolidating scattered planning files into one repository's docs/, rewriting references safely with verification, and diagnosing a command run in the wrong nested repository.",
+      "open_questions": [
+        "Why did git status in the parent folder show spanish-for-the-big-trip as 'modified content'?",
+        "GitHub secret scanning, branch protection and CI are not configured yet."
+      ],
+      "next_step": "Enable GitHub secret scanning/push protection and add a minimal CI workflow, then return to the stage 04 plan."
     }
   ],
   "entry_template": {

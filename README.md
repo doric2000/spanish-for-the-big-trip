@@ -45,8 +45,11 @@ npm.cmd --prefix mobile start -- --go
 ```powershell
 npm.cmd --prefix content test
 npm.cmd --prefix content run validate
-cd mobile; npx.cmd tsc --noEmit; node --test tests/*.cjs
+npm.cmd --prefix mobile run typecheck
+npm.cmd --prefix mobile test
 ```
+
+אותן בדיקות רצות אוטומטית ב־GitHub Actions ([.github/workflows/ci.yml](.github/workflows/ci.yml)) בכל push ל־`main` ובכל pull request. באותה הרצה gitleaks סורק את כל ההיסטוריה ומחפש סודות שנכנסו בטעות.
 
 כלי Supabase מותקן כתלות פיתוח בשורש. אחרי `npm.cmd install` בודקים אותו עם `npx.cmd supabase --version`. פרטי המיגרציות נמצאים ב־[supabase/README.md](supabase/README.md).
 

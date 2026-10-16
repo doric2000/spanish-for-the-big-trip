@@ -1,0 +1,75 @@
+# Runs on every push to main and every pull request.
+# Actions are pinned to a full commit SHA (the tag is in the comment) so a
+# moved tag cannot change what runs here.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# The workflow only needs to read the code.
+permissions:
+  contents: read
+
+# A newer push to the same branch cancels the run that is still going.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Typecheck and tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            content/package-lock.json
+            mobile/package-lock.json
+
+      # npm ci installs exactly what the lock files record.
+      # mobile imports the content schema, so both need their packages.
+      - name: Install content packages
+        run: npm ci --prefix content
+      - name: Install mobile packages
+        run: npm ci --prefix mobile
+
+      - name: Content tests
+        run: npm --prefix content test
+      - name: Content validation (unit 1A)
+        run: npm --prefix content run validate
+
+      - name: Mobile typecheck
+        run: npm --prefix mobile run typecheck
+      - name: Mobile tests
+        run: npm --prefix mobile test
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Reading the commits of a pull request goes through the pull requests API.
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      # Full history, so a secret committed and later deleted is still found.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # Free for repositories owned by a personal account (no license needed).
+      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Comments would need write access; the job summary shows findings instead.
+          GITLEAKS_ENABLE_COMMENTS: false
