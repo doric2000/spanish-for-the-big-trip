@@ -1,0 +1,47 @@
+{
+  "status": "approved_core_and_help_copy_integrated; historical_draft_record; device_verification_pending",
+  "unitId": "C01-U01",
+  "proposedActivityId": "1a-arrange-greeting",
+  "sequenceAfterActivityId": "1a-speak-thanks",
+  "goalHe": "לשחזר את ברכת הבוקר שכבר נלמדה, בעזרת שתי מילים נתונות.",
+  "source": {
+    "file": "pilot-spec.json",
+    "selector": "modules[number=1].practice[type=arrange]",
+    "originalAnswerEs": "por favor",
+    "adaptationHe": "המקור הוא מאגר משותף ל-1A ול-1B. por favor טרם הוכן ב-1A ושייך ליחידה הבאה; מוצעת כאן ברכת Buenos días שכבר הוכנה."
+  },
+  "learnerCopy": {
+    "titleHe": "מברכים בחזרה",
+    "promptHe": "נזכרים במפגש הבוקר עם חואן. סדרו את המילים כדי לברך אותו בחזרה ב״בוקר טוב״.",
+    "checkActionHe": "בדיקה",
+    "hintActionHe": "רמז",
+    "hintHe": "הביטוי מתחיל ב־Buenos.",
+    "correctHe": "Buenos días פירושו בוקר טוב.",
+    "retryHe": "ננסה שוב. היזכרו בסדר המילים של הברכה שלמדתם."
+  },
+  "tiles": [
+    { "id": "dias", "textEs": "días" },
+    { "id": "buenos", "textEs": "Buenos" }
+  ],
+  "expectedTileIds": ["buenos", "dias"],
+  "referenceEs": "Buenos días.",
+  "uses": ["lang-buenos-dias"],
+  "presentationProposalHe": "לוחצים על מילה כדי להוסיף אותה לתשובה ועל מילה שנבחרה כדי להחזיר אותה. אפשר לתקן לפני הבדיקה; רמז או תיקון מסומנים כהסתייעות. סדר האריחים משתנה בניסיון חדש.",
+  "outcomeHe": "הרכבתם ברכה מתאימה למפגש בבוקר. זו בדיקת סדר הביטוי עם מילים נתונות, ואינה הוכחת דיבור עצמאי.",
+  "integrationReview": {
+    "date": "2026-10-16",
+    "authorityHe": "כן",
+    "contextHe": "תשובת דור להצגת הנוסח, האריחים días ו-Buenos, סדר Buenos días ואפשרות תיקון או רמז, ולשאלה אם הניסוח והתרגיל מתאימים כהמשך.",
+    "approvedScopeHe": "ההנחיה וסידור הברכה מתוך המילים הנתונות אושרו. המלל המדויק של הרמז והמשוב בטעות טרם הוצג לסקירה; הוא נשאר needs_review.",
+    "canonicalSource": "content/units/unit1a.json#activities[id=1a-arrange-greeting]",
+    "recordPolicy": "This proposal is retained as review history. Edit units/unit1a.json for future activity changes. Correct feedback in the unit reuses the existing reviewed Buenos dias explanation.",
+    "interactionClarificationHe": "תיקון סדר לפני שליחה הוא עריכה מקומית. רמז או משוב אחרי שליחת סדר שגוי מסמנים הסתייעות. בחירת אריחים שלא נשלחה עדיין אינה נשמרת כחלק ממצב ההתקדמות."
+  },
+  "runtimeStatus": "integrated_into_unit_schema_api_and_local_progression; mobile_screen_and_device_verification_pending",
+  "laterCopyReview": {
+    "date": "2026-10-16",
+    "authorityHe": "כן, מתאים וברור.",
+    "scopeHe": "דור אישר את נוסחי הרמז והמשוב בטעות שהוצגו במלואם לצד התרחיש. סקירת הפעילות והעזר בנתוני היחידה סומנו approved. אישור זה אינו בדיקת מסך או מכשיר."
+  },
+  "nextStep": "Scenario flow and exact tile help/retry copy are accepted and integrated. Review content/drafts/unit1a-recall-summary.json next; preserve live technical delivery and the C01-before-C02 boundary."
+}

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "chapters": [
+    {
+      "chapterId": "C01",
+      "unitRevisions": {},
+      "checks": {
+        "contentCopy": {
+          "status": "pending",
+          "evidence": null
+        },
+        "naturalAudio": {
+          "status": "pending",
+          "evidence": null
+        },
+        "iphoneFlow": {
+          "status": "pending",
+          "evidence": null
+        },
+        "savedProgress": {
+          "status": "pending",
+          "evidence": null
+        },
+        "changedDetailTask": {
+          "status": "pending",
+          "evidence": null
+        }
+      },
+      "unitDigests": {}
+    },
+    {
+      "chapterId": "C02",
+      "unitRevisions": {},
+      "checks": {
+        "contentCopy": {
+          "status": "pending",
+          "evidence": null
+        },
+        "naturalAudio": {
+          "status": "pending",
+          "evidence": null
+        },
+        "iphoneFlow": {
+          "status": "pending",
+          "evidence": null
+        },
+        "savedProgress": {
+          "status": "pending",
+          "evidence": null
+        },
+        "changedDetailTask": {
+          "status": "pending",
+          "evidence": null
+        }
+      },
+      "unitDigests": {}
+    }
+  ]
+}

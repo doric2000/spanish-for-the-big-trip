@@ -1,0 +1,561 @@
+{
+  "schemaVersion": 2,
+  "id": "C01-U01",
+  "chapterId": "C01",
+  "aliases": [
+    "1A"
+  ],
+  "revision": 1,
+  "status": "draft",
+  "titleHe": "המפגש הראשון",
+  "goalHe": "להבין ברכת שלום בספרדית ולברך בחזרה במפגש קצר.",
+  "learnerLocale": "he-IL",
+  "targetLocale": "es-MX",
+  "requires": [],
+  "provides": [
+    "greeting",
+    "yes_no"
+  ],
+  "characters": [
+    {
+      "id": "juan",
+      "displayNameHe": "חואן",
+      "imageAssetId": "juan-reference-v1"
+    },
+    {
+      "id": "learner",
+      "displayNameHe": "אתם",
+      "imageAssetId": null
+    }
+  ],
+  "media": [
+    {
+      "id": "juan-reference-v1",
+      "kind": "image",
+      "status": "approved",
+      "path": "assets/characters/juan/juan-reference-v1.png",
+      "characterId": "juan",
+      "note": "Dor approved Juan v1; reuse this identity."
+    },
+    {
+      "id": "juan-hostel-v1",
+      "kind": "image",
+      "status": "approved",
+      "path": "assets/characters/juan/scenes/unit1a-entry-hostel-v1.png",
+      "characterId": "juan",
+      "note": "Existing approved first-scene reference; no new generation."
+    },
+    {
+      "id": "juan-hola-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Regeneration or full-dialogue recording and joint listening review remain pending; no historical audition promoted to final."
+    },
+    {
+      "id": "juan-buenos-dias-v1",
+      "kind": "audio",
+      "status": "approved",
+      "path": "assets/characters/juan/voice/unit1a-buenos-dias-audition-v4/buenos-dias.mp3",
+      "characterId": "juan",
+      "note": "Approved Buenos días v4, synthesis0.7 and playback1.0."
+    },
+    {
+      "id": "juan-gracias-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Regeneration or full-dialogue recording and joint listening review remain pending; no historical audition promoted to final."
+    },
+    {
+      "id": "juan-si-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Regeneration or full-dialogue recording and joint listening review remain pending; no historical audition promoted to final."
+    },
+    {
+      "id": "juan-no-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Regeneration or full-dialogue recording and joint listening review remain pending; no historical audition promoted to final."
+    },
+    {
+      "id": "dialogue-turn-1-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Regeneration or full-dialogue recording and joint listening review remain pending; no historical audition promoted to final."
+    },
+    {
+      "id": "dialogue-turn-2-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": null,
+      "note": "Regeneration or full-dialogue recording and joint listening review remain pending; no historical audition promoted to final."
+    }
+  ],
+  "activities": [
+    {
+      "id": "u1a-entry",
+      "type": "entry",
+      "review": {
+        "status": "approved",
+        "source": ".codex-review/unit1a-content.json#entry",
+        "note": "Exact title, body and primary action supplied by Dor."
+      },
+      "titleHe": "המפגש הראשון",
+      "bodyHe": "בוקר ראשון בהוסטל.\nמטייל אחר, חואן, פונה אליכם בספרדית. נלמד להבין מה הוא אומר ולענות בחזרה.",
+      "actionLabelHe": "בוא נתחיל!",
+      "sceneAssetId": "juan-hostel-v1",
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [],
+      "phase": "context"
+    },
+    {
+      "id": "u1a-vocab-hola",
+      "type": "vocabulary_card",
+      "review": {
+        "status": "approved",
+        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
+      },
+      "expressionEs": "Hola",
+      "meaningHe": "שלום",
+      "characterId": "juan",
+      "audioAssetId": "juan-hola-v1",
+      "required": true,
+      "helpIds": [],
+      "introduces": [
+        "lang-hola"
+      ],
+      "uses": [
+        "lang-hola"
+      ],
+      "phase": "preparation"
+    },
+    {
+      "id": "u1a-vocab-buenos-dias",
+      "type": "vocabulary_card",
+      "review": {
+        "status": "needs_review",
+        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
+      },
+      "expressionEs": "Buenos días",
+      "meaningHe": "בוקר טוב",
+      "characterId": "juan",
+      "audioAssetId": "juan-buenos-dias-v1",
+      "required": true,
+      "helpIds": [],
+      "introduces": [
+        "lang-buenos-dias"
+      ],
+      "uses": [
+        "lang-buenos-dias"
+      ],
+      "phase": "preparation"
+    },
+    {
+      "id": "u1a-vocab-gracias",
+      "type": "vocabulary_card",
+      "review": {
+        "status": "needs_review",
+        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
+      },
+      "expressionEs": "Gracias",
+      "meaningHe": "תודה",
+      "characterId": "juan",
+      "audioAssetId": "juan-gracias-v1",
+      "required": true,
+      "helpIds": [],
+      "introduces": [
+        "lang-gracias"
+      ],
+      "uses": [
+        "lang-gracias"
+      ],
+      "phase": "preparation"
+    },
+    {
+      "id": "u1a-vocab-si",
+      "type": "vocabulary_card",
+      "review": {
+        "status": "needs_review",
+        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
+      },
+      "expressionEs": "Sí",
+      "meaningHe": "כן",
+      "characterId": "juan",
+      "audioAssetId": "juan-si-v1",
+      "required": true,
+      "helpIds": [],
+      "introduces": [
+        "lang-si"
+      ],
+      "uses": [
+        "lang-si"
+      ],
+      "phase": "preparation"
+    },
+    {
+      "id": "u1a-vocab-no",
+      "type": "vocabulary_card",
+      "review": {
+        "status": "needs_review",
+        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
+      },
+      "expressionEs": "No",
+      "meaningHe": "לא",
+      "characterId": "juan",
+      "audioAssetId": "juan-no-v1",
+      "required": true,
+      "helpIds": [],
+      "introduces": [
+        "lang-no"
+      ],
+      "uses": [
+        "lang-no"
+      ],
+      "phase": "preparation"
+    },
+    {
+      "id": "u1a-primer-listen",
+      "type": "listen_select",
+      "review": {
+        "status": "needs_review",
+        "source": ".codex-review/unit1a-content.json#supported_comprehension_check",
+        "note": "Core question/choices accepted; exact feedback copy remains a draft."
+      },
+      "titleHe": "ננסה יחד",
+      "promptHe": "מה פירוש הביטוי ששמעתם?",
+      "expressionEs": "Hola.",
+      "audioAssetId": "juan-hola-v1",
+      "choices": [
+        {
+          "id": "hello",
+          "textHe": "שלום"
+        },
+        {
+          "id": "thanks",
+          "textHe": "תודה"
+        },
+        {
+          "id": "good-morning",
+          "textHe": "בוקר טוב"
+        }
+      ],
+      "correctChoiceId": "hello",
+      "feedback": {
+        "correctHe": "נכון! המשמעות של Hola היא שלום.",
+        "retryHe": "המשמעות של Hola היא שלום. הקשיבו שוב ונסו עוד פעם."
+      },
+      "allowWrittenHint": true,
+      "scored": false,
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-hola",
+        "lang-buenos-dias",
+        "lang-gracias"
+      ],
+      "phase": "preparation_check"
+    },
+    {
+      "id": "u1a-dialogue",
+      "type": "dialogue",
+      "review": {
+        "status": "approved",
+        "source": ".codex-review/unit1a-content.json#full_dialogue_review.approved_turns",
+        "note": "Two-turn script accepted by Dor; original four-turn source remains in review history."
+      },
+      "titleHe": "השיחה עם חואן",
+      "translationInitiallyVisible": false,
+      "turns": [
+        {
+          "id": "u1a-dialogue-turn-1",
+          "speakerId": "juan",
+          "textEs": "Hola. Buenos días.",
+          "translationHe": "שלום. בוקר טוב.",
+          "audioAssetId": "dialogue-turn-1-v1"
+        },
+        {
+          "id": "u1a-dialogue-turn-2",
+          "speakerId": "learner",
+          "textEs": "Hola. Buenos días.",
+          "translationHe": "שלום. בוקר טוב.",
+          "audioAssetId": "dialogue-turn-2-v1"
+        }
+      ],
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-hola",
+        "lang-buenos-dias"
+      ],
+      "phase": "dialogue"
+    },
+    {
+      "id": "u1a-practice-listen",
+      "type": "listen_select",
+      "review": {
+        "status": "needs_review",
+        "source": ".codex-review/unit1a-content.json#post_dialogue_practice_review.first_activity",
+        "note": "Core question and success feedback accepted; exact retry hint remains a draft."
+      },
+      "titleHe": "קצת תרגול",
+      "promptHe": "מה פירוש הביטוי ששמעתם?",
+      "expressionEs": "Buenos días.",
+      "audioAssetId": "juan-buenos-dias-v1",
+      "choices": [
+        {
+          "id": "good-morning",
+          "textHe": "בוקר טוב"
+        },
+        {
+          "id": "hello",
+          "textHe": "שלום"
+        },
+        {
+          "id": "thanks",
+          "textHe": "תודה"
+        }
+      ],
+      "correctChoiceId": "good-morning",
+      "feedback": {
+        "correctHe": "המשמעות של Buenos días היא בוקר טוב.",
+        "retryHe": "זה ביטוי שמשתמשים בו בבוקר. הקשיבו שוב ונסו עוד פעם."
+      },
+      "allowWrittenHint": true,
+      "scored": false,
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-hola",
+        "lang-buenos-dias",
+        "lang-gracias"
+      ],
+      "phase": "practice"
+    },
+    {
+      "id": "1a-speak-thanks",
+      "type": "speak_reveal",
+      "review": {
+        "status": "approved",
+        "source": ".codex-review/unit1a-content.json#speaking_context_review",
+        "note": "Dor approved the concrete dropped-hat/returned-hat scene and requested integration. Hebrew context carries the action; only prepared Gracias is produced. Content approval does not verify audio, recording or the app flow."
+      },
+      "promptHe": "הכובע שלכם נופל. חואן מרים אותו ומחזיר לכם.\nמה תגידו לו בספרדית?",
+      "modelTextEs": "Gracias.",
+      "audioAssetId": "juan-gracias-v1",
+      "alternativeHe": "לתרגל בקול בלי הקלטה",
+      "completion": "self_comparison",
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-gracias"
+      ],
+      "phase": "practice"
+    },
+    {
+      "id": "1a-arrange-greeting",
+      "type": "arrange",
+      "review": {
+        "status": "approved",
+        "source": ".codex-review/unit1a-content.json#arrange_greeting_review",
+        "note": "Dor accepted the prompt, tiles and behavior, then explicitly accepted the presented exact hint and retry copy. Content approval does not imply device verification or independent speaking."
+      },
+      "titleHe": "מברכים בחזרה",
+      "promptHe": "נזכרים במפגש הבוקר עם חואן. סדרו את המילים כדי לברך אותו בחזרה ב״בוקר טוב״.",
+      "tiles": [
+        { "id": "dias", "textEs": "días" },
+        { "id": "buenos", "textEs": "Buenos" }
+      ],
+      "expectedTileIds": ["buenos", "dias"],
+      "feedback": {
+        "correctHe": "המשמעות של Buenos días היא בוקר טוב.",
+        "retryHe": "ננסה שוב. היזכרו בסדר המילים של הברכה שלמדתם."
+      },
+      "required": true,
+      "helpIds": ["help-arrange-greeting"],
+      "introduces": [],
+      "uses": ["lang-buenos-dias"],
+      "phase": "practice"
+    },
+    {
+      "id": "1a-ending-scenario",
+      "type": "bounded_scenario",
+      "review": {
+        "status": "needs_review",
+        "source": ".codex-review/unit1a-content.json#ending_scenario_review",
+        "note": "Dor approved the greeting, meaningful yes/no seat-offer branches and thanks outcomes. Exact node-level corrective feedback and the added final answer choices remain drafts for full-flow copy review; audio/device verification is pending."
+      },
+      "titleHe": "פוגשים שוב את חואן",
+      "startNodeId": "greeting",
+      "changedDetail": true,
+      "nodes": [
+        {
+          "id": "greeting",
+          "contextHe": "בהמשך הבוקר אתם חוזרים לפינת הישיבה בהוסטל. חואן רואה אתכם ומברך.",
+          "promptHe": "איך תברכו אותו בחזרה?",
+          "textEs": "Hola.",
+          "translationHe": "שלום.",
+          "audioAssetId": "juan-hola-v1",
+          "terminal": false,
+          "choices": [
+            { "id": "hola", "textEs": "Hola.", "textHe": "שלום.", "outcome": "advance", "nextNodeId": "seat-offer", "feedbackHe": "ברכתם את חואן." },
+            { "id": "buenos-dias", "textEs": "Buenos días.", "textHe": "בוקר טוב.", "outcome": "advance", "nextNodeId": "seat-offer", "feedbackHe": "ברכתם את חואן." },
+            { "id": "gracias", "textEs": "Gracias.", "textHe": "תודה.", "outcome": "retry", "nextNodeId": null, "feedbackHe": "זו תודה. חואן רק בירך אתכם כרגע. נסו לבחור ברכת שלום." }
+          ]
+        },
+        {
+          "id": "seat-offer",
+          "contextHe": "חואן מצביע על כיסא פנוי לידו ומזמין אתכם לשבת בתנועת יד.",
+          "promptHe": "תרצו לשבת ליד חואן?",
+          "textEs": null,
+          "translationHe": null,
+          "audioAssetId": null,
+          "terminal": false,
+          "choices": [
+            { "id": "yes", "textEs": "Sí.", "textHe": "כן.", "outcome": "advance", "nextNodeId": "accepted-offer", "feedbackHe": "בחרתם לשבת ליד חואן." },
+            { "id": "no", "textEs": "No.", "textHe": "לא.", "outcome": "advance", "nextNodeId": "declined-offer", "feedbackHe": "בחרתם להמשיך בדרככם." }
+          ]
+        },
+        {
+          "id": "accepted-offer",
+          "contextHe": "חואן מקרב אליכם את הכיסא כדי שתוכלו לשבת.",
+          "promptHe": "מה תגידו לחואן על העזרה?",
+          "textEs": null,
+          "translationHe": null,
+          "audioAssetId": null,
+          "terminal": false,
+          "choices": [
+            { "id": "thanks", "textEs": "Gracias.", "textHe": "תודה.", "outcome": "advance", "nextNodeId": "seated-end", "feedbackHe": "הודיתם לחואן על העזרה." },
+            { "id": "hello", "textEs": "Hola.", "textHe": "שלום.", "outcome": "retry", "nextNodeId": null, "feedbackHe": "זו ברכת שלום. כדי להודות לחואן, בחרו בביטוי שלמדתם לתודה." }
+          ]
+        },
+        {
+          "id": "declined-offer",
+          "contextHe": "אתם מסמנים לחואן שאתם ממשיכים בדרככם.",
+          "promptHe": "איך תודו לחואן על ההצעה?",
+          "textEs": null,
+          "translationHe": null,
+          "audioAssetId": null,
+          "terminal": false,
+          "choices": [
+            { "id": "thanks", "textEs": "Gracias.", "textHe": "תודה.", "outcome": "advance", "nextNodeId": "continue-end", "feedbackHe": "הודיתם לחואן על ההצעה." },
+            { "id": "hello", "textEs": "Hola.", "textHe": "שלום.", "outcome": "retry", "nextNodeId": null, "feedbackHe": "זו ברכת שלום. כדי להודות לחואן, בחרו בביטוי שלמדתם לתודה." }
+          ]
+        },
+        {
+          "id": "seated-end",
+          "contextHe": "אמרתם תודה והתיישבתם ליד חואן.",
+          "textEs": null,
+          "translationHe": null,
+          "audioAssetId": null,
+          "terminal": true,
+          "choices": []
+        },
+        {
+          "id": "continue-end",
+          "contextHe": "הודיתם על ההצעה והמשכתם בדרככם.",
+          "textEs": null,
+          "translationHe": null,
+          "audioAssetId": null,
+          "terminal": true,
+          "choices": []
+        }
+      ],
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": ["lang-hola", "lang-buenos-dias", "lang-si", "lang-no", "lang-gracias"],
+      "phase": "scenario"
+    }
+  ],
+  "pendingStages": [
+    "Confirm exact copy of remaining vocabulary cards and retry feedback.",
+    "Review optional silent-h/vowel help for runtime representation.",
+    "Produce/review Gracias reference audio and verify the approved speaking activity with recording/self-comparison in the app; automated pronunciation assessment deferred.",
+    "Verify the approved word-tile interaction in the app: selection, editing, checking, hint and resume.",
+    "Review exact scenario feedback/remaining choices in the full flow; author recall/summary and verify both scenario branches on device.",
+    "Review learner goal and exact completion criteria; this draft is not a full publishable unit."
+  ],
+  "editorial": {
+    "source": ".codex-review/unit1a-content.json",
+    "note": "Initial authoring checkpoint. Pedagogical review metadata is never learner-facing. Course outlines in curriculum-plan.json do not count as approved runnable lessons. Draft unit preserves reviewed material and explicitly lists missing stages."
+  },
+  "languageItems": [
+    {
+      "id": "lang-hola",
+      "textEs": "Hola",
+      "meaningHe": "שלום"
+    },
+    {
+      "id": "lang-buenos-dias",
+      "textEs": "Buenos días",
+      "meaningHe": "בוקר טוב"
+    },
+    {
+      "id": "lang-gracias",
+      "textEs": "Gracias",
+      "meaningHe": "תודה"
+    },
+    {
+      "id": "lang-si",
+      "textEs": "Sí",
+      "meaningHe": "כן"
+    },
+    {
+      "id": "lang-no",
+      "textEs": "No",
+      "meaningHe": "לא"
+    }
+  ],
+  "preparedLanguage": {
+    "understand": [
+      "lang-hola",
+      "lang-buenos-dias",
+      "lang-gracias",
+      "lang-si",
+      "lang-no"
+    ],
+    "produce": [
+      "lang-gracias",
+      "lang-buenos-dias",
+      "lang-hola",
+      "lang-si",
+      "lang-no"
+    ]
+  },
+  "help": [
+    {
+      "id": "help-arrange-greeting",
+      "titleHe": "רמז",
+      "bodyHe": "הביטוי מתחיל ב־Buenos.",
+      "audioAssetId": null,
+      "review": {
+        "status": "approved",
+        "source": ".codex-review/unit1a-content.json#arrange_greeting_review",
+        "note": "Dor explicitly accepted the presented exact hint wording on2026-10-16; app behavior is not yet verified."
+      }
+    }
+  ],
+  "completionScenarioId": "1a-ending-scenario"
+}

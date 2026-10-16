@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "curriculumVersion": 4,
+  "productionOrder": [
+    "C01",
+    "C02"
+  ],
+  "chapters": [
+    {
+      "id": "C01",
+      "titleHe": "מפגש ראשון עם מטייל",
+      "unitIds": [
+        "C01-U01",
+        "C01-U02",
+        "C01-U03"
+      ]
+    },
+    {
+      "id": "C02",
+      "titleHe": "היכרות עם מטיילים",
+      "unitIds": [
+        "C02-U01",
+        "C02-U02",
+        "C02-U03",
+        "C02-U04"
+      ]
+    }
+  ],
+  "skillIds": [
+    "courtesy",
+    "greeting",
+    "name",
+    "origin",
+    "register",
+    "repair",
+    "repeat",
+    "ser_estar",
+    "ser_estar_intro",
+    "spelling",
+    "who_question",
+    "yes_no"
+  ]
+}

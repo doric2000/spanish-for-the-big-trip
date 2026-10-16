@@ -1,0 +1,65 @@
+{
+  "status": "awaiting_joint_content_review; not_runnable_lesson_data",
+  "unitId": "C01-U01",
+  "sequenceAfterActivityId": "1a-ending-scenario",
+  "goalHe": "לחזור על ההבחנה בין כן ללא ולברך בקול לפני סיכום היחידה, בלי להוסיף ספרדית חדשה.",
+  "reviewActivities": [
+    {
+      "proposedActivityId": "1a-review-si",
+      "type": "listen_select",
+      "phase": "review",
+      "titleHe": "חזרה קצרה",
+      "promptHe": "מה פירוש הביטוי ששמעתם?",
+      "expressionEs": "Sí.",
+      "audioAssetId": "juan-si-v1",
+      "choices": [
+        { "id": "no", "textHe": "לא" },
+        { "id": "yes", "textHe": "כן" },
+        { "id": "thanks", "textHe": "תודה" }
+      ],
+      "correctChoiceId": "yes",
+      "correctHe": "Sí פירושו כן.",
+      "retryHe": "Sí פירושו כן. הקשיבו שוב ונסו עוד פעם.",
+      "uses": ["lang-si", "lang-no", "lang-gracias"]
+    },
+    {
+      "proposedActivityId": "1a-review-no",
+      "type": "listen_select",
+      "phase": "review",
+      "promptHe": "מה פירוש הביטוי ששמעתם?",
+      "expressionEs": "No.",
+      "audioAssetId": "juan-no-v1",
+      "choices": [
+        { "id": "thanks", "textHe": "תודה" },
+        { "id": "yes", "textHe": "כן" },
+        { "id": "no", "textHe": "לא" }
+      ],
+      "correctChoiceId": "no",
+      "correctHe": "No פירושו לא.",
+      "retryHe": "No פירושו לא. הקשיבו שוב ונסו עוד פעם.",
+      "uses": ["lang-no", "lang-si", "lang-gracias"]
+    },
+    {
+      "proposedActivityId": "1a-review-greet",
+      "type": "speak_reveal",
+      "phase": "review",
+      "promptHe": "עוד מטייל פוגש אתכם בהוסטל באותו בוקר ואומר Hola. ברכו אותו בחזרה בספרדית.",
+      "modelTextEs": "Hola.",
+      "audioAssetId": "juan-hola-v1",
+      "alternativeHe": "לתרגל בקול בלי הקלטה",
+      "completion": "self_comparison",
+      "uses": ["lang-hola", "lang-buenos-dias"],
+      "reviewNoteHe": "גם Buenos días מתאים במפגש הבוקר. הדוגמה היא אפשרות אחת, ולא תשובה יחידה שנבדקת אוטומטית. מנסים לפני ההשוואה לדוגמה; אין ציון הגייה."
+    }
+  ],
+  "summaryProposal": {
+    "proposedActivityId": "1a-summary",
+    "type": "summary",
+    "phase": "summary",
+    "titleHe": "סיימתם את המפגש הראשון",
+    "bodyHe": "תרגלתם ברכה בחזרה, תשובה של כן או לא והבעת תודה.\nביחידה הבאה נלמד לבקש לשמוע שוב כשלא הבנו.",
+    "reviewNoteHe": "הסיכום מתאים גם למי שהסכים לשבת וגם למי שסירב. הוא מתאר מה תורגל, בלי לקבוע שליטה בשפה. לא מציגים טקסט על מסד, חוזה API או סטטוס פיתוח ללומד."
+  },
+  "mediaStatus": "Existing Hola/Si/No references remain pending audio production and joint listening review; no new voice generated.",
+  "nextStep": "Review these remaining learner stages with Dor before integration. Then review the full unit copy/flow and close outstanding preparation/help/media/device/progress gaps; do not label1A or C01 complete from local tests."
+}

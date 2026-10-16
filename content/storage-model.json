@@ -1,0 +1,198 @@
+{
+  "version": 2,
+  "status": "logical_design_for_joint_review_not_deployed",
+  "provider": "Supabase PostgreSQL + Auth + Storage",
+  "workflow": "../DEVELOPMENT_GUIDE.md",
+  "contentContract": "src/schema.ts (schemaVersion2)",
+  "entities": [
+    {
+      "name": "courses",
+      "key": [
+        "id"
+      ],
+      "purpose": "Course identity and display metadata; names/order are editable."
+    },
+    {
+      "name": "chapters",
+      "key": [
+        "id"
+      ],
+      "references": [
+        "course_id -> courses.id"
+      ],
+      "purpose": "Interaction-based chapter names and order from the active curriculum."
+    },
+    {
+      "name": "units",
+      "key": [
+        "id"
+      ],
+      "references": [
+        "chapter_id -> chapters.id"
+      ],
+      "purpose": "Stable identity, aliases and chapter/order metadata. Requirements and provided skills are authoritative in each immutable unit revision, not independently edited copies."
+    },
+    {
+      "name": "unit_revisions",
+      "key": [
+        "unit_id",
+        "revision"
+      ],
+      "references": [
+        "unit_id -> units.id"
+      ],
+      "purpose": "Validated authoring payload including answer keys and review metadata. Raw payload is never learner-readable. Published revisions and referenced assets are immutable.",
+      "fields": [
+        "unit_id:text",
+        "revision:positive integer",
+        "schema_version:integer",
+        "authoring_payload:JSONB",
+        "source_digest:SHA256",
+        "status:draft|published"
+      ]
+    },
+    {
+      "name": "media_assets",
+      "key": [
+        "id"
+      ],
+      "purpose": "Immutable versioned approved file identities and checksums. Runtime resolves protected HTTPS URLs; local paths never become runtime URLs.",
+      "fields": [
+        "id:text",
+        "kind:image|audio",
+        "storage_object_key:text",
+        "sha256:text",
+        "status:pending|approved"
+      ]
+    },
+    {
+      "name": "user_unit_progress",
+      "key": [
+        "user_id",
+        "unit_id",
+        "revision"
+      ],
+      "references": [
+        "user_id -> auth.users.id",
+        "(unit_id, revision) -> unit_revisions"
+      ],
+      "purpose": "Pinned revision and activity boundary, scenario position, assistance and evidence. Viewed, correct, correct_with_help, self_compared and scenario_completed are distinct; self_compared is not pronunciation correctness.",
+      "fields": [
+        "user_id:UUID",
+        "unit_id:text",
+        "revision:integer",
+        "current_activity_id:text|null",
+        "status:in_progress|completed",
+        "progress_version:nonnegative integer",
+        "scenario_node_id:text|null",
+        "used_help_for_current:boolean",
+        "completed_activity_evidence:JSONB",
+        "completed_at:timestamptz|null"
+      ]
+    },
+    {
+      "name": "activity_attempts",
+      "key": [
+        "user_id",
+        "request_id"
+      ],
+      "references": [
+        "user_id -> auth.users.id",
+        "(unit_id, revision) -> unit_revisions"
+      ],
+      "purpose": "Idempotency is scoped to the authenticated user across all units. Same request and fingerprint returns stored result; changed input conflicts. Never store auth tokens or learner audio here.",
+      "fields": [
+        "user_id:UUID",
+        "request_id:UUID",
+        "unit_id:text",
+        "revision:integer",
+        "activity_id:text",
+        "request_fingerprint:SHA256",
+        "response:JSONB",
+        "server_result:JSONB",
+        "created_at:timestamptz"
+      ]
+    },
+    {
+      "name": "chapter_releases",
+      "key": [
+        "id"
+      ],
+      "fields": [
+        "id:bigint identity",
+        "chapter_id:text",
+        "manifest_digest:SHA256 unique",
+        "status:staged|published",
+        "review_evidence:JSONB",
+        "published_at:timestamptz|null"
+      ],
+      "references": [
+        "chapter_id -> chapters.id"
+      ],
+      "purpose": "Immutable approved release snapshot with one active published release per chapter. Staging is invisible to learners."
+    },
+    {
+      "name": "chapter_release_units",
+      "key": [
+        "release_id",
+        "unit_id"
+      ],
+      "fields": [
+        "release_id:bigint",
+        "unit_id:text",
+        "revision:integer",
+        "position:integer",
+        "unit_digest:SHA256"
+      ],
+      "references": [
+        "release_id -> chapter_releases.id",
+        "(unit_id, revision) -> unit_revisions"
+      ],
+      "purpose": "Exact ordered membership of a complete chapter, pointing to the reviewed unit revisions and media digest."
+    }
+  ],
+  "access": {
+    "identity": "Google and Apple via Supabase Auth; no guest or anonymous learning.",
+    "content": "Authenticated read of published runtime projections; drafts and answer keys are not learner-readable.",
+    "progress": "Own SELECT uses TO authenticated plus auth.uid()=user_id. No anon/authenticated INSERT/UPDATE/DELETE on progress or attempts. Service-only RPC may submit validated attempts; a verified user identity is supplied by NestJS, never by the mobile body.",
+    "publish": "Only the trusted importer/server publishes approved content. Privileged keys never enter the mobile application.",
+    "storage": "Auth-protected approved lesson assets; persistent learner recording archives are not selected.",
+    "verification": "Policies, foreign keys, indexes and access tests still need implementation in stage04; this file grants no access.",
+    "raw_authoring": "No anon/authenticated SELECT of unit_revisions authoring_payload or raw release review evidence; runtime access goes through an allowlisted NestJS projection.",
+    "atomic_submission": "SECURITY INVOKER database function callable only by the trusted server role; revoke default PUBLIC/anon/authenticated EXECUTE. Service-role access can bypass RLS: the function and NestJS must explicitly enforce user ownership, state, revision, response membership and allowed transitions. Do not fix permissions by adding SECURITY DEFINER."
+  },
+  "revisionRules": {
+    "renaming": "Stable IDs survive title and chapter-order changes.",
+    "resume": "Resume uses the user's pinned published revision and stable activity ID. Published revisions referenced by progress are retained.",
+    "newStart": "New starts use the latest published revision; drafts are excluded.",
+    "completion": "Old completion records remain historical evidence; new revision mastery is not inferred.",
+    "publication": "Use the whole-chapter checker plus content/media digests and human evidence; only whole approved releases become readable.",
+    "skills": "Unlock based on own completed exact revisions and the skills declared there; never infer newly introduced skills from an old completion. Skill gating is separate from development order.",
+    "resume_boundary": "Restore activity and scenario node, not audio playback second or interrupted recording."
+  },
+  "implementationBoundary": "No cloud project, SQL migration, importer, API endpoint or user-data operation is created by this design. Read current Supabase docs and create versioned migrations during stage04.",
+  "constraints_and_indexes": [
+    "Primary/foreign keys as listed; revisions positive, progress_version nonnegative.",
+    "Unique (user_id, request_id) on attempts; unique (user_id, unit_id, revision) on progress.",
+    "Partial unique (user_id, unit_id) where status=in_progress; start serialized per user/unit to avoid duplicate active starts.",
+    "Index chapter_release_units(unit_id,revision) and units(chapter_id); progress primary-key prefix supports own-unit lookup. Add no JSONB index without a measured query.",
+    "Activity/node IDs live inside revision JSONB; the atomic write validates their membership and the allowed transition. A relational foreign key to an activity table is not claimed.",
+    "Published payloads/releases/media cannot be overwritten. Retain referenced revisions and files; rollback changes the active release pointer to a previous whole snapshot."
+  ],
+  "atomic_operations": {
+    "start": "In a short transaction serialize the user/unit, resume its active pinned revision; otherwise check skills from own completed exact revisions and choose the latest published accessible release. Repeated starts return the existing record; same completed revision returns completion.",
+    "submit": "Authenticate outside the transaction. Inside one transaction serialize the user/unit, look up (user_id,request_id) first, compare canonical request fingerprint, validate pinned revision/activity/node and expected progress_version, compute/validate the authoritative transition from immutable content, then insert attempt and update progress together. No HTTP/audio calls while holding a database lock.",
+    "publish": "Validate schema/skills/review/file checksums before staging; inside one transaction verify immutable identities, insert complete release membership and activate the whole release. Failure leaves the prior whole release active. Importer retry uses manifest_digest; never exposes staged units.",
+    "verification_boundary": "These are migration/API requirements for04/05. Local pure tests do not prove PostgreSQL atomicity, unique constraints, RLS, real JWT validation or parallel network behavior."
+  },
+  "privacy": {
+    "learner_audio": "Local transient recording/self-playback only; not in JSON, requests, attempt history or Storage. Microphone-free comparison available. Clear transient recording on exit/sign-out.",
+    "pending_request": "One current unacknowledged attempt, stored locally and scoped to user_id; no tokens/audio. Do not advance until server acknowledgement. Restore/retry with the same request_id. A different signed-in user cannot restore it. Clear local pending data on sign-out; acknowledged server progress remains authoritative."
+  },
+  "workflow_decisions": {
+    "development": "Finish planning, implementation and testing for all C01 before planning/implementing C02. Weekly launch target is both complete opening chapters.",
+    "learning": "Codex implements and explains; Dor reviews behavior and performs meaningful checks. Record execution and demonstrated understanding separately.",
+    "learning_log": "../../.codex-review/development-learning-log.json",
+    "new_services": "None created in03."
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "status": "approved_flow_integrated; historical_proposal; exact_new_feedback_pending",
+  "unitId": "C01-U01",
+  "proposedActivityId": "1a-ending-scenario",
+  "sequenceAfterActivityId": "1a-arrange-greeting",
+  "titleHe": "פוגשים שוב את חואן",
+  "goalHe": "לברך במפגש קצר, להגיב להצעה ולהודות, בעזרת הביטויים שהוכנו ביחידה.",
+  "settingHe": "בהמשך הבוקר אתם חוזרים לפינת הישיבה בהוסטל. חואן רואה אתכם.",
+  "sourceAndAdaptation": {
+    "source": "pilot-spec.json#modules[number=1].simulation",
+    "retainedHe": "מענה לברכה מוכרת ושימוש בביטויים שהוכנו לפני הסימולציה.",
+    "changedHe": "בקשת חזרה בספרדית שייכת ל-1B ואינה נדרשת כאן. תודה נאמרת אחרי הצעה או עזרה קונקרטית. הוספת בחירת כן/לא מאפשרת לתרגל את שני הביטויים בלי להציג סירוב כטעות."
+  },
+  "knownLanguageIds": ["lang-hola", "lang-buenos-dias", "lang-si", "lang-no", "lang-gracias"],
+  "changedKnownDetailHe": "חואן אומר הפעם Hola בלבד, לעומת Hola. Buenos días בשיחה שנלמדה. גם Hola וגם Buenos días הן תגובות מתאימות במפגש הבוקר.",
+  "presentationHe": "הפעולות מתוארות בעברית קצרה או מומחשות באיור. רק דיבור ספרדי מוכר מושמע. זו סימולציה נתמכת בבחירות, ואינה הוכחת שיחה עצמאית ללא עזרה.",
+  "startStepId": "greeting",
+  "steps": [
+    {
+      "id": "greeting",
+      "eventHe": "חואן רואה אתכם ומברך.",
+      "characterSpeechEs": "Hola.",
+      "promptHe": "איך תברכו אותו בחזרה?",
+      "replies": [
+        { "id": "hola", "textEs": "Hola.", "meaningHe": "שלום.", "outcome": "advance", "nextStepId": "seat-offer" },
+        { "id": "buenos-dias", "textEs": "Buenos días.", "meaningHe": "בוקר טוב.", "outcome": "advance", "nextStepId": "seat-offer" },
+        { "id": "gracias", "textEs": "Gracias.", "meaningHe": "תודה.", "outcome": "retry", "feedbackHe": "זו תודה. חואן רק בירך אתכם כרגע. נסו לבחור ברכת שלום." }
+      ]
+    },
+    {
+      "id": "seat-offer",
+      "eventHe": "חואן מצביע על כיסא פנוי לידו ומזמין אתכם לשבת בתנועת יד.",
+      "characterSpeechEs": null,
+      "promptHe": "תרצו לשבת ליד חואן?",
+      "replies": [
+        { "id": "yes", "textEs": "Sí.", "meaningHe": "כן.", "outcome": "advance", "nextStepId": "accepted-offer" },
+        { "id": "no", "textEs": "No.", "meaningHe": "לא.", "outcome": "advance", "nextStepId": "declined-offer" }
+      ],
+      "reviewNoteHe": "שתי הבחירות מתאימות. זו העדפה של הלומד, ולא מבחן שיש בו תשובה אחת נכונה."
+    },
+    {
+      "id": "accepted-offer",
+      "eventHe": "חואן מקרב אליכם את הכיסא כדי שתוכלו לשבת.",
+      "characterSpeechEs": null,
+      "promptHe": "מה תגידו לחואן על העזרה?",
+      "targetReplyEs": "Gracias.",
+      "outcomeHe": "אמרתם תודה והתיישבתם ליד חואן.",
+      "terminalAfterReply": true
+    },
+    {
+      "id": "declined-offer",
+      "eventHe": "אתם מסמנים לחואן שאתם ממשיכים בדרככם.",
+      "characterSpeechEs": null,
+      "promptHe": "איך תודו לחואן על ההצעה?",
+      "targetReplyEs": "Gracias.",
+      "outcomeHe": "הודיתם על ההצעה והמשכתם בדרככם.",
+      "terminalAfterReply": true
+    }
+  ],
+  "reviewGaps": [
+    "Review exact Hebrew wording, Spanish replies and the realism of the offer/response sequence with Dor.",
+    "Choose the learner response mode and prepare the remaining answer options before runtime integration.",
+    "Existing bounded_scenario contract requires speech at every node. Nonverbal event context needs a small reviewed contract adaptation rather than fabricated Spanish speech or inaccurate translations.",
+    "No images or new audio were produced; existing final media reviews remain pending."
+  ],
+  "integrationReview": {
+    "date": "2026-10-16",
+    "authorityHe": "כן, מתאים וברור.",
+    "contextHe": "תשובה להצגת מפגש הבוקר עם Hola, שתי הברכות המתאימות, הצעת הכיסא, בחירת Sí או No ושני סיומי התודה; באותה הצגה נכללו גם נוסחי רמז האריחים והמשוב בטעות.",
+    "approvedScopeHe": "האירוע, שתי הבחירות התקינות והסיומים אושרו. בחירות ומשוב מפורטים שנוספו בעת הייצוג בנתונים מסומנים להמשך סקירת המלל בתוך הזרימה.",
+    "canonicalSource": "content/units/unit1a.json#activities[id=1a-ending-scenario]",
+    "implementationHe": "נוספו הקשר ושאלת פעולה בעברית. ברכה בספרדית כוללת טקסט, תרגום ושמע יחד; בפעולה ללא דיבור שלושתם null. אין שמע מומצא לפעולות או אישור לאודיו שטרם נבדק.",
+    "historyPolicy": "The earlier steps and reviewGaps are retained as proposal history. Future runtime edits belong in the canonical unit; current gaps are in unit1a-content.json and content/README.md."
+  },
+  "nextStep": "Review content/drafts/unit1a-recall-summary.json. Review exact new scenario feedback/choices in the full learner flow before publication. Complete C01 before C02 and preserve the independent live delivery checkpoint."
+}

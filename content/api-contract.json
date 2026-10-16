@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "status": "stage03_local_contract_not_running_API",
+  "workflow": "../DEVELOPMENT_GUIDE.md",
+  "authentication": "All routes require a verified Supabase Google/Apple session; no guest/anonymous path. NestJS derives userId from verified claims. Mobile JSON must not select userId or correctness.",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/v1/course",
+      "returns": "Only published whole chapters; unit title/goal, prerequisites and unlocked/locked/completed status derived from own exact-revision completion. No writes."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/units/:unitId",
+      "returns": "PublicUnit allowlist from pinned active revision, otherwise latest published accessible revision. GET never starts or updates progress. Scenario projection exposes only current/start node, no branch destinations or correctness."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/units/:unitId/start",
+      "body": {},
+      "returns": "Own active pinned Progress, existing completion for the same latest revision, or a newly started latest revision after prerequisites. Transaction/uniqueness makes retries idempotent."
+    },
+    {
+      "method": "GET",
+      "path": "/v1/me/progress/:unitId",
+      "returns": "Own Progress, or null when no progress exists. Unknown/inaccessible unit is404. No writes."
+    },
+    {
+      "method": "POST",
+      "path": "/v1/units/:unitId/attempts",
+      "body_type": "AttemptRequestSchema in src/api-contract.ts",
+      "returns": "AttemptResult from src/progress.ts; meaningful feedback plus authoritative Progress. HTTP200 for valid submissions/replays, including retry feedback for incorrect answers."
+    }
+  ],
+  "attempt_response_kinds": {
+    "continue": "View acknowledgement for entry/vocabulary/explanation/dialogue/summary, not proof of comprehension.",
+    "choice": "Listen-select choiceId; server decides correctness.",
+    "arrange": "Ordered tileIds containing each available tile exactly once. Missing, duplicate or unknown IDs return400; wrong order stays in place and marks corrective assistance. Answer order and feedback remain private until submission. Pre-submit editing/shuffling is local UI state, not an attempt.",
+    "scenario_choice": "Current nodeId and choiceId; server decides next node or retry.",
+    "self_comparison": "compared=true and mode=recording|without_microphone; no pronunciation judgment.",
+    "written_hint": "Allowed written expression; stays in place and marks assistance.",
+    "help": "Allowed helpId; stays in place and marks assistance.",
+    "skip": "Only non-required activities; cannot bypass mandatory content."
+  },
+  "errors": {
+    "400": "Malformed body, unsupported response kind for activity, unknown activity/choice/help, or skipping required activity.",
+    "401": "Missing, invalid, expired or unsupported login session. Refresh/re-authenticate securely, then retry original pending attempt.",
+    "404": "Unavailable unit, unmet prerequisites or progress not owned by verified user; do not disclose another user.",
+    "409": "Pinned revision/current activity/node/progress version changed, or same requestId with different canonical body. Reload authoritative progress before asking for a new response.",
+    "503": "Transient server/data-provider failure; retain pending request and do not advance."
+  },
+  "idempotency": {
+    "scope": "userId + requestId across all units",
+    "fingerprint": "SHA256 of canonical JSON including path unitId and validated full request body, excluding tokens. Object key order does not change fingerprint.",
+    "replay": "Look up existing request before checking old expectedProgressVersion; return the originally stored result without advancing. Client must not regress to an older response snapshot: retain the higher progressVersion for the same revision or reload GET progress.",
+    "atomicity": "Attempt insertion and progress update occur together. A different requestId with stale progress version conflicts, even if it contains a correct answer.",
+    "local_reference": "applyAttempt is pure and checks these rules locally. It is not a database, concurrent server or authentication system."
+  },
+  "network": {
+    "policy": "Wait for save acknowledgement; replay/reading remain available but no next activity.",
+    "pending_shape": "PendingSubmissionSchema: userId, unitId, request; no token/audio/keys. The05 mobile storage adapter is not implemented in03.",
+    "restart": "Restore only for the same authenticated user, resend unchanged requestId/body, then apply authoritative progress. On explicit sign-out clear pending data.",
+    "conflict": "Reload progress and discard/reconcile obsolete pending request; never change its body while preserving requestId."
+  },
+  "example": {
+    "notice": "Synthetic contract example for the real reviewed Hola question. Unit1A remains unpublished. No real request or save occurred.",
+    "path": "/v1/units/C01-U01/attempts",
+    "request": {
+      "requestId": "00000000-0000-4000-8000-000000000003",
+      "revision": 1,
+      "activityId": "u1a-primer-listen",
+      "expectedProgressVersion": 6,
+      "response": {
+        "kind": "choice",
+        "choiceId": "hello"
+      }
+    },
+    "expected_decision": {
+      "outcome": "correct",
+      "nextActivityId": "u1a-dialogue",
+      "nextProgressVersion": 7
+    },
+    "phone_to_server": "Send pending attempt with securely managed Bearer session.",
+    "server_to_database": "Verify identity and immutable content; execute short atomic validation/save operation.",
+    "database_to_phone": "Commit attempt and progress together, then return feedback/current position. Lost HTTP response is resolved by same requestId replay."
+  },
+  "future_acceptance_tests_04_05": [
+    "Real JWT validation including expiry, anonymous and invalid issuer rejection.",
+    "Google and Apple paths/cancellation on owned iPhone build.",
+    "Direct anon/authenticated writes and raw answer-key reads denied; own reads allowed, other-user reads denied.",
+    "Service RPC EXECUTE grants and explicit ownership checks verified, including service-role RLS bypass behavior.",
+    "Parallel duplicate submissions and distinct stale submissions cannot double-advance.",
+    "Injected database failure rolls back both attempt and progress.",
+    "Concurrent starts create one active progress record; pinned revisions remain loadable.",
+    "Publish/import failure never exposes a partial chapter; prior whole release remains active.",
+    "Actual app restart after response loss restores and retries the same pending attempt; sign-out cannot expose another user's queue."
+  ],
+  "limits": "No routes, JWT guard, migrations, durable queue, cloud data, mobile UI, native build, media production or pronunciation assessment implemented by these local contracts.",
+  "scenario_node_representation": {
+    "contextHe": "Visible Hebrew event/action context; separate from speech translation.",
+    "promptHe": "Learner action prompt. Required for nonterminal nonverbal choice nodes.",
+    "speech": "textEs, translationHe and audioAssetId are either all present or all null. Nonverbal nodes require contextHe. Existing spoken-only nodes remain valid.",
+    "playback": "Play only non-null audioAssetId. A gesture or outcome does not fabricate Spanish speech or require a recording.",
+    "projection": "Only the requested current node and its choices are public; branch destinations, outcomes, feedback and reviews remain private.",
+    "progression": "Both accepted and declined seat preferences advance. Resume preserves scenarioNodeId and usedHelpForCurrent. Completion reveals the final context before moving to recap; it does not skip review/summary."
+  }
+}

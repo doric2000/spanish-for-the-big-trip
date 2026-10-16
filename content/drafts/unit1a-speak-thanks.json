@@ -1,0 +1,47 @@
+{
+  "status": "approved_scene_incorporated; historical_draft_record",
+  "unitId": "C01-U01",
+  "proposedActivityId": "1a-speak-thanks",
+  "goalHe": "להפיק תודה מוכרת לפי המשמעות לפני הצגת הדוגמה.",
+  "preparedExpressionEs": "Gracias",
+  "learnerCopy": {
+    "titleHe": "אומרים תודה",
+    "promptHe": "חואן מחזיר לכם את הכובע שנפל. מה תגידו לו בספרדית?",
+    "recordActionHe": "הקלטה",
+    "helpActionHe": "עזרה",
+    "afterRecordingHe": "הקשיבו להקלטה שלכם ולדוגמה. אפשר לנסות שוב.",
+    "retryActionHe": "להקליט שוב",
+    "continueActionHe": "להמשיך",
+    "withoutMicrophoneHe": "לתרגל בקול בלי הקלטה"
+  },
+  "referenceEs": "Gracias.",
+  "sceneProposal": {
+    "status": "approved_content; hebrew_context_integrated; visual_not_produced",
+    "settingHe": "מפגש קצר עם חואן בהוסטל.",
+    "eventHe": "הכובע נופל לכם. חואן מרים אותו ומחזיר לכם אותו.",
+    "learnerNeedHe": "להודות לחואן על העזרה שקיבלתם.",
+    "outcomeHe": "קיבלתם את הכובע בחזרה ואמרתם לחואן תודה.",
+    "presentationHe": "הפעולה תוצג באיור מתאים או בתיאור עברי קצר וקונקרטי לפני התגובה. אין כרגע מדיה שממחישה את האירוע; לא מסתפקים בכיתוב הכללי שחואן עזר.",
+    "languageBoundaryHe": "הלומד נדרש לומר רק Gracias שכבר הוכן. אין צורך ללמד בספרדית כובע, נפל או להחזיר לצורך התרגיל הזה.",
+    "reuseHe": "משתמשים בתבנית הדיבור המשותפת; דוגמת תוכן חדשה אינה מחייבת מסך Figma נוסף."
+  },
+  "jointReview": {
+    "date": "2026-10-16",
+    "authorityHe": "כן , אבל כללי מדי , כי כל יחידה בפרק צריכה להיות כמו מקרה מציאותי . אז צריך להראות שחואן באמת עזר לנו , אם אין לנו מספיק מילים כרגע זה מקובל אבל בהמשך זה יצטרך להיות כך.",
+    "acceptedScopeHe": "כיוון תרגיל התודה הפשוט מקובל ליחידת הפתיחה, בכפוף להקשר מציאותי ולמגבלת אוצר המילים. בכל יחידה צריך להיות ברור מה קרה ולמה מגיבים.",
+    "previousPromptHe": "חואן עזר לכם. איך תודו לו בספרדית?",
+    "pendingHe": "אירוע הכובע והנוסח החדש הם הצעת Codex בעקבות ההערה. טרם נסקרו במשותף או נבדקו בתוך הזרימה."
+  },
+  "referencePolicy": "Reveal after first attempt or explicit help; no automatic pass/fail. Mark help separately from an unassisted attempt.",
+  "integrationReview": {
+    "date": "2026-10-16",
+    "authorityHe": "כן, התרחיש הזה מתאים וברור יותר. בוא נשלב אותו ביחידה 1A ונמשיך לחלק הבא שלה לפי הסדר.",
+    "scopeHe": "אירוע הכובע ותגובת Gracias אושרו לשילוב. בקובץ היחידה שולבו תיאור האירוע בעברית והשאלה מה תגידו לחואן. אין אישור משתמע לשמע, למדיה חדשה או ליחידה מלאה.",
+    "canonicalSource": "content/units/unit1a.json#activities[id=1a-speak-thanks]",
+    "recordPolicy": "Earlier proposal and conditional review are historical evidence. Edit the unit source, not this draft, for future runnable lesson changes. Generic labels here are earlier UI proposals."
+  },
+  "audioStatus": "pending_review_and_production",
+  "privacy": "Proposed local temporary recording and replay; no cloud pronunciation processing or persistent audio archive in initial release.",
+  "runtimeStatus": "integrated_into_unit_data_using_existing_speak_reveal_contract; mobile_screen_recording_and_audio_verification_pending",
+  "nextStep": "Review content/drafts/unit1a-arrange-greeting.json as the next small content checkpoint. Preserve the separate stage03 explanation checkpoint in work-plan.json#delivery."
+}
