@@ -2948,6 +2948,37 @@
         "Build the shared React Native lesson components from the templates (play icons point right; dialogue tail next to the avatar)"
       ],
       "next_step": "Build the lesson components from the Figma templates."
+    },
+    {
+      "id": "stage04-account-deletion-2026-10-17",
+      "stage_id": "04",
+      "goal": "In-app account deletion (App Store guideline 5.1.1(v)) with a retro account screen, and the retro sign-in and map recorded in Figma.",
+      "practical_owner": "Claude drew the retro sign-in, map and account designs in Figma, wrote the delete_my_account migration and its SQL check, the deletion flow with tests, and the retro account screen. Dor approved the designs (asked for a lower, larger, centred retry button and caught that the passport stamp must not appear on error), approved the deletion error copy, applied the migration, ran the SQL check and tested deletion on his iPhone with both Google and Apple, then signed in again.",
+      "practical_action": "Postgres function public.delete_my_account(): security definer, empty search_path, no arguments, deletes auth.users where id = auth.uid(); progress cascades; execute granted only to authenticated. App: deleteAccount() with injected dependencies (server first; only after success revoke Google access and sign out locally; one-shot 'החשבון נמחק.' on sign-in). Account screen redesigned as a traveler's passport; the stamp shows only for real saved progress.",
+      "evidence": [
+        "Figma: retro sign-in 98:1084 (+ Deleted 104:658), map 100:533, poster 99:392, stamp 99:399, account 104:657; approved by Dor",
+        "Dor-reported: db push dry-run listed only 20261017080000_create_delete_my_account.sql; apply succeeded; supabase/checks/05_delete_my_account.sql returned PASS",
+        "Dor-reported on iPhone: account screen, sign-out and deletion work for Google and Apple; signing in again creates a new empty user",
+        "Local: mobile tests 31/31 (deletion order, failure keeps the user signed in, one-shot confirmation, stamp rule), typecheck clean; lint not configured",
+        "A red-screen report after reload ('RNGoogleSignin could not be found') came from a second client without the native module (Expo Go) connected to the same Metro; the development build was fine"
+      ],
+      "concepts": [
+        "Why deletion runs on the server: the app never holds the service-role key",
+        "security definer functions: run with the owner's rights, so pin search_path and take the user id only from the verified token",
+        "Cascade deletes keep dependent data consistent",
+        "Order of side effects: delete first, clean up locally only after success",
+        "Native modules exist only in builds that compiled them; every client connected to Metro reloads on r",
+        "Decorative elements on data screens must still be true (the stamp)"
+      ],
+      "dor_participation": "Design decisions and review, copy approval, migration preview and apply, SQL check, device test.",
+      "understanding_demonstrated": "Not checked yet in this step.",
+      "interview_takeaway": "Explain how a learner can delete their account without the app ever holding an admin key: a narrowly scoped security definer function keyed to auth.uid(), cascades, and a client flow that only cleans up after the server confirms.",
+      "open_questions": [
+        "Revoke the Sign in with Apple token on deletion (needs the .p8 key on a server) before any public release",
+        "Privacy policy and Privacy Manifest before TestFlight",
+        "Google consent screen is still in Testing"
+      ],
+      "next_step": "Housekeeping (ESLint, npm audit review), then the stage 04 handoff."
     }
   ],
   "entry_template": {

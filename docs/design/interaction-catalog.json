@@ -191,7 +191,9 @@
         "retro_sign_in_component_set": "98:1084 (Default 98:360, Busy Apple 98:480, Busy Google 98:600, Canceled 98:720, Error 98:841, Unavailable 98:963)",
         "retro_map_component_set": "100:533 (Default 100:360, Sheet unit 100:435, Sheet locked chapter 100:482)",
         "chapter_poster_component_set": "99:392 (Scene 99:360, Illustration 99:365)",
-        "unit_stamp_component_set": "99:399 (Current 99:393, Next 99:396)"
+        "unit_stamp_component_set": "99:399 (Current 99:393, Next 99:396)",
+        "retro_account_component_set": "104:657 (Default 103:468, Loading 104:468, Error 104:502, Deleting 104:538, Confirm sign-out 104:571, Confirm delete 104:614)",
+        "retro_sign_in_deleted_variant": "104:658"
       },
       "states": {
         "sign_in": [
@@ -200,12 +202,14 @@
           "Busy Google",
           "Canceled",
           "Error",
-          "Unavailable"
+          "Unavailable",
+          "Deleted"
         ],
         "account": [
           "Default",
           "Loading",
-          "Error"
+          "Error",
+          "Deleting"
         ],
         "sign_out": [
           "system confirmation"
@@ -213,6 +217,10 @@
         "google_button": [
           "Default",
           "Busy"
+        ],
+        "account_confirmations": [
+          "Confirm sign-out",
+          "Confirm delete"
         ]
       },
       "logo": "Direction D1 (Hebrew ס with the ñ tilde drawn as a flight path ending in a sun) chosen by Dor after rejecting rounds 1 and 2; mark exported as mobile/assets/logo/logo-d1-mark.png. App icon (mobile/assets/brand/app-icon-d1.png, 1024, no alpha) and splash mark (mobile/assets/brand/splash-mark-d1.png, width 320 on #21655B) exported from section 68:320.",
@@ -220,7 +228,8 @@
       "next_action": "Reuse these templates for any other system screen; account deletion screen still needs a design before it is built.",
       "google_button": "Google branding light theme: #FFFFFF fill, #747775 1px border, #1F1F1F label, standard 4-colour G (mobile/assets/auth/google-g.png); Heebo Medium as the Hebrew extension of Roboto; same size as the Apple button and placed below it.",
       "apple_button": "Custom button in code (chosen by Dor after the native one read Spanish on his Spanish-language iPhone): black, Apple logo glyph U+F8FF, system font semibold as Apple requires for custom buttons (Figma 57:243 shows Heebo), label המשך עם Apple, same size as Google.",
-      "retro_redesign": "2026-10-16: Dor replaced the sign-in and home screens with the retro direction, chosen in the Claude Design prototype https://claude.ai/artifact/FRvuaNEHobP1aniAkvavaY (sign-in = artboard SignInAB, map = MapA). Implemented in mobile/src/auth/boarding-pass.tsx, mobile/src/auth/sign-in-screen.tsx and mobile/src/map/. Drawn in Figma on page 57:236 with the Retro variables (VariableCollectionId:76:360) and text styles; approved by Dor in Figma on 2026-10-16 (\"מאשר\"). The cream set 57:302 is marked superseded."
+      "retro_redesign": "2026-10-16: Dor replaced the sign-in and home screens with the retro direction, chosen in the Claude Design prototype https://claude.ai/artifact/FRvuaNEHobP1aniAkvavaY (sign-in = artboard SignInAB, map = MapA). Implemented in mobile/src/auth/boarding-pass.tsx, mobile/src/auth/sign-in-screen.tsx and mobile/src/map/. Drawn in Figma on page 57:236 with the Retro variables (VariableCollectionId:76:360) and text styles; approved by Dor in Figma on 2026-10-16 (\"מאשר\"). The cream set 57:302 is marked superseded.",
+      "account_retro": "2026-10-17: account screen redesigned as a traveler's passport and approved by Dor; the passport stamp appears only for real saved progress (not while loading, on error, or with none). Deletion failure alert copy approved: 'לא הצלחנו למחוק את החשבון' / 'בדקו את החיבור לאינטרנט ונסו שוב.'. The cream account designs 58:323, 58:324 and 73:345 are marked superseded. Runtime: mobile/src/auth/account-screen.tsx, delete-account.ts."
     },
     {
       "type": "retro_lesson_templates",

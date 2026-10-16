@@ -615,5 +615,13 @@
     "native_packages_ahead_of_need": "To avoid extra development builds Dor chose to install react-native-svg, expo-splash-screen, expo-haptics, expo-network and expo-image before the second build. Only expo-splash-screen is used now; the others stay unused until a screen needs them (setting aside the one-dependency-group-at-a-time rule for this build only).",
     "apple_button": "Custom Hebrew Apple button instead of the native one (Dor, 2026-10-16): the native label follows the device language and read Spanish on Dor's Spanish-language iPhone. Follows Apple's custom-button rules: black, Apple logo, system font, 'Continue with Apple' in Hebrew. Sign-in still uses expo-apple-authentication signInAsync with the SHA-256 nonce.",
     "app_icon_and_splash": "Logo D1 on the green background as the app icon (1024, no alpha) and the transparent D1 mark at width 320 on #21655B as the splash, approved in Figma section 68:320."
+  },
+  "account_deletion": {
+    "decided_on": "2026-10-16/17",
+    "authority": "Dor chose the options in the stage04 session and approved the account design and copy",
+    "mechanism": "Postgres function public.delete_my_account() (security definer, empty search_path, no arguments, deletes only auth.uid(); progress cascades; execute for authenticated only). No Edge Function and no NestJS endpoint for this; the app never holds the service-role key.",
+    "apple_token_revocation": "Release gate before any public release: revoke the Sign in with Apple token on deletion through Apple's REST API with the .p8 key on a server (planned with the API in stage 05). Apple says apps 'should' do this.",
+    "google": "The app revokes its own Google access (GoogleSignin.revokeAccess) after a successful server deletion; best effort.",
+    "ux": "Underlined delete link under sign-out, native destructive confirmation, 'מוחקים את החשבון…' while deleting, one-shot 'החשבון נמחק.' on sign-in; on failure the learner stays signed in and sees 'לא הצלחנו למחוק את החשבון' / 'בדקו את החיבור לאינטרנט ונסו שוב.'."
   }
 }
