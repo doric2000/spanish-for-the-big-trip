@@ -124,9 +124,12 @@ begin
   exception when check_violation then null;
   end;
 
+  -- Use a completed row: learner B already has an active row, and the
+  -- one-active unique index is checked before the foreign key.
   begin
-    insert into public.user_unit_progress (user_id, unit_id, revision, current_activity_id)
-      values (user_b, fixture_unit, 9, '1a-entry');
+    insert into public.user_unit_progress
+      (user_id, unit_id, revision, status, current_activity_id, completed_at)
+      values (user_b, fixture_unit, 9, 'completed', null, now());
     raise exception 'Expected progress for a missing revision to be rejected';
   exception when foreign_key_violation then null;
   end;
