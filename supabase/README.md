@@ -71,3 +71,28 @@ npx.cmd --no-install supabase db push --linked --skip-vault
 בתהליך ה־preview/apply המוכר צפוי רק `20261016091112_create_unit_revisions.sql`. אחרי החלה מוצלחת, `checks/03_unit_revisions.sql` רץ במלואו ב־SQL Editor. הוא יוצר נתונים סינתטיים תחת `service_role`, בודק עריכת/מחיקת טיוטה, מעבר מצב, שמירת שתי גרסאות ודחיית שינוי/החזרה לטיוטה/מחיקה של גרסה שפורסמה. נבדקים גם קשר ליחידה קיימת, תקינות מטא־הנתונים, הרשאות העזר וחסימת קריאת תוכן גולמי ב־`anon`/`authenticated`. ה־JSON המינימלי וטביעות הבדיקה הם fixtures בלבד, אינם שיעור תקין או ראיית פרסום, וכל הפעולות מבוטלות ב־ROLLBACK.
 
 התוצאה הצפויה היא `PASS: revision metadata, draft lifecycle, published immutability and role access; synthetic rows rolled back`. הרצת SQL כזו אינה מאמתת עדיין מסלול כניסה, פרסום פרק, הצמדת התקדמות לגרסה או API. אין להריץ את הבדיקה לפני החלת המיגרציה; רישום הצלחה ממתין לתוצאה של דור.
+
+## התוספת הרביעית: התקדמות הלומד
+
+`migrations/20261016113506_create_user_unit_progress.sql` מוסיף את `user_unit_progress` לפי `../content/storage-model.json`. כל שורה מתארת איפה לומד מסוים נמצא ביחידה, **בגרסה מסוימת**. המפתח הוא `(user_id, unit_id, revision)`, והמפתח הזר `(unit_id, revision)` מצמיד את ההתקדמות לגרסה מדויקת ב־`unit_revisions`. זה היישום של העיקרון שדור הסביר: לומד שהתחיל את גרסה 1 ממשיך בה גם אחרי שגרסה 2 פורסמה.
+
+| כלל | איך הוא נאכף |
+| --- | --- |
+| ניסיון פעיל אחד לכל לומד ויחידה | אינדקס ייחודי חלקי על `(user_id, unit_id)` כאשר `status = 'in_progress'`. גרסאות שהושלמו נשארות כהיסטוריה |
+| מצב עקבי | בתהליך: יש פעילות נוכחית ואין זמן סיום. הושלם: יש זמן סיום, ואין פעילות או צומת תרחיש |
+| מחיקת חשבון מוחקת את ההתקדמות | `on delete cascade` מ־`auth.users`. זה תנאי של Apple (סעיף 5.1.1(v)) |
+| לומד קורא רק את השורות שלו | RLS עם מדיניות `(select auth.uid()) = user_id` לתפקיד `authenticated` |
+| לומד לא כותב ישירות | ל־`authenticated` יש רק `SELECT`. כתיבה עוברת דרך השרת (`service_role`), שבודק כל מעבר מול תוכן הגרסה |
+
+`progress_version` הוא מונה לבקרת עדכונים מקבילים (optimistic concurrency): בקשה חייבת לציין את הגרסה שקראה, ולכן שליחה כפולה או ישנה נדחית. השרת והפונקציה האטומית שיבצעו את זה שייכים לשלב 05. בצעד הזה אין עדיין טבלת `activity_attempts`.
+
+מחילים באותו תהליך CLI: קודם dry-run, שבו צפוי רק `20261016113506_create_user_unit_progress.sql`, ואחר כך ההחלה. אחרי החלה מוצלחת מריצים את `checks/04_user_unit_progress.sql` **במלואו** ב־SQL Editor. הבדיקה יוצרת שני משתמשים סינתטיים ב־`auth.users` ותוכן סינתטי, ובודקת:
+- אילוצים
+- שלומד א' רואה רק את השורות שלו ולומד ב' רק את שלו
+- שבקשה בלי מזהה משתמש לא רואה כלום, וש־`anon` חסום
+- שכתיבה ישירה של לומד נכשלת
+- שמחיקת חשבון א' מוחקת רק את ההתקדמות שלו
+
+הכול מבוטל ב־ROLLBACK.
+
+התוצאה הצפויה היא `PASS: progress constraints, own-row reading, blocked learner writes and account-deletion cascade; synthetic rows rolled back`. הבדיקה מדמה זהות בעזרת `request.jwt.claims` בתוך SQL. היא לא מוכיחה עדיין כניסה אמיתית עם Google או Apple, אימות JWT בשרת או זרימה באייפון.

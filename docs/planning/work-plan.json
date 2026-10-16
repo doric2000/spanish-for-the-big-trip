@@ -239,8 +239,8 @@
         "03"
       ],
       "goal": "Implement reviewed SQL and identity/access rules in a development environment.",
-      "status": "unit_revisions_verified_learning_checkpoint",
-      "current_next_action": "Dor supplied the exact expected revision SQL PASS. Briefly connect stable unit identity and numbered revisions to1A: ask why revision1 should remain when a learner has started it and revision2 changes an activity. Wait for his explanation before the next small storage-model increment; do not repeat the passed SQL check.",
+      "status": "user_unit_progress_written_awaiting_dor_apply",
+      "current_next_action": "user_unit_progress migration (20261016113506) and checks/04_user_unit_progress.sql written by Claude: own-row RLS SELECT, server-only writes, one active attempt per user/unit, account-deletion cascade. Dor runs the dry-run (expect only this file), applies it, then runs the whole check in SQL Editor and reports the result. Revision-pinning own-words checkpoint closed 2026-10-16.",
       "organization_setup": {
         "observed_on": "2026-10-16",
         "evidence": "Dor's screenshot codex-clipboard-2a125438-b19f-4939-b8bf-307276b60761.png shows the organization form with Personal and Free - $0/month selected.",
@@ -793,7 +793,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "Revision metadata/lifecycle/immutability/access SQL check passed with Dor's exact supplied result. Review why a learner's started revision1 must remain when revision2 changes an activity; wait for his brief explanation before the next small storage-model increment. No repeat check, real lesson import/publication or native build.",
+    "next_action": "user_unit_progress migration (20261016113506) and checks/04_user_unit_progress.sql written by Claude: own-row RLS SELECT, server-only writes, one active attempt per user/unit, account-deletion cascade. Dor runs the dry-run (expect only this file), applies it, then runs the whole check in SQL Editor and reports the result. Revision-pinning own-words checkpoint closed 2026-10-16.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [

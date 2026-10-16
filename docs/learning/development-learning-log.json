@@ -2648,7 +2648,9 @@
         "gh run 38892534025: Typecheck and tests success; Secret scan success ('1 commits scanned', 'no leaks found')",
         "gh repo view: visibility PUBLIC; security_and_analysis showed secret scanning, push protection and Dependabot security updates still disabled at check time",
         "Claude regex scan across git rev-list --all (12 commits): no secret patterns",
-        "Dor enabled Secret Protection, push protection and Dependabot alerts/security updates (API: all enabled; 0 secret-scanning alerts). Manual whole-history gitleaks run 38893586677 scanned 13 commits and reported 7 findings: 4 SHA-256 file checksums and 3 Figma file IDs, all reviewed as false positives and listed by exact fingerprint in .gitleaksignore."
+        "Dor enabled Secret Protection, push protection and Dependabot alerts/security updates (API: all enabled; 0 secret-scanning alerts). Manual whole-history gitleaks run 38893586677 scanned 13 commits and reported 7 findings: 4 SHA-256 file checksums and 3 Figma file IDs, all reviewed as false positives and listed by exact fingerprint in .gitleaksignore.",
+        "Whole-history gitleaks run 38893951822 after .gitleaksignore (97d0252): 14 commits scanned, no leaks found; CI success.",
+        "Dependabot security update for uuid failed with security_update_not_possible: braces, node-forge and uuid are transitive dependencies of Expo CLI, config plugins and Metro (development/build tooling, not the app bundle), pinned by Expo SDK 57."
       ],
       "concepts": [
         "Continuous Integration: a clean machine runs install from lock files, typecheck and tests on every push",
@@ -2662,11 +2664,31 @@
       "understanding_demonstrated": "Not separately checked in this step.",
       "interview_takeaway": "Explain the CI pipeline, why actions are pinned by SHA, and the difference between incremental and whole-history secret scans, including catching your own wrong assumption.",
       "open_questions": [
-        "Confirm the next whole-history gitleaks run passes with .gitleaksignore, and that the Figma file is shared only with invited people.",
+        "Check that the Figma file is shared only with invited people. Re-check the three Dependabot alerts at the next Expo SDK upgrade.",
         "ElevenLabs plan terms for publicly distributing the Juan audio files are unverified.",
         "No LICENSE file: the public code is viewable but not licensed for reuse."
       ],
-      "next_step": "Push .gitleaksignore, rerun the whole-history scan, then return to the stage 04 plan."
+      "next_step": "Return to the stage 04 plan in docs/planning/work-plan.json#delivery."
+    },
+    {
+      "id": "stage04-revision-pinning-own-words-2026-10-16",
+      "stage_id": "04",
+      "goal": "Close the unit_revisions learning checkpoint with Dor's own explanation of why a started revision is kept.",
+      "practical_owner": "Dor explains; Claude gives feedback and records.",
+      "practical_action": "Claude asked: a learner is on exercise 3 of 1A revision 1, then revision 2 replaces exercise 2. Why keep revision 1 and pin her progress to it?",
+      "evidence": [
+        "Dor (Hebrew, own words): overwriting would likely break the learner's progress and create contradictions between what is saved for her and what was updated in the database, so a unit a user has started must stay as it was for them."
+      ],
+      "concepts": [
+        "Progress points at activity IDs inside one exact revision",
+        "Overwriting published content breaks those pointers (missing, moved or unseen activities)",
+        "Pinning: started learners finish their revision; new starts get the latest published one"
+      ],
+      "dor_participation": "Answered the checkpoint question in his own words.",
+      "understanding_demonstrated": "Yes for the core idea: overwriting creates a mismatch between saved progress and changed content, so started revisions must be kept. Refinement given: overwriting does not create extra versions, it destroys the old one; immutability plus a new revision number is what lets both coexist.",
+      "interview_takeaway": "Published lesson revisions are immutable; progress rows reference (unit_id, revision), so changing content never corrupts an in-progress learner, and old completions remain honest history.",
+      "open_questions": [],
+      "next_step": "Next stage 04 increment: user_unit_progress with own-row RLS, server-only writes and account-deletion cascade."
     }
   ],
   "entry_template": {
