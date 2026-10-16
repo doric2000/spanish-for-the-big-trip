@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "status": "approved_slow_source_delivery_and_normal_playback",
+  "workflow": "../../DEVELOPMENT_GUIDE.md",
+  "authority": "עכשיו זה נשמע טוב ומתאים למתחילים. נשמור את הקול והקצב האלה ונמשיך",
+  "recorded_on": "2026-10-15",
+  "default_playback_rate": 1.0,
+  "scope": "All learner audio: vocabulary, pronunciation examples, dialogue, questions and model responses",
+  "rate_reference": "Approved Juan v4 slow source delivery at normal playback1.0. Keep this playback rate for the learner baseline; review new characters and more complex delivery separately.",
+  "preserve_pitch": true,
+  "preserve_pitch_status": "Intended player behavior; verify on target iPhone when audio playback is implemented",
+  "audio_language": "Spanish only",
+  "source_files": "Preserve previous recordings as versions. Approved Buenos días v4 is reusable; four prior v2 vocabulary clips await regeneration with the approved profile. Rejected0.5 stretching remains rejected.",
+  "generation_speed": "Provider synthesis speed0.7 with eleven_v4 [slowly] direction for Juan; this is distinct from playback1.0.",
+  "audition_efficiency": "One longest representative phrase before any further delivery experiment; review it before a group. No new generation in this approval/design step.",
+  "implementation_boundary": "Stage02 design and content policy only; no runtime imports, native builds or full audio production in this change",
+  "rejected_rate": {
+    "rate": 0.5,
+    "reason_he": "זה נשמע גרוע מאוד",
+    "date": "2026-10-15",
+    "previous_directive": "All-recordings half-speed request, now superseded by listening feedback"
+  },
+  "current_candidate": {
+    "status": "approved_representative_sample; see approved_profile",
+    "voice_id": "GcxVzkrklctDNSL0D1AO",
+    "model_id": "eleven_v4",
+    "delivery_tag": "[slowly]",
+    "generation_speed": 0.7,
+    "playback_rate": 1.0,
+    "scope": "Only Buenos días; no global rate or model approval",
+    "manifest": "spanish-for-the-big-trip/assets/characters/juan/voice/audition-v4.json"
+  },
+  "approved_profile": {
+    "status": "approved_voice_and_delivery_profile",
+    "voice_id": "GcxVzkrklctDNSL0D1AO",
+    "model_id": "eleven_v4",
+    "delivery_tag": "[slowly]",
+    "generation_speed": 0.7,
+    "playback_rate": 1.0,
+    "scope": "Juan beginner delivery baseline approved from Buenos días v4; each later phrase still needs listening verification",
+    "manifest": "spanish-for-the-big-trip/assets/characters/juan/voice/audition-v4.json",
+    "profile": "spanish-for-the-big-trip/assets/characters/juan/voice/approved-profile.json",
+    "approval_evidence_he": "עכשיו זה נשמע טוב ומתאים למתחילים. נשמור את הקול והקצב האלה ונמשיך",
+    "approved_on": "2026-10-15"
+  }
+}

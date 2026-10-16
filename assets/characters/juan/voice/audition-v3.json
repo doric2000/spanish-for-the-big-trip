@@ -1,0 +1,48 @@
+{
+  "version": 3,
+  "character_id": "juan",
+  "stage_id": "02",
+  "created_on": "2026-10-15",
+  "workflow": "../../../../DEVELOPMENT_GUIDE.md",
+  "status": "reviewed_naturalness_improved_but_still_too_fast; superseded_for_next_audition_by_v4",
+  "authority": "Dor: לא , זה נשמע גרוע מאוד , נצטרך להפיק את Buenos Dias מחדש",
+  "scope": "Only Buenos días regenerated; no other phrases regenerated and no new content",
+  "previous_audition": "audition-v2.json",
+  "reason": "Dor rejected the quality of0.5 playback of the existing recording. That global playback policy is revoked; do not propagate it.",
+  "generation": {
+    "text": "Buenos días.",
+    "voice_id": "GcxVzkrklctDNSL0D1AO",
+    "model_id": "eleven_multilingual_v2",
+    "language": "es",
+    "speed": 0.7,
+    "stability": 0.5,
+    "similarity_boost": 0.75,
+    "style": 0,
+    "use_speaker_boost": true,
+    "output_format": "mp3_44100_128",
+    "output_directory": "unit1a-buenos-dias-audition-v3",
+    "generated_via": "ElevenLabs MCP text_to_speech",
+    "calls": 1,
+    "text_character_count": 12,
+    "choice": "0.7 is the lowest synthesis speed exposed by this tool; other voice/model/settings held constant. Do not claim auditory quality without Dor review."
+  },
+  "sample": {
+    "id": "greeting-buenos-dias",
+    "file": "unit1a-buenos-dias-audition-v3/buenos-dias.mp3",
+    "bytes": 24284,
+    "sha256": "15B3209F116E4B0143D787C25CFA8C9E7B1E23FB5C9BE79B78E53BDACA130471",
+    "header": "4944330400000000",
+    "original_tool_filename": "tts_Bueno_20261015_223648.mp3",
+    "playback_rate": 1,
+    "review_status": "Dor: more natural but still too fast for beginners",
+    "verification": "MCP success, local MP3 exists; size/header/hash verified. No automated pronunciation or auditory-quality claim."
+  },
+  "credit_policy": "One representative sample at a time. Do not regenerate the remaining four until this sample is reviewed. No purchase, upgrade or full-unit generation performed.",
+  "next_step": "Dor listens only to Buenos días v4, same César identity, model eleven_v4 with [slowly], speed0.7 and normal playback1.0. Check naturalness and beginner pace before any other regeneration. Prior half-speed rejection and approved silent-h wording stay in force.",
+  "feedback": {
+    "evidence_he": "זה נשמע טבעי יותר, אבל עדיין קצת מהיר למתחילים.",
+    "pace": "not_approved",
+    "naturalness": "reported_improved"
+  },
+  "next_audition": "audition-v4.json"
+}

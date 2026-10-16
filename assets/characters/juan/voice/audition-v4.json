@@ -1,0 +1,62 @@
+{
+  "version": 4,
+  "character_id": "juan",
+  "stage_id": "02",
+  "created_on": "2026-10-15",
+  "workflow": "../../../../DEVELOPMENT_GUIDE.md",
+  "status": "approved_representative_sample_and_delivery_profile",
+  "scope": "Only Buenos días audition; no other phrase production",
+  "previous_audition": "audition-v3.json",
+  "feedback_on_previous": {
+    "evidence_he": "זה נשמע טבעי יותר, אבל עדיין קצת מהיר למתחילים.",
+    "naturalness": "improved according to Dor",
+    "pace": "still too fast; no approval inferred"
+  },
+  "research": {
+    "primary_sources": [
+      "https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices",
+      "https://elevenlabs.io/blog/elevenlabs-audio-tags-list"
+    ],
+    "observed": "MCP list_models returned eleven_v4 with Spanish. Official guidance documents v4 audio delivery tags, including [slowly], and recommends v4 for library/PVC voices over v3.",
+    "inference": "A slow-delivery tag on the same César voice may improve pacing beyond the prior speed-only attempt. This is an audition hypothesis, not a quality guarantee."
+  },
+  "generation": {
+    "text": "[slowly] Buenos días.",
+    "voice_id": "GcxVzkrklctDNSL0D1AO",
+    "model_id": "eleven_v4",
+    "language": "es",
+    "speed": 0.7,
+    "stability": 0.5,
+    "similarity_boost": 0.75,
+    "style": 0,
+    "use_speaker_boost": true,
+    "output_format": "mp3_44100_128",
+    "output_directory": "unit1a-buenos-dias-audition-v4",
+    "generated_via": "ElevenLabs MCP text_to_speech",
+    "calls": 1,
+    "script_character_count": 21,
+    "spoken_text": "Buenos días.",
+    "spoken_character_count": 12,
+    "note": "[slowly] is a delivery instruction for v4, not lesson vocabulary. No other spoken words intended. New model/tag delivery and Spanish-only output remain for Dor listening review."
+  },
+  "sample": {
+    "id": "greeting-buenos-dias",
+    "file": "unit1a-buenos-dias-audition-v4/buenos-dias.mp3",
+    "bytes": 33061,
+    "sha256": "36A33C2F68A5E4135A71428FD5D8AE21E01218DF5F042CFDB3F2E0476053FDCE",
+    "header": "4944330400000000",
+    "original_tool_filename": "tts_[slow_20261015_224505.mp3",
+    "playback_rate": 1,
+    "review_status": "approved_by_dor_for_naturalness_and_beginner_pace",
+    "verification": "MCP success, local MP3 exists, header/size/hash verified; no assistant listening claim."
+  },
+  "credit_policy": "One representative sample only. No batch or automatic generation retry, no subscription change/purchase. Previous audio retained.",
+  "next_step": "Reuse the approved profile for future jointly reviewed Juan audio; no synthesis needed for the current Figma tip layout step.",
+  "approval": {
+    "date": "2026-10-15",
+    "authority": "Dor",
+    "evidence_he": "עכשיו זה נשמע טוב ומתאים למתחילים. נשמור את הקול והקצב האלה ונמשיך",
+    "profile": "spanish-for-the-big-trip/assets/characters/juan/voice/approved-profile.json",
+    "scope": "Voice and delivery baseline; only this MP3 exists at the approved profile so far"
+  }
+}

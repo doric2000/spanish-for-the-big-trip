@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "updated_on": "2026-10-15",
+  "workflow": "../../DEVELOPMENT_GUIDE.md",
+  "folder_rule": "Every recurring character has a separate stable assets/characters/<character_id>/ directory in this product repository",
+  "required_contents": [
+    "character.json: approved identity traits, role and story continuity",
+    "versioned reference images",
+    "versioned generation prompts",
+    "scenes/: appearances with reference version and scene context"
+  ],
+  "reuse_rule": "Before generating, read character.json and attach its approved reference. Compare identity after generation; review new story facts and changed appearances with Dor",
+  "characters": [
+    {
+      "character_id": "juan",
+      "name_he": "חואן",
+      "folder": "juan",
+      "profile": "juan/character.json",
+      "status": "approved_v1"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "character_id": "juan",
+  "display_name_he": "חואן",
+  "identity_status": "approved_v1",
+  "approved_on": "2026-10-15",
+  "approval_evidence": "Dor: חואן נראה מעולה",
+  "approval_scope": "Juan visual identity v1 and César voice with v4 slow-delivery profile approved by Dor. Audio approval uses one representative Buenos días sample; later phrase assets require listening checks.",
+  "workflow": "../../../DEVELOPMENT_GUIDE.md",
+  "path_base": "this_character_directory",
+  "role": "Fellow traveler who addresses the learner on the first morning at the hostel; intended recurring character",
+  "visual_traits": {
+    "apparent_age": 28,
+    "face": "Softly squared, brown eyes, thick curved brows, warm medium tan complexion",
+    "hair": "Dark brown wavy swept-back hair, one loose curl over forehead",
+    "facial_hair": "Short neat dark beard and mustache",
+    "proportions": "Natural adult traveler proportions",
+    "outfit": "Terracotta rolled-sleeve overshirt over a cream crew-neck T-shirt, olive trousers, off-white walking sneakers",
+    "backpack": "Forest-green canvas backpack with ochre zipper pulls",
+    "accessory": "Narrow ochre woven bracelet on the right wrist",
+    "demeanor": "Approachable, relaxed, warm eye contact and a natural small smile"
+  },
+  "reference": {
+    "version": 1,
+    "file": "juan-reference-v1.png",
+    "sha256": "32316C4EDF2E7C81859639576493DC84D90553ADDC30F16A0943853C79AAF74D",
+    "content": "Same man in face/shoulders, full-body front and profile/three-quarter views"
+  },
+  "scenes": [
+    {
+      "scene_id": "unit1a-entry-hostel",
+      "file": "scenes/unit1a-entry-hostel-v1.png",
+      "sha256": "9026E4E818DCA8CA845FC8BA6A28388DF2EF012FEBF9B194D261EF81CF72DB9F",
+      "reference_version": 1,
+      "action": "Juan greets the learner with an open-palm wave, seen from the learner's point of view",
+      "environment": "Morning hostel common room, arched window, plants, warm wood and cream/sage accents",
+      "figma_node": "4:80"
+    }
+  ],
+  "story_continuity": {
+    "first_appearance": "unit1a-entry-hostel",
+    "established_facts": [
+      "Juan is a fellow traveler",
+      "Meets the learner on the first morning at the hostel"
+    ],
+    "new_story_facts": "Review together before introducing new facts or relationships"
+  },
+  "generation_prompts": "prompts-v1.json",
+  "continuity_policy": [
+    "Give every recurring character a stable character_id and versioned reference sheet before producing their recurring appearances.",
+    "Attach the relevant saved reference image to every subsequent generation; repeat face, hair, age, proportions and identifying wardrobe/accessories in the prompt.",
+    "Compare the result with its reference, especially face, hair, beard, skin tone, outfit, accessory placement and apparent age. Regeneration can drift; do not assume consistency from text alone.",
+    "Keep each scene's language content, role and action within the jointly reviewed lesson stage; never embed lesson answers or technical UI information into narrative images.",
+    "Introduce or change a character identity through a small joint review; version references and keep earlier assets recoverable.",
+    "Use one stable voice per character after the separate joint voice audition; a chosen image does not approve a voice."
+  ],
+  "version_policy": "Keep approved v1 unchanged; save requested appearance changes as a new version and review them before replacing the canonical reference",
+  "voice_status": "César identity and beginner delivery profile approved by Dor from Buenos días v4",
+  "voice_audition": "voice/audition-v4.json",
+  "voice_identity": {
+    "provider": "ElevenLabs",
+    "voice_id": "GcxVzkrklctDNSL0D1AO",
+    "catalog_name": "César - Latin American Spanish Narration",
+    "selection_status": "selected_by_dor",
+    "selection_date": "2026-10-15",
+    "audition_manifest": "voice/audition-v4.json",
+    "sample_status": "v4_sample_approved_by_dor",
+    "production_settings": "spanish-for-the-big-trip/assets/characters/juan/voice/approved-profile.json",
+    "sample_manifest": "voice/audition-v4.json",
+    "sample_files": [
+      "voice/unit1a-buenos-dias-audition-v4/buenos-dias.mp3"
+    ],
+    "audition_efficiency": "voice/audition-v2.json#audition_efficiency",
+    "playback_profile": {
+      "status": "approved_voice_and_delivery_profile",
+      "voice_id": "GcxVzkrklctDNSL0D1AO",
+      "model_id": "eleven_v4",
+      "delivery_tag": "[slowly]",
+      "generation_speed": 0.7,
+      "playback_rate": 1.0,
+      "scope": "Juan beginner delivery baseline approved from Buenos días v4; each later phrase still needs listening verification",
+      "manifest": "spanish-for-the-big-trip/assets/characters/juan/voice/audition-v4.json",
+      "profile": "spanish-for-the-big-trip/assets/characters/juan/voice/approved-profile.json",
+      "approval_evidence_he": "עכשיו זה נשמע טוב ומתאים למתחילים. נשמור את הקול והקצב האלה ונמשיך",
+      "approved_on": "2026-10-15"
+    },
+    "approved_profile": "voice/approved-profile.json"
+  }
+}

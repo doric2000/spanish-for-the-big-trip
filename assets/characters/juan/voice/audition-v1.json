@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "character_id": "juan",
+  "stage_id": "02",
+  "created_on": "2026-10-15",
+  "workflow": "../../../../DEVELOPMENT_GUIDE.md",
+  "status": "historical_combined_audition; voice_accepted_but_pace_too_fast; superseded_for_card_audio_by_v2",
+  "selected_voice_id": "GcxVzkrklctDNSL0D1AO",
+  "purpose": "Choose a consistent natural Spanish voice for the approved Juan identity before generating complete unit audio",
+  "candidates": [
+    {
+      "candidate_id": "raymond",
+      "provider": "ElevenLabs",
+      "voice_id": "Gd6QOPuvenvfvpphue5f",
+      "catalog_name": "Raymond - Natural Latin American Spanish",
+      "catalog_accent": "latin american",
+      "catalog_age": "young",
+      "catalog_description": "Adult male voice in neutral Latin American Spanish. Warm, clear, measured, and natural tone. Ideal for audiobook narration, documentaries, podcasts, and e-learning.",
+      "preview_url": "https://storage.googleapis.com/eleven-public-prod/database/workspace/fc7c4468fa6148c3a072e3221d48da40/voices/Gd6QOPuvenvfvpphue5f/yvy34SLwzKa2erKkorcV.mp3",
+      "preview_source": "Existing public Voice Library sample; not generated for this project",
+      "preview_http_check": {
+        "date": "2026-10-15",
+        "status": 200,
+        "mime": "audio/mpeg",
+        "method": "HEAD"
+      },
+      "audition_status": "not_selected"
+    },
+    {
+      "candidate_id": "alex-campos",
+      "provider": "ElevenLabs",
+      "voice_id": "kUWUsr4fUFDfacRzHIe8",
+      "catalog_name": "Alex Campos - Latin American Spanish",
+      "catalog_accent": "peruvian",
+      "catalog_age": "young",
+      "catalog_description": "Deep, clear Spanish male voice with a serious, calm, and intriguing tone. Ideal for documentary narration, mystery stories, and investigative content.",
+      "preview_url": "https://storage.googleapis.com/eleven-public-prod/database/workspace/2730f10893a6440bb3ee78e6da63aad7/voices/kUWUsr4fUFDfacRzHIe8/J7ji4pNB3mv6y9dbChtL.mp3",
+      "preview_source": "Existing public Voice Library sample; not generated for this project",
+      "preview_http_check": {
+        "date": "2026-10-15",
+        "status": 200,
+        "mime": "audio/mpeg",
+        "method": "HEAD"
+      },
+      "audition_status": "not_selected"
+    },
+    {
+      "candidate_id": "cesar",
+      "provider": "ElevenLabs",
+      "voice_id": "GcxVzkrklctDNSL0D1AO",
+      "catalog_name": "César - Latin American Spanish Narration",
+      "catalog_accent": "latin american",
+      "catalog_age": "young",
+      "catalog_description": "Young male voice with a warm, engaging, and immersive narrative tone, trained in reading classic stories. Perfect for narration projects, audiobooks, podcasts, and educational content.",
+      "preview_url": "https://api.us.elevenlabs.io/v1/voices/GcxVzkrklctDNSL0D1AO/previews/audio?payload=eyJ2b2ljZV9zb3VyY2UiOiJjdXN0b20iLCJ3b3Jrc3BhY2VfaWQiOiI4NDAzYjc0OTE2Mzk0ZjJiODAzZDdiMmVjN2JiMjFlNCIsImZpbGVuYW1lIjoiSTZPSnpuME5ZbndIejllNlQ3VlQubXAzIiwidGltZXN0YW1wIjoxNzkyMDg3MjAwMDAwMDAwfQ%3D%3D",
+      "preview_source": "Existing public Voice Library sample; not generated for this project",
+      "preview_http_check": {
+        "date": "2026-10-15",
+        "status": 200,
+        "mime": "audio/mpeg",
+        "method": "GET response headers only"
+      },
+      "audition_status": "chosen_by_dor_after_catalog_previews"
+    }
+  ],
+  "selection_criteria": [
+    "Approachable young adult traveler, consistent with Juan's approved appearance",
+    "Clear natural Spanish and intelligible individual expressions for a beginner",
+    "Warm conversational delivery with comfortable pacing; avoid a robotic reading"
+  ],
+  "audition_limits": "Catalog descriptions are provider metadata, not Codex listening results. These previews contain different catalog scripts, so they support initial timbre preference only. Accent/nationality is not an established story fact.",
+  "proposed_project_sample": {
+    "text": "Hola. Buenos días. Gracias. Sí. No.",
+    "language": "es",
+    "scope": "One short comparison on the retained source vocabulary after candidate preference; actual delivery needs Dor review before full production",
+    "status": "reviewed; voice positive, speed rejected; retained as historical audition"
+  },
+  "cost_and_rights": {
+    "account_observed_tier": "payg",
+    "account_status": "One previous failed attempt plus one successful33-character MCP audition after access changed. No purchase/plan/billing-setting mutation. Post-generation quota reading still0/10000 and overage0; commercial rights and production usage cost remain unapproved.",
+    "production": "Verify applicable commercial rights and usage cost for chosen provider/voice before production. Catalog audition does not approve a paid plan, purchase, voice license or cloning.",
+    "official_sources": [
+      "https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform",
+      "https://elevenlabs.io/docs/overview/administration/pay-as-you-go"
+    ],
+    "dor_account_reported": "Free account, explicitly reported by Dor on2026-10-15; connector reported payg, not confirmed to be the same account."
+  },
+  "consistency_policy": "After joint approval save stable provider/voice_id, language/model/settings and a local approved sample here. Do not silently switch the voice in later units.",
+  "next_step": "Dor listens to five separate slower César clips, speed0.75, and comments on pace/naturalness. Each card plays only its matching clip. Keep full-unit audio and next learner stages for joint review.",
+  "selection": {
+    "provider": "ElevenLabs",
+    "voice_id": "GcxVzkrklctDNSL0D1AO",
+    "catalog_name": "César - Latin American Spanish Narration",
+    "chosen_on": "2026-10-15",
+    "evidence": "Dor replied Cesar after the three preview options",
+    "scope": "César identity/timbre accepted by Dor; new per-expression delivery and slower pacing still pending review"
+  },
+  "proposed_generation": {
+    "text": "Hola. Buenos días. Gracias. Sí. No.",
+    "model_id": "eleven_multilingual_v2",
+    "language": "es",
+    "speed": 0.92,
+    "stability": 0.5,
+    "similarity_boost": 0.75,
+    "style": 0,
+    "use_speaker_boost": true,
+    "output_format": "mp3_44100_128",
+    "settings_status": "proposed_for_single_audition_not_approved_production_settings"
+  },
+  "access_check": {
+    "checked_on": "2026-10-15",
+    "public_library": "Exact voice_id/name confirmed by fresh library search",
+    "get_voice": "400 voice_not_found",
+    "synthesis": "One33-character attempt returned400 voice_not_found; no file",
+    "automatic_retry": false,
+    "quota_before": 0,
+    "quota_after": 0,
+    "quota_limit": 10000,
+    "reported_tier": "payg",
+    "overage_before": "0",
+    "overage_after": "0",
+    "billing_change": "none",
+    "cause": "Original400 cause not isolated. After Dor signed into website and Codex clicked Use voice for the exact ID, get_voice/search_voices via MCP succeeded and the short MCP synthesis succeeded. Do not claim the free plan itself was proven cause of the original400."
+  },
+  "access_next": {
+    "route": "Web Voice Library",
+    "tab_id": "4",
+    "browser": "Codex In-app Browser",
+    "url": "https://elevenlabs.io/app/voice-library",
+    "observed": "Existing-account sign-in completed by Dor; exact César selected in web UI. Access subsequently confirmed through MCP and sample generated.",
+    "owner": "Completed; no longer waiting for sign-in",
+    "paid_actions": "not authorized",
+    "source": "https://elevenlabs.io/docs/overview/capabilities/voices",
+    "source_limit": "Public-library voices unavailable via API for free tier users; individual web voice availability still to check."
+  },
+  "sample_v1": {
+    "file": "juan-unit1a-five-expressions-audition-v1.mp3",
+    "sha256": "CF0A4218AEEF9E6DEB1A2C2449FB02A637D7B35AA58EA4474724A12A5DCDB205",
+    "bytes": 42674,
+    "text": "Hola. Buenos días. Gracias. Sí. No.",
+    "character_count": 35,
+    "provider": "ElevenLabs",
+    "voice_id": "GcxVzkrklctDNSL0D1AO",
+    "generated_on": "2026-10-15",
+    "generated_via": "ElevenLabs MCP text_to_speech",
+    "model_id": "eleven_multilingual_v2",
+    "requested_language": "es",
+    "speed": 0.92,
+    "stability": 0.5,
+    "similarity_boost": 0.75,
+    "style": 0,
+    "use_speaker_boost": true,
+    "output_format": "mp3_44100_128",
+    "original_tool_filename": "tts_Hola._20261015_220839.mp3",
+    "verification": "MCP success; local file exists,42674bytes, ID3v2.4 header and SHA256 verified. No assistant listening/transcription claim.",
+    "review_status": "Dor reports voice sounds good but too fast; combined format unsuitable for one-expression cards",
+    "production_status": "audition_only; not approved full-unit assets or commercial distribution"
+  },
+  "access_resolution": {
+    "dor_action": "Reported successful existing-account sign-in; authenticated UI confirmed",
+    "agent_web_action": "Searched exact voice ID and selected Use voice. No new account, purchase, upgrade or credential action.",
+    "mcp_recheck": "get_voice200 and search_voices returned exact selectedID after web interaction",
+    "mcp_generation": "One short synthesis after new successful access evidence; succeeded. Previous failed request is retained in access_check.",
+    "billing_observation": "Connector subscription immediately after success still reports payg, character_count0/10000, overage0 and no pending change. This is a point-in-time reading, not a promise of no cost or evidence that it is the same as the reported free website account.",
+    "preferred_route": "Use the available ElevenLabs MCP for subsequent supported operations; browser fallback only for concrete missing capability/access."
+  },
+  "next_audition": "audition-v2.json"
+}

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "character_id": "juan",
+  "provider": "ElevenLabs",
+  "catalog_name": "César - Latin American Spanish Narration",
+  "status": "approved_by_dor",
+  "approved_on": "2026-10-15",
+  "workflow": "../../../../DEVELOPMENT_GUIDE.md",
+  "approval_evidence_he": "עכשיו זה נשמע טוב ומתאים למתחילים. נשמור את הקול והקצב האלה ונמשיך",
+  "scope": "Retain this Juan voice and delivery profile for subsequent reviewed lesson audio. Approval is based on the single Buenos días v4 sample; future phrases still require listening checks.",
+  "generation": {
+    "voice_id": "GcxVzkrklctDNSL0D1AO",
+    "model_id": "eleven_v4",
+    "language": "es",
+    "delivery_tag": "[slowly]",
+    "speed": 0.7,
+    "stability": 0.5,
+    "similarity_boost": 0.75,
+    "style": 0,
+    "use_speaker_boost": true,
+    "output_format": "mp3_44100_128"
+  },
+  "playback_rate": 1,
+  "sample": {
+    "manifest": "audition-v4.json",
+    "file": "unit1a-buenos-dias-audition-v4/buenos-dias.mp3",
+    "sha256": "36A33C2F68A5E4135A71428FD5D8AE21E01218DF5F042CFDB3F2E0476053FDCE",
+    "bytes": 33061
+  },
+  "credit_policy": "One longest representative phrase for any further delivery experiment; no automatic retries or batch auditions. Reuse approved existing audio where valid. No new synthesis in this approval/design step.",
+  "asset_migration": "Earlier v1-v3 recordings are retained as history. The other four v2 vocabulary clips have not been regenerated with this profile.",
+  "implementation_status": "Versioned asset metadata for stage02; not yet wired to Figma audio or app runtime. Runtime playback on target iPhone remains to be checked.",
+  "pronunciation": "Delivery tag is provider direction only and must not appear as lesson text or spoken content."
+}
