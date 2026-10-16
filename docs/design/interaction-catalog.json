@@ -187,7 +187,11 @@
         "app_icon_and_splash_section": "68:320",
         "app_icon_export": "68:324",
         "splash_mark_export": "68:334",
-        "splash_preview": "68:343"
+        "splash_preview": "68:343",
+        "retro_sign_in_component_set": "98:1084 (Default 98:360, Busy Apple 98:480, Busy Google 98:600, Canceled 98:720, Error 98:841, Unavailable 98:963)",
+        "retro_map_component_set": "100:533 (Default 100:360, Sheet unit 100:435, Sheet locked chapter 100:482)",
+        "chapter_poster_component_set": "99:392 (Scene 99:360, Illustration 99:365)",
+        "unit_stamp_component_set": "99:399 (Current 99:393, Next 99:396)"
       },
       "states": {
         "sign_in": [
@@ -216,7 +220,7 @@
       "next_action": "Reuse these templates for any other system screen; account deletion screen still needs a design before it is built.",
       "google_button": "Google branding light theme: #FFFFFF fill, #747775 1px border, #1F1F1F label, standard 4-colour G (mobile/assets/auth/google-g.png); Heebo Medium as the Hebrew extension of Roboto; same size as the Apple button and placed below it.",
       "apple_button": "Custom button in code (chosen by Dor after the native one read Spanish on his Spanish-language iPhone): black, Apple logo glyph U+F8FF, system font semibold as Apple requires for custom buttons (Figma 57:243 shows Heebo), label המשך עם Apple, same size as Google.",
-      "retro_redesign": "2026-10-16: Dor replaced the sign-in and home screens with the retro direction, chosen in the Claude Design prototype https://claude.ai/artifact/FRvuaNEHobP1aniAkvavaY (sign-in = artboard SignInAB, map = MapA). Implemented in mobile/src/auth/boarding-pass.tsx, mobile/src/auth/sign-in-screen.tsx and mobile/src/map/. Not yet drawn in Figma: add frames using the Retro variable collection (VariableCollectionId:76:360). The Figma sign-in set 57:302 shows the superseded cream design."
+      "retro_redesign": "2026-10-16: Dor replaced the sign-in and home screens with the retro direction, chosen in the Claude Design prototype https://claude.ai/artifact/FRvuaNEHobP1aniAkvavaY (sign-in = artboard SignInAB, map = MapA). Implemented in mobile/src/auth/boarding-pass.tsx, mobile/src/auth/sign-in-screen.tsx and mobile/src/map/. Drawn in Figma on page 57:236 with the Retro variables (VariableCollectionId:76:360) and text styles; approved by Dor in Figma on 2026-10-16 (\"מאשר\"). The cream set 57:302 is marked superseded."
     },
     {
       "type": "retro_lesson_templates",
