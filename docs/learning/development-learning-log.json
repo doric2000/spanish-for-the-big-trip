@@ -2971,7 +2971,7 @@
         "Decorative elements on data screens must still be true (the stamp)"
       ],
       "dor_participation": "Design decisions and review, copy approval, migration preview and apply, SQL check, device test.",
-      "understanding_demonstrated": "Not checked yet in this step.",
+      "understanding_demonstrated": "Partial. Correct without help on the variation: a function that accepts a user id would let anyone delete any account, because user ids are not secret. Incomplete on why deletion goes through the database function: Dor named deleting the related rows (the cascade does that either way) but not the main reason, that deleting a user needs admin rights (the service-role key) which can never ship in the app, so a narrowly scoped database function keyed to auth.uid() does it instead. Explained after his answer; not yet restated by Dor.",
       "interview_takeaway": "Explain how a learner can delete their account without the app ever holding an admin key: a narrowly scoped security definer function keyed to auth.uid(), cascades, and a client flow that only cleans up after the server confirms.",
       "open_questions": [
         "Revoke the Sign in with Apple token on deletion (needs the .p8 key on a server) before any public release",
