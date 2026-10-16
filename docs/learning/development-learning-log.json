@@ -2852,6 +2852,45 @@
         "Native Apple button label stays English until a Hebrew localization is declared (next build)."
       ],
       "next_step": "Google sign-in with the second development build (app icon D1 and Hebrew localization in the same build)."
+    },
+    {
+      "id": "stage04-google-sign-in-second-build-2026-10-16",
+      "stage_id": "04",
+      "goal": "Add mandatory Google sign-in next to Apple and ship it in the second EAS development build with the D1 app icon and a Hebrew localization.",
+      "practical_owner": "Claude researched the docs and the library source, wrote the Google sign-in module, button, native-RTL conversion, icon/splash export and configuration, tests and docs, and diagnosed each failure. Dor did all Google Cloud and Supabase console work, chose the nonce approach, RTL, the packages to install early and the custom Apple button, approved the Figma designs, ran the installs, expo-doctor, Git, the EAS build and all device checks.",
+      "practical_action": "Google: free @react-native-google-signin 16.1.5 with its Expo plugin (iosUrlScheme), ID token exchanged with supabase.auth.signInWithIdToken; Supabase Google provider with Skip nonce check, because the free library cannot pass a nonce and the iOS SDK adds its own. One sign-in guard shared by both buttons; sign-out also forgets the Google account. Hebrew is the only declared iOS language (CFBundleLocalizations), so the layout is native RTL; manual row-reverse/flex-end/textAlign right removed. D1 icon (1024, alpha removed) and splash (mark 320 on #21655B), splash held until the session is known. Five native packages installed ahead of need at Dor's request. On the device the native Apple button read Spanish (Dor's phone is in Spanish and has no Hebrew), so it was replaced by a custom Hebrew Apple button that follows Apple's custom-button rules.",
+      "evidence": [
+        "Commit 768a8cf (Google sign-in, native RTL, D1 icon and splash); CI on push",
+        "Local: mobile typecheck clean; mobile tests 21/21 (Google success/cancel/no token/rejection, shared guard, Hebrew-only declaration, no manual RTL, splash held until session known); lint not configured",
+        "Failure cases: the RTL guard test matched 8 old patterns in each of two files; the route test failed on the new splash import before its stub was added",
+        "Dor: expo-doctor 21/21; second EAS development build installed; Dor-reported on iPhone after the custom Apple button JS reload: all 11 checks pass (icon, splash, Hebrew Apple label, RTL on three screens, Google cancel and sign-in, sign-out, Apple sign-in, shared busy guard)",
+        "Figma: Google button set 65:295, Busy Google variant 65:331, icon and splash section 68:320 (approved by Dor)"
+      ],
+      "concepts": [
+        "ID-token sign-in: the provider signs a token, Supabase checks signature, audience and expiry, then issues its own session",
+        "Nonce as replay protection (not encryption), and what skipping it costs",
+        "OAuth client types: iOS client (bundle id, URL scheme to return to the app) vs Web client (server audience and secret)",
+        "Public vs secret configuration: client IDs in EXPO_PUBLIC_*, the client secret only in the Supabase dashboard",
+        "Native RTL in React Native: app language decides layout direction; left/right styles are mirrored",
+        "How iOS picks an app language from the device list and why system controls can show a third language",
+        "Native module = new build; JS change = reload",
+        "MODULE_NOT_FOUND diagnosis by reading where the module was loaded from (corrupt npx cache, not the project)",
+        "Git pathspecs are relative to the current folder"
+      ],
+      "dor_participation": "Google Cloud project, consent screen, iOS and Web clients; Supabase Google provider; env values; installs; expo-doctor; commit and push; npx cache cleanup; EAS build; device checks; design and product decisions.",
+      "understanding_demonstrated": "Partial. Correct without help: a stolen Google token is still checked for our app's audience and works only until it expires. Partly incorrect: described the nonce as part of encryption and said Apple does not need it; after the order-number analogy the agent explained it is replay protection and that Apple uses our nonce while the free Google library cannot. Dor has not yet restated the corrected version in his own words.",
+      "interview_takeaway": "Explain how two providers reach one Supabase session through ID tokens, why Google runs without a nonce here and what that costs, and how a device test (Spanish phone) exposed that native system controls follow the device language rather than the app.",
+      "open_questions": [
+        "Dor to restate in his own words why Apple uses a nonce and Google does not (short check next session)",
+        "Confirm the six sign-in checks per step",
+        "In-app account deletion before any public release (Apple 5.1.1(v); revoke the Apple token on deletion)",
+        "Privacy policy and Privacy Manifest before TestFlight/App Store",
+        "Google consent screen is in Testing; publish it before outside users sign in",
+        "Optional: swap the U+F8FF Apple glyph for Apple's downloadable logo asset before release",
+        "npm audit reports 30 findings in the dependency tree; review separately without --force",
+        "ESLint still not configured"
+      ],
+      "next_step": "Close stage 04: the six sign-in checks, account deletion design and flow, then the stage 04 handoff."
     }
   ],
   "entry_template": {

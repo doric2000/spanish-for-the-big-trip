@@ -110,6 +110,25 @@
         "Vercel Hobby"
       ],
       "status": "accepted_default_personal_noncommercial_pilot; no_deploy"
+    },
+    {
+      "area": "identity_native",
+      "tools": [
+        "expo-apple-authentication",
+        "@react-native-google-signin/google-signin16.1.5 (free original API, Expo config plugin)"
+      ],
+      "status": "Apple since the first development build; Google installed by Dor 2026-10-16 for the second development build. Decision: approved-decisions.json#stage04_google_sign_in_build"
+    },
+    {
+      "area": "native_modules_ahead_of_need",
+      "tools": [
+        "expo-splash-screen57.0.10 (used: D1 splash)",
+        "react-native-svg15.15.4",
+        "expo-haptics57.0.3",
+        "expo-network57.0.2",
+        "expo-image57.0.5"
+      ],
+      "status": "Installed by Dor 2026-10-16 before the second development build to avoid extra builds; all but expo-splash-screen unused until a screen needs them. expo-doctor 21/21."
     }
   ],
   "installed_skills": [

@@ -604,5 +604,16 @@
       "content/api-contract.json",
       "content/storage-model.json"
     ]
+  },
+  "stage04_google_sign_in_build": {
+    "decided_on": "2026-10-16",
+    "authority": "Dor's choices in the stage04 Google sign-in session",
+    "google_sign_in": "Free original API of @react-native-google-signin/google-signin (16.1.5) with its Expo config plugin (iosUrlScheme). The ID token is exchanged with supabase.auth.signInWithIdToken({ provider: 'google' }).",
+    "google_nonce": "Supabase Google provider has Skip nonce check on. Reason: the free library cannot pass a nonce and the iOS Google SDK embeds its own hidden nonce. Supabase still verifies Google's signature, the audience (our Web and iOS client IDs) and expiry; lost is replay protection for a stolen token within its lifetime. Apple keeps its SHA-256 nonce. Rejected: paid Universal Sign-In; browser OAuth (shows the supabase.co address instead of the app name).",
+    "google_client_ids": "Google Cloud project with External consent screen in Testing (Dor as test user), an iOS client for com.doric2000.spanishforthebigtrip and a Web client whose secret lives only in the Supabase dashboard. Public client IDs in mobile/.env.local as EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID and EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID.",
+    "layout_direction": "Hebrew is the only declared iOS language (ios.infoPlist CFBundleLocalizations ['he'], CFBundleDevelopmentRegion 'he', which is what the expo-localization plugin writes), so React Native lays the app out right-to-left natively and the native Apple button reads Hebrew. Manual RTL emulation (row-reverse, flex-end, textAlign right) removed; rule in mobile/AGENTS.md, guarded by a test.",
+    "native_packages_ahead_of_need": "To avoid extra development builds Dor chose to install react-native-svg, expo-splash-screen, expo-haptics, expo-network and expo-image before the second build. Only expo-splash-screen is used now; the others stay unused until a screen needs them (setting aside the one-dependency-group-at-a-time rule for this build only).",
+    "apple_button": "Custom Hebrew Apple button instead of the native one (Dor, 2026-10-16): the native label follows the device language and read Spanish on Dor's Spanish-language iPhone. Follows Apple's custom-button rules: black, Apple logo, system font, 'Continue with Apple' in Hebrew. Sign-in still uses expo-apple-authentication signInAsync with the SHA-256 nonce.",
+    "app_icon_and_splash": "Logo D1 on the green background as the app icon (1024, no alpha) and the transparent D1 mark at width 320 on #21655B as the splash, approved in Figma section 68:320."
   }
 }

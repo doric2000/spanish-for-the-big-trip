@@ -172,7 +172,7 @@
     },
     {
       "type": "app_system_screens",
-      "status": "approved_by_Dor_2026-10-16; implemented_in_mobile",
+      "status": "approved_by_Dor_2026-10-16 (Google button and icon/splash approved later the same day); implemented_in_mobile",
       "figma_page_id": "57:236",
       "figma_reference_ids": {
         "sign_in_component_set": "57:302",
@@ -181,12 +181,19 @@
         "info_card_component": "58:242",
         "sign_out_confirmation": "58:324",
         "logo_refinement": "61:286",
-        "logo_export_mark": "62:358"
+        "logo_export_mark": "62:358",
+        "google_button_component_set": "65:295",
+        "sign_in_busy_google_variant": "65:331",
+        "app_icon_and_splash_section": "68:320",
+        "app_icon_export": "68:324",
+        "splash_mark_export": "68:334",
+        "splash_preview": "68:343"
       },
       "states": {
         "sign_in": [
           "Default",
-          "Busy",
+          "Busy Apple",
+          "Busy Google",
           "Canceled",
           "Error",
           "Unavailable"
@@ -198,11 +205,17 @@
         ],
         "sign_out": [
           "system confirmation"
+        ],
+        "google_button": [
+          "Default",
+          "Busy"
         ]
       },
-      "logo": "Direction D1 (Hebrew ס with the ñ tilde drawn as a flight path ending in a sun) chosen by Dor after rejecting rounds 1 and 2; exported as mobile/assets/logo/logo-d1-mark.png (336px, transparent). App icon not yet replaced (needs a build).",
+      "logo": "Direction D1 (Hebrew ס with the ñ tilde drawn as a flight path ending in a sun) chosen by Dor after rejecting rounds 1 and 2; mark exported as mobile/assets/logo/logo-d1-mark.png. App icon (mobile/assets/brand/app-icon-d1.png, 1024, no alpha) and splash mark (mobile/assets/brand/splash-mark-d1.png, width 320 on #21655B) exported from section 68:320.",
       "runtime": "mobile/src/auth/sign-in-screen.tsx, mobile/src/auth/account-screen.tsx",
-      "next_action": "Add a Google button state when Google sign-in is built; reuse these templates for any other system screen."
+      "next_action": "Reuse these templates for any other system screen; account deletion screen still needs a design before it is built.",
+      "google_button": "Google branding light theme: #FFFFFF fill, #747775 1px border, #1F1F1F label, standard 4-colour G (mobile/assets/auth/google-g.png); Heebo Medium as the Hebrew extension of Roboto; same size as the Apple button and placed below it.",
+      "apple_button": "Custom button in code (chosen by Dor after the native one read Spanish on his Spanish-language iPhone): black, Apple logo glyph U+F8FF, system font semibold as Apple requires for custom buttons (Figma 57:243 shows Heebo), label המשך עם Apple, same size as Google."
     }
   ],
   "verification": {

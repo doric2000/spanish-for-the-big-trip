@@ -239,8 +239,8 @@
         "03"
       ],
       "goal": "Implement reviewed SQL and identity/access rules in a development environment.",
-      "status": "dev_build_installed_apple_sign_in_working",
-      "current_next_action": "Session of 2026-10-16 closed. Done: single repo + docs/, CI with gitleaks, public repo with secret scanning/push protection, user_unit_progress with RLS (PASS), 1A draft seeded, Apple sign-in with Keychain session, Expo Router with protected routes, first EAS development build installed and working on Dor's iPhone, 1A scene overflow fixed. Next chat: (1) joint design of sign-in and account screens (current ones are temporary placeholders) with the ui-ux-pro-max skill and the Figma gate in docs/design/interaction-catalog.json; (2) fix safe-area issues, e.g. the bottom call-to-action under the home indicator in src/lesson/opening-preview.tsx; (3) then Google sign-in: Google Cloud OAuth clients, Supabase Google provider, @react-native-google-signin plugin and a second development build. Still open in stage 04: confirm the six sign-in checks per step; account deletion flow before any public release.",
+      "status": "second_dev_build_google_and_apple_sign_in_working",
+      "current_next_action": "2026-10-16 (evening): Google sign-in works next to Apple on Dor's iPhone in the second development build, with the D1 icon and splash, native RTL (Hebrew is the only iOS language) and a custom Hebrew Apple button; all 11 device checks pass (Dor-reported), tests 21/21. Decisions: approved-decisions.json#stage04_google_sign_in_build. Next in stage 04: confirm the six sign-in checks per step; design and build in-app account deletion before any public release; privacy policy and Privacy Manifest before TestFlight; then the stage 04 handoff.",
       "organization_setup": {
         "observed_on": "2026-10-16",
         "evidence": "Dor's screenshot codex-clipboard-2a125438-b19f-4939-b8bf-307276b60761.png shows the organization form with Personal and Free - $0/month selected.",
@@ -800,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "2026-10-16 (later session): safe-area fix verified on Dor's iPhone. Sign-in and account screens designed in Figma (page \"מסכי מערכת\"), approved by Dor with logo D1, and implemented (typecheck clean, 17/17 tests); verified on Dor's iPhone and committed by Dor. Next: Google sign-in: Google Cloud OAuth clients, Supabase Google provider, @react-native-google-signin plugin and a second development build; in the same build replace the app icon with D1 and declare a Hebrew localization so the native Apple button reads Hebrew. Still open in stage 04: confirm the six sign-in checks per step; account deletion flow before any public release.",
+    "next_action": "2026-10-16 (evening): Google sign-in works next to Apple on Dor's iPhone in the second development build, with the D1 icon and splash, native RTL (Hebrew is the only iOS language) and a custom Hebrew Apple button; all 11 device checks pass (Dor-reported), tests 21/21. Decisions: approved-decisions.json#stage04_google_sign_in_build. Next in stage 04: confirm the six sign-in checks per step; design and build in-app account deletion before any public release; privacy policy and Privacy Manifest before TestFlight; then the stage 04 handoff.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [
