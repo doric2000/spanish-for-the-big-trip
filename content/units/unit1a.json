@@ -487,6 +487,132 @@
       "introduces": [],
       "uses": ["lang-hola", "lang-buenos-dias", "lang-si", "lang-no", "lang-gracias"],
       "phase": "scenario"
+    },
+    {
+      "id": "1a-review-si",
+      "type": "listen_select",
+      "review": {
+        "status": "approved",
+        "source": "docs/curriculum/unit1a-content.json#review_activities_review",
+        "note": "Dor approved the exact copy on 2026-10-16 (\"הכל\"). Audio (pending juan-si/no/hola) and the full flow on device remain unverified."
+      },
+      "titleHe": "חזרה קצרה",
+      "promptHe": "מה פירוש הביטוי ששמעתם?",
+      "expressionEs": "Sí.",
+      "audioAssetId": "juan-si-v1",
+      "choices": [
+        {
+          "id": "no",
+          "textHe": "לא"
+        },
+        {
+          "id": "yes",
+          "textHe": "כן"
+        },
+        {
+          "id": "thanks",
+          "textHe": "תודה"
+        }
+      ],
+      "correctChoiceId": "yes",
+      "feedback": {
+        "correctHe": "המשמעות של Sí היא כן.",
+        "retryHe": "זו תשובה של הסכמה. הקשיבו שוב ונסו עוד פעם."
+      },
+      "allowWrittenHint": true,
+      "scored": false,
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-si",
+        "lang-no",
+        "lang-gracias"
+      ],
+      "phase": "review"
+    },
+    {
+      "id": "1a-review-no",
+      "type": "listen_select",
+      "review": {
+        "status": "approved",
+        "source": "docs/curriculum/unit1a-content.json#review_activities_review",
+        "note": "Dor approved the exact copy on 2026-10-16 (\"הכל\"). Audio (pending juan-si/no/hola) and the full flow on device remain unverified."
+      },
+      "titleHe": "חזרה קצרה",
+      "promptHe": "מה פירוש הביטוי ששמעתם?",
+      "expressionEs": "No.",
+      "audioAssetId": "juan-no-v1",
+      "choices": [
+        {
+          "id": "thanks",
+          "textHe": "תודה"
+        },
+        {
+          "id": "yes",
+          "textHe": "כן"
+        },
+        {
+          "id": "no",
+          "textHe": "לא"
+        }
+      ],
+      "correctChoiceId": "no",
+      "feedback": {
+        "correctHe": "המשמעות של No היא לא.",
+        "retryHe": "זו תשובה של סירוב. הקשיבו שוב ונסו עוד פעם."
+      },
+      "allowWrittenHint": true,
+      "scored": false,
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-no",
+        "lang-si",
+        "lang-gracias"
+      ],
+      "phase": "review"
+    },
+    {
+      "id": "1a-review-greet",
+      "type": "speak_reveal",
+      "review": {
+        "status": "approved",
+        "source": "docs/curriculum/unit1a-content.json#review_activities_review",
+        "note": "Dor approved the exact copy and the new unnamed character \"עוד מטייל\" (no name, image or own voice; do not show Juan here). The model audio is Juan's pending Hola reference. Recording/self-comparison on device remains unverified."
+      },
+      "promptHe": "עוד מטייל פוגש אתכם בהוסטל באותו בוקר ואומר Hola. ברכו אותו בחזרה בספרדית.",
+      "modelTextEs": "Hola.",
+      "audioAssetId": "juan-hola-v1",
+      "alternativeHe": "לתרגל בקול בלי הקלטה",
+      "modelNoteHe": "גם Buenos días מתאים במפגש בבוקר.",
+      "completion": "self_comparison",
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-hola",
+        "lang-buenos-dias"
+      ],
+      "phase": "review"
+    },
+    {
+      "id": "1a-summary",
+      "type": "summary",
+      "review": {
+        "status": "approved",
+        "source": "docs/curriculum/unit1a-content.json#summary_review",
+        "note": "Dor approved the exact title, body and action label on 2026-10-16. Display in the app remains unverified."
+      },
+      "titleHe": "סיימתם את המפגש הראשון",
+      "bodyHe": "תרגלתם לברך בחזרה, לענות כן או לא ולהודות.\nביחידה הבאה נלמד לבקש לשמוע שוב כשלא הבנו.",
+      "actionLabelHe": "חזרה למפה",
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [],
+      "phase": "summary"
     }
   ],
   "pendingStages": [
@@ -494,7 +620,7 @@
     "Review optional silent-h/vowel help for runtime representation.",
     "Produce/review Gracias reference audio and verify the approved speaking activity with recording/self-comparison in the app; automated pronunciation assessment deferred.",
     "Verify the approved word-tile interaction in the app: selection, editing, checking, hint and resume.",
-    "Review exact scenario feedback/remaining choices in the full flow; author recall/summary and verify both scenario branches on device.",
+    "Review exact scenario feedback/remaining choices in the full flow and verify both scenario branches, the review activities and the summary on device.",
     "Review learner goal and exact completion criteria; this draft is not a full publishable unit."
   ],
   "editorial": {

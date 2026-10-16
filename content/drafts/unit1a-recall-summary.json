@@ -1,5 +1,6 @@
 {
-  "status": "awaiting_joint_content_review; not_runnable_lesson_data",
+  "status": "approved_and_incorporated; historical_draft_record",
+  "incorporatedInto": "content/units/unit1a.json (1a-review-si, 1a-review-no, 1a-review-greet, 1a-summary). Dor approved the final copy on 2026-10-16, with changes from this draft; the approved wording is in docs/curriculum/unit1a-content.json#review_activities_review and #summary_review. This file keeps the earlier proposal for history only.",
   "unitId": "C01-U01",
   "sequenceAfterActivityId": "1a-ending-scenario",
   "goalHe": "לחזור על ההבחנה בין כן ללא ולברך בקול לפני סיכום היחידה, בלי להוסיף ספרדית חדשה.",

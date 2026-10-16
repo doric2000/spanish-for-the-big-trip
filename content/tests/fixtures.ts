@@ -12,9 +12,10 @@ export function realDraft(): Unit {
 // is saved to units/ or counts as a reviewed learner lesson.
 export function publishableUnit(): Unit {
   const unit = realDraft();
-  // Generic regression fixtures keep their own stable synthetic scenario.
-  // Authored scenario behavior is covered separately by scenario.test.ts.
-  unit.activities = unit.activities.filter(a => a.type !== 'bounded_scenario');
+  // Generic regression fixtures keep their own stable synthetic scenario, review and
+  // summary, appended below in teaching order. The authored ones are covered by
+  // scenario.test.ts and realDraft().
+  unit.activities = unit.activities.filter(a => a.type !== 'bounded_scenario' && a.phase !== 'review' && a.phase !== 'summary');
   unit.status = 'published'; unit.pendingStages = [];
   unit.preparedLanguage.produce = [...unit.preparedLanguage.understand];
   const review = { status: 'approved' as const, source: 'Synthetic test only', note: 'Not approved learner copy' };
@@ -33,7 +34,7 @@ export function publishableUnit(): Unit {
       { id: 'end', textEs: 'Gracias', translationHe: 'תודה', audioAssetId: 'juan-gracias-v1', terminal: true, choices: [] },
     ] },
     { ...structuredClone(unit.activities.find(a => a.type === 'listen_select')!), id: 'test-review', phase: 'review' },
-    { ...fields, id: 'test-summary', phase: 'summary', type: 'summary', titleHe: 'סיכום בדיקה', bodyHe: 'נתוני בדיקה בלבד' },
+    { ...fields, id: 'test-summary', phase: 'summary', type: 'summary', titleHe: 'סיכום בדיקה', bodyHe: 'נתוני בדיקה בלבד', actionLabelHe: 'חזרה למפה' },
   );
   unit.completionScenarioId = 'test-scenario';
   for (const activity of unit.activities) activity.review = review;

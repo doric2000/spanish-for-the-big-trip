@@ -34,7 +34,7 @@ export function projectActivity(activity: Activity, scenarioNodeId?: string) {
     case 'dialogue': return { ...common, titleHe: activity.titleHe, translationInitiallyVisible: activity.translationInitiallyVisible, turns: activity.turns.map(t => ({ id: t.id, speakerId: t.speakerId, textEs: t.textEs, translationHe: t.translationHe, audioAssetId: t.audioAssetId })) };
     case 'listen_select': return { ...common, titleHe: activity.titleHe, promptHe: activity.promptHe, audioAssetId: activity.audioAssetId, choices: activity.choices.map(c => ({ id: c.id, textHe: c.textHe })), allowWrittenHint: activity.allowWrittenHint, scored: activity.scored };
     case 'arrange': return { ...common, titleHe: activity.titleHe, promptHe: activity.promptHe, tiles: activity.tiles.map(t => ({ id: t.id, textEs: t.textEs })) };
-    case 'speak_reveal': return { ...common, promptHe: activity.promptHe, modelTextEs: activity.modelTextEs, audioAssetId: activity.audioAssetId, alternativeHe: activity.alternativeHe, completion: activity.completion };
+    case 'speak_reveal': return { ...common, promptHe: activity.promptHe, modelTextEs: activity.modelTextEs, audioAssetId: activity.audioAssetId, alternativeHe: activity.alternativeHe, ...(activity.modelNoteHe ? { modelNoteHe: activity.modelNoteHe } : {}), completion: activity.completion };
     case 'bounded_scenario': {
       const node = activity.nodes.find(n => n.id === (scenarioNodeId ?? activity.startNodeId));
       if (!node) throw new Error('Unknown scenario node');
@@ -46,7 +46,7 @@ export function projectActivity(activity: Activity, scenarioNodeId?: string) {
         terminal: node.terminal, choices: node.choices.map(c => ({ id: c.id, textEs: c.textEs, textHe: c.textHe })),
       } };
     }
-    case 'summary': return { ...common, titleHe: activity.titleHe, bodyHe: activity.bodyHe };
+    case 'summary': return { ...common, titleHe: activity.titleHe, bodyHe: activity.bodyHe, actionLabelHe: activity.actionLabelHe };
   }
 }
 

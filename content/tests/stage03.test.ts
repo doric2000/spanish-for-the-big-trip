@@ -41,11 +41,25 @@ function invalid(unit: Unit, fragment: string) {
 }
 
 test('removing pending flags does not fabricate a complete lesson', () => {
+  // 1A now has every learning phase (review and summary were approved 2026-10-16), so what
+  // still blocks it is the unreviewed copy and the pending audio, not a missing phase.
   const unit = realDraft(); unit.status = 'published'; unit.pendingStages = [];
-  for (const phase of ['review', 'summary']) {
-    const result = validateUnit(unit);
-    assert.ok(!result.success && result.error.issues.some(i => i.message.includes(`mandatory ${phase}`)));
-  }
+  const result = validateUnit(unit);
+  assert.ok(!result.success);
+  const messages = result.error.issues.map(i => i.message);
+  assert.ok(messages.some(m => m.includes('reviewed activity copy')));
+  assert.ok(messages.some(m => m.includes('approved media')));
+  assert.ok(!messages.some(m => m.includes('mandatory')), 'no learning phase is missing any more');
+});
+
+test('1A ends with the approved review activities and summary, in teaching order', () => {
+  const unit = realDraft();
+  const ids = unit.activities.map(a => a.id);
+  assert.deepEqual(ids.slice(ids.indexOf('1a-ending-scenario')), ['1a-ending-scenario', '1a-review-si', '1a-review-no', '1a-review-greet', '1a-summary']);
+  const greet = unit.activities.find(a => a.id === '1a-review-greet');
+  assert.ok(greet?.type === 'speak_reveal' && greet.modelNoteHe === 'גם Buenos días מתאים במפגש בבוקר.');
+  const summary = unit.activities.find(a => a.id === '1a-summary');
+  assert.ok(summary?.type === 'summary' && summary.actionLabelHe === 'חזרה למפה');
 });
 
 test('every learning phase, speaking and the completion scenario are enforced independently', () => {

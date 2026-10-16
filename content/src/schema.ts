@@ -50,6 +50,8 @@ const explanation = z.strictObject({
 const speaking = z.strictObject({
   ...base, type: z.literal('speak_reveal'), promptHe: text,
   modelTextEs: text, audioAssetId: id, alternativeHe: text,
+  // Optional learner-visible line under the model, e.g. another accepted answer.
+  modelNoteHe: text.optional(),
   completion: z.literal('self_comparison'),
 });
 const scenario = z.strictObject({
@@ -65,7 +67,7 @@ const scenario = z.strictObject({
     })),
   })).min(2),
 });
-const summary = z.strictObject({ ...base, type: z.literal('summary'), titleHe: text, bodyHe: text });
+const summary = z.strictObject({ ...base, type: z.literal('summary'), titleHe: text, bodyHe: text, actionLabelHe: text });
 
 export const ActivitySchema = z.discriminatedUnion('type', [entry, vocabulary, dialogue, listenSelect, arrange, explanation, speaking, scenario, summary]);
 

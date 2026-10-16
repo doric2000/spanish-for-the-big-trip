@@ -685,5 +685,70 @@
     "next_content_review_ref": "content/drafts/unit1a-recall-summary.json",
     "technical_status_ref": "docs/planning/work-plan.json#delivery"
   },
-  "mobile_opening_preview_ref": "docs/evidence/checks/unit1a-mobile-opening-preview-2026-10-16.json"
+  "mobile_opening_preview_ref": "docs/evidence/checks/unit1a-mobile-opening-preview-2026-10-16.json",
+  "summary_review": {
+    "date": "2026-10-16",
+    "status": "exact_copy_approved_by_dor; not_yet_integrated_into_unit_data",
+    "source_draft_ref": "content/drafts/unit1a-recall-summary.json#summaryProposal",
+    "authority_he": "אני מאשר את ההצעה והשינויים שלך",
+    "approved_copy": {
+      "title_he": "סיימתם את המפגש הראשון",
+      "body_he": "תרגלתם לברך בחזרה, לענות כן או לא ולהודות.\nביחידה הבאה נלמד לבקש לשמוע שוב כשלא הבנו.",
+      "action_label_he": "חזרה למפה"
+    },
+    "changes_from_draft_he": "השורה הראשונה נוסחה בפעלים במקום ״תרגלתם ברכה בחזרה, תשובה של כן או לא והבעת תודה.״; תווית הכפתור החדשה ״חזרה למפה״ (במקום ״ממשיכים״) מציינת את היעד, המפה עם חותמת היחידה.",
+    "scope_he": "מלל הסיכום בלבד. פעילויות החזרה שבאותה טיוטה (Sí, No וברכה בקול) עדיין ממתינות לסקירה.",
+    "design_ref": "docs/design/interaction-catalog.json#retro_lesson_templates (Figma 90:1719)",
+    "pending": "Integrate the approved summary into content/units/unit1a.json; verify in the app on device."
+  },
+  "review_activities_review": {
+    "date": "2026-10-16",
+    "status": "exact_copy_and_new_story_fact_approved_by_dor; not_yet_integrated_into_unit_data",
+    "source_draft_ref": "content/drafts/unit1a-recall-summary.json#reviewActivities",
+    "authority_he": "הכל",
+    "approval_context_he": "תשובה להצגת שלוש פעילויות החזרה מהטיוטה עם השינויים המוצעים: משוב שמתחיל בעברית, רמז במקום חשיפת התשובה, כותרת לשתי פעילויות ההבנה, ״עוד מטייל״ בלי שם ובלי תמונה, ושורת Buenos días מתחת לדוגמה.",
+    "sequence": "After 1a-ending-scenario and before the summary.",
+    "approved_activities": [
+      {
+        "proposedActivityId": "1a-review-si",
+        "type": "listen_select",
+        "titleHe": "חזרה קצרה",
+        "promptHe": "מה פירוש הביטוי ששמעתם?",
+        "expressionEs": "Sí.",
+        "choicesHe": ["לא", "כן", "תודה"],
+        "correctHe": "כן",
+        "feedback": {
+          "correctHe": "המשמעות של Sí היא כן.",
+          "retryHe": "זו תשובה של הסכמה. הקשיבו שוב ונסו עוד פעם."
+        }
+      },
+      {
+        "proposedActivityId": "1a-review-no",
+        "type": "listen_select",
+        "titleHe": "חזרה קצרה",
+        "promptHe": "מה פירוש הביטוי ששמעתם?",
+        "expressionEs": "No.",
+        "choicesHe": ["תודה", "כן", "לא"],
+        "correctHe": "לא",
+        "feedback": {
+          "correctHe": "המשמעות של No היא לא.",
+          "retryHe": "זו תשובה של סירוב. הקשיבו שוב ונסו עוד פעם."
+        }
+      },
+      {
+        "proposedActivityId": "1a-review-greet",
+        "type": "speak_reveal",
+        "promptHe": "עוד מטייל פוגש אתכם בהוסטל באותו בוקר ואומר Hola. ברכו אותו בחזרה בספרדית.",
+        "modelTextEs": "Hola.",
+        "modelNoteHe": "גם Buenos días מתאים במפגש בבוקר.",
+        "alternativeHe": "לתרגל בקול בלי הקלטה",
+        "completion": "self_comparison"
+      }
+    ],
+    "changes_from_draft_he": "המשוב הנכון מתחיל בעברית (״המשמעות של … היא …״) במקום ״Sí פירושו כן.״; המשוב בטעות נותן רמז ואינו חושף את התשובה; גם פעילות No קיבלה את הכותרת ״חזרה קצרה״; הערת Buenos días הפכה לשורה שהלומד רואה מתחת לדוגמה.",
+    "story_fact_he": "״עוד מטייל״ הוא דמות חדשה שאושרה בלי שם, בלי תמונה ובלי קול משלה. הוא אינו דמות חוזרת ואין לו תיקייה ב-assets/characters. הקול היחיד שנשמע הוא דוגמת Hola של חואן לתגובת הלומד.",
+    "design_ref": "Figma Template / Speak 87:1543 with Show character off and Has model note on; preview 96:2086",
+    "audio": "Uses the existing pending juan-si-v1, juan-no-v1 and juan-hola-v1 assets; listening review still required.",
+    "pending": "Integrate into content/units/unit1a.json (12 → 15 activities); verify the full flow on device."
+  }
 }
