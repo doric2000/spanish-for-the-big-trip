@@ -215,7 +215,108 @@
       "runtime": "mobile/src/auth/sign-in-screen.tsx, mobile/src/auth/account-screen.tsx",
       "next_action": "Reuse these templates for any other system screen; account deletion screen still needs a design before it is built.",
       "google_button": "Google branding light theme: #FFFFFF fill, #747775 1px border, #1F1F1F label, standard 4-colour G (mobile/assets/auth/google-g.png); Heebo Medium as the Hebrew extension of Roboto; same size as the Apple button and placed below it.",
-      "apple_button": "Custom button in code (chosen by Dor after the native one read Spanish on his Spanish-language iPhone): black, Apple logo glyph U+F8FF, system font semibold as Apple requires for custom buttons (Figma 57:243 shows Heebo), label המשך עם Apple, same size as Google."
+      "apple_button": "Custom button in code (chosen by Dor after the native one read Spanish on his Spanish-language iPhone): black, Apple logo glyph U+F8FF, system font semibold as Apple requires for custom buttons (Figma 57:243 shows Heebo), label המשך עם Apple, same size as Google.",
+      "retro_redesign": "2026-10-16: Dor replaced the sign-in and home screens with the retro direction, chosen in the Claude Design prototype https://claude.ai/artifact/FRvuaNEHobP1aniAkvavaY (sign-in = artboard SignInAB, map = MapA). Implemented in mobile/src/auth/boarding-pass.tsx, mobile/src/auth/sign-in-screen.tsx and mobile/src/map/. Not yet drawn in Figma: add frames using the Retro variable collection (VariableCollectionId:76:360). The Figma sign-in set 57:302 shows the superseded cream design."
+    },
+    {
+      "type": "retro_lesson_templates",
+      "status": "prototype_and_figma_templates_approved_by_Dor_2026-10-16; runtime_not_built",
+      "approval_evidence_he": "זה מעולה, אני רוצה שזה יהפוך להיות תבנית, שנוכל להוסיף גם משפטים אחרים, וגם תמונות אחרות, ביחידות אחרות",
+      "figma_approval_evidence_he": "התבניות בפיגמה נראות מעולות.",
+      "figma_approval_scope": "Visual review of the eight templates, their states and the two listed changes from the prototype. The summary copy was approved separately afterwards; no device or runtime check is implied.",
+      "prototype": "https://claude.ai/artifact/MFBuNUwZ2MzXi2MqPrAi9k",
+      "style": "Retro travel poster + boarding pass (same direction as the approved sign-in and map). Supersedes the cream/Heebo look of the earlier lesson frames for new work; earlier frames stay as history.",
+      "figma_page_id": "77:232",
+      "figma_variables": "Collection Retro / צבעים (VariableCollectionId:76:360): retro/* primitives and lesson/* semantic colours. Text styles Retro / Display … Retro / Code (Karantina, Rubik, Space Mono).",
+      "figma_shared_components": {
+        "header_with_flight_progress": "77:288",
+        "progress_dot_set": "77:287",
+        "button_set": "77:344",
+        "avatar": "77:345",
+        "success_stamp": "77:346",
+        "answer_tag_set": "78:280",
+        "phrase_ticket_set": "78:309",
+        "feedback_set": "78:321",
+        "word_tile_set": "78:334",
+        "flap_letter": "78:335",
+        "perforation": "78:338",
+        "dialogue_turn_set": "86:913"
+      },
+      "figma_templates": {
+        "entry": {
+          "id": "80:269",
+          "states": [
+            "Default"
+          ]
+        },
+        "vocabulary_card": {
+          "id": "82:1026",
+          "states": [
+            "Default",
+            "Playing",
+            "Audio error",
+            "Tip sheet",
+            "Vowels sheet",
+            "Long text"
+          ]
+        },
+        "listen_select": {
+          "id": "84:1014",
+          "states": [
+            "Question",
+            "Hint",
+            "Retry",
+            "Correct"
+          ]
+        },
+        "dialogue": {
+          "id": "86:1186",
+          "states": [
+            "Translation hidden",
+            "Translation shown",
+            "Playing"
+          ]
+        },
+        "speak_reveal": {
+          "id": "87:1543",
+          "states": [
+            "Ready",
+            "Recording",
+            "Recorded",
+            "Model only",
+            "Mic denied"
+          ]
+        },
+        "arrange": {
+          "id": "88:1844",
+          "states": [
+            "Empty",
+            "Partial",
+            "Hint",
+            "Retry",
+            "Correct"
+          ]
+        },
+        "bounded_scenario": {
+          "id": "89:1838",
+          "states": [
+            "Choice",
+            "Retry",
+            "Advance",
+            "End"
+          ]
+        },
+        "summary": {
+          "id": "90:1719",
+          "states": [
+            "Default"
+          ]
+        }
+      },
+      "template_contract": "All learner text is a text property; character avatars and scene posters take the unit's approved image as an image fill; answers, scenario replies and dialogue turns are slots so a unit can hold any number. Long Spanish uses vocabulary State=Long text. Copy that is not yet approved stays [טקסט מאושר]; the 1A summary copy was approved on 2026-10-16 (docs/curriculum/unit1a-content.json#summary_review).",
+      "template_check": "Review frame 91:2313: long phrase card, two-line answers, image slot placeholder and a three-turn dialogue. Fixed during the check: listen-select now reflows as one column, tags grow with text, dialogue turns scroll between heading and controls.",
+      "changes_from_prototype": "Play icons point right in Figma (iOS keeps media controls unmirrored); character dialogue card tail moved next to the avatar.",
+      "next_action": "Build shared React Native lesson components from these templates at the agreed implementation stage (see docs/planning/work-plan.json#delivery)."
     }
   ],
   "verification": {

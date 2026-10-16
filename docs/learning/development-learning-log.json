@@ -2864,7 +2864,8 @@
         "Local: mobile typecheck clean; mobile tests 21/21 (Google success/cancel/no token/rejection, shared guard, Hebrew-only declaration, no manual RTL, splash held until session known); lint not configured",
         "Failure cases: the RTL guard test matched 8 old patterns in each of two files; the route test failed on the new splash import before its stub was added",
         "Dor: expo-doctor 21/21; second EAS development build installed; Dor-reported on iPhone after the custom Apple button JS reload: all 11 checks pass (icon, splash, Hebrew Apple label, RTL on three screens, Google cancel and sign-in, sign-out, Apple sign-in, shared busy guard)",
-        "Figma: Google button set 65:295, Busy Google variant 65:331, icon and splash section 68:320 (approved by Dor)"
+        "Figma: Google button set 65:295, Busy Google variant 65:331, icon and splash section 68:320 (approved by Dor)",
+        "Dor-reported 2026-10-16: the six sign-in checks pass (closes the open item from the first development build)"
       ],
       "concepts": [
         "ID-token sign-in: the provider signs a token, Supabase checks signature, audience and expiry, then issues its own session",
@@ -2882,7 +2883,6 @@
       "interview_takeaway": "Explain how two providers reach one Supabase session through ID tokens, why Google runs without a nonce here and what that costs, and how a device test (Spanish phone) exposed that native system controls follow the device language rather than the app.",
       "open_questions": [
         "Dor to restate in his own words why Apple uses a nonce and Google does not (short check next session)",
-        "Confirm the six sign-in checks per step",
         "In-app account deletion before any public release (Apple 5.1.1(v); revoke the Apple token on deletion)",
         "Privacy policy and Privacy Manifest before TestFlight/App Store",
         "Google consent screen is in Testing; publish it before outside users sign in",
@@ -2890,7 +2890,64 @@
         "npm audit reports 30 findings in the dependency tree; review separately without --force",
         "ESLint still not configured"
       ],
-      "next_step": "Close stage 04: the six sign-in checks, account deletion design and flow, then the stage 04 handoff."
+      "next_step": "Close stage 04: account deletion design and flow, privacy policy and Privacy Manifest, then the stage 04 handoff."
+    },
+    {
+      "id": "stage04-retro-sign-in-and-trip-map-2026-10-16",
+      "stage_id": "04",
+      "goal": "Replace the sign-in and home screens with a new visual direction Dor chose, and give the app a trip map of all chapters.",
+      "practical_owner": "Claude built the Claude Design prototypes (opening animation, sign-in, three sign-in directions and a blend, four map variations) with the ui-ux-pro-max skill, then implemented the chosen sign-in and map in React Native with Reanimated and react-native-svg, and diagnosed each device bug. Dor rejected the earlier designs as looking like Claude, steered every iteration, chose sign-in A+B and map A, installed the font packages, restarted Metro and checked on his iPhone.",
+      "practical_action": "Sign-in: a retro travel poster printed on a boarding pass (sunrise, rotating rays, waves, a plane flying right to left, grain, stub with route, gate 1A, barcode, a plane on the stub arc and a blinking boarding time). Map: chapter posters along a winding route, read from docs/curriculum/curriculum-plan.json in curriculum order; chapter 1 shows Juan's hostel scene and its three unit stamps, other chapters keep an image slot until their character exists. New pure layout module (mobile/src/map/journey.ts) with tests. Fonts: Karantina, Rubik and Space Mono from @expo-google-fonts (JS only, no rebuild). Retro tokens in theme.ts.",
+      "evidence": [
+        "Prototype: https://claude.ai/artifact/FRvuaNEHobP1aniAkvavaY (artboards SignInAB and MapA chosen by Dor)",
+        "Local: mobile typecheck clean; mobile tests 27/27 (map follows curriculum order, no overlap, fits widths 320-440pt, route order); lint not configured",
+        "Dor-reported on iPhone: sign-in renders; after the fixes below, the map works",
+        "Bugs found on the device and fixed: (1) Metro could not resolve the curriculum JSON until restarted with -c after the watchFolders change; (2) the poster art covered the side borders, leaving an uneven cream strip; (3) the map ran off screen because a 390pt canvas was scaled with transform in RTL, and Juan's image drew at pixel size without an explicit size"
+      ],
+      "concepts": [
+        "Bundler configuration is read once at startup; config changes need a restart and cache clear",
+        "RTL layout: a narrower child sits at the right edge; scaling from the left pushes it off screen",
+        "Compute layout from the measured width instead of scaling a fixed canvas; test several widths",
+        "iOS Image sizing: give absolutely positioned images an explicit size",
+        "Reanimated shared values, animated styles and reduced-motion support",
+        "One data source: the map reads the curriculum plan instead of a copied list"
+      ],
+      "dor_participation": "Design direction and every choice, font install, Metro restart, device checks and bug reports with screenshots.",
+      "understanding_demonstrated": "Not separately checked in this step.",
+      "interview_takeaway": "Explain how a layout that passed tests at one width broke on a wider RTL phone, why scaling a canvas was the wrong tool, and how the fix plus a multi-width test prevents it from coming back.",
+      "open_questions": [
+        "Sign-in and map are approved in the Claude Design prototype but not yet drawn in Figma (reuse the Retro variables and text styles the lesson session created)",
+        "The account screen and the 1A preview still use the old cream palette",
+        "The JS opening animation from the prototype is not implemented; the native splash is still the green D1",
+        "Map progress is static (current = first unit) until saved progress drives it"
+      ],
+      "next_step": "Draw the approved sign-in and map in Figma, then build the shared lesson components from the retro templates."
+    },
+    {
+      "id": "stage04-retro-lesson-templates-and-1a-review-copy-2026-10-16",
+      "stage_id": "04",
+      "goal": "Redesign the lesson screens in the retro style and finish the 1A review and summary copy.",
+      "practical_owner": "A separate Claude session designed the lesson prototype and 8 Figma templates, did the layout check (long text, image slot, three-turn dialogue) and presented the summary and review copy. Dor reviewed and approved the prototype, the templates, the summary copy and the three review activities. This session then added the approved activities to the unit data and extended the content contract.",
+      "practical_action": "Figma page \"שיעור · תבניות רטרו\" (77:232) with 8 templates and a shared Retro variable collection; approval recorded in docs/design/interaction-catalog.json (retro_lesson_templates). Unit 1A grew from 12 to 16 activities: 1a-review-si, 1a-review-no, 1a-review-greet (with the learner line under the model, a new optional modelNoteHe field) and 1a-summary (new actionLabelHe field). The recall draft is marked historical and incorporated.",
+      "evidence": [
+        "Lesson prototype: https://claude.ai/artifact/MFBuNUwZ2MzXi2MqPrAi9k",
+        "Approved copy: docs/curriculum/unit1a-content.json#summary_review and #review_activities_review",
+        "Local: content tests 61/61 (fixture keeps synthetic review/summary in phase order; new test for the 1A ending); validate: VALID DRAFT, 16 activities; check:chapters blocks C01 as expected (units 2-3 missing, audio pending)"
+      ],
+      "concepts": [
+        "One template per interaction and state; text and images are data",
+        "Extending a Zod contract with an optional field and carrying it through the API projection",
+        "Test fixtures must respect the same invariants (phase order) as real data"
+      ],
+      "dor_participation": "Reviewed and approved the prototype, the templates and the exact copy.",
+      "understanding_demonstrated": "Not checked in this step.",
+      "interview_takeaway": "Show how approved copy travels from a review record into versioned lesson data, guarded by schema validation and tests.",
+      "open_questions": [
+        "Listening review of juan-si, juan-no and juan-hola audio",
+        "Device check of the full 1A flow",
+        "Build the shared React Native lesson components from the templates (play icons point right; dialogue tail next to the avatar)"
+      ],
+      "next_step": "Build the lesson components from the Figma templates."
     }
   ],
   "entry_template": {
