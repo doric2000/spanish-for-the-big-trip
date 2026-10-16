@@ -61,13 +61,30 @@ function loadRoute(relative, development, modules) {
   return exports.default;
 }
 
-test('home route never loads the draft preview in production and links to recorder/account in development', () => {
+test('home is the trip map; only development builds can start the draft unit from it', () => {
+  for (const development of [false, true]) {
+    const pushed = [];
+    function JourneyScreen() {}
+    const Home = loadRoute('index.tsx', development, {
+      'expo-router': () => ({ router: { push: href => pushed.push(href) } }),
+      '../map/journey-screen': () => ({ __esModule: true, default: JourneyScreen }),
+    });
+    const screen = Home();
+    assert.equal(screen.type, JourneyScreen);
+    screen.props.onOpenAccount();
+    if (development) screen.props.onStartUnit();
+    else assert.equal(screen.props.onStartUnit, undefined, 'release has nothing to start yet');
+    assert.equal(JSON.stringify(pushed), JSON.stringify(development ? ['/account', '/lesson'] : ['/account']));
+  }
+});
+
+test('lesson route never loads the draft preview in production and links to recorder/account in development', () => {
   for (const development of [false, true]) {
     const pushed = [];
     let previewLoads = 0;
     function AudioLab() {}
     function OpeningPreview() {}
-    const Home = loadRoute('index.tsx', development, {
+    const Home = loadRoute('lesson.tsx', development, {
       'expo-router': () => ({ router: { push: href => pushed.push(href) } }),
       '../audio-lab': () => ({ __esModule: true, default: AudioLab }),
       '../lesson/opening-preview': () => {
@@ -92,19 +109,24 @@ test('home route never loads the draft preview in production and links to record
 test('root layout: splash and loading first, sign-in only when signed out, app screens only when signed in', () => {
   let session;
   const splash = { held: 0, hidden: 0 };
+  let fonts = false;
   function View() {}
   function ActivityIndicator() {}
   function Provider() {}
   const Stack = Object.assign(function Stack() {}, { Screen() {}, Protected() {} });
   const Layout = loadRoute('_layout.tsx', true, {
     'expo-router': () => ({ Stack }),
+    '@expo-google-fonts/karantina': () => ({}),
+    '@expo-google-fonts/rubik': () => ({}),
+    '@expo-google-fonts/space-mono': () => ({}),
+    'expo-font': () => ({ useFonts: () => [fonts, null] }),
     'expo-splash-screen': () => ({ preventAutoHideAsync: async () => { splash.held++; return true; }, hide: () => { splash.hidden++; } }),
     // Effects run right away here: the layout is called as a plain function, not rendered by React.
     react: () => ({ useEffect: effect => { effect(); } }),
     'react-native': () => ({ View, ActivityIndicator }),
     '../auth/session-context': () => ({ SessionContext: { Provider } }),
     '../auth/use-session': () => ({ useSession: () => session }),
-    '../theme': () => ({ theme: { colors: { background: '#fff', primary: '#000' } } }),
+    '../theme': () => ({ theme: { colors: { background: '#fff', primary: '#000' } }, retro: { colors: { night: '#000', gold: '#fff' } } }),
   });
   const guards = tree => {
     const [signInGroup, appGroup] = tree.props.children.props.children;
@@ -118,11 +140,14 @@ test('root layout: splash and loading first, sign-in only when signed out, app s
   assert.equal(Layout().type, View, 'nothing is shown until the saved session is read');
   assert.equal(splash.hidden, 0, 'the splash stays up while the session is unknown');
   session = null;
+  assert.equal(Layout().type, View, 'still loading until the fonts are ready');
+  assert.equal(splash.hidden, 0, 'the splash waits for the fonts too');
+  fonts = true;
   let g = guards(Layout());
   assert.equal(g.signIn, true);
   assert.equal(g.app, false, 'no guest mode');
   assert.equal(JSON.stringify(g.signInScreens), JSON.stringify(['sign-in']));
-  assert.equal(JSON.stringify(g.appScreens), JSON.stringify(['index', 'account', 'recorder']));
+  assert.equal(JSON.stringify(g.appScreens), JSON.stringify(['index', 'lesson', 'account', 'recorder']));
   assert.equal(splash.hidden, 1, 'the splash hides once we know the user is signed out');
   session = { user: { id: 'user-a' } };
   const signedIn = Layout();

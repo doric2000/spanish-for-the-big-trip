@@ -1,12 +1,10 @@
 import { router } from 'expo-router';
-import AudioLab from '../audio-lab';
+import JourneyScreen from '../map/journey-screen';
 
+// Home: the trip map. Unit 1A is an unpublished authoring preview, so only development
+// builds can open it from the map.
 export default function Home() {
-  // Unpublished authoring preview is unavailable in production.
-  if (__DEV__) {
-    const OpeningPreview: typeof import('../lesson/opening-preview').default =
-      require('../lesson/opening-preview').default;
-    return <OpeningPreview onOpenRecorder={() => router.push('/recorder')} onOpenAccount={() => router.push('/account')} />;
-  }
-  return <AudioLab />;
+  return <JourneyScreen
+    onOpenAccount={() => router.push('/account')}
+    onStartUnit={__DEV__ ? () => router.push('/lesson') : undefined} />;
 }

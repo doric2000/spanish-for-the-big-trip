@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
+    "@expo-google-fonts/karantina": "^0.4.1",
+    "@expo-google-fonts/rubik": "^0.4.2",
+    "@expo-google-fonts/space-mono": "^0.4.2",
     "@react-native-google-signin/google-signin": "^16.1.5",
     "@supabase/supabase-js": "^2.118.0",
     "expo": "~57.0.30",

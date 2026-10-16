@@ -12,3 +12,18 @@ export const theme = {
   type: { small: 14, body: 18, title: 32, expression: 58, meaning: 27 },
   touchTarget: 48,
 } as const;
+
+// Retro travel poster + boarding pass look (sign-in and trip map; approved by Dor,
+// 2026-10-16, in the Claude Design prototype: artboards SignInAB and MapA).
+export const retro = {
+  colors: {
+    night: '#0D3B40', deep: '#174F52', sea: '#1C6E6B', sunset: '#F26B3A', pink: '#F4A6A0',
+    gold: '#F9B233', plum: '#2B1B33', cream: '#FFF3DC', stamp: '#E0563A', inkMuted: '#3E5E5F',
+  },
+  // Loaded in the root layout from the @expo-google-fonts packages.
+  fonts: {
+    poster: 'Karantina_700Bold',
+    body: 'Rubik_400Regular', medium: 'Rubik_500Medium', bold: 'Rubik_700Bold', heavy: 'Rubik_800ExtraBold',
+    mono: 'SpaceMono_700Bold',
+  },
+} as const;
