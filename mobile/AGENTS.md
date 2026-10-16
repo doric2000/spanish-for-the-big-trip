@@ -1,49 +1,42 @@
-# SpanishForTrip joint development
+# Mobile app — technical notes
 
-Read [../AGENTS.md](../AGENTS.md) and [../DEVELOPMENT_GUIDE.md](../DEVELOPMENT_GUIDE.md). Their joint Hebrew learning workflow and accepted project decisions apply here and take precedence over the generic template guidance below. Explain one small step, leave Dor's assigned action for him, wait for his result and record actual participation in ../../.codex-review/development-learning-log.json.
+**All workflow and product rules are in [../../AGENTS.md](../../AGENTS.md)** and take precedence over the generic Expo guidance below. Current stage and next action: `../../.codex-review/work-plan.json#delivery`. This file holds only Expo/React Native technical rules for `mobile/`.
 
-Dor clarified on 2026-10-15 that Codex owns code writing/editing and explains the meaningful parts. Dor participates in installations, configuration and important functional checks. Do not assign him code typing/pasting by default or stop for routine coding approval. Codex implemented the small recording/playback proof, and Dor reports successful iPhone testing.
+## Local rules for this app
 
-Stage01 completed with the blank TypeScript starter, Expo Go iPhone execution/audio proof and prepared EAS configuration. Dor accepted continuing in Expo Go; owned signing/build/install is explicitly deferred to stage04 before Google/Apple login testing, not claimed verified. Stage02 is ready for Dor to open and includes joint unit1A authoring and Figma screen design. Read ../../.codex-review/stage-handoffs/01-environment.json, work-plan.json and development-learning-log.json. Do not open/dispatch the next chat or build merely from this plan. Navigation selection and lint setup remain separate checkpoints; do not install Router/lint dependencies just to follow generic guidance below. Until lint is configured, report the limitation and use TypeScript plus the relevant existing tests.
+- The unit 1A opening preview (`src/lesson/`) is a development-only authoring checkpoint. Keep unpublished content behind `__DEV__`; it is not a guest mode, a full lesson or saved progress.
+- Keep `src/audio-lab.tsx` and its tests (`tests/audio-flow.test.cjs`) working; they are the recording/playback proof.
+- Navigation library: not chosen yet. `toolchain.json` lists React Navigation as selected, while Expo's default is Expo Router. Decide with Dor before installing either.
+- Lint is not configured yet. Until it is, run TypeScript and the existing tests and say that lint was not run:
 
-This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
+```bash
+npx tsc --noEmit
+node --test tests/*.cjs
+```
 
-## Expo has changed — do not trust your training data
+## Expo changes often — do not trust training data
 
-Expo ships breaking changes every SDK release. APIs you remember are likely renamed, moved, or removed. Before writing any code that touches an Expo, EAS, or React Native API:
+Expo ships breaking changes every SDK release. Before writing code that touches an Expo, EAS or React Native API:
 
-1. Read the major version of the `expo` package in `package.json`.
-2. Fetch the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`
-3. For anything else, fetch https://docs.expo.dev/llms.txt — an index of all Expo docs with corrections to common LLM misconceptions. Follow its links to the specific page you need; never answer from memory.
+1. Read the `expo` major version in `package.json` (currently SDK 57).
+2. Use the matching versioned docs: `https://docs.expo.dev/versions/v<major>.0.0/`.
+3. For anything else, start from https://docs.expo.dev/llms.txt and follow its links.
 
 ## Commands
 
-Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
-
 ```bash
-npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
-npx expo start              # start the dev server
-npx expo lint               # lint
-npx tsc --noEmit            # typecheck
-npx expo-doctor             # diagnose dependency and config issues
-npx expo install --fix      # fix incompatible package versions
+npx expo install <package>  # always use instead of npm install — picks SDK-compatible versions
+npx expo start              # dev server
+npx expo-doctor             # diagnose dependency/config issues
+npx expo install --fix      # fix incompatible versions
 ```
 
-Run lint and typecheck before declaring any task done.
+On Windows PowerShell use `npx.cmd` / `npm.cmd` if script execution policy blocks `npx`.
 
-## Navigation & Routing
+## Builds (EAS)
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
-- Docs: https://docs.expo.dev/router/introduction.md
+Use EAS to build, sign and submit in the cloud (`npx eas-cli@latest build`, `submit`, `update`); no local Xcode needed. Owned builds are scheduled for stage 04 — do not start one before then.
 
-## Building with EAS
-
-Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
-Docs: https://docs.expo.dev/eas/index.md
-
-## Rules
-
-- If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
-- Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+- `ios/` and `android/` are generated (Continuous Native Generation). Never create or edit them by hand; configure native behavior in `app.json` and config plugins.
+- Expo Go contains only its bundled native modules. A library with native code (for example native Google sign-in) needs a development build.
+- Prefer Expo modules over third-party libraries. Docs: https://docs.expo.dev/versions/latest/
