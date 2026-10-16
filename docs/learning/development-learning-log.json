@@ -2647,24 +2647,26 @@
       "evidence": [
         "gh run 38892534025: Typecheck and tests success; Secret scan success ('1 commits scanned', 'no leaks found')",
         "gh repo view: visibility PUBLIC; security_and_analysis showed secret scanning, push protection and Dependabot security updates still disabled at check time",
-        "Claude regex scan across git rev-list --all (12 commits): no secret patterns"
+        "Claude regex scan across git rev-list --all (12 commits): no secret patterns",
+        "Dor enabled Secret Protection, push protection and Dependabot alerts/security updates (API: all enabled; 0 secret-scanning alerts). Manual whole-history gitleaks run 38893586677 scanned 13 commits and reported 7 findings: 4 SHA-256 file checksums and 3 Figma file IDs, all reviewed as false positives and listed by exact fingerprint in .gitleaksignore."
       ],
       "concepts": [
         "Continuous Integration: a clean machine runs install from lock files, typecheck and tests on every push",
         "Least-privilege workflow permissions and SHA-pinned actions (supply-chain protection)",
         "Secret scanning versus push protection (detect after vs. block before)",
         "Push/PR scans cover new commits; whole-history scans need a separate trigger",
-        "Public-repo exposure review: history, personal notes, media licensing"
+        "Public-repo exposure review: history, personal notes, media licensing",
+        "Triaging scanner findings: confirm what the value is before allowlisting, and allowlist narrowly by fingerprint"
       ],
       "dor_participation": "Pushed the CI commit, decided to make the repo public and ran the visibility change.",
       "understanding_demonstrated": "Not separately checked in this step.",
       "interview_takeaway": "Explain the CI pipeline, why actions are pinned by SHA, and the difference between incremental and whole-history secret scans, including catching your own wrong assumption.",
       "open_questions": [
-        "Enable Secret scanning, Push protection and Dependabot alerts/security updates in Settings > Advanced Security, then confirm the whole-history scan result.",
+        "Confirm the next whole-history gitleaks run passes with .gitleaksignore, and that the Figma file is shared only with invited people.",
         "ElevenLabs plan terms for publicly distributing the Juan audio files are unverified.",
         "No LICENSE file: the public code is viewable but not licensed for reuse."
       ],
-      "next_step": "Dor enables the GitHub security settings and triggers a whole-history scan with gh workflow run CI."
+      "next_step": "Push .gitleaksignore, rerun the whole-history scan, then return to the stage 04 plan."
     }
   ],
   "entry_template": {
