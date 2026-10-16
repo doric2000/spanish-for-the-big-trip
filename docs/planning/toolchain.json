@@ -216,19 +216,20 @@
         "name": "vercel-react-native-skills",
         "repo": "vercel-labs/agent-skills (skills/react-native-skills)",
         "why": "Only skill in the list written for React Native/Expo. Its rules cover issues already seen here: safe-area scrolling, image handling (expo-image), Pressable, native navigators, list performance and Reanimated. Markdown only, no scripts; MIT in SKILL.md.",
-        "status": "recommended; not installed yet"
+        "status": "installed 2026-10-16 as project skill .claude/skills/vercel-react-native-skills (copied from vercel-labs/agent-skills@063bee94c3f4df8453406c830b0a7df0f2860278 after review: 56 md/json files, no scripts, no hidden characters or injection patterns)"
       },
       {
         "name": "ui-ux-pro-max",
         "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
         "why": "Design decisions: palettes, type, UX and accessibility rules, React Native stack guidance. Local Python search over CSV data; scripts reviewed 2026-10-16.",
-        "status": "Dor installing via the Claude CLI plugin marketplace"
+        "status": "marketplace added by Dor; plugin install still needed (claude plugin list showed none on 2026-10-16)"
       }
     ],
     "later": [
       {
         "name": "vercel composition-patterns",
-        "why": "Useful when building the shared data-driven activity components (avoid boolean-prop sprawl); React patterns apply to React Native."
+        "why": "Useful when building the shared data-driven activity components (avoid boolean-prop sprawl); React patterns apply to React Native.",
+        "status": "installed 2026-10-16 as project skill .claude/skills/vercel-composition-patterns (same commit and review)"
       }
     ],
     "not_selected": [
@@ -237,6 +238,7 @@
       "vercel react-best-practices (Next.js)",
       "bencium ux-designer (web, no license)",
       "accesslint (web WCAG/HTML, extra MCP server)"
-    ]
+    ],
+    "usage_rule": "Skills are guidance. A library a skill recommends (for example FlashList, zeego, expo-image) is still added only through the normal one-dependency-group checkpoint with Dor, preferring Expo modules."
   }
 }
