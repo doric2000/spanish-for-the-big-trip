@@ -1,0 +1,12 @@
+{
+  "name": "spanish-for-trip-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Repository tooling; joint development follows DEVELOPMENT_GUIDE.md",
+  "devDependencies": {
+    "supabase": "2.121.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
