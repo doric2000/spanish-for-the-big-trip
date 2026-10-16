@@ -1,0 +1,270 @@
+{
+  "researched_on": "2026-10-13",
+  "status": "TypeScript, React Native/Expo, Node.js/NestJS and Supabase/PostgreSQL accepted by Dor; API hosting and detailed setup remain open",
+  "confirmed_requirements": {
+    "delivery": "Installed mobile app",
+    "first_test_platform": "iPhone, confirmed by user",
+    "eventual_platforms": [
+      "iOS",
+      "Android"
+    ],
+    "developers": [
+      "Dor",
+      "Codex"
+    ],
+    "features": [
+      "Spanish audio",
+      "Prepared interactive scenarios with meaningful choices",
+      "Saved progress backed by a relevant database",
+      "Record learner and replay for comparison",
+      "Original illustrations and small animations",
+      "Illustrated learning/trip map"
+    ],
+    "offline": "Not a required pilot feature",
+    "content_workflow": "Author together, one lesson and stage at a time; Dor corrects and approves wording before integration."
+  },
+  "career_context": {
+    "reviewed_threads": [
+      {
+        "id": "6ac2756e-8e7c-83ed-a461-48d03483340a",
+        "title": "שיפור קורות חיים"
+      },
+      {
+        "id": "01a12ace-1cb6-7a11-8f2c-1a50be197867",
+        "title": "מצא פרויקטים להוספה לקורות החיים"
+      },
+      {
+        "id": "01a11177-02cc-7273-b2a7-7206faa638fa",
+        "title": "שדרג תיאורי משרות בקורות החיים"
+      }
+    ],
+    "findings": "Earlier CV and repository review discussions describe React Native/PlanLi, Python/FastAPI, Node, relational databases and security/R&D experience; target roles span Frontend/Full-Stack, Backend/Systems and Security. These are contextual findings from selected conversation turns, not a fresh audit of the full portfolio."
+  },
+  "recommended_core": {
+    "language": "TypeScript",
+    "mobile": "React Native with Expo",
+    "database": "PostgreSQL",
+    "pilot_services": "Supabase hosting the actual PostgreSQL database, plus Auth and Storage",
+    "audio": "expo-audio for playback and recording",
+    "map": "Illustrated progression map using react-native-svg; not a live geographic map requirement",
+    "motion": "Reanimated for UI/illustration motion; Lottie only where authored animation assets justify it",
+    "initial_scope": "One coauthored micro-lesson end to end: map entry, preparation, dialogue, practice/recording, bounded scenario, cloud progress"
+  },
+  "backend_tradeoff": {
+    "pilot_recommendation": "Use Supabase with authored SQL schema, migrations and user-specific policies to keep first pilot small. Do not make SQL learning merely dashboard clicking.",
+    "later_option": "A small TypeScript Node.js/NestJS API if independent backend development becomes a selected learning goal; adds another service and deployment.",
+    "alternative": "Python/FastAPI is compatible with PostgreSQL and matches existing background, but is not required for the initial mobile/data pilot."
+  },
+  "alternatives": [
+    {
+      "choice": "React Native / TypeScript / Expo",
+      "judgment": "Best fit for the existing background, cross-platform requirement and transferable React/TypeScript skills."
+    },
+    {
+      "choice": "Flutter / Dart",
+      "judgment": "Technically suitable for iOS/Android and graphics; broader language-transfer benefit is lower for this particular user. This is an inference, not an Israeli job-count comparison."
+    },
+    {
+      "choice": "Separate Swift iOS and Kotlin Android apps",
+      "judgment": "Good for targeting native mobile engineering; larger two-platform learning and maintenance burden for a quick joint mini-project."
+    }
+  ],
+  "database_learning": [
+    "Relational schema and foreign keys",
+    "SQL joins and practical queries",
+    "Indexes",
+    "Versioned migrations",
+    "User authorization policies",
+    "Transactions for consistent completion/progress"
+  ],
+  "media_storage": "Images, audio and optional saved recordings in object storage; SQL stores metadata/references. Recording can begin on device for replay; do not imply automatic pronunciation scoring.",
+  "iOS_path": {
+    "early_loop": "Expo Go on iPhone for supported libraries, requiring the development server; this is not the standalone final app.",
+    "installable_build": "Development build / TestFlight through EAS cloud, supporting builds from Windows. Physical iPhone cloud distribution requires the relevant Apple signing/membership.",
+    "apple_membership": "Apple documents $99 annual membership; use an existing membership if available. No payment or enrollment performed."
+  },
+  "evidence_limits": "Developer survey usage is global and is not a count of Israeli vacancies. Selected company postings mainly describe senior roles; used only as evidence of technologies in real teams, not junior eligibility or hiring guarantees.",
+  "sources": [
+    {
+      "url": "https://survey.stackoverflow.co/2026/technology/data",
+      "evidence": "TypeScript 43.8% of relevant language respondents, Dart4.9%; PostgreSQL57.9% of relevant database respondents."
+    },
+    {
+      "url": "https://job-boards.greenhouse.io/helloheart/jobs/8842273002",
+      "evidence": "Tel Aviv senior mobile role lists React Native, React, TypeScript and PostgreSQL."
+    },
+    {
+      "url": "https://job-boards.greenhouse.io/figma/jobs/6073106004",
+      "evidence": "Tel Aviv full-stack role lists React/TypeScript and backend technologies including Node.js/PostgreSQL."
+    },
+    {
+      "url": "https://job-boards.greenhouse.io/venncity/jobs/4608325005",
+      "evidence": "Israel senior full-stack listing includes React Native Expo and TypeScript."
+    },
+    {
+      "url": "https://reactnative.dev/docs/environment-setup",
+      "evidence": "Official React Native guidance recommends a framework such as Expo for new apps."
+    },
+    {
+      "url": "https://flutter.dev/development",
+      "evidence": "Official Flutter supports iOS/Android from one codebase."
+    },
+    {
+      "url": "https://supabase.com/docs/guides/database/overview",
+      "evidence": "Supabase supplies a full actual PostgreSQL database."
+    },
+    {
+      "url": "https://supabase.com/docs/guides/getting-started/quickstarts/expo-react-native",
+      "evidence": "Official Expo/React Native integration."
+    },
+    {
+      "url": "https://supabase.com/docs/guides/auth",
+      "evidence": "Authentication service."
+    },
+    {
+      "url": "https://supabase.com/docs/guides/storage",
+      "evidence": "Object storage service."
+    },
+    {
+      "url": "https://docs.expo.dev/versions/latest/sdk/audio/",
+      "evidence": "Playback and recording APIs."
+    },
+    {
+      "url": "https://docs.expo.dev/versions/latest/sdk/reanimated/",
+      "evidence": "Animation library with Android/iOS and Expo Go support."
+    },
+    {
+      "url": "https://github.com/lottie-react-native/lottie-react-native",
+      "evidence": "Native iOS/Android rendering of authored Lottie assets; compatibility depends on selected React Native version."
+    },
+    {
+      "url": "https://github.com/software-mansion/react-native-svg",
+      "evidence": "SVG rendering library for illustrated map."
+    },
+    {
+      "url": "https://docs.nestjs.com/",
+      "evidence": "TypeScript-supported Node.js backend framework."
+    },
+    {
+      "url": "https://docs.expo.dev/develop/development-builds/introduction/",
+      "evidence": "Cloud iOS builds from any OS and difference between Expo Go and owned development build."
+    },
+    {
+      "url": "https://developer.apple.com/programs/",
+      "evidence": "$99 annual membership and TestFlight benefit."
+    },
+    {
+      "url": "https://vercel.com/docs/frameworks/backend/nestjs",
+      "evidence": "Official current NestJS deployment and execution model on Vercel."
+    },
+    {
+      "url": "https://aws.amazon.com/rds/postgresql/",
+      "evidence": "Managed PostgreSQL hosting, administration/backups and network integration."
+    },
+    {
+      "url": "https://survey.stackoverflow.co/2026/technology/data/cloud-plat",
+      "evidence": "Broad global cloud-tool usage; does not measure jobs or RDS-specific use."
+    },
+    {
+      "url": "https://vercel.com/docs/storage",
+      "evidence": "Storage and database integrations are separate choices from API hosting."
+    }
+  ],
+  "hosting_and_backend_clarification": {
+    "status": "Options and recommendation for joint selection, not implementation approval",
+    "database_vs_host": "PostgreSQL is the database engine; Supabase and AWS RDS are possible managed hosting/services choices.",
+    "hosting_options": [
+      {
+        "platform": "Supabase",
+        "fit": "Fast pilot with actual PostgreSQL plus managed auth and media storage; learn schema/SQL/migrations/permissions deliberately."
+      },
+      {
+        "platform": "AWS RDS PostgreSQL",
+        "fit": "A cloud-learning track: managed database operation, connectivity/networking, roles, backups and operational choices. Requires more infrastructure planning. Does not supply the application API by itself."
+      }
+    ],
+    "market_evidence": {
+      "scope": "Global usage survey, not Israeli job counts or RDS-specific adoption",
+      "aws_percent": 41.8,
+      "vercel_percent": 10.7,
+      "supabase_percent": 6.9,
+      "source": "https://survey.stackoverflow.co/2026/technology/data/cloud-plat"
+    },
+    "vercel_role": "Hosts web applications and backend/API workloads. Official NestJS support uses Vercel Functions. Relevant to our API or a future web/admin interface; native iPhone app build/install/distribution stays with Expo/EAS and Apple.",
+    "backend_levels": [
+      {
+        "level": 1,
+        "name": "Managed backend",
+        "scope": "Supabase auth/database/storage, authored SQL migrations and policies; app uses supplied APIs."
+      },
+      {
+        "level": 2,
+        "name": "Small authored API",
+        "scope": "One NestJS TypeScript service: identity verification/ownership, lessons/map data, saved attempts/progress, prerequisite-aware completion with transactional/idempotent writes, integration tests and API documentation. Managed identity and object storage remain services."
+      },
+      {
+        "level": 3,
+        "name": "API and cloud deployment depth",
+        "scope": "Add deliberate Docker/CI/CD and AWS deployment/RDS operations after one complete lesson works; choose additional operations by learning goals."
+      }
+    ],
+    "current_recommendation": "Level2 for demonstrated Backend practice, kept to a single service and one end-to-end lesson. Supabase can initially host PostgreSQL/Auth/Storage; Vercel is a supported API hosting candidate. Level3 if AWS/cloud skills become an explicit project objective.",
+    "example": "When a learner completes a lesson, API verifies identity and prerequisites, records progress consistently and handles a repeated completion request without duplicate records, then returns unlocked stations. This validates workflow, not independent spoken fluency.",
+    "pilot_boundaries": "Keep original coauthoring workflow, iPhone-first cross-platform app, no full offline requirement and no automatic pronunciation scoring."
+  },
+  "collaborative_development": {
+    "version": 1,
+    "recorded_on": "2026-10-13",
+    "authority": "Direct user instruction in the current conversation",
+    "status": "Confirmed joint working method; current technical decisions are tracked in project-context.json",
+    "guide": "docs/DEVELOPMENT_GUIDE.md",
+    "agent_instructions": [
+      "AGENTS.md",
+      "prototype/AGENTS.md"
+    ],
+    "learning_log": "docs/learning/development-learning-log.json",
+    "goal_he": "דור ו־Codex מפתחים יחד. לצד בניית האפליקציה, דור משתתף בפעולות מעשיות ומבין כל שלב כדי לצבור ניסיון וביטחון לקראת ראיונות עבודה. דור אינו חייב לכתוב כל שורת קוד כדי להשתתף בפיתוח.",
+    "mandatory_cycle_he": [
+      "לפני שלב פיתוח משמעותי מסבירים בעברית מה עושים, למה צריך אותו, באילו כלים משתמשים, היכן הפעולה מתבצעת ואיך נבדוק שהצליחה. מונח חדש מקבל דוגמה מתוך הפרויקט.",
+      "מחלקים פעולה מעשית קטנה בין דור ל־Codex. דור יכול להריץ פקודה, לבדוק פלט, לשנות הגדרה, לבצע שאילתת SQL, לבדוק בקשת API, לבחון מסך או לחקור תקלה. מסבירים את הפקודה ואת התוצאה הצפויה מראש.",
+      "כאשר פעולה מוקצית לדור, משאירים אותה לביצועו וממתינים לתוצאה. אם הוא מעביר אותה ל־Codex, אפשר לבצע עבורו ולסקור יחד מה השתנה.",
+      "מממשים חלק קטן, עוברים על הקבצים וההתנהגות ובודקים את התוצאה. תקלה מקבלת הסבר של האבחון והפתרון. שאלות ותיקונים של דור משולבים לפני המעבר לשלב הבא.",
+      "מסכמים את הלמידה באמצעות הסבר במילים של דור או שינוי קטן שהוא מנסה. מתעדים בנפרד קוד שנכתב על ידי Codex, פעולה שדור ביצע והבנה שהודגמה. אין להסיק ניסיון עצמאי רק מכך שהאפליקציה עובדת."
+    ],
+    "areas_he": [
+      {
+        "title": "סביבת העבודה וההקמה",
+        "detail": "תיקיות, עורך, טרמינל, גרסאות, תלויות, משתני סביבה ו־Git. דור מתרגל הרצה, קריאת פלט ומעקב אחרי שינוי בקוד."
+      },
+      {
+        "title": "צד הלקוח והמובייל",
+        "detail": "מסכים, רכיבים, מצב, ניווט, כיווניות עברית ובקשות לשרת. דור בודק איך פעולה שלו משנה את הממשק ואת הנתונים."
+      },
+      {
+        "title": "צד השרת",
+        "detail": "בקשה ותשובה, נקודות גישה, אימות נתונים, זיהוי המשתמש, הרשאות וכללי ההתקדמות. דור שולח בקשה ובודק מקרה הצלחה ומקרה שגיאה."
+      },
+      {
+        "title": "מסד הנתונים",
+        "detail": "סכימה, קשרים בין טבלאות, SQL, שינויי סכימה, אינדקסים וטרנזקציות. דור מריץ או משנה שאילתה ובודק את התוצאה ואת משמעותה."
+      },
+      {
+        "title": "שמע תמונות ואנימציה",
+        "detail": "הקלטה והשמעה, הרשאות מכשיר, קבצי מדיה, איורים, תנועת דמויות ומפת הלמידה. הבדיקה כוללת התנהגות במכשיר אמיתי."
+      },
+      {
+        "title": "בדיקות פריסה ותפעול",
+        "detail": "סביבה מקומית לעומת ענן, בנייה, הפצה ולוגים. לפי ההיקף שנבחר יחד נלמד גם קונטיינרים ופריסה אוטומטית."
+      },
+      {
+        "title": "הכנה לראיונות",
+        "detail": "דור מסביר החלטה טכנית, חלופה שנשקלה ותקלה שנפתרה. התיאור מתבסס על הפעולות שביצע ועל תוצאות שבדק בפועל."
+      }
+    ],
+    "boundaries_he": "בחירת הטכנולוגיות ומסלולי האירוח נקבעת יחד ומתועדת בקובץ project-context.json. בקשה לקבוע את דרך העבודה לבדה אינה בחירה טכנית או התחלה של הקמה. ההסברים על פיתוח נשארים במסמכי העבודה ובשיחה ולא במסכים ללומדי ספרדית. גם תוכן הקורס נכתב יחד, יחידה אחת ושלב אחד בכל פעם.",
+    "secrets_he": "הזנת מפתחות וסיסמאות מתבצעת בממשק המאובטח המתאים. אין לבקש סוד בצ'אט או לשמור אותו ביומן הלמידה.",
+    "history_he": "קיים אבטיפוס ניסיוני למודולים 1 עד 3. הוא משמש להמחשה ולבדיקה; אינו קובע את הטכנולוגיה למוצר. החלטות הפיתוח והתוכן הבאות מתקבלות במסגרת העבודה המשותפת.",
+    "persistence_he": "הכללים נכללים בכל מסמך פעיל ובהוראות לסוכנים, וחלים גם על משימות המשך. מחוללי מסמכים קוראים את המדיניות כדי שיצירה מחדש תשמור אותה. גרסאות קודמות נשמרות בארכיון."
+  },
+  "accepted_decisions_reference": "docs/planning/approved-decisions.json"
+}

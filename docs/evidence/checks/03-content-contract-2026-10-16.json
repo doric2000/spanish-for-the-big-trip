@@ -1,0 +1,30 @@
+{
+  "stage_id": "03",
+  "checked_on": "2026-10-16",
+  "scope": "Local content contract and authoring draft only",
+  "checks": [
+    {
+      "command": "npm.cmd test",
+      "exit_code": 0,
+      "output": "\n> @spanish-for-trip/content@0.1.0 test\n> npm run build --silent && node --test dist/tests/*.test.js\n\nTAP version 13\n# Subtest: real 1A draft retains all five expressions and the reviewed dialogue\nok 1 - real 1A draft retains all five expressions and the reviewed dialogue\n  ---\n  duration_ms: 61.866\n  type: 'test'\n  ...\n# Subtest: current draft cannot pass the publication gate\nok 2 - current draft cannot pass the publication gate\n  ---\n  duration_ms: 7.0513\n  type: 'test'\n  ...\n# Subtest: duplicate activity ID is rejected\nok 3 - duplicate activity ID is rejected\n  ---\n  duration_ms: 4.8772\n  type: 'test'\n  ...\n# Subtest: publication schema accepts a synthetic fully reviewed revision without mutating the draft\nok 4 - publication schema accepts a synthetic fully reviewed revision without mutating the draft\n  ---\n  duration_ms: 7.5212\n  type: 'test'\n  ...\n# Subtest: a missing answer declaration is rejected\nok 5 - a missing answer declaration is rejected\n  ---\n  duration_ms: 8.0193\n  type: 'test'\n  ...\n# Subtest: correct answer must exist among the choices\nok 6 - correct answer must exist among the choices\n  ---\n  duration_ms: 8.1918\n  type: 'test'\n  ...\n# Subtest: duplicate choices are rejected even when the answer points to that ID\nok 7 - duplicate choices are rejected even when the answer points to that ID\n  ---\n  duration_ms: 5.1368\n  type: 'test'\n  ...\n# Subtest: unknown audio and speaker references are rejected\nok 8 - unknown audio and speaker references are rejected\n  ---\n  duration_ms: 7.5577\n  type: 'test'\n  ...\n# Subtest: media cannot traverse outside the product assets directory\nok 9 - media cannot traverse outside the product assets directory\n  ---\n  duration_ms: 11.7002\n  type: 'test'\n  ...\n# Subtest: approved source files exist and pending audio is not misreported as ready\nok 10 - approved source files exist and pending audio is not misreported as ready\n  ---\n  duration_ms: 26.8721\n  type: 'test'\n  ...\n# Subtest: unsupported activity types and empty learner copy are rejected\nok 11 - unsupported activity types and empty learner copy are rejected\n  ---\n  duration_ms: 2.0534\n  type: 'test'\n  ...\n1..11\n# tests 11\n# suites 0\n# pass 11\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 535.7036\n",
+      "expected_exit_code": 0
+    },
+    {
+      "command": "npm.cmd run validate",
+      "exit_code": 0,
+      "output": "\n> @spanish-for-trip/content@0.1.0 validate\n> npm run build --silent && node dist/src/cli.js units/unit1a.json\n\nVALID DRAFT: C01-U01 / 1A — 9 activities\nPending: 6 stages; 6 media assets; 6 activity reviews\nLocal validation only. No content published and no cloud writes.\n",
+      "expected_exit_code": 0
+    },
+    {
+      "command": "npm.cmd run check:publish",
+      "exit_code": 1,
+      "output": "\n> @spanish-for-trip/content@0.1.0 check:publish\n> npm run build --silent && node dist/src/cli.js units/unit1a.json --publish\n\nINVALID / נחסם:\n- activities.2.review: Publication requires reviewed activity copy\n- activities.3.review: Publication requires reviewed activity copy\n- activities.4.review: Publication requires reviewed activity copy\n- activities.5.review: Publication requires reviewed activity copy\n- activities.6.review: Publication requires reviewed activity copy\n- activities.8.review: Publication requires reviewed activity copy\n- pendingStages: Publication blocked: learner stages are incomplete\n- media.2.status: Publication requires approved media\n- media.4.status: Publication requires approved media\n- media.5.status: Publication requires approved media\n- media.6.status: Publication requires approved media\n- media.7.status: Publication requires approved media\n- media.8.status: Publication requires approved media\n",
+      "expected_exit_code": 1
+    }
+  ],
+  "test_count": 11,
+  "application_or_device_test": false,
+  "cloud_writes": false,
+  "builds": 0,
+  "note": "Initial compiler run failed because TypeScript6 needs explicit node types in this package. Added compilerOptions.types=['node']; subsequent tests/build and CLI checks passed. Failed publication is the expected protection for an incomplete unapproved unit."
+}

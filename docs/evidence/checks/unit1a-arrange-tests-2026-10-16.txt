@@ -1,0 +1,320 @@
+
+> @spanish-for-trip/content@0.1.0 test
+> npm run build --silent && node --test dist/tests/*.test.js
+
+TAP version 13
+# Subtest: 1A arrangement follows the approved speaking task and only uses prepared language
+ok 1 - 1A arrangement follows the approved speaking task and only uses prepared language
+  ---
+  duration_ms: 28.5438
+  type: 'test'
+  ...
+# Subtest: arrangement authoring rejects duplicate, missing and unknown answer tiles
+ok 2 - arrangement authoring rejects duplicate, missing and unknown answer tiles
+  ---
+  duration_ms: 19.3618
+  type: 'test'
+  ...
+# Subtest: public arrangement sends tiles but withholds answer order, feedback and editorial metadata
+ok 3 - public arrangement sends tiles but withholds answer order, feedback and editorial metadata
+  ---
+  duration_ms: 19.9297
+  type: 'test'
+  ...
+# Subtest: invalid arrangement submissions do not mutate state or bypass a required task
+ok 4 - invalid arrangement submissions do not mutate state or bypass a required task
+  ---
+  duration_ms: 7.7377
+  type: 'test'
+  ...
+# Subtest: wrong order stays on the arrangement and correction after resume retains assistance
+ok 5 - wrong order stays on the arrangement and correction after resume retains assistance
+  ---
+  duration_ms: 9.278
+  type: 'test'
+  ...
+# Subtest: unassisted arrangement and explicit hint produce distinct evidence without a speech score
+ok 6 - unassisted arrangement and explicit hint produce distinct evidence without a speech score
+  ---
+  duration_ms: 5.1381
+  type: 'test'
+  ...
+# Subtest: replaying an ordered tile submission advances once and changed order with the same request ID conflicts
+ok 7 - replaying an ordered tile submission advances once and changed order with the same request ID conflicts
+  ---
+  duration_ms: 5.4608
+  type: 'test'
+  ...
+# Subtest: opening sequence preserves all three and four units; real draft cannot release a chapter
+ok 8 - opening sequence preserves all three and four units; real draft cannot release a chapter
+  ---
+  duration_ms: 31.9709
+  type: 'test'
+  ...
+# Subtest: a complete first chapter may release without unfinished chapter two
+ok 9 - a complete first chapter may release without unfinished chapter two
+  ---
+  duration_ms: 155.8727
+  type: 'test'
+  ...
+# Subtest: both complete synthetic chapters pass without modifying real lesson sources
+ok 10 - both complete synthetic chapters pass without modifying real lesson sources
+  ---
+  duration_ms: 149.0764
+  type: 'test'
+  ...
+# Subtest: partial chapters are blocked even if every loaded unit is structurally ready
+ok 11 - partial chapters are blocked even if every loaded unit is structurally ready
+  ---
+  duration_ms: 171.0713
+  type: 'test'
+  ...
+# Subtest: empty, skipped, duplicate, reversed and unknown chapter selections are blocked
+ok 12 - empty, skipped, duplicate, reversed and unknown chapter selections are blocked
+  ---
+  duration_ms: 61.0393
+  type: 'test'
+  ...
+# Subtest: a unit cannot be substituted from a different chapter or counted twice
+ok 13 - a unit cannot be substituted from a different chapter or counted twice
+  ---
+  duration_ms: 123.2048
+  type: 'test'
+  ...
+# Subtest: every human/device check needs evidence tied to the current unit revisions
+ok 14 - every human/device check needs evidence tied to the current unit revisions
+  ---
+  duration_ms: 169.3141
+  type: 'test'
+  ...
+# Subtest: unreviewed copy and pending stages still block a complete chapter
+ok 15 - unreviewed copy and pending stages still block a complete chapter
+  ---
+  duration_ms: 181.5714
+  type: 'test'
+  ...
+# Subtest: declared ready audio must actually exist
+ok 16 - declared ready audio must actually exist
+  ---
+  duration_ms: 205.3605
+  type: 'test'
+  ...
+# Subtest: editing content under an unchanged revision invalidates chapter evidence
+ok 17 - editing content under an unchanged revision invalidates chapter evidence
+  ---
+  duration_ms: 223.8724
+  type: 'test'
+  ...
+# Subtest: chapter evidence cannot be reused after silently changing planned membership
+ok 18 - chapter evidence cannot be reused after silently changing planned membership
+  ---
+  duration_ms: 152.748
+  type: 'test'
+  ...
+# Subtest: a prerequisite cannot come from a later unit
+ok 19 - a prerequisite cannot come from a later unit
+  ---
+  duration_ms: 221.5092
+  type: 'test'
+  ...
+# Subtest: malformed manifests and duplicate chapter reviews are rejected
+ok 20 - malformed manifests and duplicate chapter reviews are rejected
+  ---
+  duration_ms: 89.5531
+  type: 'test'
+  ...
+# Subtest: real 1A draft retains all five expressions and the reviewed dialogue
+ok 21 - real 1A draft retains all five expressions and the reviewed dialogue
+  ---
+  duration_ms: 35.957
+  type: 'test'
+  ...
+# Subtest: current draft cannot pass the publication gate
+ok 22 - current draft cannot pass the publication gate
+  ---
+  duration_ms: 4.6189
+  type: 'test'
+  ...
+# Subtest: duplicate activity ID is rejected
+ok 23 - duplicate activity ID is rejected
+  ---
+  duration_ms: 3.7059
+  type: 'test'
+  ...
+# Subtest: publication schema accepts a synthetic fully reviewed revision without mutating the draft
+ok 24 - publication schema accepts a synthetic fully reviewed revision without mutating the draft
+  ---
+  duration_ms: 16.3176
+  type: 'test'
+  ...
+# Subtest: a missing answer declaration is rejected
+ok 25 - a missing answer declaration is rejected
+  ---
+  duration_ms: 5.398
+  type: 'test'
+  ...
+# Subtest: correct answer must exist among the choices
+ok 26 - correct answer must exist among the choices
+  ---
+  duration_ms: 4.2525
+  type: 'test'
+  ...
+# Subtest: duplicate choices are rejected even when the answer points to that ID
+ok 27 - duplicate choices are rejected even when the answer points to that ID
+  ---
+  duration_ms: 3.3637
+  type: 'test'
+  ...
+# Subtest: unknown audio and speaker references are rejected
+ok 28 - unknown audio and speaker references are rejected
+  ---
+  duration_ms: 3.5298
+  type: 'test'
+  ...
+# Subtest: media cannot traverse outside the product assets directory
+ok 29 - media cannot traverse outside the product assets directory
+  ---
+  duration_ms: 7.0164
+  type: 'test'
+  ...
+# Subtest: approved source files exist and pending audio is not misreported as ready
+ok 30 - approved source files exist and pending audio is not misreported as ready
+  ---
+  duration_ms: 19.7643
+  type: 'test'
+  ...
+# Subtest: unsupported activity types and empty learner copy are rejected
+ok 31 - unsupported activity types and empty learner copy are rejected
+  ---
+  duration_ms: 4.3505
+  type: 'test'
+  ...
+# Subtest: removing pending flags does not fabricate a complete lesson
+ok 32 - removing pending flags does not fabricate a complete lesson
+  ---
+  duration_ms: 31.9177
+  type: 'test'
+  ...
+# Subtest: every learning phase, speaking and the completion scenario are enforced independently
+ok 33 - every learning phase, speaking and the completion scenario are enforced independently
+  ---
+  duration_ms: 39.0142
+  type: 'test'
+  ...
+# Subtest: new language must be declared and prepared before use; production is explicit
+ok 34 - new language must be declared and prepared before use; production is explicit
+  ---
+  duration_ms: 4.8121
+  type: 'test'
+  ...
+# Subtest: unknown help, unreviewed help and incorrect phase assignments are blocked
+ok 35 - unknown help, unreviewed help and incorrect phase assignments are blocked
+  ---
+  duration_ms: 4.9489
+  type: 'test'
+  ...
+# Subtest: scenario destinations, unreachable nodes, dead ends and cycles are rejected
+ok 36 - scenario destinations, unreachable nodes, dead ends and cycles are rejected
+  ---
+  duration_ms: 9.3816
+  type: 'test'
+  ...
+# Subtest: skill graph rejects unknown skills, missing providers and dependency cycles
+ok 37 - skill graph rejects unknown skills, missing providers and dependency cycles
+  ---
+  duration_ms: 3.4074
+  type: 'test'
+  ...
+# Subtest: review digest binds content and actual media bytes without depending on draft/published marker
+ok 38 - review digest binds content and actual media bytes without depending on draft/published marker
+  ---
+  duration_ms: 55.6471
+  type: 'test'
+  ...
+# Subtest: runtime projection allowlists all supported types and hides answers, feedback, review, paths and branches
+ok 39 - runtime projection allowlists all supported types and hides answers, feedback, review, paths and branches
+  ---
+  duration_ms: 4.6123
+  type: 'test'
+  ...
+# Subtest: attempt input rejects client-selected user, correctness, raw audio and unknown response fields
+ok 40 - attempt input rejects client-selected user, correctness, raw audio and unknown response fields
+  ---
+  duration_ms: 4.0861
+  type: 'test'
+  ...
+# Subtest: authentication, ownership, drafts and invalid activity transitions fail without changing input
+ok 41 - authentication, ownership, drafts and invalid activity transitions fail without changing input
+  ---
+  duration_ms: 7.1047
+  type: 'test'
+  ...
+# Subtest: acknowledging content records viewed evidence, not a correct answer
+ok 42 - acknowledging content records viewed evidence, not a correct answer
+  ---
+  duration_ms: 2.5956
+  type: 'test'
+  ...
+# Subtest: wrong answer stays in place; later correct answer records assisted success
+ok 43 - wrong answer stays in place; later correct answer records assisted success
+  ---
+  duration_ms: 5.1437
+  type: 'test'
+  ...
+# Subtest: written hint and optional help preserve current activity and assistance across resume
+ok 44 - written hint and optional help preserve current activity and assistance across resume
+  ---
+  duration_ms: 2.8697
+  type: 'test'
+  ...
+# Subtest: self-comparison and microphone alternative complete speaking without pronunciation judgment
+ok 45 - self-comparison and microphone alternative complete speaking without pronunciation judgment
+  ---
+  duration_ms: 8.2312
+  type: 'test'
+  ...
+# Subtest: scenario retry, terminal transition, recap and summary all participate in completion
+ok 46 - scenario retry, terminal transition, recap and summary all participate in completion
+  ---
+  duration_ms: 6.8867
+  type: 'test'
+  ...
+# Subtest: same request after a lost response replays once; different body and distinct stale requests conflict
+ok 47 - same request after a lost response replays once; different body and distinct stale requests conflict
+  ---
+  duration_ms: 1.4926
+  type: 'test'
+  ...
+# Subtest: replaying an older request never rolls authoritative progress back
+ok 48 - replaying an older request never rolls authoritative progress back
+  ---
+  duration_ms: 1.6829
+  type: 'test'
+  ...
+# Subtest: resume pins old revisions; new starts choose latest, completed records remain historical
+ok 49 - resume pins old revisions; new starts choose latest, completed records remain historical
+  ---
+  duration_ms: 3.0328
+  type: 'test'
+  ...
+# Subtest: skill-based unlock uses only own completion and the skills in that exact revision
+ok 50 - skill-based unlock uses only own completion and the skills in that exact revision
+  ---
+  duration_ms: 2.1407
+  type: 'test'
+  ...
+# Subtest: pending request serialization survives restart, rejects a different user and contains no credentials/audio
+ok 51 - pending request serialization survives restart, rejects a different user and contains no credentials/audio
+  ---
+  duration_ms: 3.1522
+  type: 'test'
+  ...
+1..51
+# tests 51
+# suites 0
+# pass 51
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2289.5185

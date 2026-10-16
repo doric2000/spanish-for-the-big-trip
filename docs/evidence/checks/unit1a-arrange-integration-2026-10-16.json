@@ -1,0 +1,70 @@
+{
+  "stage_id": "03",
+  "checkpoint": "unit1a_word_tiles_content_and_local_contract_extension",
+  "status": "local_implementation_verified; exact_hint_retry_copy_and_mobile_review_pending; not_stage_or_unit_completion",
+  "approved_decisions": {
+    "authority": "Dor: yes, directly accepting the presented Buenos dias prompt, two tiles, target order, correction and optional hint.",
+    "source_ref": "docs/curriculum/unit1a-content.json#arrange_greeting_review",
+    "scope": "Integrate the next approved unit1A part. Keep C01 before C02. This content checkpoint does not take over the Dor-owned stage04 setup action."
+  },
+  "implemented_files": [
+    "content/src/schema.ts",
+    "content/src/api-contract.ts",
+    "content/src/progress.ts",
+    "content/api-contract.json",
+    "content/units/unit1a.json",
+    "content/drafts/unit1a-arrange-greeting.json",
+    "content/drafts/unit1a-ending-scenario.json",
+    "content/tests/arrange.test.ts",
+    "content/tests/stage03.test.ts",
+    "content/tests/fixtures.ts",
+    "content/README.md",
+    "README.md",
+    "docs/DEVELOPMENT_GUIDE.md",
+    "docs/curriculum/unit1a-content.json"
+  ],
+  "how_to_run": {
+    "directory": "content",
+    "checks": [
+      "npm.cmd run validate",
+      "npm.cmd test",
+      "node dist/src/cli.js units/unit1a.json --publish"
+    ],
+    "expected": "Validation/tests exit0. Publication exit1 intentionally. No command assigned to Dor in this content review."
+  },
+  "checks_and_evidence": {
+    "draft_validation": "PASS:11 activities,6 pending stages,6 pending media,7 pending activity reviews; exact hint review additionally pending.",
+    "tests": "51 passed,0 failed, including7 new meaningful arrangement contract/progression tests.",
+    "test_log": "docs/evidence/checks/unit1a-arrange-tests-2026-10-16.txt",
+    "publication_gate": "Expected blocked exit1: incomplete scenario/review/summary, pending help/copy and media.",
+    "publication_log": "docs/evidence/checks/unit1a-arrange-publish-gate-2026-10-16.txt",
+    "preservation": "All10 prior activity objects, media metadata and draft revision1 match the saved SHA256 baseline.",
+    "live_delivery": "work-plan.json changed independently from dashboard access to development-project creation during this content checkpoint; Codex did not write or restore it.",
+    "debugging": [
+      "Initial TypeScript test assertion needed a tiles-property guard on the existing public union type.",
+      "One existing projection test expected8 types. Updated it to check the full explicit9-type set and hide expectedTileIds/correctHe.",
+      "Synthetic test fixture now preserves the real draft hint alongside test-only help, then applies synthetic review only in memory."
+    ]
+  },
+  "dor_actions_and_understanding": {
+    "content": "Approved the exercise in chat.",
+    "technical": "No new command, API, database or device execution inferred. Unresolved03 explanation is still independent."
+  },
+  "known_issues": [
+    "No mobile tile component or device verification yet.",
+    "Pre-submit tile selection is future local UI state and is not durably restored; activity and used-help state are preserved.",
+    "Exact hint/retry copy remains needs_review.",
+    "End scenario is a separate non-runnable draft requiring joint review and eventual nonverbal-context contract support.",
+    "1A and C01 remain incomplete. No public release."
+  ],
+  "open_choices": [
+    "Review exact hint/retry wording together with the proposed hostel greeting/seat-offer scenario."
+  ],
+  "next_stage_and_first_action": {
+    "content": "Review unit1a-ending-scenario.json, including valid yes/no branches; then integrate accepted scenario and proceed to recall/summary.",
+    "technical": "Follow live work-plan.json#delivery; do not perform Dor-assigned project creation or reset current progress."
+  },
+  "commit_or_snapshot_when_available": {
+    "new_commit": "not_created; existing work preserved"
+  }
+}

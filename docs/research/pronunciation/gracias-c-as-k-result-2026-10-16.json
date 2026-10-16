@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-16",
+  "stage_id": "02",
+  "trial_id": "gracias-c-as-k-01",
+  "status": "human_distortion_trial_observed",
+  "reference_text": "Gracias.",
+  "reported_utterance_he": "גרקיאס",
+  "human_label_source": "Dor reports עכשיו אמרתי גרקיאס in the context of the planned deliberate error test; normal Gracias trial had not occurred.",
+  "human_label": "reported_deliberate_distortion",
+  "independent_audio_rating": false,
+  "locale": "es-MX",
+  "tier": "F0",
+  "response_id": "8e94f8ff61d947ab9e3e58178499a88f",
+  "recognition_status": "Success",
+  "recognized_text": "Gracias.",
+  "pronunciation_score_exact": 90.4,
+  "pronunciation_score_ui": 90,
+  "accuracy": 84,
+  "fluency": 100,
+  "completeness": 100,
+  "word_error_type": "None",
+  "phoneme_scores": [
+    88,
+    98,
+    44,
+    86,
+    100,
+    100,
+    45
+  ],
+  "phoneme_names": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "displayed_errors": {
+    "omissions": 0,
+    "mispronunciations": 0,
+    "insertions": 0
+  },
+  "raw_output_ref": "docs/research/pronunciation/gracias-c-as-k-provider-output-2026-10-16.json",
+  "raw_output_capture": "Selected all in visible Studio JSON editor, copied through browser UI, parsed JSON and saved locally. No hidden application-state extraction.",
+  "evidence_image": ".codex-review/pronunciation/gracias-c-as-k-result-2026-10-16.jpg",
+  "provenance": "New response ID differs from earlier Hola ID721df10cc0154d69ba201fc60fbc3d9a; user confirms microphone submission.",
+  "interpretation": "The reported distorted sample received high aggregate/word scores and no word-level mispronunciation label, while two unnamed phoneme entries scored44 and45. Aggregate score and ErrorType alone did not flag the reported error in this trial. Low segment scores are a signal to investigate, not validated diagnosis or an accepted threshold.",
+  "limits": [
+    "No correct Gracias baseline yet; Hola is a different word and cannot serve as paired control.",
+    "No proficient listener verified the actual audio.",
+    "Blank Spanish phoneme labels do not support identifying which sound scored low.",
+    "No repeatability, reliability or false-acceptance rate estimate from one distorted sample."
+  ],
+  "audio_archived": false,
+  "next": "Dor now records Gracias normally once with the unchanged Gracias. reference, es-MX/F0 and same microphone. Save and compare its word accuracy, ErrorType and per-phoneme score distribution with the already observed user-reported deliberate גרקיאס trial. No threshold, phoneme identity mapping or production decision from these samples alone."
+}

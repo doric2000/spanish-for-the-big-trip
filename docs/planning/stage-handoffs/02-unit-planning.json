@@ -1,0 +1,84 @@
+{
+  "stage_id": "02",
+  "status": "complete_revised_planning_scope; not_full_lesson_or_runtime_completion",
+  "completed_on": "2026-10-16",
+  "approved_decisions": {
+    "authority": "Dor approved and explicitly requested implementation of the practical plan.",
+    "work_plan": "docs/planning/work-plan.json",
+    "scope_change": "Close02 on representative flow/template planning and explicit gaps, continue first03 checkpoint in the same chat.",
+    "learning": "Codex implements and explains; Dor performs meaningful setup/device/API/database checks. No typing/pasting code tasks.",
+    "pronunciation": "Deferred until after working unit; preserve research and two human trials, no further recording assigned now.",
+    "build": "No owned build now;04 retains Google/Apple/signing/install checks.",
+    "course": "Updated full course is the wider target;1A proves the engine first. Provisional2–3week window is not a guarantee."
+  },
+  "implemented_files": [
+    "docs/planning/toolchain.json",
+    "docs/planning/work-plan.json",
+    "docs/evidence/checks/03-content-contract-2026-10-16.json",
+    "content/package.json",
+    "content/package-lock.json",
+    "content/tsconfig.json",
+    "content/src/schema.ts",
+    "content/src/cli.ts",
+    "content/tests/schema.test.ts",
+    "content/units/unit1a.json",
+    "content/storage-model.json",
+    "content/README.md"
+  ],
+  "how_to_run": {
+    "directory": "C:/Users/doric/Documents/SpanishForTrip/spanish-for-the-big-trip/content",
+    "draft_check": "npm.cmd run validate",
+    "tests": "npm.cmd test",
+    "publish_gate": "npm.cmd run check:publish",
+    "publish_expected": "exit1: current unit is draft with pending reviews/media/stages",
+    "cloud": "No cloud project/connection/import/API/native build in this checkpoint."
+  },
+  "checks_and_evidence": {
+    "reference": "docs/evidence/checks/03-content-contract-2026-10-16.json",
+    "tests_passed": 11,
+    "draft_activities": 9,
+    "expected_publish_block": true,
+    "skill_installations": "docs/planning/toolchain.json#installed_skills",
+    "limits": "Structural content/media checks only. No DB/RLS/auth/runtime/device or pedagogy validation claimed."
+  },
+  "dor_actions_and_demonstrated_understanding": {
+    "actions": [
+      "Provided and corrected entry wording, reusable-template direction, Juan identity/voice pace and approved dialogue; earlier Present/audio evidence remains in learning log.",
+      "Selected files/import authoring and deferral of pronunciation, then explicitly authorized the practical implementation plan."
+    ],
+    "new_local_cli_execution": "pending; checks here executed by Codex",
+    "understanding": "No independent schema/SQL/API implementation or CLI understanding inferred from agent checks."
+  },
+  "known_issues": [
+    "Exact remaining copy and six media assets need review/production.",
+    "Speaking, optional help, selected tiles, scenario branches and summary are not runnable activities yet.",
+    "Goal/completion criteria need final joint content review.",
+    "Logical storage/API model is proposed, not deployed.",
+    "Supabase account/project and real Google/Apple device proof remain04 tasks."
+  ],
+  "open_choices": [
+    "Review the03 logical ownership/version/idempotency model before cloud setup.",
+    "Review exact missing learner content at its corresponding implementation checkpoint.",
+    "Confirm personal/non-commercial hosting eligibility and access at05; no paid upgrade."
+  ],
+  "next_stage_and_first_action": {
+    "stage_id": "03",
+    "status": "first_checkpoint_implemented; joint_review_pending",
+    "action": "Inspect the real JSON and a blocked answer reference; trace the logical storage/API path. Then start04 setup with Dor after03 review."
+  },
+  "commit_or_snapshot_when_available": {
+    "base_head": "8fa45c128dc87874191b1e278f0edb8f49e5e2bc",
+    "new_commit": "not_created; preserve prior uncommitted edits for review",
+    "sha256": {
+      "content/package.json": "cd2077c87d336f49295b328599326b5d77a0d8f87c74f43154604a05cba85dc4",
+      "content/package-lock.json": "0ca98ad2159b00a89839d77239cf9d52e19c6d29a63f8efc8c8e2c4233966776",
+      "content/tsconfig.json": "4bcc1b1d9d9033ffcf988b9f5a6b77e651d81a966436bd27b84c842564131efc",
+      "content/src/schema.ts": "f0e88bc41b4335cd7c747f9d7ff6aba53e956ac535560f3cf5f1e8928b478e1f",
+      "content/src/cli.ts": "18c1c319be94532b8cca65554907751062fac2dfdb4c0494f6bc165749bec527",
+      "content/tests/schema.test.ts": "6945f0dfc50c5c420f8a776bd5ae91ba66efafdf1596e025389d90bd277a4ab6",
+      "content/units/unit1a.json": "2a5aab26622d9d91679d279405ba6af187d0e38f37df762b8350b1d545d2398c",
+      "content/storage-model.json": "188b40da538f61002fc1a4ad14f5c2919a07f97fa16fd7dcecc9b1f87b9d4894",
+      "content/README.md": "7a95f85bd434056d08e096cc273e6fec883ace571146157ac2032c3ba66f6434"
+    }
+  }
+}

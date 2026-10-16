@@ -5,7 +5,7 @@
   "catalog_name": "César - Latin American Spanish Narration",
   "status": "approved_by_dor",
   "approved_on": "2026-10-15",
-  "workflow": "../../../../DEVELOPMENT_GUIDE.md",
+  "workflow": "../../../../docs/DEVELOPMENT_GUIDE.md",
   "approval_evidence_he": "עכשיו זה נשמע טוב ומתאים למתחילים. נשמור את הקול והקצב האלה ונמשיך",
   "scope": "Retain this Juan voice and delivery profile for subsequent reviewed lesson audio. Approval is based on the single Buenos días v4 sample; future phrases still require listening checks.",
   "generation": {

@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "purpose": "Reusable Figma template for a supported meaning check; update content without rebuilding UI states.",
+  "fileKey": "vGKirilyDhMUJbKad16yU1",
+  "learnerPageId": "0:1",
+  "libraryPageId": "35:168",
+  "componentSetId": "36:160",
+  "canonicalScreenId": "37:90",
+  "canonicalInstanceId": "37:91",
+  "contentSource": "docs/curriculum/unit1a-content.json#supported_comprehension_check",
+  "propertyKeys": {
+    "title": "כותרת#36:0",
+    "prompt": "שאלה#36:5",
+    "expression": "ביטוי#36:10",
+    "retry": "משוב לניסיון נוסף#36:15",
+    "success": "משוב נכון#36:20",
+    "example": "דוגמה#36:25"
+  },
+  "stateProperty": "מצב",
+  "states": {
+    "question": {
+      "value": "בחירה",
+      "componentId": "35:164"
+    },
+    "hint": {
+      "value": "רמז",
+      "componentId": "35:165"
+    },
+    "retry": {
+      "value": "ניסיון נוסף",
+      "componentId": "35:166"
+    },
+    "success": {
+      "value": "נכון",
+      "componentId": "35:167"
+    }
+  },
+  "answerControls": {
+    "access": "instance.exposedInstances; names תשובה 1 / תשובה 2 / תשובה 3; nested Label#2:0 TEXT property",
+    "labelProperty": "Label#2:0",
+    "overridePersistence": "Verified question -> hint with temporary Gracias content, then restored Hola",
+    "prototypeCorrectOptionPosition": 1,
+    "correctnessNote": "Current Hola example routes option1 to success. If option order/correctness changes, update existing answer CHANGE_TO reactions to the appropriate variant; changing a label alone does not infer correctness. No extra state variants or frames are needed."
+  },
+  "contentOnlyUpdateProcedure": [
+    "Review and update the lesson content record in unit1a-content.json; preserve prerequisites, answer rules and asset references.",
+    "Do not mirror every item into Figma. Existing Hola and Buenos días instances are examples of the same template.",
+    "When a representative Figma example truly needs updating, set the existing instance properties and preserve state/answer actions; no duplicated master states.",
+    "Check new interaction/layout/state changes with representative content. Verify the complete data-driven lesson in the real app at its implementation stage."
+  ],
+  "designPolicy": "One shared interaction family with meaningful states and representative examples. New lesson data alone does not require another learner frame, variant or user Present run. Use the interaction catalog new-design gate.",
+  "continuation": "Configure next-stage navigation on each content instance. Current1A success CTA I37:91;32:230 navigates to44:148; this was set only on that instance, not on the shared master.",
+  "boundaries": [
+    "Only this meaning-check interaction is templated by this change; no whole-app component overhaul.",
+    "Audio playback/generation, runtime code and native builds are outside this change.",
+    "User edits wording jointly; Codex changes code/config by default."
+  ],
+  "verification": ".codex-review/figma/02-meaning-template-verification.json",
+  "additional_lesson_instances": [
+    {
+      "screenId": "51:199",
+      "instanceId": "51:200",
+      "purpose": "Post-dialogue Buenos días meaning recognition",
+      "contentSource": "docs/curriculum/unit1a-content.json#post_dialogue_practice_review.first_activity",
+      "incoming": "Dialogue44:148, both translation states",
+      "continuation": "Pending the next reviewed practice activity"
+    }
+  ],
+  "interaction_catalog": "docs/design/interaction-catalog.json"
+}

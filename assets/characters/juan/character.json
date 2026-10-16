@@ -6,7 +6,7 @@
   "approved_on": "2026-10-15",
   "approval_evidence": "Dor: חואן נראה מעולה",
   "approval_scope": "Juan visual identity v1 and César voice with v4 slow-delivery profile approved by Dor. Audio approval uses one representative Buenos días sample; later phrase assets require listening checks.",
-  "workflow": "../../../DEVELOPMENT_GUIDE.md",
+  "workflow": "../../../docs/DEVELOPMENT_GUIDE.md",
   "path_base": "this_character_directory",
   "role": "Fellow traveler who addresses the learner on the first morning at the hostel; intended recurring character",
   "visual_traits": {

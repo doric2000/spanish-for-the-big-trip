@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "stage_id": "02",
+  "date": "2026-10-16",
+  "status": "human_recording_completed_result_observed",
+  "resource_ref": "docs/research/pronunciation/azure-speech-resource.json",
+  "tool": "Azure Speech Studio pronunciation assessment",
+  "mode": "Reading / Enter your own",
+  "locale": "es-MX",
+  "language_display": "Spanish (Mexico)",
+  "reference_text": "Hola.",
+  "resource": "spanishfortrip-speech-dor",
+  "tier": "F0",
+  "region": "italynorth",
+  "ui_verified": {
+    "microphone_enabled": true,
+    "reference_text": "Hola.",
+    "custom_tab_selected": true,
+    "result_empty": true
+  },
+  "evidence_image": ".codex-review/pronunciation/hola-esmx-ready-2026-10-16.jpg",
+  "user_action": "Dor clicks microphone, allows microphone access if prompted, says Hola once at a comfortable pace, stops recording, then reports completion.",
+  "audio_submitted": true,
+  "scores": {
+    "pronunciation": 96,
+    "fluency": 100,
+    "completeness": 100,
+    "accuracy": 93
+  },
+  "thresholds_validated": false,
+  "note": "Historical readiness checks retained above. Dor subsequently recorded Hola; Codex inspected the actual result. No audio file archived and no independent listener label yet.",
+  "next": "Dor records Gracias normally once in Speech Studio es-MX/F0, then reports completion. Save its result before a separate deliberately distorted Gracias sample (planned c sound replaced with k, גראקיאס), using the same expected text, locale and microphone. No further recording has been performed. Compare actual word accuracy/error flags and human judgments before any threshold or integration.",
+  "result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
+  "preparation_note": "Changing locale asynchronously reset the sample. After locale settled, selected Enter your own and filled Hola again; verified tab, value and screenshot. No user audio or result yet."
+}

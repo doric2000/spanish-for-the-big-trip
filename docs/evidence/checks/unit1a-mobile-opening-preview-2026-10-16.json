@@ -1,0 +1,69 @@
+{
+  "checkpoint": "unit1a_visible_opening_preview",
+  "status": "implemented_and_local_checks_passed; awaiting_Dor_iPhone_review",
+  "authority": {
+    "user_he": "אוקי , נתקדם",
+    "context": "Dor agreed to connect visible app screens after asking what was built and learning that content/rules were not rendered on the phone.",
+    "scope": "One small development-only checkpoint: entry and five vocabulary cards. No full frontend, guest course, native build or cloud setup."
+  },
+  "workflow_ref": "docs/DEVELOPMENT_GUIDE.md",
+  "live_delivery_ref": "docs/planning/work-plan.json#delivery",
+  "implemented_files": [
+    "mobile/App.tsx",
+    "mobile/src/audio-lab.tsx",
+    "mobile/src/theme.ts",
+    "mobile/src/lesson/opening-data.ts",
+    "mobile/src/lesson/opening-preview.tsx",
+    "mobile/metro.config.js",
+    "mobile/tests/audio-flow.test.cjs",
+    "mobile/tests/opening-preview.test.cjs",
+    "mobile/README.md",
+    "mobile/AGENTS.md"
+  ],
+  "behavior": {
+    "data": "Reads real content/units/unit1a.json. Stops before the first unsupported interaction. No duplicate lesson data or synthetic identity.",
+    "screens": "Entry and shared vocabulary template with temporary forward/back cursor and explicit preview boundary. No lesson completion or account progress awarded.",
+    "media": "Approved Juan hostel scene and Buenos dias v4 at normal playback. Four pending audio clips remain unavailable.",
+    "recording": "Original recording handlers retained in audio-lab.tsx, with optional return control disabled while recording or busy.",
+    "production": "__DEV__ gate excludes the draft preview from production. Google/Apple learner requirements remain unchanged. No network/database calls."
+  },
+  "how_to_run": {
+    "directory": "C:/Users/doric/Documents/SpanishForTrip/spanish-for-the-big-trip/mobile",
+    "command": "npm.cmd start -- --go",
+    "meaning": "Starts the local Expo server and prints an Expo Go QR. Stop a previous server with Ctrl+C first, then scan from the iPhone.",
+    "expected": "Juan image and first-meeting title; start to Hola; next to Buenos dias and play its approved sample."
+  },
+  "checks_and_evidence": {
+    "typescript": "npx.cmd --no-install tsc --noEmit: exit0.",
+    "mobile_tests": "node --test tests/*.test.cjs: 6 passed, 0 failed. Three existing mocked audio timing checks plus source-prefix/media-approval/development-gate tests.",
+    "dev_export": "Local iOS JavaScript export exit0:724 modules, approved scene2.4MB and mp3 33KB. tmp/mobile-opening-preview/dev-ios.",
+    "release_export": "Local iOS JavaScript export exit0:593 modules, no media assets. tmp/mobile-opening-preview/release-ios.",
+    "release_inspection": "PASS: no C01-U01, correctChoiceId, preview copy, scene ID or entry text in release JS; no Spanish mp3 in asset metadata. --no-bytecode was used for these inspection exports only. No EAS/native/store build.",
+    "preservation": "Extracted audio source equals original App after removing only optional return control and restoring the component name. Original archived under archive/before-unit1a-mobile-preview-2026-10-16/App.tsx.",
+    "debugging": "First dev export failed to resolve sibling content/. Default Metro watchFolders/nodeModulesPaths were empty. Explicit bounded content/assets watch folders and mobile node_modules fallback fixed the dev export; release export also passed.",
+    "lint": "Not configured; retained documented TypeScript/tests fallback. No dependencies installed or versions upgraded.",
+    "device_visual": "Not performed. Existing Figma PNG references inspected, but actual iPhone layout, safe area and audio remain Dor's checkpoint."
+  },
+  "sources_checked": [
+    "https://docs.expo.dev/versions/v57.0.0/",
+    "https://docs.expo.dev/versions/v57.0.0/sdk/audio/",
+    "https://docs.expo.dev/versions/v57.0.0/sdk/ui/",
+    "https://docs.expo.dev/guides/customizing-metro/",
+    "https://reactnative.dev/docs/0.86/scrollview"
+  ],
+  "skills_used": ["expo-overview", "expo-native-ui", "expo-design-system"],
+  "skill_scope": "expo-ui skill not installed in either local skill root; consulted official SDK57 UI docs. Existing RN controls used without a new install. Router selection remains a separate checkpoint; this preview uses temporary step/view state.",
+  "dor_actions_and_understanding": {
+    "authorization": "Agreed to the visible connection.",
+    "execution": "iPhone preview review assigned now; not reported performed. No Dor-owned live server or CLI/database action executed by Codex.",
+    "understanding": "Not inferred from consent or passing checks. After device feedback, trace one Hola card from JSON through openingSteps to rendered Text."
+  },
+  "known_issues": [
+    "Only entry and vocabulary are connected; remaining1A screens are not implemented.",
+    "Four clips and some exact content remain for joint review.",
+    "No new physical-iPhone proof or saved account progress.",
+    "Recall/summary still separate unapproved proposals; no full lesson or chapter release."
+  ],
+  "next_stage_and_first_action": "Wait for Dor Expo Go report of entry/cards and Buenos dias playback; review visible behavior together before expanding. Keep C01 before C02 and preserve live technical setup.",
+  "commit_or_snapshot_when_available": "No new commit. Prior work and original App archive preserved."
+}

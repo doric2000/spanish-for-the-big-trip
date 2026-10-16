@@ -1,0 +1,48 @@
+{
+  "checked_on": "2026-10-14",
+  "scope": "Read-only verification requested by Dor before the mobile scaffold; no generator or package installation performed",
+  "published_versions": {
+    "create-expo": {"latest": "5.0.3", "next": "5.1.4"},
+    "expo-template-blank-typescript": {"latest": "57.0.31", "next": "58.0.18"},
+    "expo": {"latest": "57.0.29", "sdk-57": "57.0.29", "next": "58.0.9"},
+    "typescript": {"latest": "7.0.2", "next": "7.1.0-dev.20261014.1"},
+    "react-native": {"latest": "0.87.1"}
+  },
+  "official_template_57_0_31": {
+    "dependencies": {"expo": "~57.0.29", "react": "19.2.3", "react-native": "0.86.3", "expo-status-bar": "~57.0.1"},
+    "devDependencies": {"typescript": "~6.0.3", "@types/react": "~19.2.2"}
+  },
+  "node_compatibility": {
+    "reported_by_dor": "22.23.1",
+    "create-expo_5_0_3_engine": "^22.13.0 || ^24.3.0 || ^26.0.0 || >=27.0.0",
+    "sdk_57_documented_minimum": "22.13.x",
+    "result": "Dor's reported version satisfies these published requirements; no app runtime/build has yet been tested."
+  },
+  "release_status_evidence": {
+    "expo": "Official SDK documentation lists 57 as the latest stable SDK and npm latest points to expo 57.0.29. Expo's changelog identifies SDK 58 as Beta.",
+    "typescript": "TypeScript 7 is a stable released major version, confirmed by Microsoft's release post and npm latest=7.0.2. The current official Expo blank TypeScript template still selects the 6.0 line. This report does not assert that TypeScript 7 is unstable or categorically incompatible with Expo."
+  },
+  "recommendation": {
+    "status": "Codex recommendation based on the current official starter baseline; actual installation and device checks pending",
+    "command": "npx.cmd --yes create-expo@5.0.3 mobile --template expo-template-blank-typescript@57.0.31",
+    "reason": "Start with the current stable Expo release and the dependency combination selected by its official minimal TypeScript template, rather than independently replacing every dependency with its latest major version.",
+    "freshness_limit": "Generator, template and Expo versions match their npm latest tags at the check time; the template's TypeScript 6.0 range is not the latest TypeScript major version.",
+    "maintenance": "Keep the resolved package-lock.json, check Expo dependency compatibility and TypeScript, and verify the own-iPhone build. Upgrade SDK versions incrementally with relevant checks when needed. No promise of zero future upgrades or migration issues is made."
+  },
+  "checks_not_performed": ["No mobile scaffold or dependency install", "No TypeScript 6 versus 7 project comparison", "No Expo Doctor run", "No native build or physical-device execution"],
+  "sources": [
+    "https://registry.npmjs.org/-/package/create-expo/dist-tags",
+    "https://registry.npmjs.org/-/package/expo-template-blank-typescript/dist-tags",
+    "https://registry.npmjs.org/expo-template-blank-typescript/latest",
+    "https://registry.npmjs.org/-/package/expo/dist-tags",
+    "https://registry.npmjs.org/-/package/typescript/dist-tags",
+    "https://registry.npmjs.org/typescript/latest",
+    "https://registry.npmjs.org/react-native/latest",
+    "https://docs.expo.dev/versions/latest/",
+    "https://docs.expo.dev/guides/typescript/",
+    "https://expo.dev/changelog",
+    "https://expo.dev/changelog/sdk-57",
+    "https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/",
+    "https://docs.expo.dev/workflow/upgrading-expo-sdk-walkthrough/"
+  ]
+}

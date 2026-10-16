@@ -1,0 +1,50 @@
+{
+  "checked_on": "2026-10-16",
+  "stage_id": "02",
+  "status": "human_hola_result_observed",
+  "provider": "Azure Speech Studio",
+  "resource": "spanishfortrip-speech-dor",
+  "tier": "F0",
+  "region": "italynorth",
+  "locale": "es-MX",
+  "expected_text": "Hola.",
+  "human_action": "Dor reports completing his own microphone recording; the existing Studio result is inspected by Codex.",
+  "observed_json_subset": {
+    "Duration": 5700000,
+    "SNR": 21.561115,
+    "Confidence": 0.95033085,
+    "DisplayText": "Hola.",
+    "Id": "721df10cc0154d69ba201fc60fbc3d9a",
+    "Offset": 1300000,
+    "RecognitionStatus": "Success"
+  },
+  "scores": {
+    "pronunciation": 96,
+    "fluency": 100,
+    "completeness": 100,
+    "accuracy": 93
+  },
+  "displayed_errors": {
+    "insertions": 0,
+    "omissions": 0,
+    "mispronunciations": 0
+  },
+  "evidence_image": ".codex-review/pronunciation/hola-esmx-result-2026-10-16.jpg",
+  "evidence_origin": "UI DOM, rendered score chart and visible JSON output; subset transcribed, not a full raw provider response.",
+  "interpretation": "The microphone-to-assessment browser path returned a successful result. This does not establish error detection, fair learner thresholds or production accuracy.",
+  "human_judgment": {
+    "proficient_listener_label": null,
+    "dor_recording_confirmed": true,
+    "independently_listened_and_rated_by_codex": false
+  },
+  "audio_archive_created": false,
+  "latency_measured": false,
+  "secrets_read": false,
+  "direct_api_tested": false,
+  "mobile_integration_tested": false,
+  "sources": [
+    "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/how-to-pronunciation-assessment",
+    "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/speech-service/pronunciation-assessment/characteristics-and-limitations-pronunciation-assessment"
+  ],
+  "next": "Dor records Gracias normally once in Speech Studio es-MX/F0, then reports completion. Save its result before a separate deliberately distorted Gracias sample (planned c sound replaced with k, גראקיאס), using the same expected text, locale and microphone. No further recording has been performed. Compare actual word accuracy/error flags and human judgments before any threshold or integration."
+}

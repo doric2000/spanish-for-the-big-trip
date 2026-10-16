@@ -1,7 +1,7 @@
 {
   "version": 1,
   "status": "approved_slow_source_delivery_and_normal_playback",
-  "workflow": "../../DEVELOPMENT_GUIDE.md",
+  "workflow": "../../docs/DEVELOPMENT_GUIDE.md",
   "authority": "עכשיו זה נשמע טוב ומתאים למתחילים. נשמור את הקול והקצב האלה ונמשיך",
   "recorded_on": "2026-10-15",
   "default_playback_rate": 1.0,

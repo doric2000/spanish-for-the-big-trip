@@ -1,0 +1,47 @@
+{
+  "stage_id": "03",
+  "status": "small_content_checkpoint_verified; unit_and_stage_not_complete",
+  "approved_decisions": {
+    "authority_ref": "docs/curriculum/unit1a-content.json#speaking_context_review",
+    "scope": "Dor approved the dropped-hat scene and Gracias response and explicitly requested integration and the next unit1A part.",
+    "boundary": "Existing speak_reveal schema; Hebrew incident context; no new Spanish, voice production, mobile UI, service or native build."
+  },
+  "implemented_files": [
+    "content/units/unit1a.json",
+    "content/drafts/unit1a-speak-thanks.json",
+    "content/drafts/unit1a-arrange-greeting.json",
+    "content/tests/stage03.test.ts",
+    "content/README.md",
+    "docs/DEVELOPMENT_GUIDE.md",
+    "docs/curriculum/unit1a-content.json"
+  ],
+  "run_instructions": {
+    "working_directory": "content",
+    "agent_checks": [
+      "npm.cmd run validate",
+      "npm.cmd test",
+      "npm.cmd run check:publish"
+    ],
+    "dor_assigned_command": null
+  },
+  "checks": {
+    "draft_validation": "PASS: 10 activities; 6 pending stages, 6 pending media, 6 pending activity reviews.",
+    "tests": "44 passed, 0 failed.",
+    "debugging": "Initial test run: 42 passed, 2 failed. Test navigation helper used continue for the newly real speaking activity. Updated only the helper to send self_comparison for speak_reveal; production progression rules were not loosened.",
+    "publish_gate": "Expected exit1: missing scenario/review/summary/completion task, pending copy, stages and media still block publication.",
+    "preservation": "All nine prior activities, media metadata, draft revision1 and work-plan.json retained their prior SHA256 values.",
+    "separation": "New word-tile proposal parses as JSON and is absent from runnable unit activities; no unsupported activity type added.",
+    "test_output_ref": "docs/evidence/checks/unit1a-thanks-tests-2026-10-16.txt"
+  },
+  "dor_actions": "Approved concrete content in chat; no command or device test assigned or claimed in this checkpoint.",
+  "understanding": "Content approval is demonstrated. Technical understanding, learner performance, audio quality and phone behavior are not inferred.",
+  "known_issues": [
+    "Gracias reference audio remains pending.",
+    "Mobile speaking and self-comparison flow remain unverified.",
+    "1A is incomplete and cannot publish."
+  ],
+  "open_choices": [
+    "Review next word-tile content and interaction proposal with Dor before implementation."
+  ],
+  "next_first_action": "Present unit1a-arrange-greeting.json for joint content review, adapting the old por favor example to the already prepared Buenos dias. Retain the separate current stage03 explanation checkpoint in work-plan.json#delivery. Complete C01 before C02."
+}

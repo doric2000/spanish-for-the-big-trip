@@ -1,0 +1,267 @@
+[
+  {
+    "Id": "8e94f8ff61d947ab9e3e58178499a88f",
+    "RecognitionStatus": "Success",
+    "Offset": 3100000,
+    "Duration": 10100000,
+    "Channel": 0,
+    "DisplayText": "Gracias.",
+    "SNR": 25.051094,
+    "NBest": [
+      {
+        "Confidence": 0.93588966,
+        "Lexical": "Gracias",
+        "ITN": "Gracias",
+        "MaskedITN": "gracias",
+        "Display": "Gracias.",
+        "PronunciationAssessment": {
+          "AccuracyScore": 84,
+          "FluencyScore": 100,
+          "CompletenessScore": 100,
+          "PronScore": 90.4
+        },
+        "Words": [
+          {
+            "Word": "Gracias",
+            "Offset": 3100000,
+            "Duration": 10100000,
+            "PronunciationAssessment": {
+              "AccuracyScore": 84,
+              "ErrorType": "None"
+            },
+            "Syllables": [
+              {
+                "Syllable": "",
+                "PronunciationAssessment": {
+                  "AccuracyScore": 83
+                },
+                "Offset": 3100000,
+                "Duration": 4800000
+              },
+              {
+                "Syllable": "",
+                "PronunciationAssessment": {
+                  "AccuracyScore": 75
+                },
+                "Offset": 8000000,
+                "Duration": 5200000
+              }
+            ],
+            "Phonemes": [
+              {
+                "Phoneme": "",
+                "PronunciationAssessment": {
+                  "AccuracyScore": 88,
+                  "NBestPhonemes": [
+                    {
+                      "Phoneme": "",
+                      "Score": 100
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 88
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 47
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 41
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 27
+                    }
+                  ]
+                },
+                "Offset": 3100000,
+                "Duration": 2800000
+              },
+              {
+                "Phoneme": "",
+                "PronunciationAssessment": {
+                  "AccuracyScore": 98,
+                  "NBestPhonemes": [
+                    {
+                      "Phoneme": "",
+                      "Score": 97
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 75
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 64
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 54
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 48
+                    }
+                  ]
+                },
+                "Offset": 6000000,
+                "Duration": 1100000
+              },
+              {
+                "Phoneme": "",
+                "PronunciationAssessment": {
+                  "AccuracyScore": 44,
+                  "NBestPhonemes": [
+                    {
+                      "Phoneme": "",
+                      "Score": 95
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 76
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 51
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 46
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 45
+                    }
+                  ]
+                },
+                "Offset": 7200000,
+                "Duration": 700000
+              },
+              {
+                "Phoneme": "",
+                "PronunciationAssessment": {
+                  "AccuracyScore": 86,
+                  "NBestPhonemes": [
+                    {
+                      "Phoneme": "",
+                      "Score": 100
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 76
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 47
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 47
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 39
+                    }
+                  ]
+                },
+                "Offset": 8000000,
+                "Duration": 1300000
+              },
+              {
+                "Phoneme": "",
+                "PronunciationAssessment": {
+                  "AccuracyScore": 100,
+                  "NBestPhonemes": [
+                    {
+                      "Phoneme": "",
+                      "Score": 100
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 52
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 44
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 40
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 39
+                    }
+                  ]
+                },
+                "Offset": 9400000,
+                "Duration": 700000
+              },
+              {
+                "Phoneme": "",
+                "PronunciationAssessment": {
+                  "AccuracyScore": 100,
+                  "NBestPhonemes": [
+                    {
+                      "Phoneme": "",
+                      "Score": 100
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 54
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 24
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 21
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 11
+                    }
+                  ]
+                },
+                "Offset": 10200000,
+                "Duration": 900000
+              },
+              {
+                "Phoneme": "",
+                "PronunciationAssessment": {
+                  "AccuracyScore": 45,
+                  "NBestPhonemes": [
+                    {
+                      "Phoneme": "",
+                      "Score": 100
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 24
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 18
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 14
+                    },
+                    {
+                      "Phoneme": "",
+                      "Score": 14
+                    }
+                  ]
+                },
+                "Offset": 11200000,
+                "Duration": 2000000
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

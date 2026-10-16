@@ -1,0 +1,20 @@
+INVALID / נחסם:
+- help.0.review: Publication requires reviewed help
+- activities.2.review: Publication requires reviewed activity copy
+- activities.3.review: Publication requires reviewed activity copy
+- activities.4.review: Publication requires reviewed activity copy
+- activities.5.review: Publication requires reviewed activity copy
+- activities.6.review: Publication requires reviewed activity copy
+- activities.8.review: Publication requires reviewed activity copy
+- activities.10.review: Publication requires reviewed activity copy
+- activities: Publication requires a mandatory scenario activity
+- activities: Publication requires a mandatory review activity
+- activities: Publication requires a mandatory summary activity
+- pendingStages: Publication blocked: learner stages are incomplete
+- media.2.status: Publication requires approved media
+- media.4.status: Publication requires approved media
+- media.5.status: Publication requires approved media
+- media.6.status: Publication requires approved media
+- media.7.status: Publication requires approved media
+- media.8.status: Publication requires approved media
+- completionScenarioId: Publication requires a completion scenario

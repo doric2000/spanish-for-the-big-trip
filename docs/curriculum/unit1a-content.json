@@ -1,0 +1,689 @@
+{
+  "version": 2,
+  "stage_id": "02",
+  "unit_id": "1A",
+  "updated_on": "2026-10-16",
+  "workflow": "docs/DEVELOPMENT_GUIDE.md",
+  "planning_basis": "docs/curriculum/pilot-spec.json; prototype remains unapproved reference material",
+  "learner_goal": {
+    "text_he": "להבין ברכת שלום בספרדית ולברך בחזרה במפגש קצר.",
+    "status": "retained proposed outcome; detailed success criteria still require joint review"
+  },
+  "entry": {
+    "status": "wording_and_first_action_approved_by_dor",
+    "approval_evidence": "Dor supplied the title/body/button below and said הפעולה הראשונה - מעולה.",
+    "title_he": "המפגש הראשון",
+    "body_he": "בוקר ראשון בהוסטל.\nמטייל אחר, חואן, פונה אליכם בספרדית. נלמד להבין מה הוא אומר ולענות בחזרה.",
+    "primary_action_he": "בוא נתחיל!",
+    "first_action": {
+      "destination": "המילים שנצטרך",
+      "starts_with": "Hola",
+      "support": "Hebrew meaning and an explicit audio-play button",
+      "status": "Approved intended behavior; Figma entry CTA linked to Hola13:5 and read back; Dor practical transition check not reported"
+    },
+    "chapter_label_he": "פרק ראשון",
+    "chapter_label_status": "Internal unit code removal requested by Dor; chapter label selected by Codex for this draft"
+  },
+  "design": {
+    "status": "reusable_interaction_workflow_active; content_review_separate_from_Figma",
+    "file_key": "vGKirilyDhMUJbKad16yU1",
+    "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=3-2",
+    "page_id": "0:1",
+    "screen_id": "3:2",
+    "size": {
+      "width": 393,
+      "height": 852
+    },
+    "font": "Heebo",
+    "hebrew_alignment": "RIGHT; naturally bidirectional Hebrew text, with centered button text",
+    "palette": {
+      "background": "#FAF7F0",
+      "heading": "#173E3C",
+      "body": "#526C62",
+      "button": "#21655B"
+    },
+    "illustration": "Juan visual identity v1 approved by Dor; GPT scene derived from its three-view reference. Canonical character assets/profile/prompts are in the product assets/characters/juan directory; previous vector remains hidden.",
+    "component_reuse": "Primary default SDS Button instance; local font/color/size overrides",
+    "preview": ".codex-review/figma/02-entry-juan-v1.png",
+    "interaction": "Entry -> vocabulary -> optional pronunciation aids -> supported meaning check37:90 -> dialogue44:148 -> practice51:199. Dialogue continuation works from both translation states. Practice uses existing36:160 four-state family with Buenos días overrides. Next practice not yet reviewed; audio remains design-only.",
+    "character_registry": ".codex-review/visual-story/character-bible.json",
+    "interaction_catalog": "docs/design/interaction-catalog.json",
+    "content_reuse_policy": "No new frame/variant or required user Present checkpoint solely for wording, answer or audio substitution. Joint content review remains required in conversation/content files."
+  },
+  "verification": {
+    "agent": "Current readback confirms פרק ראשון, exact current copy including Dor newline, Heebo fonts and original layout. One image fill in345x280 artwork frame4:80; previous vector4:81 hidden. New artwork is a discrete scene asset; learner UI text/button remain editable. Reference, scene and full393x852 screenshot visually checked: coherent identity, complete face/wave, no answer text, no clipping/overlap.",
+    "dor": "Coauthored entry and first action; edited entry newline; approved Juan visual identity and separate character folders; corrected playback label and approved Hola card with הכרטיס נראה טוב וברור. Authorized remaining planned expressions and voice choice. No new Present-mode test or technical mastery inferred."
+  },
+  "remaining": "See docs/planning/work-plan.json#delivery; remaining copy reviewed jointly, no immediate Speech Studio task.",
+  "vocabulary_preparation": {
+    "status": "hola_layout_approved_remaining_four_rendered_pending_review",
+    "source": {
+      "spec": "docs/curriculum/pilot-spec.json",
+      "selector": "modules[number=1].lessons[id=1A].new_language",
+      "pdf": "output/pdf/Spanish_Trip_First_10_Modules.pdf",
+      "pdf_page": 4,
+      "checked_on": "2026-10-15",
+      "authority": "Existing curriculum is the planning basis; later direct decisions and jointly reviewed corrections take precedence"
+    },
+    "title_he": "המילים שנצטרך",
+    "planned_language": [
+      {
+        "es": "Hola",
+        "he": "שלום",
+        "mode": "produce"
+      },
+      {
+        "es": "Buenos días",
+        "he": "בוקר טוב",
+        "mode": "produce"
+      },
+      {
+        "es": "Gracias",
+        "he": "תודה",
+        "mode": "produce"
+      },
+      {
+        "es": "Sí / No",
+        "he": "כן / לא",
+        "mode": "produce"
+      }
+    ],
+    "cards": [
+      {
+        "id": "greeting-hola",
+        "es": "Hola",
+        "meaning_he": "שלום",
+        "mode": "produce",
+        "audio_draft": {
+          "file": "assets/characters/juan/voice/unit1a-vocabulary-audition-v2/hola.mp3",
+          "voice_id": "GcxVzkrklctDNSL0D1AO",
+          "status": "historical_v2_asset; regeneration_with_approved_profile_pending",
+          "generation_speed": 0.75,
+          "playback_rate": null,
+          "target_profile": "assets/characters/juan/voice/approved-profile.json"
+        }
+      },
+      {
+        "id": "greeting-buenos-dias",
+        "es": "Buenos días",
+        "meaning_he": "בוקר טוב",
+        "mode": "produce",
+        "audio_draft": {
+          "file": "assets/characters/juan/voice/unit1a-buenos-dias-audition-v4/buenos-dias.mp3",
+          "voice_id": "GcxVzkrklctDNSL0D1AO",
+          "status": "approved_by_dor_for_voice_naturalness_and_beginner_pace",
+          "generation_speed": 0.7,
+          "playback_rate": 1.0,
+          "model_id": "eleven_v4",
+          "delivery_tag": "[slowly]",
+          "approved_profile": "assets/characters/juan/voice/approved-profile.json"
+        }
+      },
+      {
+        "id": "thanks-gracias",
+        "es": "Gracias",
+        "meaning_he": "תודה",
+        "mode": "produce",
+        "audio_draft": {
+          "file": "assets/characters/juan/voice/unit1a-vocabulary-audition-v2/gracias.mp3",
+          "voice_id": "GcxVzkrklctDNSL0D1AO",
+          "status": "historical_v2_asset; regeneration_with_approved_profile_pending",
+          "generation_speed": 0.75,
+          "playback_rate": null,
+          "target_profile": "assets/characters/juan/voice/approved-profile.json"
+        }
+      },
+      {
+        "id": "answer-si",
+        "es": "Sí",
+        "meaning_he": "כן",
+        "mode": "produce",
+        "audio_draft": {
+          "file": "assets/characters/juan/voice/unit1a-vocabulary-audition-v2/si.mp3",
+          "voice_id": "GcxVzkrklctDNSL0D1AO",
+          "status": "historical_v2_asset; regeneration_with_approved_profile_pending",
+          "generation_speed": 0.75,
+          "playback_rate": null,
+          "target_profile": "assets/characters/juan/voice/approved-profile.json"
+        }
+      },
+      {
+        "id": "answer-no",
+        "es": "No",
+        "meaning_he": "לא",
+        "mode": "produce",
+        "audio_draft": {
+          "file": "assets/characters/juan/voice/unit1a-vocabulary-audition-v2/no.mp3",
+          "voice_id": "GcxVzkrklctDNSL0D1AO",
+          "status": "historical_v2_asset; regeneration_with_approved_profile_pending",
+          "generation_speed": 0.75,
+          "playback_rate": null,
+          "target_profile": "assets/characters/juan/voice/approved-profile.json"
+        }
+      }
+    ],
+    "normalization_note": "Existing source has four entries because Sí / No are grouped; five expression cards preserve all source content.",
+    "presentation_draft": {
+      "status": "approved_first_card_layout_extended_pending_remaining_visual_review",
+      "source_content": "Retain all five expressions and meanings from docs/curriculum/pilot-spec.json / PDF page4; no curriculum reduction.",
+      "chapter_label_he": "פרק ראשון",
+      "title_he": "המילים שנצטרך",
+      "instruction_he": "נכיר חמישה ביטויים למפגש עם חואן. אפשר להקשיב לכל ביטוי ולנסות לומר אותו בקול.",
+      "layout": "One expression per screen; all five retain the approved Hola hierarchy and Juan avatar. Buenos días type48px in an84px word area for one-line fit; others64px/84px.",
+      "first_card": {
+        "progress_he": "1 מתוך 5",
+        "es": "Hola",
+        "meaning_he": "שלום",
+        "audio_label_he": "השמעה",
+        "next_label_he": "הביטוי הבא",
+        "replay_label_he": "השמעה חוזרת"
+      },
+      "behavior": "Entry -> five vocabulary cards -> one meaning-check learner frame37:90 containing interactive instance37:91. Shared family36:160 on רכיבים35:168 stores four states once: question35:164, hint35:165, retry35:166, success35:167. State changes use CHANGE_TO inside the instance. Generic UI uses ביטוי. Shared text properties and exposed answer labels are editable; temporary Gracias override/state test passed and Hola restored. Optional pronunciation aids retained. Success continuation and actual audio remain pending.",
+      "proposed_delta": "New UI instruction, progress text and control labels; source Spanish vocabulary and Hebrew meanings remain unchanged.",
+      "next_step": "Review the single template instance37:90 with wording ביטוי and its interactive states. No new independent screens for copy changes. Then jointly review the inherited unit1A dialogue before any new layout/audio.",
+      "audio_button_wording_note": "Dor rejected לשמוע את חואן as unnatural and preferred a short action label such as הפעל while avoiding robotic wording. Codex revised to השמעה / השמעה חוזרת; Juan is identified beside his image."
+    },
+    "audio_status": "Dor approved Buenos días v4 and asked to retain this voice and pace. Shared approved-profile.json records exact generation settings and normal playback1.0. The other four historical v2 clips have not been regenerated; no additional audio produced in this step.",
+    "previous_unaccepted_variation": {
+      "status": "superseded_unapproved_two_greeting_scope",
+      "reason": "Dor reminded Codex that the detailed saved curriculum must be used as the baseline",
+      "draft": {
+        "status": "draft_pending_dor_review",
+        "goal_he": "להכיר שתי ברכות שנוכל להבין ולומר במפגש עם חואן.",
+        "title_he": "המילים שנצטרך",
+        "instruction_he": "נכיר שתי ברכות למפגש עם חואן. אפשר להקשיב שוב ולנסות לומר בקול.",
+        "presentation": "One expression card at a time; start with Hola as already approved. Spanish text LTR; Hebrew meaning/context RTL.",
+        "cards": [
+          {
+            "id": "greeting-hola",
+            "es": "Hola",
+            "meaning_he": "היי / שלום",
+            "context_he": "ברכה שמתאימה בכל שעות היום.",
+            "audio_label_he": "לשמוע את חואן",
+            "next_label_he": "הביטוי הבא"
+          },
+          {
+            "id": "greeting-buenos-dias",
+            "es": "Buenos días",
+            "meaning_he": "בוקר טוב",
+            "context_he": "ברכה למפגש בבוקר.",
+            "audio_label_he": "לשמוע את חואן",
+            "next_label_he": "ממשיכים"
+          }
+        ],
+        "behavior": "Each card shows the Spanish expression, Hebrew meaning and context with an explicit replay control. Learner may optionally say it aloud. No recording or assessment on this preparation screen; replay remains available and hearing is not required to advance.",
+        "success_check": "Learner can access each expression's written meaning and audio and move between the two cards; comprehension assessment comes after preparation and full dialogue.",
+        "audio_status": "Juan voice/provider pending a joint short-sample audition. This draft adds no audio assets or approval of prototype voices.",
+        "scope_note": "Two-greeting proposal for review; does not approve or rewrite the entire pilot vocabulary list, grammar, dialogue or later stages.",
+        "next_step": "Dor corrects content/wording, then design only the vocabulary screen/card in the existing Figma file. Audition Juan voice samples before producing final audio."
+      }
+    },
+    "next_step": "Review the single template instance37:90 with wording ביטוי and its interactive states. No new independent screens for copy changes. Then jointly review the inherited unit1A dialogue before any new layout/audio.",
+    "figma": {
+      "screen_id": "13:5",
+      "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=13-5",
+      "card_id": "14:11",
+      "playback_id": "14:21",
+      "next_id": "14:26",
+      "preview": ".codex-review/figma/02-vocabulary-hola-v1.png",
+      "state": ".codex-review/figma/02-vocabulary-state.json",
+      "status": "first_card_approved_by_dor; all_five_designed_and_linked; new_four_pending_review",
+      "sequence_state": ".codex-review/figma/02-vocabulary-sequence-state.json",
+      "sequence_preview": ".codex-review/figma/02-vocabulary-remaining-v1.png",
+      "route": [
+        "13:5",
+        "17:12",
+        "17:36",
+        "17:60",
+        "17:84"
+      ],
+      "contextual_help_state": ".codex-review/figma/02-contextual-pronunciation-state.json"
+    }
+  },
+  "pronunciation_preparation": {
+    "status": "placement_approved_and_configured; contextual_help_visual_review_pending",
+    "source": {
+      "file": "docs/curriculum/pilot-spec.json",
+      "selector": "modules[number=1].lessons[id=1A].primer_he",
+      "full_primer_he": "בספרדית חמש תנועות בסיסיות. שומעים ומחקים בלי לדרוש שליטה במבטא. ב-Hola האות h אינה נהגית. סימני השאלה תוחמים את השאלה; אין צורך להקליד אותם. לומדים כל ברכה עם משמעות והקשר לפני ההאזנה.",
+      "sequence": [
+        "context",
+        "vocabulary",
+        "grammar",
+        "primer_check",
+        "full_dialogue",
+        "practice",
+        "simulation",
+        "summary"
+      ]
+    },
+    "coverage_retained": [
+      "Five basic vowel sounds",
+      "Silent h in Hola",
+      "Question marks around questions; no typing requirement"
+    ],
+    "proposed_presentation": "Approved optional help within vocabulary. Hola opens the existing h tip and returns to Hola; all five word cards can open the shared five-vowel aid and return to the source card. No required pronunciation stop after vocabulary.",
+    "first_tip": {
+      "title_he": "טיפ קטן להגייה",
+      "body_he": "במילה Hola לא הוגים את האות h. הקשיבו ונסו לומר בקול.",
+      "example_es": "Hola",
+      "audio_source": "assets/characters/juan/voice/unit1a-vocabulary-audition-v2/hola.mp3",
+      "playback_rate": 1.0,
+      "audio_label_he": "השמעה",
+      "next_label_he": "חזרה ל־Hola",
+      "approval": {
+        "status": "wording_and_visual_approved",
+        "authority": "Dor: כן, הניסוח ברור.",
+        "date": "2026-10-15",
+        "visual_authority": "Dor: נראה מעולה. — visual acceptance of pronunciation tip23:35. No explicit report of executing the No -> tip transition.",
+        "placement_authority_he": "כן, זה נשמע יותר הגיוני. נשלב את טיפ ה־h לצד Hola ואת התנועות כעזר מתוך הכרטיסים, ונמשיך לפי הסדר הזה."
+      },
+      "audio_status": "Existing Hola v2 audio_source retained as historical reference; regeneration at approved Juan profile and playback wiring pending",
+      "approved_voice_profile": "assets/characters/juan/voice/approved-profile.json"
+    },
+    "remaining_review": "Optional help placement retained. New help layout/audio remain subject to review and wiring; check core wording now approved and check visuals await Dor. Source Spanish question-mark placement remains open; no new Spanish question introduced.",
+    "figma_status": "Hola -> optional h tip -> Hola; shared optional vowel helper from all5 cards; no mandatory detour after No",
+    "figma": {
+      "screen_id": "23:35",
+      "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=23-35",
+      "state": ".codex-review/figma/02-pronunciation-state.json",
+      "preview": ".codex-review/figma/02-pronunciation-hola-v1.png",
+      "playback_id": "23:50",
+      "next_id": "23:52",
+      "incoming_button_id": "27:108",
+      "audio_attached": false,
+      "contextual_help_state": ".codex-review/figma/02-contextual-pronunciation-state.json"
+    },
+    "vowels_draft": {
+      "status": "superseded_standalone_selector_proposal; content_retained_in_optional_help",
+      "source": "docs/curriculum/pilot-spec.json modules[number=1].lessons[id=1A].primer_he: בספרדית חמש תנועות בסיסיות. שומעים ומחקים בלי לדרוש שליטה במבטא.",
+      "learner_goal_he": "להכיר ולנסות להפיק את חמש התנועות הבסיסיות בספרדית.",
+      "title_he": "חמישה צלילים בסיסיים",
+      "body_he": "בספרדית חמש תנועות בסיסיות. בחרו אות, הקשיבו לצליל שלה ונסו לחזור אחריו.",
+      "letters_ltr": [
+        "a",
+        "e",
+        "i",
+        "o",
+        "u"
+      ],
+      "default_selected": "a",
+      "audio_label_he": "השמעה",
+      "next_label_he": "ממשיכים",
+      "first_action_he": "האות a מסומנת בתחילה. לחיצה על השמעה משמיעה את הצליל שלה, ואפשר לנסות לומר אותו בקול.",
+      "layout": "One short screen. Five letter selectors in an LTR row inside the Hebrew RTL layout, selected-letter example and explicit playback control. Keep existing Heebo, palette, Juan identity and button styling.",
+      "audio": "Plan one isolated Spanish vowel sound per selection with the approved Juan profile; no English letter names or additional lesson words. No recording or synthesis produced in this step.",
+      "behavior": "Manual playback/replay; changing selection does not autoplay. Optional imitation without recording, accent scoring or a mandatory audio gate.",
+      "source_coverage": "Expands the existing five-vowels source point for review. No new vocabulary or full dialogue; retain the separate question-mark placement question for joint resolution.",
+      "figma_status": "replaced_by_optional_shared_helper27:41; not a required next screen",
+      "placement_feedback_he": "אתה בטוח שכדאי להכניס את זה עכשיו אחרי שכבר למדנו מילים? נשמע שזה קצת חורג מהסדר או מהמקום שזה צריך להופיע בו"
+    },
+    "ordering_review": {
+      "status": "approved_by_dor; configured_in_figma",
+      "authority": "כן, זה נשמע יותר הגיוני. נשלב את טיפ ה־h לצד Hola ואת התנועות כעזר מתוך הכרטיסים, ונמשיך לפי הסדר הזה.",
+      "source_observation": "docs/curriculum/pilot-spec.json unit1A sequence is context -> vocabulary -> grammar -> primer_check -> full_dialogue. Its primer includes five vowel sounds and silent h. It does not mandate one standalone screen per primer point.",
+      "agent_correction": "Codex treated the next source topic as an automatic next screen. Reconsider narrative continuity and the need/location of a separate vowel lesson.",
+      "recommendation": "Keep entry -> prepared vocabulary with contextual pronunciation help -> supported comprehension check -> full dialogue. Reuse approved silent-h design as help from Hola; make five-vowel help accessible from vocabulary rather than inserting a detached mandatory lesson after the five cards.",
+      "vowel_coverage": "All five source vowel sounds retained in optional aid27:41 accessible from each vocabulary card. Optional use and placement explicitly approved. No scored vowel task.",
+      "approval_boundary": "Placement and learner sequence approved by Dor. Existing h-tip wording/visual approval retained. New vowel help layout/copy and configured navigation still await user review; actual audio pending."
+    },
+    "vowels_help": {
+      "status": "placement_approved; screen_draft_rendered_pending_visual_and_wording_review",
+      "title_he": "חמישה צלילים בסיסיים",
+      "body_he": "בספרדית חמש תנועות בסיסיות. הקשיבו לצליל של כל אות ונסו לומר אותו בקול.",
+      "letters": [
+        "a",
+        "e",
+        "i",
+        "o",
+        "u"
+      ],
+      "presentation": "Five independent rows with explicit השמעה buttons. No selected-letter state or automatic playback; every sound is visible in one optional aid.",
+      "control_label_he": "צלילי התנועות",
+      "return_label_he": "חזרה לכרטיס",
+      "authority_he": "כן, זה נשמע יותר הגיוני. נשלב את טיפ ה־h לצד Hola ואת התנועות כעזר מתוך הכרטיסים, ונמשיך לפי הסדר הזה.",
+      "screen_id": "27:41",
+      "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=27-41",
+      "state": ".codex-review/figma/02-contextual-pronunciation-state.json",
+      "audio_status": "visual_only; no vowel audio generated"
+    }
+  },
+  "vocabulary_audio_policy": "assets/audio/playback-policy.json",
+  "supported_comprehension_check": {
+    "status": "core_content_approved; ביטוי_wording_requested; reusable_template_configured",
+    "stage": "primer_check",
+    "source": {
+      "file": "docs/curriculum/pilot-spec.json",
+      "flow_selector": "screen_flow[step=4]",
+      "flow_detail": "זיהוי אחד או התאמה אחת; תרגול נתמך ללא ציון, טעות מפעילה הסבר ודוגמה נוספת",
+      "language_pattern_selector": "modules[number=1].practice[type=listen_select]",
+      "inherited_prompt_he": "שומעים Hola ובוחרים את משמעות הברכה.",
+      "adaptation": "Use the existing single-greeting recognition pattern for the supported preparation check before the full dialogue. Later post-dialogue practice remains separately planned; no bulk practice rewrite."
+    },
+    "learner_goal_he": "לוודא שהברכה Hola מוכרת לפני השיחה עם חואן.",
+    "title_he": "ננסה יחד",
+    "prompt_he": "מה פירוש הביטוי ששמעתם?",
+    "speaker": "juan",
+    "stimulus_es": "Hola.",
+    "audio_label_he": "השמעה",
+    "choices_he": [
+      "שלום",
+      "תודה",
+      "בוקר טוב"
+    ],
+    "correct_answer_he": "שלום",
+    "support": {
+      "replay": "Manual replay available",
+      "written_hint": "הצגת הביטוי reveals only the Spanish expression; no score or block for using help",
+      "accent_scoring": false,
+      "grade": "none"
+    },
+    "feedback_draft": {
+      "correct_he": "נכון! המשמעות של Hola היא שלום.",
+      "incorrect_he": "המשמעות של Hola היא שלום. הקשיבו שוב ונסו עוד פעם.",
+      "additional_example_he": "חואן פוגש אתכם בהוסטל ואומר Hola — שלום.",
+      "retry": "Replay and retry without penalty; no forced perfect pronunciation",
+      "rtl_note": "Start mixed Spanish/Hebrew feedback in Hebrew; right alignment alone did not preserve the intended reading order when the first word was Hola."
+    },
+    "no_new_language": "All three meanings and the Spanish greeting were prepared on the vocabulary cards. No vowel knowledge is tested or required; those aids are optional.",
+    "audio_status": "No new synthesis. Approved Juan profile retained; Hola must be regenerated at that profile and connected before claiming real playback.",
+    "next": "Dor reviews the dialogue view and show/hide translation within the same screen. Then jointly select the first1A practice activity from the saved plan; use only prepared language and existing templates where applicable.",
+    "approval": {
+      "authority": "Dor: כן",
+      "context": "Direct reply to the proposed Hola recognition question, choices שלום / תודה / בוקר טוב, repeat playback and explanation/retry without grade.",
+      "date": "2026-10-15",
+      "scope": "Prompt, choices and supported ungraded behavior. New screen title, written-hint UI and exact feedback wording are agent drafts for this visual checkpoint."
+    },
+    "figma": {
+      "screen_id": "37:90",
+      "instance_id": "37:91",
+      "component_set_id": "36:160",
+      "library_page_id": "35:168",
+      "variant_ids": {
+        "question": "35:164",
+        "hint": "35:165",
+        "retry": "35:166",
+        "success": "35:167"
+      },
+      "audio_card_component_id": "32:91",
+      "incoming_button_id": "17:101",
+      "retry_button_master_id": "32:204",
+      "continuation_button_master_id": "32:230",
+      "continuation_pending": false,
+      "audio_attached": false,
+      "navigation": "CHANGE_TO within one instance",
+      "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=37-90",
+      "state": ".codex-review/figma/02-meaning-template-state.json",
+      "verification": ".codex-review/figma/02-meaning-template-verification.json",
+      "preview": ".codex-review/figma/02-meaning-template-v1.png",
+      "template_contract": "docs/design/templates/meaning-check.json",
+      "continuation_button_instance_id": "I37:91;32:230",
+      "continuation_destination_id": "44:148"
+    },
+    "behavior": "One learner frame with one interactive component instance. Three exposed answer controls retain content overrides through state changes. Correct and other choices CHANGE_TO success/retry; retry CHANGE_TO question; hint CHANGE_TO written expression. Current example has option1 correct; retarget actions when changing correct option/order. No new frames for copy changes, no score or actual audio yet.",
+    "wording_revision": {
+      "authority": "Dor asks for מילה or ביטוי instead of repetitive ברכה",
+      "selected_he": "ביטוי",
+      "prompt_he": "מה פירוש הביטוי ששמעתם?",
+      "hint_label_he": "הצגת הביטוי",
+      "scope": "Generic reusable UI. Original source quotations and actual greeting lesson meaning remain historically accurate."
+    },
+    "reuse_policy": "docs/design/templates/meaning-check.json",
+    "latest_user_acceptance": "Dor: מעולה, נתקדם — accepted the latest reusable-template direction/result to continue. No actual Present interaction result reported."
+  },
+  "stage_status": ".codex-review/stage02-status.json",
+  "full_dialogue_review": {
+    "status": "script_and_presentation_accepted; Present_checkpoint_passed_by_user_report",
+    "source": {
+      "file": "docs/curriculum/pilot-spec.json",
+      "selector": "modules[number=1].lessons[id=1A].dialogue",
+      "original_turns": [
+        {
+          "speaker": "staff",
+          "es": "Hola.",
+          "he": "שלום."
+        },
+        {
+          "speaker": "learner",
+          "es": "Hola.",
+          "he": "שלום."
+        },
+        {
+          "speaker": "staff",
+          "es": "Buenos días.",
+          "he": "בוקר טוב."
+        },
+        {
+          "speaker": "learner",
+          "es": "Buenos días.",
+          "he": "בוקר טוב."
+        }
+      ]
+    },
+    "role_adaptation": {
+      "source_speaker": "staff",
+      "story_speaker": "juan",
+      "basis": "Approved entry story makes Juan a fellow traveler; source staff label must not silently establish a staff role for him"
+    },
+    "original_summary_he": "שני חילופי דברים: Hola עם תשובה זהה, ואז Buenos días עם תשובה זהה.",
+    "proposed_turns": [
+      {
+        "speaker": "juan",
+        "es": "Hola. Buenos días.",
+        "he": "שלום. בוקר טוב."
+      },
+      {
+        "speaker": "learner",
+        "es": "Hola. Buenos días.",
+        "he": "שלום. בוקר טוב."
+      }
+    ],
+    "proposed_delta": "Approved consolidation of the original six Spanish word occurrences into two turns instead of four. Dor accepted the short first-unit exception to the general4–6-utterance guideline; original source turns retained as provenance.",
+    "rationale_he": "להדגים מפגש בוקר קצר שנשמע טבעי, תוך שימוש בביטויים שכבר הוכנו.",
+    "playback_scope": "Full exchange before practice, manual replay and available Spanish/Hebrew text. Audio roles and learner-example voice remain to be planned; approved Juan profile retained. No synthesis now.",
+    "figma_status": "single_learner_instance44:149_in_frame44:148; translation_changes_inside_instance; check_continuation_connected",
+    "next": "Dor opens an Azure free trial account through the secure provider flow and reports portal access. Then jointly create only an F0 Speech resource and run a bounded short-Spanish pronunciation feasibility test before implementing the shared speaking assessment.",
+    "approval": {
+      "authority_he": "כן, זה נשמע טבעי יותר.",
+      "date": "2026-10-15",
+      "scope": "Consolidated two-turn Spanish/Hebrew dialogue. New UI wording, layout, show/hide translation and actual playback require their own review."
+    },
+    "approved_turns": [
+      {
+        "speaker": "juan",
+        "es": "Hola. Buenos días.",
+        "he": "שלום. בוקר טוב."
+      },
+      {
+        "speaker": "learner",
+        "es": "Hola. Buenos días.",
+        "he": "שלום. בוקר טוב."
+      }
+    ],
+    "figma": {
+      "screen_id": "44:148",
+      "instance_id": "44:149",
+      "component_set_id": "43:233",
+      "turn_component_id": "42:193",
+      "library_page_id": "35:168",
+      "variants": {
+        "spanish": "42:200",
+        "translated": "42:239"
+      },
+      "incoming_button_instance_id": "I37:91;32:230",
+      "previous_screen_id": "37:90",
+      "continuation_pending": false,
+      "audio_attached": false,
+      "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=44-148",
+      "state": ".codex-review/figma/02-dialogue-state.json",
+      "verification": ".codex-review/figma/02-dialogue-verification.json",
+      "preview": ".codex-review/figma/02-dialogue-v1.png",
+      "template": "docs/design/templates/dialogue.json",
+      "continuation_destination_id": "51:199"
+    },
+    "presentation_draft": {
+      "title_he": "השיחה עם חואן",
+      "instruction_he": "הקשיבו לשיחה. אפשר להציג תרגום ולהקשיב שוב.",
+      "playback_label_he": "השמעה",
+      "show_translation_label_he": "הצגת תרגום",
+      "hide_translation_label_he": "הסתרת תרגום",
+      "next_label_he": "ממשיכים",
+      "layout": "Two stacked turn bubbles with clear speaker labels; approved Juan avatar only for Juan. Spanish24px/36px LEFT, Hebrew18px/30px RIGHT. Existing Heebo, semantic palette and button instances.",
+      "behavior": "Manual full-dialogue playback/replay planned; audio not attached. Translation hidden by default; CHANGE_TO toggles it inside one instance. Both translation-state continuation instances navigate to51:199.",
+      "review_status": "Accepted at reported successful Present checkpoint; no actual audio attached"
+    },
+    "user_present_review": {
+      "date": "2026-10-16",
+      "authority_he": "עובד מעולה, מה השלב הבא?",
+      "status": "passed_by_dor_report",
+      "scope": "Dor reports success after the assigned Figma Present dialogue/translation checkpoint. No detailed button-by-button account, whole-unit navigation run, audio execution or independent implementation understanding inferred.",
+      "audio_tested": false
+    }
+  },
+  "post_dialogue_practice_review": {
+    "status": "first_activity_core_content_approved; shared_template_covered; later_activity_content_pending",
+    "source": {
+      "file": "docs/curriculum/pilot-spec.json",
+      "selector": "modules[number=1].practice[type=listen_select]",
+      "original_stimulus_es": "Hola.",
+      "original_answer_he": "שלום",
+      "proposed_adaptation": "Approved by Dor on2026-10-16: use already-taught Buenos días after the dialogue instead of the Hola already used in the preparation check. Original source retained."
+    },
+    "first_activity": {
+      "id": "unit1a-practice-listen-select-01",
+      "type": "listen_select",
+      "title_he": "קצת תרגול",
+      "prompt_he": "מה פירוש הביטוי ששמעתם?",
+      "stimulus_es": "Buenos días.",
+      "choices_he": [
+        "בוקר טוב",
+        "שלום",
+        "תודה"
+      ],
+      "correct_answer_he": "בוקר טוב",
+      "correct_option_index": 0,
+      "playback_label_he": "השמעה",
+      "hint_label_he": "הצגת הביטוי",
+      "success_feedback_he": "המשמעות של Buenos días היא בוקר טוב.",
+      "retry_feedback_he": "זה ביטוי שמשתמשים בו בבוקר. הקשיבו שוב ונסו עוד פעם.",
+      "behavior": "Manual playback/replay, optional written expression, supportive retry, no timer or pronunciation score. Actual audio is not attached.",
+      "reuse": "docs/design/templates/meaning-check.json",
+      "figma_status": "existing_representative_instance; agent_checks_passed; no_required_per_content_user_Present_gate",
+      "figma": {
+        "screen_id": "51:199",
+        "instance_id": "51:200",
+        "component_set_id": "36:160",
+        "library_page_id": "35:168",
+        "new_master_components": 0,
+        "previous_screen_id": "44:148",
+        "incoming_button_instance_ids": [
+          "I44:149;42:233",
+          "I44:149;42:250"
+        ],
+        "continuation_pending": true,
+        "audio_attached": false,
+        "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=51-199",
+        "state": ".codex-review/figma/02-practice-listen-state.json",
+        "verification": ".codex-review/figma/02-practice-listen-verification.json",
+        "preview": ".codex-review/figma/02-practice-listen-v1.png",
+        "template": "docs/design/templates/meaning-check.json"
+      },
+      "additional_example_draft_he": "חואן פוגש אתכם בבוקר ואומר Buenos días — בוקר טוב."
+    },
+    "next": "Use the created F0 Speech resource spanishfortrip-speech-dor in Italy North in Speech Studio. Prepare an es-MX scripted Hola example and let Dor record the first human sample; compare the result with human judgment before thresholds or runtime integration.",
+    "approval": {
+      "date": "2026-10-16",
+      "authority_he": "כן.",
+      "context": "Direct reply to first post-dialogue listen_select proposal and question about wording/difficulty.",
+      "scope": "Buenos días adaptation, title קצת תרגול, prompt, answer meanings, correct feedback and supportive replay/retry behavior. Exact retry hint and example remain agent wording for visual review."
+    },
+    "review_strategy": "Exact retry hint/example are content drafts; review without another Figma frame. Previous required Present test for this content substitution is superseded by Dor workflow correction; not reported performed."
+  },
+  "speaking_assessment_review": {
+    "status": "assessment_deferred; self_replay_retained",
+    "scope": {
+      "date": "2026-10-16",
+      "authority": "Dor explicitly requests a system that evaluates whether the spoken phrase was said correctly and asks for independent cost/technical research.",
+      "status": "feature_requested_and_added_to_pilot_plan; provider_recommended_for_feasibility_only",
+      "prior_scope": "Optional local recording/self-comparison; automatic pronunciation scoring excluded",
+      "current_scope": "Automated pronunciation assessment for prepared Spanish speaking tasks, calibrated against human judgments before learner pass/fail use",
+      "candidate_provider": "Azure Speech Pronunciation Assessment",
+      "candidate_locale": "es-MX",
+      "research": "docs/research/pronunciation/research-2026-10-16.json",
+      "spending": "No purchase, paid upgrade, commitment plan or provider contract authorized",
+      "build": "No native build now; preserve stage04 deferral",
+      "privacy": "Temporary provider processing is needed for assessment; persistent cloud recording storage is not selected",
+      "quality": "ASR transcript matching alone is insufficient. No arbitrary threshold or unsupported Spanish phoneme/prosody diagnosis. Calibrate on understandable Israeli-accented speech and wrong/noisy/silent cases.",
+      "account": "Dor created Azure account and reported portal access; signed-in portal and active free-trial UI verified by Codex",
+      "resource_ref": "docs/research/pronunciation/azure-speech-resource.json",
+      "setup_status": "F0 Speech resource created by Codex under explicit user authorization; portal Overview Active/Free, Italy North",
+      "test_status": "Two human browser trials observed: Hola pronunciation96/accuracy93; user-reported deliberate גרקיאס against Gracias. pronunciation90.4 (UI90)/accuracy84, ErrorType None, phoneme scores88,98,44,86,100,100,45 with blank phoneme names. Correct Gracias baseline pending. No direct API/mobile integration or validated pass threshold.",
+      "resource_creation_authority": "Dor: פתחתי חשבון Azure והפורטל פתוח, אפשר להמשיך להגדרת Speech במסלול החינמי. Dor adds שים לב גם ל region, אנחנו בישראל."
+    },
+    "interaction_template": "One generic recording/assessment/outcome/retry interaction receives prepared phrase data; no per-phrase Figma screens",
+    "content_source": "docs/curriculum/pilot-spec.json#modules[number=1].practice[type=speak_reveal]",
+    "initial_reference_texts": [
+      "Hola.",
+      "Buenos días.",
+      "Gracias.",
+      "Sí.",
+      "No."
+    ],
+    "copy_status": "New feedback and assessment progress policy are drafts for joint review",
+    "next": "See docs/planning/work-plan.json#delivery",
+    "first_human_result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
+    "latest_human_trial_ref": "docs/research/pronunciation/gracias-c-as-k-result-2026-10-16.json"
+  },
+  "active_course_placement": {
+    "plan": "docs/curriculum/curriculum-plan.json",
+    "chapter_id": "C01",
+    "unit_outline_id": "C01-U01",
+    "working_unit_id": "1A",
+    "policy": "Existing reviewed copy, approval evidence and in-progress lesson stages are preserved. New plan identifiers do not rename the implemented/source unit."
+  },
+  "runtime_authoring_ref": "content/units/unit1a.json",
+  "speaking_context_review": {
+    "date": "2026-10-16",
+    "status": "approved_scene_and_response_integrated_into_unit_data; audio_and_app_verification_pending",
+    "initial_feedback_he": "כן , אבל כללי מדי , כי כל יחידה בפרק צריכה להיות כמו מקרה מציאותי . אז צריך להראות שחואן באמת עזר לנו , אם אין לנו מספיק מילים כרגע זה מקובל אבל בהמשך זה יצטרך להיות כך.",
+    "authority_he": "כן, התרחיש הזה מתאים וברור יותר. בוא נשלב אותו ביחידה 1A ונמשיך לחלק הבא שלה לפי הסדר.",
+    "scope_he": "דור אישר את אירוע הכובע ואת תגובת Gracias וביקש לשלבם. התיאור העברי והתגובה נוספו לתרגול הדיבור בנתוני 1A. שמע, הקלטה והזרימה באפליקציה עדיין ממתינים לבדיקה; אין אישור ליחידה מלאה.",
+    "draft_ref": "content/drafts/unit1a-speak-thanks.json",
+    "authoring_policy_ref": "docs/curriculum/curriculum-plan.json#unit_authoring_contract.realistic_context_he",
+    "runtime_activity_ref": "content/units/unit1a.json#activities[id=1a-speak-thanks]",
+    "next_content_review_ref": "content/drafts/unit1a-recall-summary.json",
+    "next_he": "תרגול האריחים, נוסחי העזרה וזרימת תרחיש הסיום אושרו ושולבו. בהמשך סוקרים חזרה וסיכום ואת המלל המפורט שנוסף לתרחיש. הסטטוס הטכני הנפרד נשאר ב-work-plan.json#delivery."
+  },
+  "arrange_greeting_review": {
+    "date": "2026-10-16",
+    "status": "approved_core_and_exact_help_retry_copy_integrated; device_checks_pending",
+    "authority_he": "כן",
+    "approval_context_he": "תשובה להצגת הנחיית סידור ברכת הבוקר, האריחים días ו-Buenos, היעד Buenos días ואפשרות תיקון ורמז.",
+    "approved_he": "ההנחיה, המילים, סדר התשובה ואפשרות תיקון לפני הבדיקה או בקשת רמז. זו הרכבה נתמכת במילים נתונות ולא הוכחת דיבור עצמאי.",
+    "reviewed_copy_he": {
+      "hint": "הביטוי מתחיל ב־Buenos.",
+      "retry": "ננסה שוב. היזכרו בסדר המילים של הברכה שלמדתם."
+    },
+    "draft_ref": "content/drafts/unit1a-arrange-greeting.json",
+    "runtime_activity_ref": "content/units/unit1a.json#activities[id=1a-arrange-greeting]",
+    "next_content_review_ref": "content/drafts/unit1a-recall-summary.json",
+    "technical_status_ref": "docs/planning/work-plan.json#delivery",
+    "exact_copy_approval": {
+      "date": "2026-10-16",
+      "authority_he": "כן, מתאים וברור.",
+      "context_he": "דור אישר את נוסחי העזרה ואת תרחיש הסיום לאחר ששניהם הוצגו. סקירת התוכן אושרה; בדיקת המכשיר עדיין נדרשת."
+    }
+  },
+  "ending_scenario_review": {
+    "date": "2026-10-16",
+    "status": "approved_flow_integrated; exact_new_feedback_choices_and_device_review_pending",
+    "authority_he": "כן, מתאים וברור.",
+    "approved_scope_he": "מפגש הבוקר עם Hola, מענה ב-Hola או Buenos días, הצעת כיסא בתנועה, בחירת Sí או No ללא ענישה על סירוב, ותודה עם תוצאה מתאימה לשני המסלולים.",
+    "pending_he": "סקירת המשוב המפורט ובחירות ההטעיה שהתווספו לנתוני התרחיש, האזנה לשמע ובדיקה מלאה באייפון. אין אישור ליחידה או לפרק מלאים.",
+    "runtime_activity_ref": "content/units/unit1a.json#activities[id=1a-ending-scenario]",
+    "draft_history_ref": "content/drafts/unit1a-ending-scenario.json",
+    "next_content_review_ref": "content/drafts/unit1a-recall-summary.json",
+    "technical_status_ref": "docs/planning/work-plan.json#delivery"
+  },
+  "mobile_opening_preview_ref": "docs/evidence/checks/unit1a-mobile-opening-preview-2026-10-16.json"
+}

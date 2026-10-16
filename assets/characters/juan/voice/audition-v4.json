@@ -3,7 +3,7 @@
   "character_id": "juan",
   "stage_id": "02",
   "created_on": "2026-10-15",
-  "workflow": "../../../../DEVELOPMENT_GUIDE.md",
+  "workflow": "../../../../docs/DEVELOPMENT_GUIDE.md",
   "status": "approved_representative_sample_and_delivery_profile",
   "scope": "Only Buenos días audition; no other phrase production",
   "previous_audition": "audition-v3.json",

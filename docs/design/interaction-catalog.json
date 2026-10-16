@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "stage_id": "02",
+  "updated_on": "2026-10-16",
+  "status": "active_workflow; template_inventory_not_runtime_implementation",
+  "authority": "Dor requests verification and directs a generic design per exercise type, avoiding per-exercise Figma work.",
+  "conclusion": "Use Figma for reusable interaction templates, meaningful states and a small representative flow. Keep lesson content separate. A new phrase, question, option, dialogue turn or audio clip does not itself justify another frame or user Present checkpoint.",
+  "evidence": {
+    "official_sources": [
+      {
+        "url": "https://help.figma.com/hc/en-us/articles/5579474826519-Explore-component-properties",
+        "supports": "Text properties vary content; variant properties describe states, size or color."
+      },
+      {
+        "url": "https://help.figma.com/hc/en-us/articles/360061175334-Create-interactive-components-with-variants",
+        "supports": "Reusable variant interactions reduce frames/connections and travel with instances."
+      },
+      {
+        "url": "https://react.dev/learn/passing-props-to-a-component",
+        "supports": "Reusable React components receive different data as props."
+      }
+    ],
+    "project_evidence": "Meaning-check family36:160 already supplies all four states to Hola37:90 and Buenos días51:199; newMasterComponents=0 in the practice verification. Repeating per-content Figma assembly and user tests was the inefficient part.",
+    "judgment": "This is the chosen project workflow based on the documented capabilities and the one-week budget; not a claim that Figma mandates one universal process."
+  },
+  "division": {
+    "figma": "Layout, RTL/LTR, typography, components, states and representative interaction flows.",
+    "lesson_content": "Approved Hebrew/Spanish, answer rules, prerequisites, speaker/audio references and sequence in unit1a-content.json; current provisional content remains subject to joint review.",
+    "runtime": "At the agreed implementation stages, shared React Native components render content and manage real audio/recording/progress. No app implementation or build in this workflow correction."
+  },
+  "new_figma_work_gate": {
+    "justified_by": [
+      "New interaction type",
+      "Meaningfully different layout",
+      "Uncovered loading/error/help/recording/resume state",
+      "Observed accessibility, readability or layout defect",
+      "An unresolved navigation/usability question needing a representative prototype"
+    ],
+    "content_only_change": "Update the approved content record; reuse the existing template. Do not create another frame/variant or request another Present check solely for a wording/audio substitution.",
+    "variants": "Represent interaction states; do not create variants for every word, exercise id, speaker name or content item.",
+    "sample_strategy": "One representative example per interaction type, plus targeted long-text/RTL/error cases where needed. User checks cover behavior or a real decision, not every repeated content item.",
+    "existing_frames": "Keep current frames as examples. No bulk cleanup/refactor is needed merely to implement this policy; no new per-content copies."
+  },
+  "inventory": [
+    {
+      "type": "entry",
+      "status": "layout_reference_ready",
+      "figma_reference_ids": [
+        "3:2"
+      ],
+      "content_fields": [
+        "chapter label",
+        "title",
+        "context",
+        "scene asset",
+        "destination"
+      ],
+      "next_action": "Reuse as entry reference; future lesson text is data."
+    },
+    {
+      "type": "vocabulary_card",
+      "status": "layout_reference_ready; runtime_component_not_built",
+      "figma_reference_ids": [
+        "13:5"
+      ],
+      "content_fields": [
+        "Spanish expression",
+        "Hebrew meaning",
+        "character asset",
+        "audio asset",
+        "optional pronunciation aid"
+      ],
+      "next_action": "Use Hola as representative layout. Existing remaining cards are examples; no additional frame per expression. A generic runtime component belongs to implementation."
+    },
+    {
+      "type": "listen_select",
+      "status": "shared_component_ready; core_content_approved",
+      "figma_component_set_id": "36:160",
+      "figma_example_ids": [
+        "37:90",
+        "51:199"
+      ],
+      "states": [
+        "question",
+        "written_hint",
+        "retry",
+        "correct"
+      ],
+      "content_fields": [
+        "instruction",
+        "audio asset",
+        "written expression",
+        "answer options",
+        "correct answer",
+        "hint",
+        "feedback"
+      ],
+      "next_action": "Template review/agent checks already cover the interaction. Do not require another user Present run solely because Hola changed to Buenos días."
+    },
+    {
+      "type": "dialogue",
+      "status": "shared_components_ready; user_Present_checkpoint_passed",
+      "figma_component_set_id": "43:233",
+      "figma_turn_component_id": "42:193",
+      "figma_example_ids": [
+        "44:148"
+      ],
+      "states": [
+        "translation_hidden",
+        "translation_shown"
+      ],
+      "content_fields": [
+        "speaker id",
+        "utterance Spanish",
+        "translation Hebrew",
+        "audio asset",
+        "character asset"
+      ],
+      "next_action": "Reuse turn and translation controls. Dialogue length/content does not need separate design families."
+    },
+    {
+      "type": "speak_reveal",
+      "status": "self_replay_planned; assessment_deferred",
+      "source": "docs/curriculum/pilot-spec.json#modules[number=1].practice[type=speak_reveal]",
+      "source_example": {
+        "answer_es": "Hola.",
+        "instruction_he": "מברכים ואז חושפים את הדוגמה להשוואה.",
+        "hint_he": "ניתן לשמוע את הדוגמה ואז לנסות שוב."
+      },
+      "candidate_behavior": "Prepared phrase -> recording -> dedicated pronunciation assessment -> calibrated acceptable/needs-practice/could-not-assess feedback -> replay/retry. Self/model comparison remains available. Current output/thresholds not validated; never treat plain transcript matching as pronunciation proof.",
+      "states_to_review": [
+        "learner_prompt",
+        "recording",
+        "assessing",
+        "acceptable",
+        "needs_practice",
+        "could_not_assess",
+        "model_or_self_playback",
+        "microphone_unavailable_or_denied"
+      ],
+      "next_action": "Review recording/self-replay with the runtime activity; automated assessment follows the working unit.",
+      "research": "docs/research/pronunciation/research-2026-10-16.json",
+      "resource_ref": "docs/research/pronunciation/azure-speech-resource.json"
+    },
+    {
+      "type": "arrange",
+      "status": "conditional; not_approved_for_unit1A",
+      "source": "The module source uses por favor from1B. A Buenos días adaptation has not been approved.",
+      "next_action": "Create a generic tile-arrangement template only if a jointly selected unit activity needs it; no speculative library build."
+    },
+    {
+      "type": "bounded_simulation",
+      "status": "behavior_and_content_still_need_joint_review",
+      "reuse": [
+        "dialogue turns",
+        "answer choices",
+        "audio controls",
+        "hint/feedback"
+      ],
+      "next_action": "Specify allowed replies and completion first. Add only the interaction states not covered by existing templates; no frame for every branch/content combination."
+    },
+    {
+      "type": "summary_resume",
+      "status": "generic_layout_and_behavior_pending",
+      "content_fields": [
+        "outcome",
+        "review recommendation",
+        "saved position",
+        "continuation"
+      ],
+      "next_action": "One representative summary/resume design after outcome rules are reviewed."
+    }
+  ],
+  "verification": {
+    "content_checks": [
+      "Only prepared language is assessed",
+      "Options and correct answer agree",
+      "Speaker and audio asset references agree",
+      "Exact new copy is reviewed jointly without requiring Figma"
+    ],
+    "template_checks": [
+      "RTL/LTR and readable representative text",
+      "Correct/wrong/hint/retry states",
+      "Relevant accessibility and media failure states"
+    ],
+    "runtime_checks": "Test the real data-driven unit in Expo at its implementation stage; preserve stage04 native-build boundary."
+  },
+  "next_step": "Reuse current templates for data-driven implementation; see docs/planning/work-plan.json#delivery."
+}

@@ -1,0 +1,4 @@
+
+> @spanish-for-trip/content@0.1.0 check:publish
+> npm run build --silent && node dist/src/cli.js units/unit1a.json --publish
+

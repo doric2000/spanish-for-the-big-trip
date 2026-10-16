@@ -1,0 +1,31 @@
+{
+  "stage_id": "00-planning",
+  "status": "Foundational planning decisions and setup-access/time answers recorded; ready for stage01 joint checkpoint",
+  "approved_decisions": "docs/planning/approved-decisions.json",
+  "implemented_files": [
+    "AGENTS.md",
+    "docs/DEVELOPMENT_GUIDE.md",
+    "docs/planning/work-plan.json",
+    "docs/planning/project-context.json",
+    "docs/planning/approved-decisions.json",
+    "docs/learning/development-learning-log.json",
+    "docs/curriculum/pilot-spec.json",
+    ".codex-review/build_curriculum.py",
+    "prototype/README.md"
+  ],
+  "how_to_run": "No new native app exists yet. Existing prototype instructions remain in prototype/README.md.",
+  "checks_and_evidence": "Decision/plan JSON consistency checks; official prerequisite sources linked in approved-decisions.json. App code is unchanged.",
+  "dor_actions_and_demonstrated_understanding": "User selected scope and constraints; no new practical setup executed, technical understanding unassessed. Dor reports active Apple Developer membership, Windows only and four to five available daily hours; these reports are not practical setup verification.",
+  "known_issues": [
+    "Existing Hebrew/Spanish must be reviewed with Dor",
+    "Prototype voices are robotic and not approved for final audio",
+    "Native Google/Apple device login has not yet been implemented or tested"
+  ],
+  "open_choices": [
+    "Voice/provider samples at stage02",
+    "API hosting before deployment",
+    "On-device recording-retention proposal"
+  ],
+  "next_stage_and_first_action": "Dor opens stage01 in the same workspace with the shared-context prompt. Begin with a small explained tool/account check and own-iPhone build route; no full-stack installation, purchases or chat dispatch by the agent.",
+  "commit_or_snapshot_when_available": "Documentation changes only; no new product Git checkout/commit created."
+}

@@ -3,7 +3,7 @@
   "character_id": "juan",
   "stage_id": "02",
   "created_on": "2026-10-15",
-  "workflow": "../../../../DEVELOPMENT_GUIDE.md",
+  "workflow": "../../../../docs/DEVELOPMENT_GUIDE.md",
   "status": "historical_combined_audition; voice_accepted_but_pace_too_fast; superseded_for_card_audio_by_v2",
   "selected_voice_id": "GcxVzkrklctDNSL0D1AO",
   "purpose": "Choose a consistent natural Spanish voice for the approved Juan identity before generating complete unit audio",

@@ -1,0 +1,80 @@
+{
+  "stage_id": "03",
+  "recorded_on": "2026-10-16",
+  "kind": "Dated implementation/gap evidence; live status belongs to work-plan.json#delivery",
+  "reviewed_scope": "C01 only; no new C02 lesson planning or authoring",
+  "module_review": [
+    {
+      "unit_id": "C01-U01",
+      "outline_goal_he": "להבין ברכה ולברך בחזרה; לשמור את תוכן 1A שכבר נסקר עם דור.",
+      "requires": [],
+      "provides": [
+        "greeting",
+        "yes_no"
+      ],
+      "authored_payload": "content/units/unit1a.json: nine activities, six pending stages; not publishable"
+    },
+    {
+      "unit_id": "C01-U02",
+      "outline_goal_he": "לבקש חזרה ולהגיב לפרט מוכר לאחריה.",
+      "requires": [
+        "greeting"
+      ],
+      "provides": [
+        "repeat"
+      ],
+      "authored_payload": "No authored payload; outline only, exact content pending joint review"
+    },
+    {
+      "unit_id": "C01-U03",
+      "outline_goal_he": "להוסיף סליחה, בקשת האטה או כתיבה, בירור מילה ופרידה.",
+      "requires": [
+        "repeat",
+        "yes_no"
+      ],
+      "provides": [
+        "repair",
+        "courtesy"
+      ],
+      "authored_payload": "No authored payload; outline only, exact content pending joint review"
+    }
+  ],
+  "model_review": {
+    "goals_and_prerequisites": "Stable unit IDs and skills; graph validation plus exact-revision completion-based unlock.",
+    "preparation": "Explicit language IDs, understand/produce sets and prepares-before-use references; general explanation before examples.",
+    "sequence": "Eight named learning phases plus mandatory completion scenario.",
+    "review": "Explicit recap phase reuses existing interactions; no spaced scheduler yet.",
+    "scenarios": "Validated start, branch destinations, reachability, completion and acyclic advance; changed-detail pedagogical quality needs human review.",
+    "help": "Optional reviewed resources, assistance evidence and microphone-free comparison.",
+    "media": "Existing approved/pending assets preserved; review digest includes file bytes; no synthesis performed."
+  },
+  "decisions": {
+    "development_order": "Finish all planning/build/checks for C01 before C02. Weekly launch target: both complete chapters.",
+    "speaking": "User selected self-comparison confirmation; without_microphone alternative; never correctness/score.",
+    "network": "User selected wait-for-save; one user-scoped pending attempt, same-ID retry. Durable mobile adapter remains05.",
+    "publication": "Whole checked chapter snapshots only; local checker success does not publish.",
+    "identity": "Google/Apple mandatory at04; no guest.",
+    "pronunciation": "Automated assessment after working unit; self-replay remains available."
+  },
+  "verified": {
+    "local_tests": 44,
+    "draft_valid": true,
+    "unit_and_chapter_publication_blocked": true,
+    "original_copy_approval_media_projection_preserved": true,
+    "manifest_generator_matches_without_regenerating_course": true
+  },
+  "not_verified": [
+    "Real PostgreSQL transaction/RLS/RPC constraints",
+    "JWT verification and Google/Apple device login",
+    "Phone queue persistence and network recovery",
+    "Full unit/chapter runtime",
+    "Natural audio and learner understanding"
+  ],
+  "source_refs": [
+    "content/README.md",
+    "content/api-contract.json",
+    "content/storage-model.json",
+    "docs/evidence/checks/03-expanded-contract-2026-10-16.json"
+  ],
+  "joint_checkpoint": "Dor runs demo:progress, explains same-request retry and proposes one invalid case; not yet performed."
+}

@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "researched_on": "2026-10-16",
+  "stage_id": "02",
+  "title_he": "בדיקת הגייה בספרדית — מחקר ובדיקת היתכנות",
+  "status": "research_complete; F0_active; first_human_Hola_result_observed; error_comparison_pending",
+  "authority": {
+    "user_request": "אני רוצה שבאמת תהיה בדיקה שהאמירה בקול נאמרה כמו שצריך... נשלב מערכת... תבצע גם מחקר בעצמך",
+    "scope_change": "Automated pronunciation assessment is now requested for the pilot; the earlier exclusion is superseded. A provider purchase or untested quality guarantee is not implied.",
+    "account_status": "Dor created Azure account; portal free-trial UI verified. Codex created/verified the explicitly authorized F0 resource."
+  },
+  "recommendation": {
+    "candidate": "Azure Speech Pronunciation Assessment",
+    "candidate_locale": "es-MX",
+    "status": "Azure F0 resource provisioned for feasibility; production quality and thresholds remain unvalidated",
+    "reason": "Supports scripted Spanish pronunciation assessment and has usage-based pricing without a monthly minimum at the verified retail rate. Existing recorder + backend request can avoid a new native SDK/build.",
+    "acceptance_gate": "Validate real short Spanish clips against human judgments before using a score to determine learner success. If accuracy is inadequate, compare another dedicated scorer or explicitly revisit scope; never label plain transcription as a pronunciation check."
+  },
+  "distinction": {
+    "speech_to_text": "Recognizes the words in speech. Matching its transcript alone is insufficient evidence of correct pronunciation.",
+    "pronunciation_assessment": "Analyzes recorded speech against known reference text and returns acoustic pronunciation scores/error information. The result is a model estimate, not certainty.",
+    "synthesis": "César/ElevenLabs produces the reference voice; a pronunciation assessment provider evaluates the learner. These are separate jobs and budgets."
+  },
+  "providers": [
+    {
+      "name": "Azure Speech",
+      "spanish": [
+        "es-MX",
+        "es-ES"
+      ],
+      "scripted_single_word": "Reference text can be a word, sentence or paragraph; real reliability on Hola/Sí/No is not established by documentation.",
+      "metrics": "Accuracy and word-level results, completeness and miscue information. Do not use native-like speed/fluency as a beginner pass requirement.",
+      "limitations": [
+        "Spanish prosody scoring is unavailable; documented prosody is en-US only.",
+        "For Spanish, phoneme scores may exist without phoneme names; do not promise an IPA diagnosis or generated exact-sound correction.",
+        "The REST short-audio pronunciation request is limited to30seconds; use short scripted requests.",
+        "REST input WAV PCM16kHz mono or supported OGG Opus; current Expo preset requires format verification/conversion."
+      ],
+      "pricing": {
+        "free_tier": "F0:5 standard real-time audio hours/month, subject to active subscription/quota. Pronunciation baseline is charged as standard STT; verify actual F0 resource access during setup.",
+        "paid_rate_usd_per_audio_hour": 1,
+        "verified_regions": [
+          "westeurope",
+          "eastus"
+        ],
+        "meter": "S1 Speech To Text",
+        "retail_snapshot": "docs/research/pronunciation/azure-retail-pricing-2026-10-16.json",
+        "billing": "One-second increments; rate is for speech processing only, before tax/hosting/conversion/network.",
+        "enhanced_prosody": "Not required for Spanish and not included in the estimate."
+      },
+      "status": "preferred_feasibility_candidate"
+    },
+    {
+      "name": "Speechace",
+      "spanish": [
+        "es-mx",
+        "es-es"
+      ],
+      "fit": "Dedicated word/text scoring API; Score Word supports Spanish and accepts m4a among other formats.",
+      "pricing": {
+        "basic_monthly_usd": 40,
+        "included_15sec_requests": 5000,
+        "listed_request_usd_per_15sec": 0.008,
+        "max_basic_audio_seconds": 30,
+        "trial": "Free trial advertised; do not infer trial credit amount/duration or eligibility."
+      },
+      "tradeoff": "Simpler intake for Expo m4a, but a fixed monthly plan is less attractive for a small pilot.",
+      "status": "fallback_candidate; not_tested"
+    },
+    {
+      "name": "SpeechSuper",
+      "spanish": "Spanish API/demo advertised; locale/accent suitability still needs confirmation.",
+      "pricing": {
+        "pay_as_you_go_monthly_minimum_usd": 20,
+        "basis": "Per request, not audio duration",
+        "displayed_general_scripted_word_usd": 0.004,
+        "displayed_general_scripted_sentence_usd": 0.006,
+        "qualification": "Displayed price-page rates; Spanish-specific product/rate must be confirmed before selecting. Prepay plans start at500USD and are not proposed."
+      },
+      "status": "secondary_comparison; not_tested"
+    }
+  ],
+  "cost_examples": {
+    "assumptions": "Paid Azure standard rate1USD/audio-hour, exactly5 billed seconds per attempt, one request per attempt, before F0 allowance and tax/hosting/conversion costs. Silence within submitted audio counts toward duration; retries increase calls.",
+    "examples": [
+      {
+        "attempts": 100,
+        "audio_seconds": 500,
+        "audio_hours": 0.1388888888888889,
+        "estimated_speech_usd": 0.14
+      },
+      {
+        "attempts": 1000,
+        "audio_seconds": 5000,
+        "audio_hours": 1.3888888888888888,
+        "estimated_speech_usd": 1.39
+      },
+      {
+        "attempts": 10000,
+        "audio_seconds": 50000,
+        "audio_hours": 13.88888888888889,
+        "estimated_speech_usd": 13.89
+      }
+    ],
+    "f0_idealized_capacity": "5hours=18000seconds, about3600 five-second attempts, if all allowance is available. This is a capacity illustration, not an SLA or an allowance automatically applied to a paid tier."
+  },
+  "integration_plan": {
+    "status": "design_proposal_not_implemented",
+    "flow": [
+      "Expo records a short utterance using the existing audio capability.",
+      "Authenticated backend receives exerciseId and audio, looks up the approved expected text/locale and applies duration/size/attempt limits.",
+      "Backend validates/normalizes codec and converts to supported mono PCM WAV when required; credentials remain server-side.",
+      "Backend submits one scripted assessment request, maps word/coverage results to the calibrated learner outcome, and returns concise Hebrew feedback.",
+      "Temporary audio is discarded after request processing; retain only minimal assessment/progress metadata if jointly selected."
+    ],
+    "expo": "expo-audio is included in Expo Go; an HTTP/backend approach does not inherently require a native Azure SDK. End-to-end success remains untested; preserve stage04 native-build deferral.",
+    "audio_format": "Current App.tsx uses RecordingPresets.HIGH_QUALITY. Official current docs describe m4a AAC44100Hz stereo. Verify the installed preset/device file and choose recording options or backend conversion during the spike, without upgrading Expo.",
+    "api_suggestion": "One small assessment endpoint behind the existing mandatory identity plan, not a separate large backend. Transport/route/auth details belong to stages03/05.",
+    "staging": [
+      "Stage02: source/price research, small feasibility decision, generic feedback-state specification.",
+      "Stages03/05: minimal assessment contract and one server-side provider adapter/endpoint after feasibility review.",
+      "Stage06: wire recording, assessment, retry, help and progress into the shared speaking component.",
+      "No native build now; no full service provisioning or purchase in this research step."
+    ]
+  },
+  "generic_speaking_template": {
+    "content_model": "One reusable speaking interaction receives approved reference text, example-audio asset, locale and assessment policy; no per-expression Figma frames.",
+    "candidate_flow": [
+      "See the familiar phrase/task and optionally hear the model.",
+      "Record and stop.",
+      "Show assessing state.",
+      "Show one calibrated outcome and useful next action.",
+      "Replay model/self and retry if desired."
+    ],
+    "outcomes": [
+      {
+        "id": "acceptable",
+        "learner_draft_he": "ההגייה ברורה!",
+        "meaning": "Expected expression and calibrated pronunciation criteria met."
+      },
+      {
+        "id": "needs_practice",
+        "learner_draft_he": "ננסה שוב. הקשיבו לדוגמה ונסו עוד פעם.",
+        "meaning": "Enough audio was assessed; expected words or pronunciation did not meet validated criteria. Add a word-specific hint only if supported."
+      },
+      {
+        "id": "could_not_assess",
+        "learner_draft_he": "לא הצלחנו לבדוק את ההקלטה. אפשר לנסות שוב.",
+        "meaning": "Silence/noise/too little speech, network or service error; do not report a learner pronunciation failure or fabricate a pass."
+      }
+    ],
+    "decisions_pending": [
+      "Exact Hebrew feedback and visible numeric score preference.",
+      "Calibrated acceptance thresholds by utterance length and words; do not select an arbitrary60/70 cutoff.",
+      "Offline/service-unavailable continuation semantics and accessibility alternative.",
+      "Explicit recording/cloud-processing notice; no general cloud recording archive selected."
+    ]
+  },
+  "feasibility_test": {
+    "status": "started_two_human_trials; normal_Gracias_control_and_multi_case_validation_pending",
+    "scope": "A small smoke test of about20–30 short clips is a feasibility screen, not statistical validation.",
+    "reference_texts": [
+      "Hola.",
+      "Buenos días.",
+      "Gracias.",
+      "Sí.",
+      "No."
+    ],
+    "cases": [
+      "Understandable Spanish spoken with an Israeli accent, including slow beginner speech.",
+      "Deliberately wrong word, e.g. Gracias when Hola is expected.",
+      "Missing one word from Buenos días.",
+      "Clearly distorted target pronunciation, labelled by a proficient Spanish listener.",
+      "Silence, background noise, clipped audio and low volume.",
+      "Several repetitions of the same recording to check score stability."
+    ],
+    "evidence_to_collect": [
+      "Human label and reason, kept separate from provider score.",
+      "Recognized words/coverage, word accuracy, assessment availability and raw provider error types.",
+      "False rejection of understandable speech and false acceptance of wrong/distorted speech.",
+      "Request duration, end-to-end latency, billed audio duration and request count.",
+      "Actual iPhone/Expo format and backend conversion result."
+    ],
+    "go_no_go": "Review disagreements jointly. If no threshold reliably separates acceptable from clearly wrong speech in the short examples, do not make the model an authoritative pass/fail gate. Compare Speechace using the same consented clips and revisit the implementation choice.",
+    "synthetic_reference": "Approved César Buenos días may be a technical sanity sample only; it cannot stand in for human beginner/accent validation.",
+    "budget": "Start F0, one provider call per submitted clip, small bounded batch, no synthesis, no automatic paid upgrade.",
+    "first_human_result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
+    "comparison_ref": "docs/research/pronunciation/gracias-comparison-2026-10-16.json",
+    "latest_human_trial_ref": "docs/research/pronunciation/gracias-c-as-k-result-2026-10-16.json",
+    "interim_observation": "Reported distortion gets aggregate90.4/word84/ErrorType None but unnamed phoneme scores44/45; do not adopt aggregate-only pass/fail or diagnose a named Spanish sound."
+  },
+  "privacy": {
+    "source": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/speech-service/speech-to-text/data-privacy-security",
+    "provider_statement": "Microsoft documents no retention/storage of submitted pronunciation-assessment data. Our own backend/log/temp-file behavior still needs implementation and verification.",
+    "product_change": "Previously local-only recordings now need temporary cloud processing for assessment. Explain this at recording; account/sign-in and minimal retention rules remain.",
+    "not_selected": "Persistent cloud audio archive, voice identity recognition, voice cloning or public sharing."
+  },
+  "account_checkpoint": {
+    "status": "account_signup_completed_by_dor; Free_F0_Speech_resource_created_by_codex_and_verified",
+    "start_url": "https://azure.microsoft.com/en-us/free/",
+    "requirements": "Official signup requires phone, a non-prepaid credit/debit card, and a Microsoft/GitHub account; temporary verification hold may appear.",
+    "subscription_rule": "Free-account trial lasts up to30days or credit exhaustion; Microsoft says it is not charged unless explicitly moved to pay-as-you-go. Afterward services are disabled unless upgraded. F0 resource allowance does not remove the requirement for an active subscription.",
+    "next_action": "Use the created F0 Speech resource spanishfortrip-speech-dor in Italy North in Speech Studio. Prepare an es-MX scripted Hola example and let Dor record the first human sample; compare the result with human judgment before thresholds or runtime integration."
+  },
+  "sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=pronunciation-assessment",
+      "used_for": "Spanish es-MX/es-ES availability"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/how-to-pronunciation-assessment",
+      "used_for": "Scripted word/text scoring, results, language-specific limits and prosody restriction"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/rest-speech-to-text-short",
+      "used_for": "30second pronunciation limit and accepted audio codecs"
+    },
+    {
+      "url": "https://azure.microsoft.com/en-us/pricing/details/speech/",
+      "used_for": "5hour F0 allowance, one-second billing and standard-STT baseline"
+    },
+    {
+      "url": "https://prices.azure.com/api/retail/prices",
+      "used_for": "Exact1USD/hour retail meter, saved filtered response snapshot"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/speech-service/pronunciation-assessment/characteristics-and-limitations-pronunciation-assessment",
+      "used_for": "Scenario-specific evaluation, human comparison and threshold selection"
+    },
+    {
+      "url": "https://www.speechace.com/api-plans/",
+      "used_for": "40USD/month Basic plan,5000 fifteen-second requests and Spanish support"
+    },
+    {
+      "url": "https://api-docs.speechace.com/api-reference/score-word",
+      "used_for": "Word endpoint, Spanish locales and m4a intake"
+    },
+    {
+      "url": "https://www.speechsuper.com/pricing.html",
+      "used_for": "20USD minimum, per-request rates and language offerings"
+    },
+    {
+      "url": "https://speechsuper.com/demo/spanish/word-evaluation.html",
+      "used_for": "Spanish word assessment demonstration; not executed"
+    },
+    {
+      "url": "https://docs.expo.dev/versions/latest/sdk/audio/",
+      "used_for": "Expo Go audio availability and current HIGH_QUALITY preset; installed version still to verify"
+    },
+    {
+      "url": "https://azure.microsoft.com/en-us/free/",
+      "used_for": "Secure signup requirements, trial/upgrade/charge behavior"
+    }
+  ],
+  "not_done": [
+    "No key read or stored",
+    "No provider chosen based on empirical accuracy",
+    "No app/backend/Figma implementation or package installation",
+    "No new audio generation or native build"
+  ],
+  "resource_ref": "docs/research/pronunciation/azure-speech-resource.json",
+  "setup_followup": {
+    "date": "2026-10-16",
+    "status": "Active/Free verified in actual portal Overview",
+    "region": "italynorth",
+    "locale": "es-MX planned per request, not yet tested",
+    "evidence": ".codex-review/pronunciation/azure-speech-f0-created-2026-10-16.jpg",
+    "region_support_sources": [
+      "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/regions",
+      "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=pronunciation-assessment"
+    ]
+  }
+}

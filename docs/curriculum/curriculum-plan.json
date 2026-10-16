@@ -1,0 +1,2595 @@
+{
+  "version": 4,
+  "updated_on": "2026-10-16",
+  "title_he": "ספרדית לטיול הגדול - תוכנית לימוד לפי פעולות בטיול",
+  "status": "active_curriculum_plan; chapter_order_and_scope_updated_at_Dor_request; exact_lesson_copy_reviewed_incrementally",
+  "authority": {
+    "user_direction_he": "ליישם בנייה מלאה לפי הסדר: פרק ראשון ואז שני, בלי דחיסה או דגימה מכל פרק; היקף השבוע לפי מה שנספיק. יתר 16 הפרקים ו-57 המתווים הם תכנון להמשך.",
+    "naming_policy_he": "שם פרק מתאר פעולה בטיול. דקדוק ומילות שאלה הם יעדי הכנה ותרגול מפורשים בתוך הפעולה.",
+    "workflow": "docs/DEVELOPMENT_GUIDE.md",
+    "generator": ".codex-review/build_course_plan.py"
+  },
+  "scope": {
+    "chapters": 16,
+    "unit_outlines": 57,
+    "unit_count_status": "Outlines to split/refine in joint content review, not a fixed duration or completed lessons.",
+    "first_delivery": "Complete1A proves the flow; finish all3units ofC01, then all4units ofC02. Public release contains only complete verified chapters.",
+    "lesson_approval": "Updating the course plan does not approve all future Hebrew/Spanish wording or audio.",
+    "delivery_status": "Course outlines and local chapter release gate; no additional complete lessons or mobile runtime delivered."
+  },
+  "delivery": {
+    "policy": "complete_chapters_in_order",
+    "production_order": [
+      "C01",
+      "C02"
+    ],
+    "opening_unit_ids": [
+      "C01-U01",
+      "C01-U02",
+      "C01-U03",
+      "C02-U01",
+      "C02-U02",
+      "C02-U03",
+      "C02-U04"
+    ],
+    "fixed_week_unit_quota": null,
+    "week_goal_he": "להשלים 1A ותשתית זרימה, אחריה את פרק1 במלואו, ואז פרק2 לפי הזמן שנותר; לשמור על עומק ובדיקות.",
+    "chapter_done_he": [
+      "סקירה משותפת של העברית והספרדית",
+      "שמע טבעי שנבדק והקלטה להשוואה",
+      "זרימה באייפון: טעות, עזרה, יציאה וחזרה",
+      "שמירת התקדמות ותרחיש סיום",
+      "תגובה לפרט מוכר שהשתנה"
+    ],
+    "checkpoints_he": [
+      "אחרי יחידה1A מלאה",
+      "אחרי השלמת הפרק הראשון"
+    ],
+    "release_he": "השקה ציבורית חינמית לאחר בדיקות ואישור Apple; פרק חלקי אינו מוצג כפרק זמין.",
+    "budget_he": "ללא תשלום תשתית חדש; מכסות קיימות ייבדקו לפני שימוש.",
+    "pronunciation_he": "הקלטה והשוואה לדוגמה זמינות בגרסה הראשונה; הערכה אוטומטית לאחר כיול.",
+    "later_he": "יתר הפרקים נשארים מתווים; הרחבת התוכן לאחר משוב מהגרסה הראשונה, ללא התחייבות להפיק הכול ב-2–3 שבועות."
+  },
+  "ordering_policy": {
+    "recommended_path": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C16",
+      "C08",
+      "C09",
+      "C10",
+      "C11",
+      "C12",
+      "C13",
+      "C14",
+      "C15"
+    ],
+    "rationale_he": "המסלול נראה כמו פעולות בטיול ומתקדם לפי קושי לשוני. סדר הלימוד אינו העתק של סדר הנחיתה והנסיעה בעולם האמיתי.",
+    "gating": "skill_and_unit_prerequisites; chapter order is the recommended path, not a requirement to finish every preceding chapter",
+    "preparation_he": "מילים, שאלות, תשובות וכלל חדש מוכנים לפני שיחה או משימה שדורשת אותם; הבנה והפקה מוגדרות בנפרד.",
+    "sequence_changes_he": [
+      "בקשות הבהרה, נימוס ופרידה כבר בהתחלה.",
+      "הסבר כללי ל-soy/estoy ושאלות מיקום מוקדם.",
+      "שלילה ו-con/sin לפני צורכי האוכל במסעדה.",
+      "מספרים חדשים, שעון ותאריך לפני משימות שמשתמשות בהם.",
+      "לינה לפי היכולות הנחוצות: שם, צירוף פריט, כמות ושלילה; מחיר וזמן נדרשים רק ביחידות שמוסיפות אותם.",
+      "שאלות, קריאה ותיקון אי-הבנה חוזרים בכמה פעולות."
+    ]
+  },
+  "chapters": [
+    {
+      "id": "C01",
+      "title_he": "מפגש ראשון עם מטייל",
+      "entry_requires": [],
+      "goal_he": "לברך, לענות ולבקש הבהרה במפגש קצר.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "המפגש הראשון",
+          "goal_he": "להבין ברכה ולברך בחזרה; לשמור את תוכן 1A שכבר נסקר עם דור.",
+          "provides": [
+            "greeting",
+            "yes_no"
+          ],
+          "requires": [],
+          "legacy_lesson_ids": [
+            "1A"
+          ],
+          "status": "use_current_reviewed_1A_content; remaining_stages_pending",
+          "id": "C01-U01",
+          "working_unit_id": "1A",
+          "working_content": "docs/curriculum/unit1a-content.json"
+        },
+        {
+          "number": 2,
+          "title_he": "בקשה לשמוע שוב",
+          "goal_he": "לבקש חזרה ולהגיב לפרט מוכר לאחריה.",
+          "provides": [
+            "repeat"
+          ],
+          "requires": [
+            "greeting"
+          ],
+          "legacy_lesson_ids": [
+            "1B"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C01-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "פנייה בנימוס כשלא הבנתי",
+          "goal_he": "להוסיף סליחה, בקשת האטה או כתיבה, בירור מילה ופרידה.",
+          "provides": [
+            "repair",
+            "courtesy"
+          ],
+          "requires": [
+            "repeat",
+            "yes_no"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C01-U03"
+        }
+      ],
+      "number": 1,
+      "source_topic_ids": [
+        "P01"
+      ],
+      "catalog_ids": [
+        "A7"
+      ],
+      "original_gap_reference": [
+        "בקשת דיבור איטי",
+        "בקשת כתיבה",
+        "אמירת לא הבנתי"
+      ],
+      "listen_and_reply_he": "ברכה אחרת או חזרה על אותו פרט; לזהות שהשיחה הסתיימה.",
+      "practical_reading_he": "כפתור/פתק עם מילה מוכרת; הצגת בקשת עזרה מוכנה.",
+      "failure_or_alternative_he": "גם אחרי חזרה לא הובן: לבקש כתיבה או להציג טקסט.",
+      "completion_task_he": "לפתוח שיחה, לבקש הבהרה ואז לזהות פרט מוכר בלי רמז.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [],
+      "prerequisite_explanation_he": "אין דרישות קדם - מתחילים מאפס.",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C02",
+      "title_he": "היכרות עם מטיילים",
+      "entry_requires": [
+        "greeting",
+        "repeat"
+      ],
+      "goal_he": "למסור שם ומקור, להבין פנייה ולהחזיר שאלה בשיחה קצרה.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "שואלים שם ומציגים את עצמנו",
+          "goal_he": "להכין את שאלת השם בפנייה קרובה ומנומסת, את התשובה ואת ההבדל ביניהן.",
+          "provides": [
+            "name"
+          ],
+          "requires": [
+            "greeting"
+          ],
+          "legacy_lesson_ids": [
+            "2A"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C02-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מספרים מאיפה אנחנו",
+          "goal_he": "לפני דוגמת soy הראשונה להסביר בקצרה ser לזהות ומוצא ו-estar למיקום ומצב; אחר כך להכין yo/tú/usted, למסור מקור ולהחזיר שאלה בצעדים קטנים.",
+          "provides": [
+            "ser_estar_intro",
+            "origin",
+            "register"
+          ],
+          "requires": [
+            "name"
+          ],
+          "legacy_lesson_ids": [
+            "2B"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C02-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מספרים מי אנחנו ואיפה אנחנו",
+          "goal_he": "להעמיק בהבדל הכללי בין soy/estoy לפני הדוגמאות; לתרגל זהות, מקור, מיקום ומצב בשני צעדי דוגמה קטנים, ושאלת מי.",
+          "provides": [
+            "ser_estar",
+            "who_question"
+          ],
+          "requires": [
+            "ser_estar_intro",
+            "origin",
+            "register"
+          ],
+          "legacy_lesson_ids": [
+            "9A"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C02-U03"
+        },
+        {
+          "number": 4,
+          "title_he": "מוסרים שם ופרט שלא הובן",
+          "goal_he": "להציג או לאיית שם ולבקש כתיבה; למסור מספר אישי בעזרת עזר רק אחרי הכנת הספרות הדרושות.",
+          "provides": [
+            "spelling"
+          ],
+          "requires": [
+            "name",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C02-U04"
+        }
+      ],
+      "number": 2,
+      "source_topic_ids": [
+        "P02"
+      ],
+      "catalog_ids": [
+        "A1",
+        "I1"
+      ],
+      "original_gap_reference": [
+        "הפקת שאלות היכרות",
+        "שיחה הדדית עם פרט מוכר שמשתנה",
+        "פיצול עומס יחידה2B",
+        "יעד מפורש ומוקדם ל-soy/estoy, עם הרחבה בהמשך"
+      ],
+      "listen_and_reply_he": "שם/מקור של בן השיחה, תשובה חברתית קצרה ובקשת איות.",
+      "practical_reading_he": "כרטיס עם שם וארץ; זיהוי שדה פרטים והצגת שם.",
+      "failure_or_alternative_he": "שם שלא נשמע נכון או שאלה שנאמרה בפנייה אחרת.",
+      "completion_task_he": "שם ומקור בסדר משתנה והבחנה בין זהות, מקור, מיקום ומצב שנלמד.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C01"
+      ],
+      "prerequisite_explanation_he": "המפגש הראשון / בקשה לשמוע שוב",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C03",
+      "title_he": "מציאת מקום ובקשת הכוונה",
+      "entry_requires": [
+        "repair",
+        "ser_estar"
+      ],
+      "goal_he": "לשאול איפה מקום מוכר ולפעול לפי הוראת הגעה קצרה.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מזהים את המקום שמחפשים",
+          "goal_he": "להכין שמות מקום עם מין דקדוקי ו-el/la בדוגמאות קצרות לפני השאלה.",
+          "provides": [
+            "definite_nouns"
+          ],
+          "requires": [
+            "greeting"
+          ],
+          "legacy_lesson_ids": [
+            "3A",
+            "4A"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C03-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "שואלים איפה המקום",
+          "goal_he": "להכין dónde ו-está, את שם המקום ואת תשובות כאן/שם לפני השיחה.",
+          "provides": [
+            "location"
+          ],
+          "requires": [
+            "definite_nouns",
+            "ser_estar"
+          ],
+          "legacy_lesson_ids": [
+            "9A"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C03-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מבינים כיוון והוראה קצרה",
+          "goal_he": "להתחיל בימין/שמאל, ואז ישר וקרוב/רחוק; להכין כל הוראה לפני פעולה במפה.",
+          "provides": [
+            "directions"
+          ],
+          "requires": [
+            "location",
+            "repeat"
+          ],
+          "legacy_lesson_ids": [
+            "9B"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C03-U03"
+        },
+        {
+          "number": 4,
+          "title_he": "מוודאים שהגענו למקום",
+          "goal_he": "לזהות שלטי כניסה/יציאה ופתוח/סגור, לאשר כיוון ולבקש הבהרה.",
+          "provides": [
+            "signs"
+          ],
+          "requires": [
+            "location",
+            "directions",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C03-U04"
+        }
+      ],
+      "number": 3,
+      "source_topic_ids": [
+        "P06"
+      ],
+      "catalog_ids": [
+        "A6",
+        "B6"
+      ],
+      "original_gap_reference": [
+        "כתובת וקו",
+        "ישר והוראות מסלול",
+        "שעה ונקודת איסוף",
+        "מחיר לאדם או לקבוצה",
+        "אמצעי תשלום ובקשת ירידה"
+      ],
+      "listen_and_reply_he": "מיקום, כיוון, מרחק קצר ופתוח/סגור; אישור מקום ובקשת הבהרה.",
+      "practical_reading_he": "שלטי כניסה/יציאה ופתוח/סגור ומפה פשוטה.",
+      "failure_or_alternative_he": "לא הובן כיוון או המקום סגור: לשאול שוב או לברר מיקום חלופי שהוכן.",
+      "completion_task_he": "לשאול על מקום מוכר ולהגיע אליו לפי שמע או שלט, בלי סימון שמגלה את התשובה.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C01",
+        "C02"
+      ],
+      "prerequisite_explanation_he": "פנייה בנימוס כשלא הבנתי / מספרים מי אנחנו ואיפה אנחנו",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C04",
+      "title_he": "הזמנה במסעדה",
+      "entry_requires": [
+        "courtesy",
+        "yes_no"
+      ],
+      "goal_he": "להזמין מנה ומשקה שמתאימים לצורך שנבחר ולהבין את תגובת המלצר.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מבקשים פריט אחד",
+          "goal_he": "להסביר שם עצם, מין ו-un/una לפני שימוש, ואז להכין בקבוק מים עם de.",
+          "provides": [
+            "indefinite_nouns"
+          ],
+          "requires": [
+            "courtesy"
+          ],
+          "legacy_lesson_ids": [
+            "3A",
+            "3B"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C04-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מזמינים כמות",
+          "goal_he": "להכין 0–10 בקבוצות קטנות, אחד עד שלושה פריטים ורבים, ו-cuántos/cuántas עם תשובות.",
+          "provides": [
+            "quantity",
+            "numbers_basic"
+          ],
+          "requires": [
+            "indefinite_nouns"
+          ],
+          "legacy_lesson_ids": [
+            "5A",
+            "5B"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C04-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "בוחרים אוכל ושתייה",
+          "goal_he": "להכין quiero/necesito ושאלת מה; להשתמש בביטוי לפני הרחבת הטיות, ולהכין שם פועל אם נדרש.",
+          "provides": [
+            "requests",
+            "food_order"
+          ],
+          "requires": [
+            "indefinite_nouns",
+            "quantity",
+            "register"
+          ],
+          "legacy_lesson_ids": [
+            "6A",
+            "6B"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C04-U03"
+        },
+        {
+          "number": 4,
+          "title_he": "מבררים מה יש במנה",
+          "goal_he": "להכין רכיבים, שאלה ותשובות, no לפני פועל ו-con/sin עם רכיב לפני תרגול הצורך האישי.",
+          "provides": [
+            "negation",
+            "ingredients"
+          ],
+          "requires": [
+            "food_order",
+            "yes_no"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C04-U04"
+        },
+        {
+          "number": 5,
+          "title_he": "מזמינים לפי צורכי האוכל",
+          "goal_he": "לתרגל בנפרד ללא בשר והימנעות מבשר וגבינה יחד; להבחין מהעדפה או אלרגיה ולברר גם רכיב לא ברור.",
+          "provides": [
+            "dietary_request"
+          ],
+          "requires": [
+            "ingredients",
+            "negation",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C04-U05"
+        },
+        {
+          "number": 6,
+          "title_he": "בוחרים חלופה ומאשרים הזמנה",
+          "goal_he": "להכין יש/אין במסעדה, אפשר/אי אפשר לשנות, חלופה ותיקון פריט; לסיים באישור הסיכום הנשמע.",
+          "provides": [
+            "food_alternative"
+          ],
+          "requires": [
+            "dietary_request",
+            "food_order",
+            "quantity"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C04-U06"
+        }
+      ],
+      "number": 4,
+      "source_topic_ids": [
+        "P04"
+      ],
+      "catalog_ids": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6"
+      ],
+      "original_gap_reference": [
+        "מרכיבים ואלרגיה",
+        "בקשה למנה ללא בשר לפי הדגש של דור",
+        "בקשה להימנע מבשר וגבינה יחד לפי הדגש של דור",
+        "הבנת תשובה על מרכיבים ובירור רוטב או מרק במידת הצורך",
+        "טעות בהזמנה",
+        "פיצול חשבון",
+        "כמויות ומשקל מעבר לתרגול הפתיחה"
+      ],
+      "listen_and_reply_he": "רכיב קיים/חסר, אין מנה, אפשר/אי אפשר לשנות, חלופה וסיכום הזמנה.",
+      "practical_reading_he": "תפריט קצר ומרכיבים עם מחיר; חשבון מצומצם.",
+      "failure_or_alternative_he": "תשובה לא ברורה, חוסר ידע על רכיב, מנה שאינה מתאימה או פריט שגוי.",
+      "completion_task_he": "לבחור מנה לפי תשובה על רכיבים, למסור צורך מדויק ולאשר את ההזמנה והסכום. בירור רכיבים אינו אישור כשרות.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C01"
+      ],
+      "prerequisite_explanation_he": "פנייה בנימוס כשלא הבנתי / המפגש הראשון",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C05",
+      "title_he": "תשלום ובדיקת החשבון",
+      "entry_requires": [
+        "quantity",
+        "food_order",
+        "negation"
+      ],
+      "goal_he": "לבקש מחיר או חשבון, להבין סכום ואמצעי תשלום ולתקן טעות פשוטה.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "שואלים כמה עולה ומבינים סכום",
+          "goal_he": "להרחיב מספרים רציפים עד30 ובהמשך עד100 לפני הסכומים שנבדקים; להכין מטבע וחלקי סכום בדוגמאות מתאימות.",
+          "provides": [
+            "prices",
+            "numbers_money"
+          ],
+          "requires": [
+            "numbers_basic",
+            "quantity"
+          ],
+          "legacy_lesson_ids": [
+            "7A",
+            "7B"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C05-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מאשרים מחיר במאות ובאלפים",
+          "goal_he": "להכין מאות ואלפים לפני עסקאות בדרום אמריקה; לקרוא ולשמוע סכום, לזהות מטבע ולבקש אישור לסכום הכולל, בלי ללמד שער חליפין קבוע.",
+          "provides": [
+            "larger_numbers"
+          ],
+          "requires": [
+            "numbers_money",
+            "prices",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C05-U04"
+        },
+        {
+          "number": 3,
+          "title_he": "מבררים איך משלמים ועל מה",
+          "goal_he": "להכין כרטיס/מזומן, סכום סופי, לאדם/לפריט/לקבוצה, תוספת ועודף.",
+          "provides": [
+            "payment"
+          ],
+          "requires": [
+            "prices",
+            "larger_numbers",
+            "negation"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C05-U02"
+        },
+        {
+          "number": 4,
+          "title_he": "מבקשים חשבון ומתקנים פרט",
+          "goal_he": "לקרוא חשבון קצר, לזהות אי-התאמה ולבקש בדיקה; ביטוי כבר שילמתי ואישור מוכנים כצורך מוגבל.",
+          "provides": [
+            "bill_repair"
+          ],
+          "requires": [
+            "payment",
+            "food_order",
+            "definite_nouns",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C05-U03"
+        }
+      ],
+      "number": 5,
+      "source_topic_ids": [
+        "P08"
+      ],
+      "catalog_ids": [
+        "E7",
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F8"
+      ],
+      "original_gap_reference": [
+        "סכומים מגוונים",
+        "כרטיס ומזומן",
+        "עמלה, עודף וסכום סופי",
+        "תשלום שנדחה או כבר בוצע",
+        "החלפה, החזר ומשא ומתן פשוט"
+      ],
+      "listen_and_reply_he": "אמצעי שלא מתקבל, תוספת, סכום שונה או תשלום שנכשל.",
+      "practical_reading_he": "מחיר, חשבון קצר ואישור תשלום.",
+      "failure_or_alternative_he": "אי-התאמה בסכום או ביחידת המחיר; בקשת בדיקה ואישור.",
+      "completion_task_he": "להבין סכום מהטווח שהוכן, לבחור אמצעי תשלום ולתקן פרט אחד בחשבון.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C04"
+      ],
+      "prerequisite_explanation_he": "מזמינים כמות / בוחרים אוכל ושתייה / מבררים מה יש במנה",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C06",
+      "title_he": "קבלה בהוסטל",
+      "entry_requires": [
+        "name",
+        "indefinite_nouns",
+        "quantity",
+        "negation"
+      ],
+      "goal_he": "למסור הזמנה ולילות, לבדוק זמינות ולאשר את פרטי הלינה.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מתאמים יום ושעה",
+          "goal_he": "להכין שעון, ימים ותאריכים בקבוצות קטנות, לפני משימות כניסה/עזיבה ואיסוף שתלויות בהם.",
+          "provides": [
+            "calendar_time"
+          ],
+          "requires": [
+            "numbers_basic",
+            "numbers_money"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C06-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מזהים הזמנה וציוד",
+          "goal_he": "להסביר tener/hay/estar לפי הזמנה, זמינות ומיקום; להכין mi/tu/su בהקשר, שאלת של מי ומילים למפתח ולתיק.",
+          "provides": [
+            "possession",
+            "tener_hay"
+          ],
+          "requires": [
+            "name",
+            "indefinite_nouns",
+            "negation",
+            "ser_estar"
+          ],
+          "legacy_lesson_ids": [
+            "4A",
+            "4B",
+            "8A"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C06-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מוסרים שם ולכמה לילות",
+          "goal_he": "להתחיל במסלול שם ולילות שהוכנו; להוסיף תאריכים רק אחרי יחידת הזמן, ולהכין גם אין מקום.",
+          "provides": [
+            "booking"
+          ],
+          "requires": [
+            "tener_hay",
+            "name",
+            "quantity"
+          ],
+          "legacy_lesson_ids": [
+            "8B"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C06-U03"
+        },
+        {
+          "number": 4,
+          "title_he": "בוחרים חדר ומאשרים תנאים",
+          "goal_he": "להוסיף סוג חדר, מספר אנשים, מחיר ללילה/לאדם/כולל, מה כלול ופיקדון; להכין כל פרט לפני השיחה.",
+          "provides": [
+            "lodging_conditions"
+          ],
+          "requires": [
+            "booking",
+            "prices",
+            "payment",
+            "calendar_time"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C06-U04"
+        },
+        {
+          "number": 5,
+          "title_he": "מבקשים שירות ומתאמים עזיבה",
+          "goal_he": "להכין שעות עזיבה, מתקנים, סיסמת רשת, שמירת תיק ותקלה אחת עם בקשת פתרון.",
+          "provides": [
+            "lodging_service"
+          ],
+          "requires": [
+            "booking",
+            "possession",
+            "location",
+            "calendar_time",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C06-U05"
+        }
+      ],
+      "number": 6,
+      "source_topic_ids": [
+        "P05"
+      ],
+      "catalog_ids": [
+        "A3",
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5",
+        "D6",
+        "D7",
+        "D8"
+      ],
+      "original_gap_reference": [
+        "תאריכים וסוג חדר",
+        "מה כלול ופיקדון",
+        "מים חמים ותקלה",
+        "הארכה ושעת עזיבה",
+        "שמירת ציוד"
+      ],
+      "listen_and_reply_he": "אין מקום, חדר חלופי, שעה, תוספת ותשובת נותן שירות.",
+      "practical_reading_he": "אישור הזמנה, שעות קבלה/עזיבה ופתק רשת.",
+      "failure_or_alternative_he": "תאריך או לילות שגויים, תוספת מחיר או אין מים חמים.",
+      "completion_task_he": "לאשר פרטי לינה ולהבין שעת פעולה; לטפל בטעות אחת בעזרת שפה מוכרת.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C02",
+        "C04"
+      ],
+      "prerequisite_explanation_he": "שואלים שם ומציגים את עצמנו / מבקשים פריט אחד / מזמינים כמות / מבררים מה יש במנה",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C07",
+      "title_he": "נסיעה בעיר",
+      "entry_requires": [
+        "location",
+        "directions",
+        "prices",
+        "payment"
+      ],
+      "goal_he": "לבחור נסיעה שמגיעה ליעד, לאשר מחיר ולרדת במקום הנכון.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מוצאים תחנה ובוחרים קו",
+          "goal_he": "להכין תחנה, קו, כתובת ויעד, מילים כגון זה/זו ו-ir בצורות הנחוצות; ללמד לאן לפני שימוש.",
+          "provides": [
+            "transit",
+            "destination"
+          ],
+          "requires": [
+            "location",
+            "directions",
+            "numbers_money"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C07-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מאשרים מחיר ונקודת איסוף",
+          "goal_he": "להשתמש בשעה ובכתובת מוכרות ולהבחין בין מחיר לאדם למחיר לקבוצה.",
+          "provides": [
+            "pickup_transport"
+          ],
+          "requires": [
+            "transit",
+            "payment",
+            "calendar_time"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C07-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "עולים ויורדים במקום הנכון",
+          "goal_he": "להכין שאלת הגעה, בקשת עצירה והוראות ירידה; אחר כך רצף קצר עם מרחק ומספר שהוכן.",
+          "provides": [
+            "boarding"
+          ],
+          "requires": [
+            "transit",
+            "destination",
+            "directions",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C07-U03"
+        }
+      ],
+      "number": 7,
+      "source_topic_ids": [
+        "P06"
+      ],
+      "catalog_ids": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B7",
+        "B8"
+      ],
+      "original_gap_reference": [
+        "כתובת וקו",
+        "ישר והוראות מסלול",
+        "שעה ונקודת איסוף",
+        "מחיר לאדם או לקבוצה",
+        "אמצעי תשלום ובקשת ירידה"
+      ],
+      "listen_and_reply_he": "קו מתאים/לא מתאים, מקום ירידה, מחיר וכיוון/מרחק.",
+      "practical_reading_he": "יציאה/כניסה/פתוח/סגור, תחנה ומפת רחוב פשוטה.",
+      "failure_or_alternative_he": "כיוון שלא הובן, קו שאינו מגיע ליעד או מקום איסוף אחר.",
+      "completion_task_he": "להגיע לנקודה לפי שמע ולבחור נסיעה לפי יעד, בלי חץ או סימון שמגלה מראש.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C03",
+        "C05"
+      ],
+      "prerequisite_explanation_he": "שואלים איפה המקום / מבינים כיוון והוראה קצרה / שואלים כמה עולה ומבינים סכום / מבררים איך משלמים ועל מה",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C16",
+      "title_he": "מעבר בשדה תעופה ובגבול",
+      "entry_requires": [
+        "name",
+        "origin",
+        "spelling",
+        "booking",
+        "calendar_time",
+        "repair"
+      ],
+      "goal_he": "למסור פרטי ביקור, להבין בקשה למסמך ולהתמצא בשער ובכבודה.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מציגים מסמך ומוסרים פרטי ביקור",
+          "goal_he": "להכין דרכון, מטרת ביקור, משך וכתובת לינה; להבין שאלה ולהציג פרט כתוב. התוכן הוא תרגול שפה ואינו קובע תנאי כניסה למדינה.",
+          "provides": [
+            "travel_documents"
+          ],
+          "requires": [
+            "name",
+            "origin",
+            "spelling",
+            "booking",
+            "calendar_time"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C16-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מבינים בקשה לגבי תיק או מזוודה",
+          "goal_he": "להכין מסירה ואיסוף כבודה ולתאר תיק חסר עם בקשת סיוע; להבדיל בין ההוראה שנשמעה לבין המקום שצריך להגיע אליו.",
+          "provides": [
+            "baggage_help"
+          ],
+          "requires": [
+            "travel_documents",
+            "possession",
+            "location",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C16-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מוצאים שער ומוודאים שעת עלייה",
+          "goal_he": "לקרוא כרטיס ולוח יציאות מוכנים, להבין שער ושעה ולהגיב לשינוי עם בקשת הבהרה.",
+          "provides": [
+            "airport_boarding"
+          ],
+          "requires": [
+            "travel_documents",
+            "signs",
+            "calendar_time",
+            "transit",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C16-U03"
+        }
+      ],
+      "number": 8,
+      "source_topic_ids": [
+        "P07"
+      ],
+      "catalog_ids": [
+        "A2",
+        "A4",
+        "A5"
+      ],
+      "original_gap_reference": [
+        "כל רצף הנסיעה המפורט",
+        "מסירת מטרת ביקור ויעד לינה",
+        "כבודה שלא הגיעה",
+        "שינוי או ביטול"
+      ],
+      "listen_and_reply_he": "בקשה למסמך, פרטי ביקור, הוראת כבודה, שער ושעת עלייה.",
+      "practical_reading_he": "דרכון לדוגמה ללא פרטים אמיתיים, כרטיס ולוח יציאות עם שפה ומספרים שהוכנו.",
+      "failure_or_alternative_he": "תיק לא הגיע, פרט לא הובן או שער השתנה: לבקש סיוע ולאשר את הצעד הבא.",
+      "completion_task_he": "לענות על שאלה מוכרת לגבי ביקור, לזהות בקשה למסמך ולפעול לפי הוראת שער או כבודה.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C02",
+        "C06",
+        "C01"
+      ],
+      "prerequisite_explanation_he": "שואלים שם ומציגים את עצמנו / מספרים מאיפה אנחנו / מוסרים שם ופרט שלא הובן / מוסרים שם ולכמה לילות / מתאמים יום ושעה / פנייה בנימוס כשלא הבנתי",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C08",
+      "title_he": "קניית כרטיס לנסיעה בין ערים",
+      "entry_requires": [
+        "destination",
+        "calendar_time",
+        "prices",
+        "spelling"
+      ],
+      "goal_he": "לקנות כרטיס מתאים ולהבין את פרטי העלייה והשינויים בנסיעה.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "בוחרים יעד, תאריך וכרטיס",
+          "goal_he": "להכין יום ושעה, מספר נוסעים, כרטיס הלוך/חזור ומושב לפי האפשרויות שנבחרו.",
+          "provides": [
+            "ticket"
+          ],
+          "requires": [
+            "destination",
+            "calendar_time",
+            "quantity",
+            "prices"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C08-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מבררים מאיפה ומתי יוצאים",
+          "goal_he": "לקרוא כרטיס ולוח זמנים, לשאול באיזו שעה ומאיפה ולהבין שער/רציף ועלייה.",
+          "provides": [
+            "travel_schedule"
+          ],
+          "requires": [
+            "ticket",
+            "signs",
+            "calendar_time"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C08-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מתעדכנים בהחלפה או שינוי",
+          "goal_he": "להכין ישיר/החלפה, איחור, שינוי או ביטול והודעה קצרה עם שאלה על הפרט החדש.",
+          "provides": [
+            "travel_change"
+          ],
+          "requires": [
+            "travel_schedule",
+            "negation",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C08-U03"
+        }
+      ],
+      "number": 9,
+      "source_topic_ids": [
+        "P07"
+      ],
+      "catalog_ids": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8"
+      ],
+      "original_gap_reference": [
+        "כל רצף הנסיעה המפורט",
+        "מסירת מטרת ביקור ויעד לינה",
+        "כבודה שלא הגיעה",
+        "שינוי או ביטול"
+      ],
+      "listen_and_reply_he": "זמן ומקום חדשים, אין מקום/אין שירות, הוראת מעבר או מסירת מסמך.",
+      "practical_reading_he": "כרטיס נסיעה ולוח זמנים; הודעה קצרה על שינוי.",
+      "failure_or_alternative_he": "פספוס יציאה או שינוי רציף; לבקש את הפרט החדש ואישור.",
+      "completion_task_he": "לבחור כרטיס מתאים ולתקן את תוכנית הנסיעה לפי הודעה קצרה.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C07",
+        "C06",
+        "C05",
+        "C02"
+      ],
+      "prerequisite_explanation_he": "מוצאים תחנה ובוחרים קו / מתאמים יום ושעה / שואלים כמה עולה ומבינים סכום / מוסרים שם ופרט שלא הובן",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C09",
+      "title_he": "קנייה בחנות ובשוק",
+      "entry_requires": [
+        "indefinite_nouns",
+        "quantity",
+        "prices",
+        "payment"
+      ],
+      "goal_he": "לבחור פריט מתאים, להבין מחיר וכמות ולברר החלפה פשוטה.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "בוחרים פריט, מידה וצבע",
+          "goal_he": "להכין תיאור והתאמתו למילה, זה/זו, qué/cuál בבחירה בין אפשרויות שכבר הוצגו.",
+          "provides": [
+            "shopping_description",
+            "which_question"
+          ],
+          "requires": [
+            "definite_nouns",
+            "indefinite_nouns",
+            "quantity"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C09-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מבינים סכום וכמות חדשים",
+          "goal_he": "לחזור על מאות ואלפים שכבר הוכנו, ולהוסיף משקל ויחידות לפי דוגמאות מוכנות; לברר מחיר סופי ועודף.",
+          "provides": [
+            "shopping_quantity"
+          ],
+          "requires": [
+            "larger_numbers",
+            "numbers_money",
+            "prices",
+            "payment"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C09-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מבקשים חלופה או החלפה",
+          "goal_he": "להכין אין מידה, פריט שגוי, הצעת מחיר מנומסת ובירור תנאי החלפה; להפריד משא ומתן מורכב להרחבה.",
+          "provides": [
+            "shopping_change"
+          ],
+          "requires": [
+            "shopping_description",
+            "shopping_quantity",
+            "negation",
+            "bill_repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C09-U03"
+        }
+      ],
+      "number": 10,
+      "source_topic_ids": [
+        "P08"
+      ],
+      "catalog_ids": [
+        "F6",
+        "F7",
+        "E8"
+      ],
+      "original_gap_reference": [
+        "סכומים מגוונים",
+        "כרטיס ומזומן",
+        "עמלה, עודף וסכום סופי",
+        "תשלום שנדחה או כבר בוצע",
+        "החלפה, החזר ומשא ומתן פשוט"
+      ],
+      "listen_and_reply_he": "מידה/צבע/כמות, מחיר, אין פריט ותנאי החלפה פשוטים.",
+      "practical_reading_he": "תווית פריט ומחיר, קבלה ומידע החלפה קצר.",
+      "failure_or_alternative_he": "אין מידה, פריט אינו מתאים או הסכום אינו נכון: לבקש חלופה או בדיקה.",
+      "completion_task_he": "לבחור פריט לפי צורך, לאשר כמות ומחיר ולהבין חלופה או תנאי שירות שהוכן.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C04",
+        "C05"
+      ],
+      "prerequisite_explanation_he": "מבקשים פריט אחד / מזמינים כמות / שואלים כמה עולה ומבינים סכום / מבררים איך משלמים ועל מה",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C10",
+      "title_he": "קניית סים והתחברות לאינטרנט",
+      "entry_requires": [
+        "requests",
+        "prices",
+        "calendar_time",
+        "repair"
+      ],
+      "goal_he": "לבחור חבילת תקשורת, להתחבר ולהסביר תקלה בסיסית.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "בוחרים חבילת תקשורת",
+          "goal_he": "להכין כמות נתונים, ימים ומחיר, ואז לאשר חבילה או טעינה.",
+          "provides": [
+            "data_plan"
+          ],
+          "requires": [
+            "quantity",
+            "numbers_money",
+            "calendar_time",
+            "prices"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C10-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מתחברים לפי הוראה",
+          "goal_he": "להכין סיסמה בכתב והוראות הפעלה שכיחות להבנה, עם הודעת שירות קצרה.",
+          "provides": [
+            "service_instruction"
+          ],
+          "requires": [
+            "data_plan",
+            "spelling",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C10-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מבקשים עזרה כשהחיבור לא עובד",
+          "goal_he": "להכין תיאור תקלה, תשובת שירות וצעד המשך או חבילה חלופית.",
+          "provides": [
+            "service_fault"
+          ],
+          "requires": [
+            "service_instruction",
+            "negation",
+            "requests"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C10-U03"
+        }
+      ],
+      "number": 11,
+      "source_topic_ids": [
+        "P09"
+      ],
+      "catalog_ids": [
+        "A8",
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G8"
+      ],
+      "original_gap_reference": [
+        "כל שיעורי השירות המפורטים",
+        "הבחנה בין משקל, משך וכמות נתונים"
+      ],
+      "listen_and_reply_he": "כמות נתונים, תוקף, מחיר, הוראת הפעלה וצעד המשך לתקלה.",
+      "practical_reading_he": "תיאור חבילת תקשורת, סיסמה והודעת שירות.",
+      "failure_or_alternative_he": "החיבור לא עובד או החבילה אינה מתאימה: לבקש סיוע ולזהות צעד המשך.",
+      "completion_task_he": "להפריד נתונים/ימים/מחיר, לבחור חבילה ולפעול לפי הוראה מוכרת.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [
+        "תיאום שירות בהודעה קצרה בעזרת תבנית; כתיבה חופשית היא אפשרות הרחבה ואינה חובה בליבה."
+      ],
+      "prerequisite_chapters": [
+        "C04",
+        "C05",
+        "C06",
+        "C01"
+      ],
+      "prerequisite_explanation_he": "בוחרים אוכל ושתייה / שואלים כמה עולה ומבינים סכום / מתאמים יום ושעה / פנייה בנימוס כשלא הבנתי",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C11",
+      "title_he": "מסירת כביסה ותיאום איסוף",
+      "entry_requires": [
+        "quantity",
+        "prices",
+        "calendar_time",
+        "repair"
+      ],
+      "goal_he": "למסור כביסה, לאשר משקל ומחיר ולהבין מתי אוספים.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מבררים משקל ומחיר",
+          "goal_he": "להכין יחידות משקל ומחיר ליחידה, ואז לאשר את הכמות שנמסרה.",
+          "provides": [
+            "laundry_weight"
+          ],
+          "requires": [
+            "quantity",
+            "numbers_money",
+            "prices"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C11-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מאשרים מועד איסוף",
+          "goal_he": "להכין קבלה, יום ושעה ושאלת מתי; להבחין בין משך השירות למועד האיסוף.",
+          "provides": [
+            "laundry_pickup"
+          ],
+          "requires": [
+            "laundry_weight",
+            "calendar_time",
+            "spelling"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C11-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מבקשים עדכון כשהכביסה אינה מוכנה",
+          "goal_he": "להכין שלילה, דחייה ומועד חלופי; לאשר שהמועד החדש הובן.",
+          "provides": [
+            "laundry_change"
+          ],
+          "requires": [
+            "laundry_pickup",
+            "negation",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C11-U03"
+        }
+      ],
+      "number": 12,
+      "source_topic_ids": [
+        "P09"
+      ],
+      "catalog_ids": [
+        "G5",
+        "G6",
+        "G8"
+      ],
+      "original_gap_reference": [
+        "כל שיעורי השירות המפורטים",
+        "הבחנה בין משקל, משך וכמות נתונים"
+      ],
+      "listen_and_reply_he": "משקל, מחיר ליחידה, מועד איסוף ודחייה.",
+      "practical_reading_he": "קבלת כביסה והודעת איסוף קצרה.",
+      "failure_or_alternative_he": "הכביסה אינה מוכנה במועד: לברר מועד חדש ולאשר אותו.",
+      "completion_task_he": "לאשר משקל ומחיר, להבין יום ושעה ולתקן את כרטיס האיסוף לאחר שינוי.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [
+        "תיאום איסוף בהודעה קצרה בעזרת תבנית; כתיבה חופשית אינה חובה בליבה."
+      ],
+      "prerequisite_chapters": [
+        "C04",
+        "C05",
+        "C06",
+        "C01"
+      ],
+      "prerequisite_explanation_he": "מזמינים כמות / שואלים כמה עולה ומבינים סכום / מתאמים יום ושעה / פנייה בנימוס כשלא הבנתי",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C12",
+      "title_he": "הזמנת סיור או פעילות",
+      "entry_requires": [
+        "requests",
+        "quantity",
+        "prices",
+        "calendar_time",
+        "directions"
+      ],
+      "goal_he": "לבחור פעילות מתאימה ולאשר מה כלול, תנאים ומקום מפגש.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מבררים מה כלול במחיר",
+          "goal_he": "להכין שאלה ותשובות על כלול/תוספת, פעילות קצרה או רב-יומית ומספר משתתפים.",
+          "provides": [
+            "activity_inclusions"
+          ],
+          "requires": [
+            "requests",
+            "prices",
+            "quantity",
+            "negation"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C12-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "בודקים משך, קושי וציוד",
+          "goal_he": "להכין cuánto למשך, תיאור פשוט וציוד; לברר מה צריך להביא או לשכור.",
+          "provides": [
+            "activity_conditions"
+          ],
+          "requires": [
+            "activity_inclusions",
+            "calendar_time",
+            "possession"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C12-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מאשרים מפגש ומבקשים שינוי",
+          "goal_he": "להכין מקום ושעת איסוף, שינוי הזמנה, ביטול וחלופה; לאשר את הפרט החדש שנשמע.",
+          "provides": [
+            "activity_meeting"
+          ],
+          "requires": [
+            "activity_conditions",
+            "location",
+            "calendar_time",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C12-U03"
+        },
+        {
+          "number": 4,
+          "title_he": "מבינים הוראה ומבקשים הפסקה בפעילות",
+          "goal_he": "להכין הוראות קצרות להבנה, בקשת הפסקה ובירור מסלול סגור או שינוי עקב מזג אוויר; להיעזר באיש הצוות כשלא הובן.",
+          "provides": [
+            "activity_instructions"
+          ],
+          "requires": [
+            "activity_meeting",
+            "directions",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C12-U04"
+        }
+      ],
+      "number": 13,
+      "source_topic_ids": [
+        "P10"
+      ],
+      "catalog_ids": [
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "H5",
+        "H6",
+        "H7",
+        "H8"
+      ],
+      "original_gap_reference": [
+        "משך, קושי, ציוד ומה כלול בסיור",
+        "תיאום מפגש קבוצתי",
+        "בקשת הפסקה",
+        "חלופה בביטול",
+        "הזמנה חברתית וסירוב",
+        "סיפור קצר על אתמול"
+      ],
+      "listen_and_reply_he": "מה כלול, תוספת, משך, קושי, ציוד ומקום/שעת מפגש.",
+      "practical_reading_he": "מודעת סיור ואישור הזמנה עם פרטים קצרים.",
+      "failure_or_alternative_he": "הפעילות אינה מתאימה או בוטלה: לשאול על חלופה או לסרב.",
+      "completion_task_he": "לבחור פעילות לפי צורך, לבדוק מה כלול ולאשר תנאים ומפגש.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C04",
+        "C05",
+        "C06",
+        "C03"
+      ],
+      "prerequisite_explanation_he": "בוחרים אוכל ושתייה / מזמינים כמות / שואלים כמה עולה ומבינים סכום / מתאמים יום ושעה / מבינים כיוון והוראה קצרה",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C13",
+      "title_he": "קביעת מפגש ותכנון המשך הטיול",
+      "entry_requires": [
+        "name",
+        "origin",
+        "calendar_time",
+        "location",
+        "requests"
+      ],
+      "goal_he": "להזמין להצטרף, להסכים או לסרב ולתאם תוכנית שלי או שלנו.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מספרים מה מתכננים לעשות",
+          "goal_he": "להסביר שם פועל לפני ir a, להכין voy/vamos ותשובת מקום ופעילות מוכרות.",
+          "provides": [
+            "future_plan"
+          ],
+          "requires": [
+            "requests",
+            "location",
+            "calendar_time"
+          ],
+          "legacy_lesson_ids": [
+            "10A",
+            "10B"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C13-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מזמינים וקובעים עם מי ומתי",
+          "goal_he": "להכין הזמנה, הסכמה וסירוב, מי משתתף ושאלות זמן ומקום; להרחיב כינויי גוף ושאלת מי ברבים לפי צורך.",
+          "provides": [
+            "social_invitation"
+          ],
+          "requires": [
+            "future_plan",
+            "who_question",
+            "calendar_time",
+            "courtesy"
+          ],
+          "legacy_lesson_ids": [
+            "10A"
+          ],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C13-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מסבירים העדפה ומשנים תוכנית",
+          "goal_he": "להוסיף המלצה והעדפה לפי פעולה, y/o/pero/porque ובירור por qué; שאלת סיבה ותשובה קצרה לפני תיאום חדש.",
+          "provides": [
+            "simple_reason",
+            "social_change"
+          ],
+          "requires": [
+            "social_invitation",
+            "negation",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C13-U03"
+        }
+      ],
+      "number": 14,
+      "source_topic_ids": [
+        "P10"
+      ],
+      "catalog_ids": [
+        "I2",
+        "I3",
+        "I4",
+        "I5",
+        "I6",
+        "I8"
+      ],
+      "original_gap_reference": [
+        "משך, קושי, ציוד ומה כלול בסיור",
+        "תיאום מפגש קבוצתי",
+        "בקשת הפסקה",
+        "חלופה בביטול",
+        "הזמנה חברתית וסירוב",
+        "סיפור קצר על אתמול"
+      ],
+      "listen_and_reply_he": "תוכנית של אדם או קבוצה, הזמנה, הסכמה/סירוב וסיבה פשוטה.",
+      "practical_reading_he": "הודעת מפגש קצרה עם מקום ושעה.",
+      "failure_or_alternative_he": "אחד המטיילים לא יכול להצטרף: להבין את התשובה ולתאם חלופה שהוכנה.",
+      "completion_task_he": "למסור תוכנית, להזמין או להשיב להזמנה ולאשר מי נפגש, מתי ואיפה.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C02",
+        "C06",
+        "C03",
+        "C04"
+      ],
+      "prerequisite_explanation_he": "שואלים שם ומציגים את עצמנו / מספרים מאיפה אנחנו / מתאמים יום ושעה / שואלים איפה המקום / בוחרים אוכל ושתייה",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C14",
+      "title_he": "בקשת עזרה כשלא מרגישים טוב",
+      "entry_requires": [
+        "requests",
+        "location",
+        "repair"
+      ],
+      "goal_he": "למסור צורך בסיסי, לבקש סיוע ולהבין שאלת המשך שהוכנה.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מבקשים סיוע ואיש מקצוע",
+          "goal_he": "להכין צורך, מקום ופרט אישי עם אפשרות להציג טקסט; ביטויי העזרה זמינים כבר מתחילת המסלול.",
+          "provides": [
+            "health_help"
+          ],
+          "requires": [
+            "requests",
+            "location",
+            "name"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C14-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מסבירים תחושה או כאב",
+          "goal_he": "להכין חלקי גוף ומצבים נבחרים, שאלות dónde/cómo בהקשר זה והתגובה המתאימה; להבחין בדפוסי estar/tener שנלמדים.",
+          "provides": [
+            "health_description"
+          ],
+          "requires": [
+            "health_help",
+            "ser_estar",
+            "tener_hay"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C14-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מוסרים צורך חשוב ומבינים הפניה",
+          "goal_he": "להכין אלרגיה כצורך נפרד מהעדפת אוכל, בקשת כתיבה והפניה קצרה לשירות.",
+          "provides": [
+            "health_followup"
+          ],
+          "requires": [
+            "health_description",
+            "ingredients",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C14-U03"
+        }
+      ],
+      "number": 15,
+      "source_topic_ids": [
+        "P11"
+      ],
+      "catalog_ids": [
+        "J5",
+        "J6"
+      ],
+      "original_gap_reference": [
+        "כל יחידות התקשורת בנושא בריאות",
+        "שילוב צורך של אלרגיה עם פרק האוכל"
+      ],
+      "listen_and_reply_he": "שאלה על מקום/תחושה והוראת הגעה או המתנה פשוטה שהוכנה.",
+      "practical_reading_he": "הצגת צורך בכתב ושלט מקום שירות.",
+      "failure_or_alternative_he": "לא הובנה שאלת המשך: להציג טקסט ולבקש עזרה.",
+      "completion_task_he": "למסור צורך ולזהות את סוג הפרט שנשאל; אין כאן הוראה רפואית או אבחנה.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [],
+      "prerequisite_chapters": [
+        "C04",
+        "C03",
+        "C01"
+      ],
+      "prerequisite_explanation_he": "בוחרים אוכל ושתייה / שואלים איפה המקום / פנייה בנימוס כשלא הבנתי",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    },
+    {
+      "id": "C15",
+      "title_he": "דיווח על אובדן וטיפול בבעיה",
+      "entry_requires": [
+        "possession",
+        "location",
+        "calendar_time",
+        "repair",
+        "negation"
+      ],
+      "goal_he": "לדווח מה חסר או מה השתבש, למסור פרטים ולקבל צעד המשך.",
+      "units": [
+        {
+          "number": 1,
+          "title_he": "מדווחים שחפץ או מסמך חסר",
+          "goal_he": "להכין ביטוי אובדן, תיאור ושייכות, מקום וזמן; ביטוי סיוע מוכן זמין מוקדם גם ללא השלמת הפרק.",
+          "provides": [
+            "loss_report"
+          ],
+          "requires": [
+            "possession",
+            "location",
+            "calendar_time",
+            "requests"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C15-U01"
+        },
+        {
+          "number": 2,
+          "title_he": "מספרים בקצרה מה כבר קרה",
+          "goal_he": "להתחיל מביטויי עבר שימושיים לאובדן, איחור או נסיעה שהוחמצה; להרחיב פעלים ואדם לפי צורך. להכין מילים לפני שאלה על אתמול ולחזור איתה גם לשיחה עם מטיילים.",
+          "provides": [
+            "useful_past"
+          ],
+          "requires": [
+            "loss_report",
+            "bill_repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C15-U02"
+        },
+        {
+          "number": 3,
+          "title_he": "מתקנים טעות ומבקשים אישור",
+          "goal_he": "להכין טעות בהזמנה, שירות שלא סופק או תקלה בציוד, צעד המשך ואישור כתוב; משא ומתן פתוח ותלונה מורכבת הם הרחבה מאוחרת.",
+          "provides": [
+            "problem_followup"
+          ],
+          "requires": [
+            "useful_past",
+            "booking",
+            "bill_repair",
+            "repair"
+          ],
+          "legacy_lesson_ids": [],
+          "status": "outline_copy_pending_joint_review",
+          "id": "C15-U03"
+        }
+      ],
+      "number": 16,
+      "source_topic_ids": [
+        "P12"
+      ],
+      "catalog_ids": [
+        "G7",
+        "I7",
+        "J1",
+        "J2",
+        "J3",
+        "J4",
+        "J5",
+        "J7",
+        "J8"
+      ],
+      "original_gap_reference": [
+        "כל רצפי הבעיה המפורטים",
+        "תיאור אירוע קצר ושאלות המשך",
+        "תיעוד ושינוי שירות"
+      ],
+      "listen_and_reply_he": "בקשה לתיאור/זמן/מקום, תיקון פרט או הפניה לשירות.",
+      "practical_reading_he": "אישור קצר, כרטיס פרטים או הודעת תקלה.",
+      "failure_or_alternative_he": "מידע שלא ניתן למסור; לבקש כתיבה/סיוע ולשמור את הפרט שעדיין חסר.",
+      "completion_task_he": "לתקן פרט ולאשר שהובן, או למסור חפץ ומיקום ולהבין צעד המשך מוגבל.",
+      "status": "planning_updated; lesson_copy_and_learner_validation_pending",
+      "extensions_he": [
+        "פרט רקע כגון איפה החפץ היה מתחיל כביטוי שהוכן; הרחבת מערכות העבר בהמשך לפי צורך.",
+        "לאחר הכנת העבר חוזרים גם למפגש חברתי ומספרים דבר אחד שעשינו אתמול."
+      ],
+      "prerequisite_chapters": [
+        "C06",
+        "C03",
+        "C01",
+        "C04"
+      ],
+      "prerequisite_explanation_he": "מזהים הזמנה וציוד / שואלים איפה המקום / מתאמים יום ושעה / פנייה בנימוס כשלא הבנתי / מבררים מה יש במנה",
+      "prerequisite_rule_he": "אלה דרישות הכניסה. לכל יחידה בהמשך יש דרישות משלה; השלמת כל פרק המקור אינה נדרשת כשכבר קיימת היכולת הדרושה."
+    }
+  ],
+  "skills": [
+    {
+      "id": "greeting",
+      "chapter_id": "C01",
+      "unit_id": "C01-U01",
+      "label_he": "המפגש הראשון"
+    },
+    {
+      "id": "yes_no",
+      "chapter_id": "C01",
+      "unit_id": "C01-U01",
+      "label_he": "המפגש הראשון"
+    },
+    {
+      "id": "repeat",
+      "chapter_id": "C01",
+      "unit_id": "C01-U02",
+      "label_he": "בקשה לשמוע שוב"
+    },
+    {
+      "id": "repair",
+      "chapter_id": "C01",
+      "unit_id": "C01-U03",
+      "label_he": "פנייה בנימוס כשלא הבנתי"
+    },
+    {
+      "id": "courtesy",
+      "chapter_id": "C01",
+      "unit_id": "C01-U03",
+      "label_he": "פנייה בנימוס כשלא הבנתי"
+    },
+    {
+      "id": "name",
+      "chapter_id": "C02",
+      "unit_id": "C02-U01",
+      "label_he": "שואלים שם ומציגים את עצמנו"
+    },
+    {
+      "id": "ser_estar_intro",
+      "chapter_id": "C02",
+      "unit_id": "C02-U02",
+      "label_he": "מספרים מאיפה אנחנו"
+    },
+    {
+      "id": "origin",
+      "chapter_id": "C02",
+      "unit_id": "C02-U02",
+      "label_he": "מספרים מאיפה אנחנו"
+    },
+    {
+      "id": "register",
+      "chapter_id": "C02",
+      "unit_id": "C02-U02",
+      "label_he": "מספרים מאיפה אנחנו"
+    },
+    {
+      "id": "ser_estar",
+      "chapter_id": "C02",
+      "unit_id": "C02-U03",
+      "label_he": "מספרים מי אנחנו ואיפה אנחנו"
+    },
+    {
+      "id": "who_question",
+      "chapter_id": "C02",
+      "unit_id": "C02-U03",
+      "label_he": "מספרים מי אנחנו ואיפה אנחנו"
+    },
+    {
+      "id": "spelling",
+      "chapter_id": "C02",
+      "unit_id": "C02-U04",
+      "label_he": "מוסרים שם ופרט שלא הובן"
+    },
+    {
+      "id": "definite_nouns",
+      "chapter_id": "C03",
+      "unit_id": "C03-U01",
+      "label_he": "מזהים את המקום שמחפשים"
+    },
+    {
+      "id": "location",
+      "chapter_id": "C03",
+      "unit_id": "C03-U02",
+      "label_he": "שואלים איפה המקום"
+    },
+    {
+      "id": "directions",
+      "chapter_id": "C03",
+      "unit_id": "C03-U03",
+      "label_he": "מבינים כיוון והוראה קצרה"
+    },
+    {
+      "id": "signs",
+      "chapter_id": "C03",
+      "unit_id": "C03-U04",
+      "label_he": "מוודאים שהגענו למקום"
+    },
+    {
+      "id": "indefinite_nouns",
+      "chapter_id": "C04",
+      "unit_id": "C04-U01",
+      "label_he": "מבקשים פריט אחד"
+    },
+    {
+      "id": "quantity",
+      "chapter_id": "C04",
+      "unit_id": "C04-U02",
+      "label_he": "מזמינים כמות"
+    },
+    {
+      "id": "numbers_basic",
+      "chapter_id": "C04",
+      "unit_id": "C04-U02",
+      "label_he": "מזמינים כמות"
+    },
+    {
+      "id": "requests",
+      "chapter_id": "C04",
+      "unit_id": "C04-U03",
+      "label_he": "בוחרים אוכל ושתייה"
+    },
+    {
+      "id": "food_order",
+      "chapter_id": "C04",
+      "unit_id": "C04-U03",
+      "label_he": "בוחרים אוכל ושתייה"
+    },
+    {
+      "id": "negation",
+      "chapter_id": "C04",
+      "unit_id": "C04-U04",
+      "label_he": "מבררים מה יש במנה"
+    },
+    {
+      "id": "ingredients",
+      "chapter_id": "C04",
+      "unit_id": "C04-U04",
+      "label_he": "מבררים מה יש במנה"
+    },
+    {
+      "id": "dietary_request",
+      "chapter_id": "C04",
+      "unit_id": "C04-U05",
+      "label_he": "מזמינים לפי צורכי האוכל"
+    },
+    {
+      "id": "food_alternative",
+      "chapter_id": "C04",
+      "unit_id": "C04-U06",
+      "label_he": "בוחרים חלופה ומאשרים הזמנה"
+    },
+    {
+      "id": "prices",
+      "chapter_id": "C05",
+      "unit_id": "C05-U01",
+      "label_he": "שואלים כמה עולה ומבינים סכום"
+    },
+    {
+      "id": "numbers_money",
+      "chapter_id": "C05",
+      "unit_id": "C05-U01",
+      "label_he": "שואלים כמה עולה ומבינים סכום"
+    },
+    {
+      "id": "larger_numbers",
+      "chapter_id": "C05",
+      "unit_id": "C05-U04",
+      "label_he": "מאשרים מחיר במאות ובאלפים"
+    },
+    {
+      "id": "payment",
+      "chapter_id": "C05",
+      "unit_id": "C05-U02",
+      "label_he": "מבררים איך משלמים ועל מה"
+    },
+    {
+      "id": "bill_repair",
+      "chapter_id": "C05",
+      "unit_id": "C05-U03",
+      "label_he": "מבקשים חשבון ומתקנים פרט"
+    },
+    {
+      "id": "calendar_time",
+      "chapter_id": "C06",
+      "unit_id": "C06-U01",
+      "label_he": "מתאמים יום ושעה"
+    },
+    {
+      "id": "possession",
+      "chapter_id": "C06",
+      "unit_id": "C06-U02",
+      "label_he": "מזהים הזמנה וציוד"
+    },
+    {
+      "id": "tener_hay",
+      "chapter_id": "C06",
+      "unit_id": "C06-U02",
+      "label_he": "מזהים הזמנה וציוד"
+    },
+    {
+      "id": "booking",
+      "chapter_id": "C06",
+      "unit_id": "C06-U03",
+      "label_he": "מוסרים שם ולכמה לילות"
+    },
+    {
+      "id": "lodging_conditions",
+      "chapter_id": "C06",
+      "unit_id": "C06-U04",
+      "label_he": "בוחרים חדר ומאשרים תנאים"
+    },
+    {
+      "id": "lodging_service",
+      "chapter_id": "C06",
+      "unit_id": "C06-U05",
+      "label_he": "מבקשים שירות ומתאמים עזיבה"
+    },
+    {
+      "id": "transit",
+      "chapter_id": "C07",
+      "unit_id": "C07-U01",
+      "label_he": "מוצאים תחנה ובוחרים קו"
+    },
+    {
+      "id": "destination",
+      "chapter_id": "C07",
+      "unit_id": "C07-U01",
+      "label_he": "מוצאים תחנה ובוחרים קו"
+    },
+    {
+      "id": "pickup_transport",
+      "chapter_id": "C07",
+      "unit_id": "C07-U02",
+      "label_he": "מאשרים מחיר ונקודת איסוף"
+    },
+    {
+      "id": "boarding",
+      "chapter_id": "C07",
+      "unit_id": "C07-U03",
+      "label_he": "עולים ויורדים במקום הנכון"
+    },
+    {
+      "id": "travel_documents",
+      "chapter_id": "C16",
+      "unit_id": "C16-U01",
+      "label_he": "מציגים מסמך ומוסרים פרטי ביקור"
+    },
+    {
+      "id": "baggage_help",
+      "chapter_id": "C16",
+      "unit_id": "C16-U02",
+      "label_he": "מבינים בקשה לגבי תיק או מזוודה"
+    },
+    {
+      "id": "airport_boarding",
+      "chapter_id": "C16",
+      "unit_id": "C16-U03",
+      "label_he": "מוצאים שער ומוודאים שעת עלייה"
+    },
+    {
+      "id": "ticket",
+      "chapter_id": "C08",
+      "unit_id": "C08-U01",
+      "label_he": "בוחרים יעד, תאריך וכרטיס"
+    },
+    {
+      "id": "travel_schedule",
+      "chapter_id": "C08",
+      "unit_id": "C08-U02",
+      "label_he": "מבררים מאיפה ומתי יוצאים"
+    },
+    {
+      "id": "travel_change",
+      "chapter_id": "C08",
+      "unit_id": "C08-U03",
+      "label_he": "מתעדכנים בהחלפה או שינוי"
+    },
+    {
+      "id": "shopping_description",
+      "chapter_id": "C09",
+      "unit_id": "C09-U01",
+      "label_he": "בוחרים פריט, מידה וצבע"
+    },
+    {
+      "id": "which_question",
+      "chapter_id": "C09",
+      "unit_id": "C09-U01",
+      "label_he": "בוחרים פריט, מידה וצבע"
+    },
+    {
+      "id": "shopping_quantity",
+      "chapter_id": "C09",
+      "unit_id": "C09-U02",
+      "label_he": "מבינים סכום וכמות חדשים"
+    },
+    {
+      "id": "shopping_change",
+      "chapter_id": "C09",
+      "unit_id": "C09-U03",
+      "label_he": "מבקשים חלופה או החלפה"
+    },
+    {
+      "id": "data_plan",
+      "chapter_id": "C10",
+      "unit_id": "C10-U01",
+      "label_he": "בוחרים חבילת תקשורת"
+    },
+    {
+      "id": "service_instruction",
+      "chapter_id": "C10",
+      "unit_id": "C10-U02",
+      "label_he": "מתחברים לפי הוראה"
+    },
+    {
+      "id": "service_fault",
+      "chapter_id": "C10",
+      "unit_id": "C10-U03",
+      "label_he": "מבקשים עזרה כשהחיבור לא עובד"
+    },
+    {
+      "id": "laundry_weight",
+      "chapter_id": "C11",
+      "unit_id": "C11-U01",
+      "label_he": "מבררים משקל ומחיר"
+    },
+    {
+      "id": "laundry_pickup",
+      "chapter_id": "C11",
+      "unit_id": "C11-U02",
+      "label_he": "מאשרים מועד איסוף"
+    },
+    {
+      "id": "laundry_change",
+      "chapter_id": "C11",
+      "unit_id": "C11-U03",
+      "label_he": "מבקשים עדכון כשהכביסה אינה מוכנה"
+    },
+    {
+      "id": "activity_inclusions",
+      "chapter_id": "C12",
+      "unit_id": "C12-U01",
+      "label_he": "מבררים מה כלול במחיר"
+    },
+    {
+      "id": "activity_conditions",
+      "chapter_id": "C12",
+      "unit_id": "C12-U02",
+      "label_he": "בודקים משך, קושי וציוד"
+    },
+    {
+      "id": "activity_meeting",
+      "chapter_id": "C12",
+      "unit_id": "C12-U03",
+      "label_he": "מאשרים מפגש ומבקשים שינוי"
+    },
+    {
+      "id": "activity_instructions",
+      "chapter_id": "C12",
+      "unit_id": "C12-U04",
+      "label_he": "מבינים הוראה ומבקשים הפסקה בפעילות"
+    },
+    {
+      "id": "future_plan",
+      "chapter_id": "C13",
+      "unit_id": "C13-U01",
+      "label_he": "מספרים מה מתכננים לעשות"
+    },
+    {
+      "id": "social_invitation",
+      "chapter_id": "C13",
+      "unit_id": "C13-U02",
+      "label_he": "מזמינים וקובעים עם מי ומתי"
+    },
+    {
+      "id": "simple_reason",
+      "chapter_id": "C13",
+      "unit_id": "C13-U03",
+      "label_he": "מסבירים העדפה ומשנים תוכנית"
+    },
+    {
+      "id": "social_change",
+      "chapter_id": "C13",
+      "unit_id": "C13-U03",
+      "label_he": "מסבירים העדפה ומשנים תוכנית"
+    },
+    {
+      "id": "health_help",
+      "chapter_id": "C14",
+      "unit_id": "C14-U01",
+      "label_he": "מבקשים סיוע ואיש מקצוע"
+    },
+    {
+      "id": "health_description",
+      "chapter_id": "C14",
+      "unit_id": "C14-U02",
+      "label_he": "מסבירים תחושה או כאב"
+    },
+    {
+      "id": "health_followup",
+      "chapter_id": "C14",
+      "unit_id": "C14-U03",
+      "label_he": "מוסרים צורך חשוב ומבינים הפניה"
+    },
+    {
+      "id": "loss_report",
+      "chapter_id": "C15",
+      "unit_id": "C15-U01",
+      "label_he": "מדווחים שחפץ או מסמך חסר"
+    },
+    {
+      "id": "useful_past",
+      "chapter_id": "C15",
+      "unit_id": "C15-U02",
+      "label_he": "מספרים בקצרה מה כבר קרה"
+    },
+    {
+      "id": "problem_followup",
+      "chapter_id": "C15",
+      "unit_id": "C15-U03",
+      "label_he": "מתקנים טעות ומבקשים אישור"
+    }
+  ],
+  "language_tracks": [
+    {
+      "id": "question_words",
+      "title_he": "מילות שאלה והבנת התשובות",
+      "learner_chapter": false,
+      "checkpoints": [
+        {
+          "units": [
+            "C02-U01",
+            "C02-U02",
+            "C02-U03"
+          ],
+          "content_he": "איך קוראים, מאיפה ומי - שאלות היכרות ותשובות."
+        },
+        {
+          "units": [
+            "C03-U02",
+            "C03-U03"
+          ],
+          "content_he": "איפה ואיך מגיעים - מיקום והכוונה."
+        },
+        {
+          "units": [
+            "C04-U02",
+            "C04-U03",
+            "C04-U04",
+            "C05-U01"
+          ],
+          "content_he": "כמה פריטים, מה רוצים ומה במנה, כמה עולה - התאמת תשובה לשאלה."
+        },
+        {
+          "units": [
+            "C06-U01",
+            "C08-U02",
+            "C11-U02"
+          ],
+          "content_he": "מתי ובאיזו שעה - שעה, יום ותאריך."
+        },
+        {
+          "units": [
+            "C06-U02"
+          ],
+          "content_he": "של מי - שאלה ותשובת בעלות מוכנות."
+        },
+        {
+          "units": [
+            "C07-U01",
+            "C08-U01"
+          ],
+          "content_he": "לאן ומאיפה נוסעים - יעד ומוצא."
+        },
+        {
+          "units": [
+            "C09-U01"
+          ],
+          "content_he": "איזה - qué/cuál לפי המבנה והבחירה."
+        },
+        {
+          "units": [
+            "C13-U02",
+            "C13-U03"
+          ],
+          "content_he": "מי משתתף, למה וכי - קבוצה וסיבה פשוטה."
+        }
+      ]
+    },
+    {
+      "id": "ser_estar",
+      "title_he": "זהות, מקור, מיקום ומצב",
+      "learner_chapter": false,
+      "checkpoints": [
+        {
+          "units": [
+            "C02-U02"
+          ],
+          "content_he": "מבוא כללי ל-ser/estar לפני דוגמת soy הראשונה במוצא."
+        },
+        {
+          "units": [
+            "C02-U03"
+          ],
+          "content_he": "העמקה בהבדל הכללי לפני דוגמאות; שתי דוגמאות בכל צעד, והכנת מילים לפני תרגול."
+        },
+        {
+          "units": [
+            "C03-U02",
+            "C14-U02"
+          ],
+          "content_he": "שאלת מיקום ובהמשך תחושה או כאב בדפוס המתאים."
+        }
+      ],
+      "draft_reference": ".codex-review/curriculum-traveler-simulation-2026-10-16.json#revised_soy_estoy_draft",
+      "accuracy_he": "בחירה לפי משמעות ושימוש; אין כלל גורף קבוע מול זמני, ואין החלפה אוטומטית של כל תחושה ב-estoy."
+    },
+    {
+      "id": "numbers_time",
+      "title_he": "כמות, סכומים ותזמון",
+      "learner_chapter": false,
+      "checkpoints": [
+        {
+          "units": [
+            "C04-U02"
+          ],
+          "content_he": "מספרים בסיסיים וכמות."
+        },
+        {
+          "units": [
+            "C05-U01",
+            "C05-U04"
+          ],
+          "content_he": "מספרי מחיר ומאות/אלפים לפני עסקאות; אימות סכום כולל ומטבע."
+        },
+        {
+          "units": [
+            "C06-U01"
+          ],
+          "content_he": "שעון, ימים ותאריכים לפני תיאום."
+        },
+        {
+          "units": [
+            "C09-U02",
+            "C11-U01"
+          ],
+          "content_he": "חזרה על סכומים גדולים והכנת משקל ויחידות לפני המשימה."
+        }
+      ]
+    },
+    {
+      "id": "verbs",
+      "title_he": "דפוסי פועל שימושיים",
+      "learner_chapter": false,
+      "checkpoints": [
+        {
+          "units": [
+            "C02-U01",
+            "C02-U02",
+            "C02-U03"
+          ],
+          "content_he": "שם, גוף ופנייה; ser/estar."
+        },
+        {
+          "units": [
+            "C04-U03",
+            "C04-U04",
+            "C06-U02"
+          ],
+          "content_he": "רצון וצורך, שלילה, שם פועל לפי צורך, tener/hay ושייכות."
+        },
+        {
+          "units": [
+            "C07-U01",
+            "C10-U02"
+          ],
+          "content_he": "תנועה והוראות נבחרות להבנה."
+        },
+        {
+          "units": [
+            "C13-U01",
+            "C13-U02",
+            "C13-U03"
+          ],
+          "content_he": "אנחנו, תכנון, העדפה וקישור."
+        },
+        {
+          "units": [
+            "C15-U02"
+          ],
+          "content_he": "עבר שימושי בפעלים נבחרים אחרי ביטויים מוכנים."
+        }
+      ]
+    }
+  ],
+  "early_help": {
+    "available_from_start": true,
+    "unlocks_full_chapters": false,
+    "content_he": [
+      "בקשת עזרה והבהרה",
+      "הצגת צורך או מיקום בטקסט",
+      "ביטוי אובדן חפץ/מסמך מוכן",
+      "בקשת סיוע כשלא מרגישים טוב"
+    ],
+    "policy_he": "העזר מכין ומציג את הביטוי עם משמעות ושמע. אינו מעיד על שליטה בדקדוק ואינו מחייב תמיכה מלאה ללא אינטרנט."
+  },
+  "unit_authoring_contract": {
+    "steps_he": [
+      "מטרה והקשר",
+      "ידע קודם ומילים חדשות",
+      "הבדל או כלל כללי קצר ואז דוגמאות",
+      "בדיקת הכנה נתמכת",
+      "שיחה מלאה",
+      "הבנת שמע וטקסט רלוונטי",
+      "תגובה לפני רמז",
+      "שינוי פרט מוכר וענף שלילי שהוכן",
+      "תוצאה, חזרה ושמירת מקום"
+    ],
+    "required_fields": [
+      "unit_id",
+      "requires",
+      "prepared_language_understand",
+      "prepared_language_produce",
+      "dialogue_turns",
+      "practice_with_unit_and_stage_id",
+      "branch_replies",
+      "hints",
+      "completion_task",
+      "review"
+    ],
+    "copy_he": "העברית והספרדית נכתבות עם דור, יחידה ושלב בכל פעם; טיוטת מתווה אינה נוסח מאושר. קטע כללי קודם לדוגמה כשמבחינים בין מושגים.",
+    "realistic_context_he": "כל יחידה נבנית כמקרה מציאותי בטיול: מקום ומשתתפים, אירוע קונקרטי, צורך של הלומד, תגובה ותוצאה. מציגים מה קרה ומה האדם האחר עשה, כך שברור למה מגיבים; למשל, מראים במה חואן עזר לפני שאומרים תודה. ב-1A אפשר להסתפק באירוע קצר ובאיור או בתיאור עברי בהתאם לאוצר המילים המצומצם; בהמשך מעמיקים את האירוע והשיחה בהדרגה. הספרדית להבנה ולהפקה נשענת רק על מה שהוכן. בסקירה האנושית בודקים שהקשר בין האירוע, התגובה והתוצאה ברור.",
+    "reuse_he": "תוכן משתנה כנתונים בתוך תבניות משותפות. Figma נוסף רק לפעולה, מבנה או מצב חדש שנדרש.",
+    "evidence_he": "הבנת מתחילים, זמן וזכירה דורשים בדיקה בפועל; אין הסקת דיבור עצמאי מלחיצה או מציון הגייה בלבד.",
+    "pronunciation_policy_ref": "docs/planning/approved-decisions.json#pronunciation_assessment"
+  },
+  "legacy_content": {
+    "file": "docs/curriculum/pilot-spec.json",
+    "status": "reusable_v2_authoring_bank_not_active_sequence",
+    "relocated_outline_units": {
+      "C08-U04": [
+        "C16-U01",
+        "C16-U02",
+        "C16-U03"
+      ]
+    },
+    "archived_snapshot": ".codex-review/archive/before-interaction-curriculum-2026-10-16/pilot-spec.json",
+    "legacy_lesson_mapping": {
+      "1A": [
+        "C01-U01"
+      ],
+      "1B": [
+        "C01-U02"
+      ],
+      "2A": [
+        "C02-U01"
+      ],
+      "2B": [
+        "C02-U02"
+      ],
+      "9A": [
+        "C02-U03",
+        "C03-U02"
+      ],
+      "3A": [
+        "C03-U01",
+        "C04-U01"
+      ],
+      "4A": [
+        "C03-U01",
+        "C06-U02"
+      ],
+      "9B": [
+        "C03-U03"
+      ],
+      "3B": [
+        "C04-U01"
+      ],
+      "5A": [
+        "C04-U02"
+      ],
+      "5B": [
+        "C04-U02"
+      ],
+      "6A": [
+        "C04-U03"
+      ],
+      "6B": [
+        "C04-U03"
+      ],
+      "7A": [
+        "C05-U01"
+      ],
+      "7B": [
+        "C05-U01"
+      ],
+      "4B": [
+        "C06-U02"
+      ],
+      "8A": [
+        "C06-U02"
+      ],
+      "8B": [
+        "C06-U03"
+      ],
+      "10A": [
+        "C13-U01",
+        "C13-U02"
+      ],
+      "10B": [
+        "C13-U01"
+      ]
+    },
+    "working_1A": "docs/curriculum/unit1a-content.json",
+    "rule": "Keep existing lesson IDs and reviewed1A wording; prepare missing language and review reused content before implementing a new unit."
+  },
+  "research": {
+    "audit": ".codex-review/curriculum-traveler-simulation-2026-10-16.json",
+    "first_audit": ".codex-review/curriculum-coverage-review-2026-10-16.json",
+    "expansion": ".codex-review/curriculum-research-expansion-2026-10-16.json",
+    "scope": "36 historical analytical cases plus targeted primary research/service review; not an exhaustive review or a learner trial.",
+    "sources": [
+      {
+        "id": "SURVIVAL_1991",
+        "title": "Nation & Crabbe (1991), A survival language learning syllabus for foreign travel",
+        "url": "https://doi.org/10.1016/0346-251X(91)90044-P",
+        "available_page": "https://www.sciencedirect.com/science/article/pii/0346251X9190044P",
+        "review_scope": "Publisher abstract indexed in web search; author-hosted PDF link failed. Do not claim full-paper or interview-data review.",
+        "finding_he": "המחברים מתארים ניתוח צרכים על בסיס ראיונות עם לומדים, מדריכי טיול וניסיון אישי, ובחינת שכיחות ושילוביות של פריטים. תחומי התוכן כוללים נימוס, קנייה, שלטים, התמצאות, לינה, אוכל, הצגה עצמית וניהול אי-הבנה.",
+        "application_he": "לבדוק משימות תקשורת ושלטים לצד שיחה, ולבחור כלים שחוזרים בכמה מצבים.",
+        "limit": "Older general travel syllabus, not a modern Hebrew-to-Spanish app effectiveness study or a proof that its approximate vocabulary count is sufficient for our users."
+      },
+      {
+        "id": "CEFR_2020",
+        "title": "Council of Europe, CEFR Companion Volume (2020)",
+        "url": "https://rm.coe.int/16809ea0d4",
+        "review_scope": "Selected descriptor scales, printed pp.55–56,72–78,89; not the whole volume.",
+        "finding_he": "המסגרת מפרידה בין הבנת שיחה, חילופי מידע, עסקאות יומיומיות, קריאת מידע ובקשת הבהרה. תיאורי A1–A2 נשענים על מצבים פשוטים ומוכרים; טיפול רחב יותר בבעיות ובתלונות מופיע ברמות גבוהות יותר.",
+        "application_he": "להגדיר הצלחה לפי פעולה, להוסיף שלטים ולוחות זמנים ולחלק טיפול בבעיה לבקשה בסיסית ולעומק מאוחר.",
+        "limit": "Reference descriptors, not a mandatory lesson sequence or a certificate for this curriculum."
+      },
+      {
+        "id": "PCIC_GRAMMAR",
+        "title": "Instituto Cervantes, Plan curricular: Gramática A1–A2",
+        "url": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/02_gramatica_inventario_a1-a2.htm",
+        "review_scope": "Selected sections: articles, possession, interrogatives, present/infinitive, and ser/estar uses in12.1.",
+        "finding_he": "מלאי ההתחלה כולל שאלות, כמות, שמות עצם ומילים שמקדימות אותם, כינויי גוף ודפוסי פועל שימושיים. ser מופיע בין השאר לזיהוי ולמקור; estar למיקום ולתיאורי מצב מסוימים.",
+        "application_he": "ללמד את ההבדל הכללי לפני הדוגמה ולהגדיר במדויק מה נדרש להבין ומה להפיק בכל צעד.",
+        "limit": "Inventory contains more than the travel core and does not make every item a prerequisite to a first useful task."
+      },
+      {
+        "id": "PCIC_FUNCTIONS",
+        "title": "Instituto Cervantes, Plan curricular: Funciones A1–A2",
+        "url": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/05_funciones_inventario_a1-a2.htm",
+        "review_scope": "Information, confirmation, requests/instructions and interaction sections.",
+        "finding_he": "פעולות כגון בקשה, אישור מידע ובקשת חזרה או האטה הן מטרות הוראה מפורשות.",
+        "application_he": "להחזיר בקשת הבהרה ואישור פרט בפרקי אוכל, תחבורה ושירותים; להכין גם תשובות שליליות וחלופות."
+      },
+      {
+        "id": "PCIC_GENRES",
+        "title": "Instituto Cervantes, Plan curricular: Géneros discursivos A1–A2",
+        "url": "https://cvc.cervantes.es/ensenanza/biblioteca_ele/plan_curricular/niveles/07_generos_discursivos_inventario_a1-a2.htm",
+        "review_scope": "Sections1.2–1.3 and transactional conversation structure.",
+        "finding_he": "מלאי הקריאה למתחילים כולל בין השאר כרטיסים, שלטים, טפסי פרטים, שעות פתיחה ותחבורה, תפריטים והודעות קצרות.",
+        "application_he": "לשלב משימת קריאה קצרה רלוונטית בתוך הפרק, לצד שמע. תמיכה בטופס אינה מחייבת הקלדה חופשית בליבת האפליקציה."
+      },
+      {
+        "id": "AVE_GRAMA",
+        "title": "Instituto Cervantes, Grama-Exprés: levels and contents",
+        "url": "https://ave.cervantes.es/grama-expres/niveles-y-contenidos-de-los-cursos-grama-expres",
+        "review_scope": "A1.1/A1.2 topic lists; no course completed.",
+        "finding_he": "התוכנית מפרטת מידע אישי, מין ומספר, ser/estar, מילות קישור ושאלות; בהמשך hay לעומת estar והוראות הגעה.",
+        "application_he": "חיזוק לצורך במסלול דקדוק מפורש, תוך התאמת סדר היחידות לצורכי הטיול.",
+        "limit": "A grammar-focused product is a comparison point, not evidence to copy its order or full load."
+      },
+      {
+        "id": "OPENLEARN_1",
+        "title": "Open University, Getting started with Spanish1",
+        "url": "https://www.open.edu/openlearn/languages/getting-started-spanish-1/content-section-0?active-tab=content-tab",
+        "review_scope": "Learning outcomes and week1/week2 contents.",
+        "finding_he": "הפתיחה מחברת ברכות וצלילים, פרידה, שמות, פנייה רשמית ולא רשמית ו-ser.",
+        "application_he": "לשמור פתיחה מעשית ולהשלים פרידה ופנייה להמשך שיחה; לצמצם הצגת תיאוריה ללא משימה."
+      },
+      {
+        "id": "SPADA_TOMITA_2010",
+        "title": "Spada & Tomita (2010), Interactions Between Type of Instruction and Type of Language Feature: A Meta-Analysis",
+        "url": "https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1467-9922.2010.00562.x",
+        "review_scope": "Publisher abstract:41 studies of English grammar instruction.",
+        "finding_he": "המטא-אנליזה מדווחת על יתרון להוראה מפורשת ביחס להוראה מרומזת במאפיינים שנבדקו.",
+        "application_he": "לשמור הסבר ברור וקצר לפני משימה, ולחבר אותו לתרגול משמעותי.",
+        "limit": "Not direct evidence that our exact Hebrew copy, screen order or short lesson duration is effective."
+      },
+      {
+        "id": "KIM_WEBB_2022",
+        "title": "Kim & Webb (2022), The Effects of Spaced Practice on Second Language Learning: A Meta-Analysis",
+        "url": "https://onlinelibrary.wiley.com/doi/abs/10.1111/lang.12479",
+        "review_scope": "Publisher abstract:48 experiments,3411 participants.",
+        "finding_he": "הממצאים תומכים בתרגול מרווח, עם הבדלים לפי משימה ומועד המדידה.",
+        "application_he": "להחזיר שאלות ותגובות בהמשך היום ובימים הבאים ולבדוק פרט מוכר שהשתנה.",
+        "limit": "Does not validate a universal1/3/7-day schedule or provide a course-specific mastery threshold."
+      },
+      {
+        "id": "NATION_2007",
+        "title": "Nation (2007), The Four Strands",
+        "url": "https://doi.org/10.2167/illt039.0",
+        "review_scope": "Publisher-indexed abstract; author PDF unavailable via current link.",
+        "finding_he": "המאמר מציע איזון בין קלט בעל משמעות, הפקה, לימוד ממוקד שפה ובניית שטף עם חומר מוכר.",
+        "application_he": "לוודא שהקורס אינו מסתכם בכרטיסיות או בבחירת תשובות, ולשמור תרגול תגובה וחזרה על חומר מוכר.",
+        "limit": "A course-design framework; no claim that each tiny app lesson must spend exactly25percent on each strand."
+      },
+      {
+        "title": "Miranda García et al. - Survival language learning syllabuses revisited (2006)",
+        "url": "https://www.ugr.es/~portalin/articulos/PL_numero5/miranda.pdf",
+        "finding_he": "קורס הישרדות שנראה מוצלח בכיתה הותיר פערים במצבים ובאוצר מילים שהתגלו בנסיעה; החוקרים נעזרו במשוב נוסעים ובניתוח צרכים.",
+        "application_he": "לכל פרק נבדוק גם תשובת שירות, אי-הבנה וחלופה, ונשפר לאחר שימוש אמיתי.",
+        "review_scope": "Relevant full-text sections: needs analysis, selection, sequencing, methodology. English for Spanish engineering students, many false beginners; not an Israeli Spanish trial."
+      },
+      {
+        "title": "RAE/ASALE - Voseo",
+        "url": "https://www.rae.es/dpd/voseo",
+        "finding_he": "השימוש ב-vos ובצורות הפועל משתנה בין מדינות, אזורים והקשרים חברתיים.",
+        "application_he": "בסיס הפקה עקבי והיכרות הדרגתית להבנה עם צורות שנשמעות במסלול; אין תיאור של כל דרום אמריקה כניב אחיד.",
+        "review_scope": "Primary reference entry and regional distribution; reference guidance, not teaching-effectiveness evidence."
+      },
+      {
+        "title": "Reichel, Fuchs and Uriely - Israeli Backpackers: The Role of Destination Choice (2009)",
+        "url": "https://cris.bgu.ac.il/en/publications/israeli-backpackers-the-role-of-destination-choice-2/",
+        "finding_he": "מחקר שאלונים על579תרמילאים ישראלים מצא שונות בין קבוצות יעד בתכנון, פעילויות ותפיסות סיכון.",
+        "application_he": "להציע צרכים אישיים ולהימנע מהנחה שכל ישראלי מטייל או אוכל באותו אופן.",
+        "review_scope": "University-hosted abstract and bibliographic metadata only; no validated chapter order or Spanish needs inventory inferred."
+      },
+      {
+        "title": "PeruRail - Recomendaciones de viaje",
+        "url": "https://www.perurail.com/es/recomendaciones-de-viaje/",
+        "finding_he": "השירות משתמש בכרטיס, מסמך, שעת עלייה וכבודה כחלק מתהליך הנסיעה.",
+        "application_he": "להכין הבנת מסמך, זמן והוראות כבודה בתרחישי תחבורה; לא לקבע כללי מפעיל או תנאי כניסה כעובדות קורס נצחיות.",
+        "review_scope": "Official operator service page; contextual task evidence, not a language-learning experiment."
+      },
+      {
+        "title": "Metro de Quito - Nuevas opciones para ingresar al Metro",
+        "url": "https://metrodequito.gob.ec/nuevas-opciones-acceso/",
+        "finding_he": "שימוש בתחבורה עשוי לכלול רכישת כרטיס, ציון תחנת מוצא ושימוש באמצעי כניסה.",
+        "application_he": "פרק הנסיעה בעיר יכלול כרטיס/טעינה והבנת תחנה ולא רק הזמנת מונית.",
+        "review_scope": "Official service announcement; mutable local procedures serve as context only."
+      },
+      {
+        "title": "Chile Travel - Torres del Paine: cómo llegar y dónde alojar",
+        "url": "https://chile.travel/blog/torres-del-paine-como-llegar-y-donde-alojar-para-disfrutar-sus-paisajes-2/",
+        "finding_he": "הכנה לפעילות משלבת הזמנה, תנאים, ציוד, קושי ומזג אוויר.",
+        "application_he": "להפריד בין אישור הזמנת סיור ובין הבנת הוראות במהלך הפעילות.",
+        "review_scope": "Official tourism guidance, relevant excerpts; no live trail, equipment or safety requirements taught as permanent facts."
+      },
+      {
+        "title": "Colombia Travel - Moneda y medios de pago",
+        "url": "https://colombia.travel/es/informacion-practica/convertidor-de-moneda",
+        "finding_he": "מחיר, מטבע ואמצעי תשלום הם חלק נפרד מתכנון עסקאות בזמן טיול.",
+        "application_he": "מאות ואלפים יעברו לפרק התשלום, לפני משימות המשך; שערי חליפין ומחירים אמיתיים אינם קבועי לימוד.",
+        "review_scope": "Official practical-information page; informs task coverage, not numerical learning pace or financial advice."
+      }
+    ]
+  },
+  "pdf": "docs/curriculum/Spanish_For_Trip_Curriculum.pdf"
+}

@@ -5,7 +5,7 @@
   "sequenceAfterActivityId": "1a-speak-thanks",
   "goalHe": "לשחזר את ברכת הבוקר שכבר נלמדה, בעזרת שתי מילים נתונות.",
   "source": {
-    "file": "pilot-spec.json",
+    "file": "docs/curriculum/pilot-spec.json",
     "selector": "modules[number=1].practice[type=arrange]",
     "originalAnswerEs": "por favor",
     "adaptationHe": "המקור הוא מאגר משותף ל-1A ול-1B. por favor טרם הוכן ב-1A ושייך ליחידה הבאה; מוצעת כאן ברכת Buenos días שכבר הוכנה."

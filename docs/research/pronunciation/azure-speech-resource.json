@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "created_on": "2026-10-16",
+  "stage_id": "02",
+  "status": "created_and_verified_active",
+  "provider": "Microsoft Azure",
+  "service": "Speech",
+  "name": "spanishfortrip-speech-dor",
+  "resource_group": "rg-spanishfortrip-pilot",
+  "kind": "SpeechServices",
+  "region": "italynorth",
+  "region_display": "Italy North",
+  "pricing_tier": "F0",
+  "portal_pricing_caption": "Free",
+  "subscription_type_evidence": "Azure Home shows an active new free trial with credits expiring in30days; no paid upgrade performed.",
+  "region_decision": {
+    "user_context": "Dor points out that users/development are in Israel.",
+    "israel_central": "Not offered in the observed Speech creation dropdown and absent from current official Speech regional table.",
+    "chosen": "Italy North is a supported European region geographically closer to Israel than initially proposed West Europe.",
+    "latency": "Not benchmarked; geographic proximity alone is not a measured latency guarantee.",
+    "locale": "es-MX remains the planned assessment language. Locale is configured per assessment request, independently of resource region; no assessment has run.",
+    "sources": [
+      "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/regions",
+      "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=pronunciation-assessment"
+    ]
+  },
+  "verification": {
+    "creation_review": "Region Italy North, name spanishfortrip-speech-dor, group rg-spanishfortrip-pilot and Pricing tier Free F0 passed final portal validation before Create.",
+    "overview": "Portal resource Overview shows Status Active, Location Italy North, API Kind SpeechServices, Pricing tier Free.",
+    "evidence_image": ".codex-review/pronunciation/azure-speech-f0-created-2026-10-16.jpg",
+    "endpoint_display": "https://italynorth.api.cognitive.microsoft.com/",
+    "result_page_loading": "The confirmation view stayed loading. After one refresh and returning through Azure Home, the named resource was found and its Active/Free overview verified. The Create operation was not submitted again."
+  },
+  "network": "Default public endpoint accessibility; authenticated service use. No private endpoint or additional network resource created.",
+  "identity": "None (default); no custom roles or managed identity configured.",
+  "security": {
+    "key_values_revealed": false,
+    "key_values_copied": false,
+    "key_values_stored": false,
+    "api_auth_tested": false,
+    "recording_uploaded": false
+  },
+  "work_split": {
+    "dor": "Created Azure account and opened the portal; explicitly authorized Free Speech setup and highlighted Israel region relevance.",
+    "codex": "Configured and created the F0 resource through the existing signed-in portal, checked region support and verified Active/Free status."
+  },
+  "assessment_status": "One Dor-recorded Hola browser assessment observed: Success, recognized Hola., pronunciation96, accuracy93, fluency100, completeness100, zero marked mispronunciations/omissions/insertions. No error-discrimination or repeatability validation; no direct key API/mobile/backend test.",
+  "cost_scope": "F0 resource only; no paid tier, commitment plan, purchase or upgrade. Existing retail estimates for westeurope/eastus are not a verified paid italynorth quote.",
+  "builds": 0,
+  "next": "Dor records Gracias normally once in Speech Studio es-MX/F0, then reports completion. Save its result before a separate deliberately distorted Gracias sample (planned c sound replaced with k, גראקיאס), using the same expected text, locale and microphone. No further recording has been performed. Compare actual word accuracy/error flags and human judgments before any threshold or integration.",
+  "first_human_result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
+  "security_at_creation_note": "The original security flags above describe resource setup before any human recording; Dor has now submitted microphone audio via Studio. Direct key/API use remains untested and keys remain hidden."
+}

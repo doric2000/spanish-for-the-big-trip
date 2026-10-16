@@ -1,0 +1,40 @@
+{
+  "stage_id": "04",
+  "recorded_on": "2026-10-16",
+  "kind": "Dated evidence for first two-table schema checkpoint; live status is work-plan.json#delivery",
+  "project": {
+    "intended_name": "spanish-for-trip-dev",
+    "linked_ref_from_local_cli_metadata": "bullhxlahedmifdlgnot"
+  },
+  "migration": {
+    "file": "supabase/migrations/20261016081919_create_courses_and_chapters.sql",
+    "sha256": "5707c52832fb9fdec9b29022fd50087425ab18a523d8bc29fc156eb44347c89d",
+    "executor": "Dor",
+    "evidence": "User-pasted CLI output Applying migration and Finished supabase db push for the sole expected file."
+  },
+  "sql_regression": {
+    "file": "supabase/checks/01_courses_and_chapters.sql",
+    "sha256": "a7b60b63de4fdb9b9ea5318e2ff88631e8ab6b4cea3c75cad560496c6f9a2ff5",
+    "executor": "Dor in development SQL Editor",
+    "evidence_source": "Dor explicitly reports running the entire file and supplies its exact output; agent did not run the remote check.",
+    "result": "PASS: relationships, constraints and role access; synthetic rows rolled back",
+    "coverage": [
+      "Two tables exist with RLS enabled",
+      "Valid course/chapter relationship and rejected orphan",
+      "Rejected duplicate stable ID, duplicate/non-positive position and referenced-parent deletion",
+      "Explicit role grants checked per privilege",
+      "Actual anon/authenticated SELECT denied for these tables",
+      "Synthetic rows isolated in a transaction ending with ROLLBACK"
+    ]
+  },
+  "learning": {
+    "demonstrated": "Dor explains two empty tables, required existing parent course and deferred lesson content in his own words.",
+    "pending": "Detailed RLS/API/provider understanding is not inferred.",
+    "rollback_followup": "Dor explains in his own words that the migration finished before the test transaction began; rollback undid only the test actions and left the earlier-created tables intact."
+  },
+  "limits": [
+    "No JWT, Google/Apple, progress ownership, HTTP/Data API or iPhone proof",
+    "No published lesson/chapter, content seed or learner recording archive",
+    "Stage04 remains in progress; no native build, new payment or C02 work"
+  ]
+}

@@ -108,7 +108,7 @@
       "type": "entry",
       "review": {
         "status": "approved",
-        "source": ".codex-review/unit1a-content.json#entry",
+        "source": "docs/curriculum/unit1a-content.json#entry",
         "note": "Exact title, body and primary action supplied by Dor."
       },
       "titleHe": "המפגש הראשון",
@@ -126,7 +126,7 @@
       "type": "vocabulary_card",
       "review": {
         "status": "approved",
-        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "source": "docs/curriculum/unit1a-content.json#vocabulary_preparation.cards",
         "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
       },
       "expressionEs": "Hola",
@@ -148,7 +148,7 @@
       "type": "vocabulary_card",
       "review": {
         "status": "needs_review",
-        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "source": "docs/curriculum/unit1a-content.json#vocabulary_preparation.cards",
         "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
       },
       "expressionEs": "Buenos días",
@@ -170,7 +170,7 @@
       "type": "vocabulary_card",
       "review": {
         "status": "needs_review",
-        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "source": "docs/curriculum/unit1a-content.json#vocabulary_preparation.cards",
         "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
       },
       "expressionEs": "Gracias",
@@ -192,7 +192,7 @@
       "type": "vocabulary_card",
       "review": {
         "status": "needs_review",
-        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "source": "docs/curriculum/unit1a-content.json#vocabulary_preparation.cards",
         "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
       },
       "expressionEs": "Sí",
@@ -214,7 +214,7 @@
       "type": "vocabulary_card",
       "review": {
         "status": "needs_review",
-        "source": ".codex-review/unit1a-content.json#vocabulary_preparation.cards",
+        "source": "docs/curriculum/unit1a-content.json#vocabulary_preparation.cards",
         "note": "Retained planned expression and meaning; first Hola card accepted. Remaining cards are conservatively pending exact-content review."
       },
       "expressionEs": "No",
@@ -236,7 +236,7 @@
       "type": "listen_select",
       "review": {
         "status": "needs_review",
-        "source": ".codex-review/unit1a-content.json#supported_comprehension_check",
+        "source": "docs/curriculum/unit1a-content.json#supported_comprehension_check",
         "note": "Core question/choices accepted; exact feedback copy remains a draft."
       },
       "titleHe": "ננסה יחד",
@@ -279,7 +279,7 @@
       "type": "dialogue",
       "review": {
         "status": "approved",
-        "source": ".codex-review/unit1a-content.json#full_dialogue_review.approved_turns",
+        "source": "docs/curriculum/unit1a-content.json#full_dialogue_review.approved_turns",
         "note": "Two-turn script accepted by Dor; original four-turn source remains in review history."
       },
       "titleHe": "השיחה עם חואן",
@@ -314,7 +314,7 @@
       "type": "listen_select",
       "review": {
         "status": "needs_review",
-        "source": ".codex-review/unit1a-content.json#post_dialogue_practice_review.first_activity",
+        "source": "docs/curriculum/unit1a-content.json#post_dialogue_practice_review.first_activity",
         "note": "Core question and success feedback accepted; exact retry hint remains a draft."
       },
       "titleHe": "קצת תרגול",
@@ -357,7 +357,7 @@
       "type": "speak_reveal",
       "review": {
         "status": "approved",
-        "source": ".codex-review/unit1a-content.json#speaking_context_review",
+        "source": "docs/curriculum/unit1a-content.json#speaking_context_review",
         "note": "Dor approved the concrete dropped-hat/returned-hat scene and requested integration. Hebrew context carries the action; only prepared Gracias is produced. Content approval does not verify audio, recording or the app flow."
       },
       "promptHe": "הכובע שלכם נופל. חואן מרים אותו ומחזיר לכם.\nמה תגידו לו בספרדית?",
@@ -378,7 +378,7 @@
       "type": "arrange",
       "review": {
         "status": "approved",
-        "source": ".codex-review/unit1a-content.json#arrange_greeting_review",
+        "source": "docs/curriculum/unit1a-content.json#arrange_greeting_review",
         "note": "Dor accepted the prompt, tiles and behavior, then explicitly accepted the presented exact hint and retry copy. Content approval does not imply device verification or independent speaking."
       },
       "titleHe": "מברכים בחזרה",
@@ -403,7 +403,7 @@
       "type": "bounded_scenario",
       "review": {
         "status": "needs_review",
-        "source": ".codex-review/unit1a-content.json#ending_scenario_review",
+        "source": "docs/curriculum/unit1a-content.json#ending_scenario_review",
         "note": "Dor approved the greeting, meaningful yes/no seat-offer branches and thanks outcomes. Exact node-level corrective feedback and the added final answer choices remain drafts for full-flow copy review; audio/device verification is pending."
       },
       "titleHe": "פוגשים שוב את חואן",
@@ -498,8 +498,8 @@
     "Review learner goal and exact completion criteria; this draft is not a full publishable unit."
   ],
   "editorial": {
-    "source": ".codex-review/unit1a-content.json",
-    "note": "Initial authoring checkpoint. Pedagogical review metadata is never learner-facing. Course outlines in curriculum-plan.json do not count as approved runnable lessons. Draft unit preserves reviewed material and explicitly lists missing stages."
+    "source": "docs/curriculum/unit1a-content.json",
+    "note": "Initial authoring checkpoint. Pedagogical review metadata is never learner-facing. Course outlines in docs/curriculum/curriculum-plan.json do not count as approved runnable lessons. Draft unit preserves reviewed material and explicitly lists missing stages."
   },
   "languageItems": [
     {
@@ -552,7 +552,7 @@
       "audioAssetId": null,
       "review": {
         "status": "approved",
-        "source": ".codex-review/unit1a-content.json#arrange_greeting_review",
+        "source": "docs/curriculum/unit1a-content.json#arrange_greeting_review",
         "note": "Dor explicitly accepted the presented exact hint wording on2026-10-16; app behavior is not yet verified."
       }
     }

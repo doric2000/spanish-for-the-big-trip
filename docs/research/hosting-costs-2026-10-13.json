@@ -1,0 +1,21 @@
+{
+  "checked_on": "2026-10-13",
+  "currency": "USD",
+  "selected": {"backend_scope":"middle: one authored API and one complete lesson","database_engine":"PostgreSQL","database_platform":"Supabase","api_hosting":"open"},
+  "explanation": "Firebase hosts its managed services on Google infrastructure. Supabase similarly hosts Postgres/Auth/Storage. An authored NestJS API needs a runtime, initially the developer PC and later a cloud service. Supabase Edge Functions are an alternative implementation that runs authored TypeScript/Deno functions inside Supabase; a separate hosting provider is not inherent to PostgreSQL.",
+  "prices": [
+    {"service":"Supabase Free","monthly_base_usd":0,"database_mb":500,"file_storage_gb":1,"egress_gb":5,"edge_function_invocations":500000,"conditions":"Two active project limit; paused after one week inactivity."},
+    {"service":"Supabase Pro","monthly_base_from_usd":25,"conditions":"Basic first project/Micro instance covered by plan compute credits; additional projects, larger compute, add-ons and usage can increase the bill."},
+    {"service":"Vercel Hobby","monthly_base_usd":0,"conditions":"Personal non-commercial use, subject to quotas; optional API host, not selected."},
+    {"service":"Vercel Pro","monthly_base_usd":20,"conditions":"One deploying seat and USD20 usage credit included; extra usage, seats and add-ons can cost more."}
+  ],
+  "illustrative_budgets": [
+    {"configuration":"Supabase Free and local API","monthly_hosting_base_usd":0},
+    {"configuration":"Supabase Free and eligible Vercel Hobby","monthly_hosting_base_usd":0},
+    {"configuration":"Supabase Pro and Vercel Pro, basic one-project/one-seat setup","monthly_hosting_base_from_usd":45,"conditions":"Before applicable tax, usage and add-ons; neither paid plan is required merely to begin."}
+  ],
+  "scope": "Database and optional API hosting only; excludes mobile distribution and media-generation services.",
+  "recommendation":"Begin on free Supabase and run the API locally for joint learning; select cloud API hosting after one working lesson.",
+  "sources": ["https://supabase.com/pricing","https://vercel.com/docs/plans/hobby","https://vercel.com/docs/plans/pro-plan","https://supabase.com/docs/guides/functions","https://firebase.google.com/docs/functions"],
+  "development_workflow_ref":"docs/DEVELOPMENT_GUIDE.md"
+}

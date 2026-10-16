@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-16",
+  "stage_id": "02",
+  "status": "distorted_trial_observed; awaiting_normal_gracias_control",
+  "authority": "Dor requests a phrase easier to get wrong after completing Hola.",
+  "expected_text": "Gracias.",
+  "locale": "es-MX",
+  "resource_ref": "docs/research/pronunciation/azure-speech-resource.json",
+  "evidence_image": ".codex-review/pronunciation/gracias-esmx-ready-2026-10-16.jpg",
+  "conditions": "Same locale/reference/microphone/room; normal pace; separate recordings with saved results in between.",
+  "trials": [
+    {
+      "action": "Dor says Gracias naturally",
+      "score": null,
+      "human_quality_label": null,
+      "id": "gracias-normal-01",
+      "status": "pending"
+    },
+    {
+      "action": "After first result is saved: deliberately say גראקיאס with k instead of the c sound; expected text remains Gracias.",
+      "score": {
+        "AccuracyScore": 84,
+        "FluencyScore": 100,
+        "CompletenessScore": 100,
+        "PronScore": 90.4
+      },
+      "human_quality_label": "User-reported deliberate גרקיאס; no independent audio rating.",
+      "id": "gracias-c-as-k-01",
+      "status": "recorded_by_dor_result_observed",
+      "result_ref": "docs/research/pronunciation/gracias-c-as-k-result-2026-10-16.json"
+    }
+  ],
+  "UI_note": "Editing custom text can retain or re-label previous/cached scores. Sample tabs expose canned results. No visible cached Gracias score is accepted as a human trial; next user microphone submission is required. Hola result ID is archived for provenance.",
+  "agent_recorded_audio": false,
+  "audio_archived": false,
+  "thresholds_selected": false,
+  "next": "Dor now records Gracias normally once with the unchanged Gracias. reference, es-MX/F0 and same microphone. Save and compare its word accuracy, ErrorType and per-phoneme score distribution with the already observed user-reported deliberate גרקיאס trial. No threshold, phoneme identity mapping or production decision from these samples alone.",
+  "execution_order_note": "Dor performed the intended distortion trial first. No normal Gracias recording inferred."
+}

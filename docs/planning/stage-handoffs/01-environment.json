@@ -1,0 +1,122 @@
+{
+  "stage_id": "01",
+  "status": "complete_revised_scope: Expo Go environment/device/audio proof completed; owned signing/build/install explicitly deferred to stage04, not passed",
+  "completed_on": "2026-10-15",
+  "approved_decisions": {
+    "references": [
+      "docs/planning/approved-decisions.json",
+      "docs/planning/work-plan.json",
+      "docs/DEVELOPMENT_GUIDE.md"
+    ],
+    "product": "ספרדית לטיול הגדול — לומדים מה שצריך לטיול, בתרגולים קצרים וממוקדים.",
+    "repository": "C:/Users/doric/Documents/SpanishForTrip/spanish-for-the-big-trip; main; flat mobile/, api/, supabase/ layout; api/database not scaffolded",
+    "stack": "TypeScript, React Native/Expo, Node/NestJS small authored API, PostgreSQL/Supabase; API host undecided; mandatory Google and Apple, no guest learning",
+    "work_split": "Codex writes/edits code and explains meaningful parts; Dor performs meaningful installation/settings/device/API/database/Git actions. Wait for his assigned results; no typing/pasting tasks by default.",
+    "scope_adjustment": "After Dor repeatedly questioned premature builds and accepted continuing development, stage01 ends with Expo Go screen/audio proof and prepared EAS path. Stage04 must complete owned iPhone signing/build/install/media and both login tests after the required native config/modules are included.",
+    "design": "Figma begins in stage02 with first-unit goals/entry wording and the first screen, extended one reviewed learner stage at a time. Final art/voices/motion remain stage07; voice samples start stage02. No Figma file created yet."
+  },
+  "implemented_files": [
+    "AGENTS.md",
+    "docs/DEVELOPMENT_GUIDE.md",
+    "README.md",
+    ".gitignore",
+    ".easignore",
+    "mobile/AGENTS.md",
+    "mobile/README.md",
+    "mobile/.gitignore",
+    "mobile/LICENSE",
+    "mobile/App.tsx",
+    "mobile/index.ts",
+    "mobile/package.json",
+    "mobile/package-lock.json",
+    "mobile/tsconfig.json",
+    "mobile/app.json",
+    "mobile/eas.json",
+    "mobile/assets/",
+    "mobile/tests/audio-flow.test.cjs",
+    "docs/learning/development-policy.json",
+    "docs/learning/development-learning-log.json",
+    "docs/planning/project-context.json",
+    "docs/planning/approved-decisions.json",
+    "docs/planning/work-plan.json",
+    ".codex-review/development_policy.py",
+    "docs/curriculum/pilot-spec.json"
+  ],
+  "how_to_run": {
+    "directory": "C:/Users/doric/Documents/SpanishForTrip/spanish-for-the-big-trip/mobile",
+    "start": "npm.cmd start -- --go",
+    "iphone": "Open the QR with the physical iPhone in Expo Go; Expo CLI/device account doric2000; manual Reload is the accepted update workaround. Recording/playback tested in foreground.",
+    "fresh_checkout_only": "npm.cmd ci if dependencies are absent; do not reinstall the already-working environment as a stage02 ritual",
+    "typecheck": ".\\node_modules\\.bin\\tsc.cmd --noEmit",
+    "regression_tests": "node --test tests/audio-flow.test.cjs",
+    "eas_later": "EAS commands run from mobile/; use npx.cmd --cache pointing at Windows TEMP/SpanishForTrip-eas-20261014 with eas-cli@latest. This relocates the tool cache, not the working directory. No build now."
+  },
+  "checks_and_evidence": {
+    "local_tools_reported": "Node22.23.1, npm10.9.8, Git2.45.1.windows.1",
+    "mobile_versions_verified": "Expo57.0.29, React Native0.86.3, React19.2.3, TypeScript6.0.3, expo-dev-client57.0.20, expo-audio57.0.5; retain the SDK-compatible starter baseline",
+    "device": "Dor reported initial Expo Go screen, saved Text/background updates after Reload, silent-playback failure and עובד after the timing fix. No exact clip duration or independent hardware observation claimed.",
+    "automated": "tsc --noEmit passed; three tests execute actual App handlers with mocked native timing contracts. Initial local iOS JS export succeeded (592 modules/1.5MB Hermes); later logic fix passed TypeScript/tests. No lint setup; no signed binary built.",
+    "audio_fix": "Stable player with keepAudioSessionActive, pause only when playing, explicit fresh recorder file, await stop plus native finish event before loading, timeout/error feedback and duration display. Fix supported by Dor retry; individual causal hazards not isolated on device.",
+    "eas": "Owner doric2000; project eb8d7f0d-b9ba-4e95-9660-836a55a4a43c; https://expo.dev/accounts/doric2000/projects/spanish-for-the-big-trip; ios bundle com.doric2000.spanishforthebigtrip; developmentClient true/internal distribution. Dor reports device registration. Actual Apple identifier availability/credentials/provisioning remain unverified.",
+    "preflight": "Read-only usage on2026-10-15: Free0/15iOS,0/30total. Local corrected archive23 project files; .easignore excludes installed/local/private categories. Expected shallow Git metadata retained. Recheck quota/dependency/native config/archive when building later.",
+    "dependency_audit": "22 affected-package records (7moderate/15high), three braces/node-forge/uuid advisories. Scoped static triage found no actionable condition in inspected current consumers; versions remain affected. Not a full app/EAS CLI/service clearance. Fresh audit after audio install unchanged. No audit fix/force/overrides or SDK downgrade.",
+    "security_report_reference": "Canonical managed triage artifact paths are recorded in development-learning-log entry stage01-dependency-triage-2026-10-15; raw original audit docs/evidence/npm-audit-2026-10-14.json."
+  },
+  "dor_actions_and_demonstrated_understanding": {
+    "actions": [
+      "Ran tool version checks and account access checks",
+      "Initialized main repository; inspected ignores; staged/committed foundation",
+      "Created Expo scaffold and changed Text/background",
+      "Started Metro/opened Expo Go on iPhone",
+      "Installed dev-client/audio, set app name/slug",
+      "Reported incomplete npx cache failure and successfully retried EAS init with separate TEMP cache",
+      "Configured eas.json, tested recording/playback, reproduced bug and confirmed fix",
+      "Committed mobile snapshot and registered iPhone in Expo",
+      "Directed code ownership and deferred premature build"
+    ],
+    "demonstrated": [
+      "npm installs/manages packages; Node runs code",
+      "node_modules excluded because dependencies can be reinstalled",
+      "Predicted the app title after Text change and observed device color changes",
+      "Provided a concrete playback failure observation that supported debugging"
+    ],
+    "limits": "Code authored by Codex is not Dor independent implementation. Git staging/commit conceptual explanation, cache mechanics, React/hooks, audio session internals and signing/provisioning knowledge are not established merely by successful execution. Learning remains joint without mandatory repeated exams."
+  },
+  "known_issues": [
+    "Actual owned app signing/build/install/Developer Mode/Metro/media proof is deferred to stage04 and required before Google/Apple login tests; do not claim it passed or force it back into stage01.",
+    "Fast Refresh enabled but updates required manual Reload; Dor chose to defer diagnosis.",
+    "Advisory versions remain affected; prior assessment is static/scoped, not global safety clearance. Reassess new dependencies/configuration before build.",
+    "No lint configuration; relevant TypeScript/test checks exist. No API/database/auth/lesson production implementation yet.",
+    "Microphone denial/interruption/repeated-take edge cases were not exhaustively device-verified; recording is temporary local cache with no cloud upload or reload restore."
+  ],
+  "open_choices": [
+    "Unit1A first learner goal and all Hebrew/Spanish wording require joint review",
+    "Figma account/file destination, first-screen layout/visual direction and RTL decisions in stage02",
+    "Natural Spanish voice samples/provider: audition jointly before full audio; prototype voices not approved",
+    "Detailed API/schema/ORM/state choices at their stages; API hosting remains undecided",
+    "Eventual device recording retention beyond temporary self-playback remains a design decision"
+  ],
+  "next_stage_and_first_action": {
+    "stage_id": "02",
+    "title": "היחידה הראשונה ותכנון המסכים",
+    "status": "ready_for_dor_to_open_or_authorize; not dispatched",
+    "read_first": [
+      "AGENTS.md",
+      "docs/DEVELOPMENT_GUIDE.md",
+      "docs/planning/project-context.json",
+      "docs/planning/approved-decisions.json",
+      "docs/planning/work-plan.json",
+      "docs/learning/development-learning-log.json",
+      "docs/planning/stage-handoffs/01-environment.json"
+    ],
+    "action": "Agree the first-unit learner outcome and review only the entry-stage wording first. Then start Figma with a first-screen structure/visual direction and extend the unit stage by stage. Check Figma access/destination at the relevant checkpoint. Do not author all lessons/screens, provision backend services or launch a build from this handoff.",
+    "opening_prompt_he": "מתחילים את שלב 02 של SpanishForTrip: היחידה הראשונה ותכנון המסכים ב־Figma. קרא את ההנחיות, ההחלטות, תכנית העבודה, יומן הלמידה וסיכום שלב 01 ב־docs/planning/stage-handoffs/01-environment.json. Codex כותב את הקוד ומסביר; אני משתתף בהחלטות, בהגדרות ובבדיקות חשובות. נתחיל במטרת הכניסה ליחידה 1A ובנוסח שלה, ואז נעצב את המסך הראשון ב־Figma. נתקדם שלב אחד בכל פעם. הבנייה העצמאית נדחתה לשלב 04 לפני בדיקות ההתחברות, ואין להפעיל אותה עכשיו."
+  },
+  "commit_or_snapshot_when_available": {
+    "foundation": "bdaa41af397a085c25a3a7502948b90c425fb2ec — Dor: Add repository foundation",
+    "working_mobile": "dfe30b53516390d8e20e65ccf0c9be753536f23f — Dor: Add Expo app with recording and playback",
+    "build_preparation": "6f86421cfd8c4dd5dfbbd4a227c1c8f19977a363 — Codex: Configure iOS identity and EAS upload exclusions",
+    "closure_docs": "8fa45c128dc87874191b1e278f0edb8f49e5e2bc — Codex: Close environment stage and schedule Figma design; product Git clean",
+    "remote": "No remote configured/verified in this stage; GitHub publishing not performed."
+  }
+}

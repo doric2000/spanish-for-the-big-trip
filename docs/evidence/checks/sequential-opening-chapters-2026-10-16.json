@@ -1,0 +1,122 @@
+{
+  "checked_on": "2026-10-16",
+  "scope": "Sequential opening chapters; local stage03 authoring preflight only",
+  "plan": {
+    "chapters": 16,
+    "unit_outlines": 57,
+    "skills": 70,
+    "catalog_records": 80,
+    "legacy_lessons": 20,
+    "dependency_cycles": 0
+  },
+  "opening_chapters": {
+    "schemaVersion": 1,
+    "curriculumVersion": 4,
+    "productionOrder": [
+      "C01",
+      "C02"
+    ],
+    "chapters": [
+      {
+        "id": "C01",
+        "titleHe": "מפגש ראשון עם מטייל",
+        "unitIds": [
+          "C01-U01",
+          "C01-U02",
+          "C01-U03"
+        ]
+      },
+      {
+        "id": "C02",
+        "titleHe": "היכרות עם מטיילים",
+        "unitIds": [
+          "C02-U01",
+          "C02-U02",
+          "C02-U03",
+          "C02-U04"
+        ]
+      }
+    ]
+  },
+  "generator_idempotent": true,
+  "protected_source_sha256_unchanged": {
+    "docs/curriculum/unit1a-content.json": "1d939636c1cd9f8eeda5bcdf325fac64cad08cb68788b660d2ba272ca4cd62bc",
+    "content/units/unit1a.json": "2a5aab26622d9d91679d279405ba6af187d0e38f37df762b8350b1d545d2398c",
+    "mobile/App.tsx": "4a83bf95acbf4dc550234e98ae68053619cdecd61b6566f0e03a344ccff19eb5"
+  },
+  "content_checks": {
+    "tests_passed": 22,
+    "tests_failed": 0,
+    "real1a_draft_validation": "passed:9activities,6pendingStages,6pendingMedia,6pendingReviews",
+    "real_chapter_release": "blocked_as_expected;6missing_unit_sources plus pending1A and chapter evidence",
+    "cli_exit_code": 1,
+    "publishes_or_cloud_writes": false
+  },
+  "pdf": {
+    "path": "docs/curriculum/Spanish_For_Trip_Curriculum.pdf",
+    "pages": 26,
+    "layout_bounds_passed": true,
+    "contact_sheets": [
+      "tmp/pdfs/interaction-curriculum/contact-1.png",
+      "tmp/pdfs/interaction-curriculum/contact-16.png"
+    ],
+    "visual_review": "All-page contact sheets plus full opening-policy and chapter2 pages inspected; no clipping or overlap observed."
+  },
+  "current_stage": "03",
+  "status": "checkpoint_implemented; joint03review_pending; not_complete_chapters",
+  "next_action": "Joint checkpoint: inspect the real1A draft, a rejected answer reference and the logical storage/API model; finish03 review before Dor-owned Supabase setup in04. Pronunciation is deferred; no build now.",
+  "limits": [
+    "No complete chapter or new learner approval",
+    "No mobile runtime, API, database, auth, build or public release implemented in this checkpoint",
+    "No new spending or voice generation",
+    "Future importer must integrate chapter preflight before publication"
+  ],
+  "stage_id": "03",
+  "approved_decisions": [
+    "C01 complete before C02;3plus4units, no ten-unit quota",
+    "Whole verified chapters only for public release",
+    "No new infrastructure payment; recording/comparison sufficient initially"
+  ],
+  "implemented_files": [
+    ".codex-review/build_course_plan.py",
+    "docs/curriculum/curriculum-plan.json",
+    ".codex-review/render_course_plan.py",
+    "content/src/chapter-release.ts",
+    "content/src/release-cli.ts",
+    "content/tests/chapter-release.test.ts",
+    "content/release-plan.json",
+    "content/release-reviews.json",
+    "content/drafts/unit1a-speak-thanks.json"
+  ],
+  "how_to_run": {
+    "cwd": "C:\\Users\\doric\\Documents\\SpanishForTrip\\spanish-for-the-big-trip\\content",
+    "tests": "npm.cmd test",
+    "unit_draft": "npm.cmd run validate",
+    "chapter_preflight": "npm.cmd run check:chapters -- C01 C02",
+    "expected_chapter_exit": 1
+  },
+  "checks_and_evidence": {
+    "test_count": 22,
+    "plan_and_protected_hashes": "passed",
+    "real_release": "correctly_blocked",
+    "pdf": "26pages visually reviewed"
+  },
+  "dor_actions_and_demonstrated_understanding": "Dor chose sequential full chapters and explicitly requested implementation; no new command/device execution or technical understanding inferred.",
+  "known_issues": [
+    "1A is a9activity draft, not a complete unit",
+    "Six opening unit sources absent",
+    "Shared speaking/simulation/summary interactions and exact copy still pending",
+    "New Gracias speaking copy is a review draft, not an approved activity"
+  ],
+  "open_choices": [
+    "Joint review of current03 contract/model and next learner copy",
+    "Future public hosting preflight against free-only budget"
+  ],
+  "next_stage_and_first_action": {
+    "stage_id": "03",
+    "status": "continue_current_joint_checkpoint",
+    "action": "Joint checkpoint: inspect the real1A draft, a rejected answer reference and the logical storage/API model; finish03 review before Dor-owned Supabase setup in04. Pronunciation is deferred; no build now.",
+    "content_draft": "content/drafts/unit1a-speak-thanks.json"
+  },
+  "commit_or_snapshot_when_available": ".codex-review/archive/before-sequential-opening-chapters-2026-10-16; no commit created; prior dirty work preserved"
+}

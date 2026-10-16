@@ -3,7 +3,7 @@
   "character_id": "juan",
   "stage_id": "02",
   "created_on": "2026-10-15",
-  "workflow": "../../../../DEVELOPMENT_GUIDE.md",
+  "workflow": "../../../../docs/DEVELOPMENT_GUIDE.md",
   "status": "historical_v2_assets; half_speed_rejected; one_phrase_regenerated_in_v3",
   "feedback": {
     "evidence": "Dor: הקול נשמע טוב , זה מאוד מהיר , ולמה איחדת את כולם לאותה הקלטה?",

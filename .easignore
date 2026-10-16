@@ -32,3 +32,6 @@ yarn-debug.*
 yarn-error.*
 /mobile/ios/
 /mobile/android/
+
+# Project documentation is not needed inside app builds
+/docs/

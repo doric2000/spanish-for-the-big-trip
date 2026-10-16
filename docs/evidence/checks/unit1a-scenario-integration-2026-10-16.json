@@ -1,0 +1,65 @@
+{
+  "stage_id": "03",
+  "checkpoint": "unit1a_ending_scenario_and_tile_copy_integration",
+  "status": "local_contract_verified; authored_flow_integrated; unit_and_chapter_incomplete",
+  "approved_decisions": {
+    "authority": "Dor: yes, suitable and clear, replying to the presented exact tile help/retry wording and the greeting/seat-offer/thanks scenario.",
+    "source_ref": "docs/curriculum/unit1a-content.json#ending_scenario_review",
+    "scope": "Integrate the approved unit1A part, preserve both valid preference branches, then review recall and summary. Keep live technical delivery and Dor-assigned setup separate."
+  },
+  "implemented_files": [
+    "content/src/schema.ts",
+    "content/src/api-contract.ts",
+    "content/api-contract.json",
+    "content/units/unit1a.json",
+    "content/tests/scenario.test.ts",
+    "content/tests/fixtures.ts",
+    "content/tests/stage03.test.ts",
+    "content/drafts/unit1a-ending-scenario.json",
+    "content/drafts/unit1a-arrange-greeting.json",
+    "content/drafts/unit1a-recall-summary.json",
+    "content/README.md",
+    "docs/DEVELOPMENT_GUIDE.md",
+    "docs/curriculum/unit1a-content.json"
+  ],
+  "how_to_run": {
+    "directory": "content",
+    "checks": [
+      "npm.cmd run validate",
+      "npm.cmd test",
+      "node dist/src/cli.js units/unit1a.json --publish"
+    ],
+    "expected": "Validation/tests exit0; incomplete real-draft publication exits1. No command assigned to Dor here."
+  },
+  "checks_and_evidence": {
+    "validation": "PASS:12 activities;6 pending stages,6 pending media,7 pending activity reviews. Exact tile help/retry copy now approved.",
+    "tests": "57 passed,0 failed;6 new tests cover authored scenario, nonverbal tuple/context constraints, current-node projection, all4 greeting/preference paths, retries/resume/bypass rejection, and idempotent preference replay.",
+    "test_log": "docs/evidence/checks/unit1a-scenario-tests-2026-10-16.txt",
+    "publish_gate": "Expected exit1: review/summary missing and pending exact scenario feedback/copy/media prevent publication.",
+    "publish_log": "docs/evidence/checks/unit1a-scenario-publish-gate-2026-10-16.txt",
+    "preservation": "Prior11 learner activity bodies, media metadata and draft revision1 match the saved SHA256 baseline. Only approved tile review metadata changed.",
+    "independent_setup": "Root package.json and package-lock.json hashes unchanged. work-plan.json changed independently during content work; this checkpoint did not write it or execute the Dor-owned CLI installation.",
+    "compatibility": "Existing spoken-only scenario fixtures validate unchanged. Generic tests replace the authored draft scenario with their existing synthetic scenario in memory; dedicated tests exercise the real authored flow.",
+    "limits": "No actual phone exit/resume, media playback or server/database call occurred; tests use local pure progression."
+  },
+  "dor_actions_and_demonstrated_understanding": {
+    "content": "Explicitly accepted the presented exact tile hint/retry copy and scenario flow.",
+    "technical": "No new execution or technical understanding attributed to Dor by these local checks."
+  },
+  "known_issues": [
+    "New exact scenario node feedback and final distractor choices need full-flow copy review.",
+    "Recall and summary are separate proposals, not integrated activities.",
+    "Remaining preparation/help copy, final audio, mobile components/device/progress review and chapter completion remain open.",
+    "No pronunciation scoring, new audio generation, native build, cloud operation or C02 work."
+  ],
+  "open_choices": [
+    "Review proposed Si/No listening recall, spoken greeting self-comparison and branch-neutral summary."
+  ],
+  "next_stage_and_first_action": {
+    "content": "Present content/drafts/unit1a-recall-summary.json for joint review. Then integrate approved endings and inspect the entire unit before claiming readiness.",
+    "technical": "Follow current work-plan.json#delivery; do not replace or repeat Dor-owned setup actions."
+  },
+  "commit_or_snapshot_when_available": {
+    "new_commit": "not_created; existing work preserved"
+  }
+}

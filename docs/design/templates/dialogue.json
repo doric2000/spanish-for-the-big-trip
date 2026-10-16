@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "purpose": "Reusable two-turn dialogue example with translation shown/hidden within one learner instance.",
+  "fileKey": "vGKirilyDhMUJbKad16yU1",
+  "learnerPageId": "0:1",
+  "libraryPageId": "35:168",
+  "componentSetId": "43:233",
+  "canonicalScreenId": "44:148",
+  "canonicalInstanceId": "44:149",
+  "turnComponentId": "42:193",
+  "contentSource": "docs/curriculum/unit1a-content.json#full_dialogue_review.approved_turns",
+  "propertyKeys": {
+    "heading": "כותרת#43:0",
+    "instruction": "הנחיה#43:3"
+  },
+  "translationProperty": "תרגום",
+  "states": {
+    "spanish": {
+      "value": "מוסתר",
+      "componentId": "42:200",
+      "toggleMasterId": "42:224"
+    },
+    "translated": {
+      "value": "מוצג",
+      "componentId": "42:239",
+      "toggleMasterId": "42:248"
+    }
+  },
+  "turnControls": {
+    "access": "instance.exposedInstances named תור 1 and תור 2",
+    "propertyKeys": {
+      "speaker": "דובר#42:0",
+      "spanish": "ספרדית#42:1",
+      "hebrew": "עברית#42:2",
+      "avatar": "תמונת דובר#42:3",
+      "translation": "תרגום מוצג#42:4"
+    },
+    "sourceConvention": "Hebrew speaker label, Spanish text LTR/LEFT, Hebrew translation RTL/RIGHT",
+    "instruction": "Edit text properties, keeping translation visibility controlled by the parent variant. Use approved character assets for actual recurring characters; learner example has no invented avatar."
+  },
+  "contentOnlyUpdateProcedure": [
+    "Read the jointly approved turns from unit1a-content.json.",
+    "Update shared heading/instruction if needed and the exposed turn speaker/Spanish/Hebrew fields.",
+    "Preserve the same fields when changing translation state; verify default hidden and shown text.",
+    "Connect next-stage navigation only on this lesson's content instance after the next stage is reviewed.",
+    "Do not duplicate learner frames for translation or wording changes."
+  ],
+  "audio": "One full dialogue playback/replay control, currently design-only. Juan profile approved; learner example voice and complete audio production still to be planned. No synthesis in this change.",
+  "flow": {
+    "previous": "37:90",
+    "previousContinuationInstance": "I37:91;32:230",
+    "next": "reviewed practice, not yet authored or linked"
+  },
+  "verification": ".codex-review/figma/02-dialogue-verification.json",
+  "designPolicy": "One representative conversation view using reusable turn/state components. Future dialogue words/turns/audio are lesson data, not a requirement for per-content frames or variants.",
+  "interaction_catalog": "docs/design/interaction-catalog.json"
+}

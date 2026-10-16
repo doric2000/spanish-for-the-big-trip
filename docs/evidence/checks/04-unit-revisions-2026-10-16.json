@@ -1,0 +1,30 @@
+{
+  "stage_id": "04",
+  "recorded_on": "2026-10-16",
+  "kind": "Dated unit-revision checkpoint evidence; live status is work-plan.json#delivery",
+  "migration": {
+    "file": "supabase/migrations/20261016091112_create_unit_revisions.sql",
+    "sha256": "e1ddb940959275703674d20718e7f8f7d36fab6f772036c52919b8b478a10a6d",
+    "application_evidence": "Dor supplied: Applying migration 20261016091112_create_unit_revisions.sql...\nFinished supabase db push."
+  },
+  "sql_check": {
+    "file": "supabase/checks/03_unit_revisions.sql",
+    "sha256": "cb6bb527faf1c2105bcbf474b7fb1f7918f5e2ddb957a7ad96e1718ddf94470d",
+    "executor": "Dor; assigned execution in development SQL Editor as postgres",
+    "evidence_source": "Dor supplied the exact expected result in response to the assigned whole-file check. Codex verified the local artifact digests and did not repeat remote execution.",
+    "result": "PASS: revision metadata, draft lifecycle, published immutability and role access; synthetic rows rolled back",
+    "coverage": [
+      "Revision-to-unit relationship, composite-key uniqueness and positive revision constraint",
+      "Selected JSON metadata consistency and SHA256 digest format",
+      "Draft editing and deletion under service_role",
+      "Published revision UPDATE, reversion to draft and DELETE rejected",
+      "Published revision 1 and draft revision 2 coexist for one unit",
+      "Referenced parent-unit deletion rejected",
+      "RLS enabled, private guard uses SECURITY INVOKER and learner roles lack raw-table and guard privileges",
+      "Actual direct anon/authenticated raw-authoring SELECT denied",
+      "Synthetic rows and publication markers rolled back"
+    ]
+  },
+  "learning_boundary": "Dor's earlier parent-relationship and rollback explanations remain demonstrated. This PASS establishes reported test execution, not independent SQL authorship or demonstrated revision/trigger understanding.",
+  "limits": "No real lesson imported or published. Minimal synthetic payloads and fake hashes do not prove full Zod validation or media-digest correctness. Resume pinning, whole-chapter publication, own-progress access, HTTP/JWT/provider authentication and iPhone behavior remain outside this check."
+}

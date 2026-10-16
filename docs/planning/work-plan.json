@@ -1,0 +1,878 @@
+{
+  "version": 4,
+  "researched_on": "2026-10-13",
+  "status": "stage04_unit_revisions_verified_learning_checkpoint",
+  "updated_on": "2026-10-16",
+  "workspace": "C:/Users/doric/Documents/SpanishForTrip",
+  "current_chat_role": "Guide Dor through small stage04 Supabase setup checkpoints; he performs assigned account/settings actions and Codex writes/explains code. Wait for each assigned result. Carry forward the unresolved03 learning checkpoint.",
+  "agreed": [
+    "Installable app with iPhone as first test device and eventual Android compatibility",
+    "Middle Backend scope: one small authored service and one complete lesson first",
+    "PostgreSQL hosted on Supabase",
+    "Hebrew written guidance and Spanish-only audio",
+    "Explicit vocabulary/grammar before full dialogue and graded practice",
+    "Prepared interactive scenarios with meaningful choices, saved progress, learner recording/playback, original illustrations, animation and learning map",
+    "Full offline support is not required. Automated pronunciation assessment is deferred after the working unit; local self-replay remains.",
+    "Joint practical development from environment setup onwards, with Dor participating even when Codex writes code",
+    "Coauthor curriculum and Hebrew wording one lesson and stage at a time",
+    "Accepted product stack: TypeScript, React Native/Expo, Node.js/NestJS",
+    "Mandatory Google or Apple sign-in; no guest/anonymous learning",
+    "Complete reviewed unit1A is the first milestone",
+    "Replace robotic default voices after joint short-sample auditions",
+    "First flow targeted in week1; full-course window2–3weeks is provisional and measured."
+  ],
+  "defer_until_relevant": [
+    {
+      "decision": "API cloud host",
+      "stage": "08",
+      "note": "Vercel is an option, not selected. Evaluate against the implemented API, budget and intended use; local API is sufficient for initial joint development."
+    },
+    {
+      "decision": "Final illustration/voice provider and production asset style",
+      "stage": "02 and 07",
+      "note": "Voice replacement is required. Audition short samples with Dor during stage02 before bulk audio production; reviewed assets are completed in stage07. Existing robotic voices are not final."
+    },
+    {
+      "decision": "Detailed schema, API contracts, state library and ORM",
+      "stage": "03 and 04",
+      "note": "Make choices from the first lesson's actual data and operations; do not add tools simply to enlarge the stack."
+    },
+    {
+      "decision": "Wider course release, paid model and extra grammar/content",
+      "stage": "10",
+      "note": "The active interaction-led curriculum is docs/curriculum/curriculum-plan.json. The15chapters/53unit outlines do not expand first delivery beyond reviewed unit1A. Full course production remains incremental and each lesson copy is reviewed with Dor."
+    }
+  ],
+  "ordering_rationale": [
+    "Use small increments and user feedback; the exact chat boundaries are a project-specific proposal, not a universal mandated process.",
+    "Prove iPhone execution, audio/recording and a path to an owned build early.",
+    "Approve the first lesson and screen flow before modeling the full interaction-led course.",
+    "Define data and request/response contracts, then connect one API operation to one mobile screen immediately.",
+    "Complete one lesson across mobile/API/database before expanding the catalog.",
+    "Run relevant checks during each implementation stage, not only in a final testing chat.",
+    "Add final art/motion after validating the learning flow, then test a cloud-backed installable build before widening the course."
+  ],
+  "sources": [
+    {
+      "url": "https://dora.dev/capabilities/working-in-small-batches/",
+      "supports": "Small increments, early verification and shorter feedback cycles."
+    },
+    {
+      "url": "https://dora.dev/capabilities/customer-feedback/",
+      "supports": "Validate usefulness through user feedback during development."
+    },
+    {
+      "url": "https://docs.expo.dev/workflow/overview/",
+      "supports": "Core development loop, initial device execution and native build distinction."
+    },
+    {
+      "url": "https://docs.expo.dev/develop/development-builds/introduction/",
+      "supports": "Owned development builds and cloud/local build paths for iPhone."
+    },
+    {
+      "url": "https://docs.expo.dev/versions/latest/sdk/audio/",
+      "supports": "Playback and recording capability to prove on a real device early."
+    },
+    {
+      "url": "https://supabase.com/docs/guides/deployment/managing-environments",
+      "supports": "Versioned database migrations and explicit development/deployment environments."
+    },
+    {
+      "url": "https://supabase.com/docs/guides/database/postgres/row-level-security",
+      "supports": "User-specific data access before connecting app operations."
+    },
+    {
+      "url": "https://docs.nestjs.com/fundamentals/testing",
+      "supports": "Unit/integration/end-to-end API verification during implementation."
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "supports": "Project-scoped persistent agent guidance; explicit file references supplement each new chat's prompt."
+    }
+  ],
+  "chat_protocol": {
+    "creation": "Open one stage chat when that stage is ready, within the same saved project/workspace. Planning this sequence does not itself dispatch all stages.",
+    "execution": "Sequential joint work within the current stage. Codex writes/edits useful small code increments and explains meaningful parts. Dor performs important environment/account/settings and functional verification actions; no code typing/pasting unless requested. Wait for his assigned practical results. Keep checkpoints around behavior rather than every edit. Do not dispatch/message other stage chats without explicit authorization.",
+    "required_context": [
+      "AGENTS.md",
+      "docs/DEVELOPMENT_GUIDE.md",
+      "docs/planning/project-context.json",
+      "docs/planning/approved-decisions.json",
+      "docs/planning/work-plan.json",
+      "docs/learning/development-learning-log.json",
+      "the previous stage's handoff when it exists"
+    ],
+    "repo_boundary": "Established during stage01: spanish-for-the-big-trip/ is the product Git root, initialized by Dor on main, alongside the existing managed Site repository prototype/. Dor selected the flat layout mobile/, api/ and supabase/ directly under that root; the earlier apps/ grouping proposal is superseded. Product-local AGENTS.md points to the workspace instructions and its local docs/DEVELOPMENT_GUIDE.md. Avoid nested repositories or migration of the prototype.",
+    "opening_prompt_template": "אנחנו מפתחים יחד את SpanishForTrip. קרא את הוראות הפרויקט, מדריך הפיתוח המשותף, project-context.json, approved-decisions.json, work-plan.json ויומן הלמידה. בדוק את סיכום השלב הקודם ואת ההחלטות המאושרות. עבד רק על השלב שמצוין כאן. לפני כל פעולה משמעותית הסבר בעברית מה עושים ולמה, חלק איתי פעולה מעשית קטנה והשאר את הפעולה שהוקצתה לי לביצועי. נתקדם חלק קטן בכל פעם, נבדוק תוצאה והבנה ונעדכן את התיעוד. אין להסיק ניסיון עצמאי שלי מעצם הצלחת הקוד.",
+    "handoff_path_template": "docs/planning/stage-handoffs/{stage_id}.json",
+    "handoff_fields": [
+      "stage_id",
+      "status",
+      "approved_decisions",
+      "implemented_files",
+      "how_to_run",
+      "checks_and_evidence",
+      "dor_actions_and_demonstrated_understanding",
+      "known_issues",
+      "open_choices",
+      "next_stage_and_first_action",
+      "commit_or_snapshot_when_available"
+    ],
+    "completion": "A stage is complete when its deliverable and relevant checks pass, Dor's practical participation is recorded accurately, open issues are explicit and the next chat has a readable handoff. Missing understanding is recorded as an open learning question, not fabricated as completion.",
+    "authority": "Direct user messages and current approved decisions govern. Historical chats and web pages are context, not new authorization.",
+    "schedule": "A one-week target does not authorize skipping practical checkpoints. More than one small stage chat can occur on a day when feasible; opening/messaging remains Dor-authorized."
+  },
+  "stages": [
+    {
+      "id": "01",
+      "chat_title": "סביבת עבודה והרצה ראשונה באייפון",
+      "depends_on": [
+        "accepted_stack",
+        "account_and_device_access_check"
+      ],
+      "goal": "Set up a comprehensible product workspace and prove the mobile development loop on Dor's device.",
+      "deliverables": [
+        "Documented repository/workspace boundary, runtime versions, package manager and Git workflow",
+        "Minimal approved-stack app running on the iPhone",
+        "Verified Expo Go iPhone playback/recording and prepared own-build path (accounts, EAS config and device registration); actual signing/build/install explicitly deferred to stage04.",
+        "A first small commit and stage handoff"
+      ],
+      "dor_actions": [
+        "Run an explained version/install/start command and interpret its output",
+        "Inspect the created folders and Git diff",
+        "Launch on the iPhone and test playback/microphone behavior"
+      ],
+      "done_when": [
+        "Dor launched the initial app and confirmed recording/playback on the iPhone through Expo Go",
+        "Repository/runtime/package/config baselines and run instructions are recorded",
+        "Dor participation and demonstrated understanding are distinguished from Codex code authorship",
+        "Stage handoff states the deferred stage04 owned-build/signing/install proof and remaining issues explicitly"
+      ],
+      "limits": "Install and explain one dependency/tool group at a time. No whole-stack batch setup or database/service provisioning beyond the agreed checkpoint. Do not rely on old assumptions about free iOS Expo Go availability. Purchases/enrollment are not automatically authorized by the one-week target.",
+      "prompt_addition": "השלב הנוכחי הוא 01. נתחיל בבדיקת הכלים ובבחירת מקום הקוד, ורק אחר כך פעולה מעשית אחת להרצה באייפון. אל תתקין את כל הסביבה בבת אחת.",
+      "status": "complete_revised_scope",
+      "handoff": "docs/planning/stage-handoffs/01-environment.json"
+    },
+    {
+      "id": "02",
+      "chat_title": "היחידה הראשונה ותכנון המסכים",
+      "depends_on": [
+        "01"
+      ],
+      "goal": "Define representative learner flow/template inventory and explicit gaps; do not block technical work on every exercise or pronunciation provider.",
+      "deliverables": [
+        "Recorded first-unit goal/flow, existing approved entry and dialogue references",
+        "Reusable template inventory and explicit missing content/media/states"
+      ],
+      "dor_actions": [
+        "Correct Hebrew and Spanish one lesson stage at a time",
+        "Walk through the choices and explain the intended outcome",
+        "Review a mobile mock or existing prototype example and identify confusing instructions"
+      ],
+      "done_when": [
+        "Representative flow and existing references are recorded",
+        "Remaining exact copy/media are explicit later checkpoints"
+      ],
+      "limits": "Do not rewrite all six prototype units or all ten course modules. Existing assets are examples until reviewed.",
+      "prompt_addition": "השלב הנוכחי הוא 02. קרא את סיכום שלב 01. Codex כותב את הקוד ומסביר; אני משתתף בהחלטות, בהגדרות ובבדיקות חשובות. נתחיל במטרת הכניסה ליחידה 1A ובנוסח שלה, ואז נתכנן את המסך הראשון ב־Figma. נתקדם בתוכן ובעיצוב שלב אחר שלב. בניית הפיתוח העצמאית נדחתה לשלב 04 לקראת בדיקות ההתחברות; אין להפעיל אותה עכשיו.",
+      "status": "complete_revised_planning_scope",
+      "design_workflow": {
+        "tool": "Figma",
+        "stage": "02",
+        "timing": "Starts with unit1A/screen planning before further product UI implementation",
+        "sequence": [
+          "Review the inherited lesson content jointly, one learner stage at a time in conversation and unit1a-content.json",
+          "Map the stage to the existing interaction catalog and reuse a covered template",
+          "Design only new interactions/layouts/uncovered states with representative content and relevant edge cases",
+          "Review a small representative prototype flow; verify the real full data-driven lesson at the agreed app implementation stage"
+        ],
+        "later_polish": "Recurring GPT character references and first scene now begin in stage02 at Dor request; review identity/style before reuse. Final reviewed scene assets, voices and motion are completed in stage07.",
+        "file_status": "Existing dialogue and meaning-check families are reusable. Hola37:90 and Buenos días51:199 are representative examples of the same36:160 interaction, not a requirement for future per-item frames. Meaning-check interaction is covered; generic speak_reveal is next. Other content is reviewed as data. No canvas changes in this workflow correction.",
+        "scope": "One first unit and first screen initially; no whole-app or bulk lesson generation",
+        "content_reuse_policy": "No new frame/variant or required user Present checkpoint solely for wording, answer or audio substitution. Joint content review remains required in conversation/content files.",
+        "interaction_catalog": "docs/design/interaction-catalog.json"
+      },
+      "status_report": ".codex-review/stage02-status.json",
+      "current_next_action": "Continue03; see delivery object.",
+      "figma_acceptance_scope": "A complete learner flow must be specified, but not every content item reproduced or tested separately in Figma. Review representative new interactions; test the actual full lesson in the app at its implementation stage."
+    },
+    {
+      "id": "03",
+      "chat_title": "תכנון הנתונים והתקשורת עם השרת",
+      "depends_on": [
+        "02"
+      ],
+      "goal": "Extend and locally verify C01 content, completion, revision, publication and authenticated API contracts; review together before cloud setup.",
+      "deliverables": [
+        "Schema2 with eight data templates, preparation/production/help/phases and real1A migrated without copy/approval changes",
+        "Mandatory lesson/chapter publication gates, prerequisite graph and content/media-bound review evidence",
+        "Pure progress/start/submission reference with assistance, self-comparison, revision pinning and idempotency",
+        "Strict request schemas, allowlisted runtime projection, API examples and logical SQL/access/atomic-operation requirements",
+        "44 passing local tests, expected real-draft publication blocks, learning demo and readable handoff"
+      ],
+      "dor_actions": [
+        "Trace a lesson completion from phone request to stored data",
+        "Interpret a JSON request/response and propose an invalid case",
+        "Explain one table relationship and one transaction requirement"
+      ],
+      "done_when": [
+        "Reviewed material is represented without falsely approving gaps",
+        "Invalid references/answers/media and incomplete publication are blocked",
+        "Joint ownership/version/idempotency review is recorded"
+      ],
+      "limits": "A small service and minimal tables. Framework/ORM choices must support the selected goals, not introduce unnecessary tools.",
+      "prompt_addition": "השלב הנוכחי הוא 03. נעקוב יחד אחרי פעולה אחת של סיום יחידה, ונבנה ממנה את מבנה הנתונים והבקשה לשרת. התחל בהסבר ובדוגמה אחת.",
+      "status": "local_implementation_verified_joint_review_pending",
+      "current_next_action": "Dor explicitly opened04 on2026-10-16. Carry the unresolved03 explanation into small guided04 checkpoints; do not repeat his successful demo or infer understanding. Local03 implementation status and content gaps remain unchanged.",
+      "implementation_evidence": "docs/evidence/checks/03-expanded-contract-2026-10-16.json",
+      "joint_review": {
+        "status": "explanation_in_progress",
+        "dor_execution": "Dor ran npm.cmd run demo:progress from product/content and pasted expected five-step output.",
+        "understanding": "Dor explicitly reports not understanding stage03; not yet demonstrated. Expected409 was initially interpreted as an unexpected error."
+      },
+      "boundaries": "No real DB/RLS/JWT/API/mobile implementation or build. Complete C01 through later implementation stages before planning C02."
+    },
+    {
+      "id": "04",
+      "chat_title": "Supabase ומסד הנתונים הראשון",
+      "depends_on": [
+        "03"
+      ],
+      "goal": "Implement reviewed SQL and identity/access rules in a development environment.",
+      "status": "unit_revisions_verified_learning_checkpoint",
+      "current_next_action": "Dor supplied the exact expected revision SQL PASS. Briefly connect stable unit identity and numbered revisions to1A: ask why revision1 should remain when a learner has started it and revision2 changes an activity. Wait for his explanation before the next small storage-model increment; do not repeat the passed SQL check.",
+      "organization_setup": {
+        "observed_on": "2026-10-16",
+        "evidence": "Dor's screenshot codex-clipboard-2a125438-b19f-4939-b8bf-307276b60761.png shows the organization form with Personal and Free - $0/month selected.",
+        "assigned_name": "SpanishForTrip",
+        "assigned_type": "Personal",
+        "assigned_plan": "Free - $0/month",
+        "success_evidence": "Dor reports the screen after creation, ideally showing the organization name and project list/new-project form. Organization creation, actual subscription and database access are not yet verified.",
+        "limits": "Create only the free organization at this checkpoint; no project, payment, SQL, auth-provider configuration or native build.",
+        "reported_result": "Dor reports SpanishForTrip was created on Free and the new-project form is open. This is user-reported evidence; actual billing/quota has not been independently queried."
+      },
+      "project_setup": {
+        "assigned_on": "2026-10-16",
+        "organization": "SpanishForTrip (Free, reported by Dor)",
+        "name": "spanish-for-trip-dev",
+        "form_evidence": "Dor's screenshot codex-clipboard-ffcd10a5-004d-4f15-8470-aca7df8c17a0.png confirms SpanishForTrip with FREE badge and shows optional GitHub, project name, password, region and three security toggles. Project creation remains pending.",
+        "github_repository_link": "Leave unselected; no automatic repository/deployment integration at this checkpoint.",
+        "region_preference": "Europe general region; if only specific regions are offered choose Central EU (Frankfurt). Actual provisioned region must be recorded after creation.",
+        "region_reason": "Practical European default for initial development/testing from Israel; no measured latency or production hosting location is claimed.",
+        "credentials": "Dor generates a unique strong database password in the provider/password-manager flow, saves it privately, and never sends it in chat, screenshots, commands or learning notes. No secret is handled by Codex at this checkpoint.",
+        "assigned_security_flags": {
+          "enable_data_api": true,
+          "automatically_expose_new_tables": false,
+          "enable_automatic_rls": true
+        },
+        "security_reason": "Keep Data API for the planned server client; grant table/function access explicitly instead of automatically. Automatic RLS is an additional default guard for new public tables, not ownership policies or a substitute for explicit RLS/grants in versioned migrations. Inspect the provider event-trigger baseline at the migration checkpoint; never grant blanket access to fix a connection error.",
+        "advanced_configuration": "Leave closed at this checkpoint.",
+        "unknown_fields": "If extra settings not covered by the guidance or a payment requirement appear, Dor reports the form with the password hidden before submitting.",
+        "success_evidence": "Dor reports the project dashboard after setup completes. This establishes provisioning only, not lesson data, working auth, SQL access or correct policies.",
+        "limits": "One free development project only; no paid add-ons, SQL, lesson publication, provider configuration or native build. Wait for Dor's result.",
+        "reported_result": "Dor reports spanish-for-trip-dev was created and setup completed. Provisioning is user-reported; actual region, applied security flags and database/API access have not yet been independently checked."
+      },
+      "database_access_checkpoint": {
+        "assigned_on": "2026-10-16",
+        "execution_location": "Supabase Dashboard > spanish-for-trip-dev > SQL Editor; runs on the cloud development database, not the local terminal.",
+        "query": "select current_database() as database_name, current_user as database_role;",
+        "purpose": "Read the connected database name and execution role; no schema/data changes.",
+        "expected_result": "One row with database_name and database_role. Database is normally postgres; record the actual role rather than assuming it. Project display name is separate from the internal database name.",
+        "verification_boundary": "SQL Editor response proves this management query path only. It does not establish learner Auth, Data API grants, RLS ownership or mobile/server connectivity.",
+        "participation": "Dor executes and reports; Codex writes/explains the query. Execution is now user-reported; demonstrated understanding remains open.",
+        "reported_result": {
+          "reported_on": "2026-10-16",
+          "database_name": "postgres",
+          "database_role": "postgres",
+          "rows": 1,
+          "meaning": "Dor reports the expected row from SQL Editor. This proves that management query path, not app-user permissions or an independently repeated agent query."
+        }
+      },
+      "cli_setup_checkpoint": {
+        "assigned_on": "2026-10-16",
+        "version": "2.121.0",
+        "manifest": "package.json",
+        "execution_location": "C:\\Users\\doric\\Documents\\SpanishForTrip\\spanish-for-the-big-trip",
+        "commands": [
+          "npm.cmd install",
+          "npx.cmd supabase --version",
+          "npx.cmd supabase --help"
+        ],
+        "agent_checks": "Node22.23.1/npm10.9.8 and published Supabase npm2.121.0 metadata inspected. Supabase CLI was not on PATH. Docker executable exists but no runtime was started or selected.",
+        "purpose": "Install one repository-local tool group, pin its version and discover commands before creating versioned migrations.",
+        "success_evidence": "Dor supplies install result plus CLI version/help. Inspect the generated package-lock.json afterwards; do not claim installation or understanding before his report.",
+        "next_increment": "Codex prepares a small first schema migration from the existing storage model after CLI availability is verified, with joint explanation before cloud execution.",
+        "limits": "No CLI login, cloud link, local Docker stack, schema write, lesson publication, paid upgrade, native build or C02 work in this installation checkpoint.",
+        "reported_result": "Dor reports installation succeeded, version2.121.0 and help appeared. Agent independently verified npm ls, local CLI version/help and package-lock.json root/resolved version with integrity metadata."
+      },
+      "first_migration_checkpoint": {
+        "prepared_on": "2026-10-16",
+        "migration": "supabase/migrations/20261016081919_create_courses_and_chapters.sql",
+        "checks": "supabase/checks/01_courses_and_chapters.sql",
+        "documentation": "supabase/README.md",
+        "scope": "Only courses and chapters from storage-model.json: stable text keys, Hebrew titles, parent foreign key, positive/unique per-course position, explicit RLS and server-only table grants. No lesson copy/seed/publication/progress tables.",
+        "generation": "Discovered current CLI help, ran supabase init and migration new create_courses_and_chapters locally. Imperative workflow: schema_paths is empty. No Docker runtime, authentication or cloud query/write performed by agent.",
+        "configuration": "Local CLI scaffold uses explicit table grants, seed disabled, email signup disabled and anonymous sign-in disabled. Local Postgres17 matches linked CLI cache17.11.0.003; this is cached link metadata, not a separately executed version query. Hosted Auth and provider-RLS baseline remain separate checks.",
+        "test_boundary": "Dor reports running the entire PostgreSQL check and supplies the exact PASS row: relationships/constraint rejection, enabled RLS, explicit grants and denied direct anon/authenticated SELECT for these two tables. This does not establish JWT/provider, progress ownership, HTTP/Data API or phone behavior.",
+        "remote_status": "Dor supplied actual CLI migration success and the entire course/chapter SQL check's expected PASS. No remote operation performed by agent. Evidence report: checks/04-courses-chapters-2026-10-16.json.",
+        "next_participant_action": "Foundational scope/relationship/rollback review completed with Dor's own-word explanations. Continue the active units checkpoint; do not repeat the first check.",
+        "cli_login_report": "Dor replied completed to the assigned interactive login. Success is user-reported; agent has not inspected credentials or used this login for remote operations."
+      },
+      "project_link_preview_checkpoint": {
+        "assigned_on": "2026-10-16",
+        "working_directory": "C:\\Users\\doric\\Documents\\SpanishForTrip\\spanish-for-the-big-trip",
+        "commands": [
+          "npx.cmd --no-install supabase link",
+          "npx.cmd --no-install supabase db push --linked --dry-run --skip-vault"
+        ],
+        "expected_target": "spanish-for-trip-dev in SpanishForTrip",
+        "expected_pending_migration": "20261016081919_create_courses_and_chapters.sql",
+        "success_evidence": "Dor reports successful target selection/link plus the one expected pending migration and any warnings. Actual project ref/version/region are not inferred before his result.",
+        "purpose": "Associate the checkout with the intended development project and inspect pending changes before applying the first small migration.",
+        "limits": "Dor performs the assigned actions; agent does not repeat them. Preview uses dry-run and skips Vault updates. No actual migration push, reset, lesson publication, paid upgrade, native build or C02 work.",
+        "reported_result": "Dor pasted output: DRY RUN: migrations will not be pushed; remote connection succeeded; Would push only20261016081919_create_courses_and_chapters.sql; Finished supabase db push. No error/warning supplied.",
+        "learning_gap": "Dor explicitly asks what the command does and what is being pushed. Successful execution is not understanding. Explain before continuing; no new execution is assigned yet.",
+        "understanding_followup": "Dor explains in his own words that the real application creates two empty course/chapter tables, requires each chapter to refer to an existing course, and imports lesson content later. This demonstrates scope/relationship understanding only."
+      },
+      "migration_application_checkpoint": {
+        "assigned_on": "2026-10-16",
+        "linked_project_ref": "bullhxlahedmifdlgnot",
+        "metadata_source": "Read only the non-secret local CLI files supabase/.temp/project-ref and postgres-version. Agent has not used Dor's login for a remote operation.",
+        "linked_postgres_version_cache": "17.11.0.003",
+        "target_check": "Dor opens https://supabase.com/dashboard/project/bullhxlahedmifdlgnot and verifies the header says spanish-for-trip-dev before running the apply command. Ref-to-display-name mapping is not inferred from the cache alone.",
+        "command": "npx.cmd --no-install supabase db push --linked --skip-vault",
+        "expected_migration": "20261016081919_create_courses_and_chapters.sql",
+        "migration_sha256": "5707c52832fb9fdec9b29022fd50087425ab18a523d8bc29fc156eb44347c89d",
+        "meaning": "Actual application, without dry-run, creates the two empty tables, relationship, constraints and restricted access and records the migration version. No lesson data is imported.",
+        "success_evidence": "Dor supplies the actual CLI application result. Database regression SQL remains pending until after successful application.",
+        "limits": "Wait for Dor's result; do not repeat his assigned action or apply remotely as agent. No reset, data seed/publication, payment, auth/native build or C02 work.",
+        "reported_result": "Dor pasted CLI output: expected sole migration confirmed Yes, Applying migration20261016081919_create_courses_and_chapters.sql, Finished supabase db push. No error supplied."
+      },
+      "course_chapter_regression_checkpoint": {
+        "assigned_on": "2026-10-16",
+        "file": "supabase/checks/01_courses_and_chapters.sql",
+        "execution_location": "SQL Editor of the development project, role postgres; run the entire file together.",
+        "purpose": "Verify table presence/RLS, explicit role grants, valid parent relation, rejected orphan/duplicate/invalid-order/referenced-parent deletion, and denied direct anon/authenticated reads.",
+        "temporary_data": "Synthetic course/chapter rows are created inside BEGIN and removed by ROLLBACK; the already-applied tables remain.",
+        "expected_result": "PASS: relationships, constraints and role access; synthetic rows rolled back",
+        "verification_boundary": "A passing SQL role test would not establish JWT/Auth-provider behavior, progress ownership, HTTP/Data API or phone connectivity.",
+        "next_learning_check": "Discuss why ROLLBACK removes fixture rows while leaving the applied tables. Own-word parent relationship was already demonstrated; do not turn this into a repeated test.",
+        "reported_result": "Dor reports running the entire check and supplies: PASS: relationships, constraints and role access; synthetic rows rolled back",
+        "result_date": "2026-10-16",
+        "check_sha256": "a7b60b63de4fdb9b9ea5318e2ff88631e8ab6b4cea3c75cad560496c6f9a2ff5",
+        "evidence_ref": "docs/evidence/checks/04-courses-chapters-2026-10-16.json",
+        "understanding_followup": "Dor explains that the earlier migration finished before the test transaction began; ROLLBACK undid only test-transaction actions, so temporary rows disappeared and the tables remained."
+      },
+      "units_checkpoint": {
+        "prepared_on": "2026-10-16",
+        "migration": "supabase/migrations/20261016085242_create_units.sql",
+        "checks": "supabase/checks/02_units.sql",
+        "source": "Existing content/storage-model.json units entity and schema2 UnitSchema. Existing1A metadata: id C01-U01, aliases [1A], chapterId C01, titleHe המפגש הראשון.",
+        "scope": "One stable unit metadata table: id, chapter_id, aliases text[], title_he, positive/unique within-chapter position; explicit RLS and server-only grants. No revisions, authored payload, seed, publication or progress added yet.",
+        "generation": "Created the new version filename via the installed CLI migration new after reading help; first applied migration was not edited.",
+        "assigned_commands": [
+          "npx.cmd --no-install supabase db push --linked --dry-run --skip-vault",
+          "npx.cmd --no-install supabase db push --linked --skip-vault"
+        ],
+        "expected_pending_migration": "20261016085242_create_units.sql",
+        "execution_rule": "Dor applies only when the preview lists that sole expected file. This repeats the established preview/apply workflow without another chat permission round; Dor supplies the actual result before database checks.",
+        "verification_boundary": "Dor reports executing the entire units SQL check and supplies its expected PASS. This establishes bounded SQL relationships/role tests, not JWT/HTTP/provider/mobile behavior. Source format/alias-duplicate checks remain in existing validation before later import.",
+        "status": "application_reported_by_Dor; full_SQL_check_PASS_supplied",
+        "application_evidence": "Dor replied completed to the assigned preview/conditional-apply workflow. Full CLI output was not supplied; report is not treated as independently observed application.",
+        "migration_sha256": "05b408239b633f2e615761838b21671ca784dca89e847b41f547573d34938833",
+        "check_sha256": "7fd9b1fc9e005f1316b88bfbfec7f7d194dbd98a88ad7b0b06065c2e1d877791",
+        "expected_check_result": "PASS: unit relationships, identity, constraints and role access; synthetic rows rolled back",
+        "reported_check_result": "Dor explicitly reports running the entire file and supplies the exact expected PASS row.",
+        "evidence_ref": "docs/evidence/checks/04-units-2026-10-16.json"
+      },
+      "unit_revisions_checkpoint": {
+        "prepared_on": "2026-10-16",
+        "migration": "supabase/migrations/20261016091112_create_unit_revisions.sql",
+        "migration_sha256": "e1ddb940959275703674d20718e7f8f7d36fab6f772036c52919b8b478a10a6d",
+        "checks": "supabase/checks/03_unit_revisions.sql",
+        "check_sha256": "cb6bb527faf1c2105bcbf474b7fb1f7918f5e2ddb957a7ad96e1718ddf94470d",
+        "scope": "The existing unit_revisions entity only: composite unit/revision key, positive versions, JSONB authoring payload, matching metadata, digest shape and draft/published lifecycle. Explicit RLS/server-only access. A private SECURITY INVOKER trigger blocks UPDATE/DELETE of published rows.",
+        "security": "Helper resides in private schema with empty search_path; PUBLIC/anon/authenticated EXECUTE and schema access revoked. service_role has explicit access, and SQL tests exercise its writes and published-row rejection. No SECURITY DEFINER or learner raw-payload access.",
+        "verification_boundary": "SQL guards verify selected JSON metadata and digest format, not full Zod content, digest/media bytes or editorial/chapter publication. Existing validated content pipeline and whole-chapter release gate remain required before later import/availability.",
+        "expected_pending_migration": "20261016091112_create_unit_revisions.sql",
+        "assigned_commands": [
+          "npx.cmd --no-install supabase db push --linked --dry-run --skip-vault",
+          "npx.cmd --no-install supabase db push --linked --skip-vault"
+        ],
+        "execution_rule": "Dor applies only if the preview lists the sole expected file, then supplies the result before the new SQL check. No repeated chat approval for this established workflow.",
+        "status": "applied; SQL_check_PASS_user_supplied; revision_understanding_checkpoint_open",
+        "reported_application": {
+          "reported_on": "2026-10-16",
+          "output": "Applying migration 20261016091112_create_unit_revisions.sql...\nFinished supabase db push.",
+          "source": "Exact output supplied by Dor in this chat; no duplicate remote execution by Codex."
+        },
+        "expected_check_result": "PASS: revision metadata, draft lifecycle, published immutability and role access; synthetic rows rolled back",
+        "reported_check_result": "PASS: revision metadata, draft lifecycle, published immutability and role access; synthetic rows rolled back",
+        "evidence_ref": "docs/evidence/checks/04-unit-revisions-2026-10-16.json",
+        "check_execution": "Dor runs the whole checks/03_unit_revisions.sql in spanish-for-trip-dev SQL Editor as postgres. The script internally tests service_role, anon and authenticated; synthetic fixtures and publication markers are rolled back. Full lesson validity, real publication and provider/JWT paths remain outside this check.",
+        "content_boundary": "No real lesson payload imported, no chapter published, no progress/media/release/Auth/native build or C02 work added."
+      },
+      "opening_checkpoint": {
+        "authorized_on": "2026-10-16",
+        "authority": "Dor: PLEASE IMPLEMENT THIS PLAN — stage04 first step: Supabase access.",
+        "reported_starting_point": "Dor selected: access not yet checked. No account, organization, project or plan availability is inferred.",
+        "success_evidence": "Dor reports the screen after login: project list, organization creation prompt or another screen. Current Free eligibility is checked before creating a project.",
+        "limits": "This checkpoint covers dashboard access only. No organization/project provisioning, payment, SQL, credentials in chat/logs, provider configuration, native build or C02 planning/implementation.",
+        "carried_learning": "Stage03 demo execution is already evidenced; foundational API/database understanding remains open. Historical03 handoff is not rewritten as completed.",
+        "status": "dashboard_access_verified_by_dor_screenshot",
+        "observed_result": "Dor supplied a screenshot on2026-10-16: Your organizations with an empty list and New organization button. Management dashboard access is evidenced; Free eligibility, organization/project creation and database access remain unverified."
+      },
+      "deliverables": [
+        "Supabase development project and mandatory Google/Apple sign-in configured; anonymous/guest access disabled",
+        "Versioned SQL migrations and seed for the reviewed lesson",
+        "Ownership/access checks and reproducible connection instructions",
+        "Both chosen sign-in paths tested on the own iPhone build, before wider learning implementation",
+        "Owned signed iPhone development build installed and connected to Metro; microphone/playback verified again under the app identity before provider login checks"
+      ],
+      "dor_actions": [
+        "Perform the agreed dashboard/project setup action",
+        "Run or modify a SQL query and inspect the result",
+        "Explain and check a relationship, migration and user-specific access case"
+      ],
+      "done_when": [
+        "Schema can be reproduced from tracked migrations",
+        "Lesson seed can be queried",
+        "Own-progress access works and another user's progress is denied through the intended access path",
+        "Google and Apple sign-in and cancellation/error behavior are observed on the iPhone; unconfigured access is recorded as an unresolved prerequisite rather than bypassed",
+        "Deferred stage01 signing/install proof is completed on the owned development app; Expo Go success is not substituted for target-app Google/Apple tests"
+      ],
+      "limits": "Keep credentials out of chat/logs. Use the chosen development environment; production deployment is a separate step. A local Docker/Supabase stack is an optional learning decision, not an assumed installation.",
+      "prompt_addition": "השלב הנוכחי הוא 04. הסבר את ההבדל בין פרויקט Supabase, מסד הנתונים ומשתמש באפליקציה. תן לי פעולה אחת לביצוע בהקמה, והמתן לפלט או לתוצאה שלי.",
+      "deferred_from_stage01": "Complete the first owned EAS iPhone build/signing/install and media retest after adding required native login modules/config, before claiming Google/Apple sign-in device verification."
+    },
+    {
+      "id": "05",
+      "chat_title": "API ראשון וחיבור למסך באפליקציה",
+      "depends_on": [
+        "04"
+      ],
+      "goal": "Prove one authenticated activity end to end before expanding the service.",
+      "deliverables": [
+        "Small NestJS service using supabase-js",
+        "Published lesson read, own progress and idempotent activity submission",
+        "Phone activity reads Supabase through API and resumes",
+        "Early personal-pilot Vercel Hobby deployment check; focused integration tests"
+      ],
+      "dor_actions": [
+        "Start the API and inspect a request in logs",
+        "Send a valid and an invalid request",
+        "Observe returned data on the iPhone and explain the path"
+      ],
+      "done_when": [
+        "A phone request reaches the API and reads Supabase data",
+        "Ownership, validation and repeated completion behavior are checked",
+        "Connection failures have a clear diagnosis and mobile feedback"
+      ],
+      "limits": "One small behavior at a time; no pronunciation endpoint or large backend before phone integration. No paid upgrade.",
+      "prompt_addition": "השלב הנוכחי הוא 05. נתחיל בנקודת גישה אחת שמחזירה את היחידה, ונחבר אותה למסך אחד. הסבר את הבקשה והתשובה ונתנסה יחד לפני הוספת פעולה נוספת."
+    },
+    {
+      "id": "06",
+      "chat_title": "יחידה מלאה עם שמירה וחזרה",
+      "depends_on": [
+        "05"
+      ],
+      "goal": "Complete one native learning unit across mobile, API and database.",
+      "deliverables": [
+        "Complete reviewed1A with listening, selected tiles, recording/self-replay and prepared scenario",
+        "Resume, completion, help and retry",
+        "Joint copy and media review with each useful increment"
+      ],
+      "dor_actions": [
+        "Complete and resume the lesson on the iPhone",
+        "Test back/forward navigation and a wrong answer",
+        "Inspect the matching API request and saved progress"
+      ],
+      "done_when": [
+        "One whole unit works from start through completion",
+        "Learner choice changes the scenario outcome",
+        "Closing/reopening and back/forward preserve coherent progress",
+        "Speech practice is recorded as practice rather than automatic fluency scoring"
+      ],
+      "limits": "No unreviewed bulk course transfer or automated pronunciation scoring in this first flow.",
+      "prompt_addition": "השלב הנוכחי הוא 06. ניישם רק את המסך הבא שאושר ביחידה, ונבדוק אותו יחד במכשיר לפני מעבר למסך נוסף. קח בחשבון שמירה וחזרה מההתחלה."
+    },
+    {
+      "id": "07",
+      "chat_title": "המפה האיורים והשמע של הפיילוט",
+      "depends_on": [
+        "06"
+      ],
+      "goal": "Finish reusable media/design production and polish the validated first flow.",
+      "deliverables": [
+        "Small illustrated progression map with opened/locked/completed stations",
+        "Reviewed first-scene illustrations and natural Spanish character voices selected from the earlier auditions; default robotic prototype voices replaced",
+        "Speaker/scene animation, RTL and understandable feedback",
+        "Compressed/versioned assets and device playback checks"
+      ],
+      "dor_actions": [
+        "Choose/revise one illustration or motion treatment",
+        "Listen to Spanish clips and correct wording/naturalness",
+        "Check that images and animation do not reveal comprehension answers"
+      ],
+      "done_when": [
+        "The first lesson's media is reviewed with Dor",
+        "The map reflects actual stored progression",
+        "Audio/motion work on the device and remain usable with reduced motion or reading alternatives"
+      ],
+      "limits": "Review media with each unit, not only after the whole course. One longest representative audition before a new batch.",
+      "prompt_addition": "השלב הנוכחי הוא 07. נתחיל בסצנה אחת ובאיור אחד, נבחן אותו יחד ורק אחר כך נוסיף את התנועה והשמע. אין לייצר את כל נכסי הקורס באצווה.",
+      "design_note": "Initial Figma UX/UI is stage02; this stage finishes reviewed art/audio/motion after the learning flow is validated."
+    },
+    {
+      "id": "08",
+      "chat_title": "אירוח השרת וגרסה מותקנת לבדיקה",
+      "depends_on": [
+        "07"
+      ],
+      "goal": "Harden the already tested deployment path and verify installed pilot without the local computer.",
+      "deliverables": [
+        "Selected API hosting with explicit budget/use limits",
+        "Deployment/environment configuration and checks appropriate to the first release",
+        "Owned iPhone build/TestFlight path and Android compatibility check",
+        "A rollback/recovery note and known device limitations"
+      ],
+      "dor_actions": [
+        "Review where each service runs and the deployment configuration",
+        "Perform the assigned build/deploy/install action through secure account flows",
+        "Test the app with the local server stopped and read an actual cloud log"
+      ],
+      "done_when": [
+        "Installed app can reach the cloud API and save/resume progress",
+        "Device playback/recording and permission denial are checked",
+        "Android validation method/results and any remaining physical-device gap are recorded",
+        "The release can be reproduced and recovered",
+        "Both Google and Apple sign-in still work in the installed cloud-backed build; no guest bypass is added to meet the deadline"
+      ],
+      "limits": "API host has not been selected in advance. Do not enroll, pay, publish publicly or expose credentials merely because a plan mentions these steps.",
+      "prompt_addition": "השלב הנוכחי הוא 08. קודם נסקור את מסלול האירוח, העלות והבנייה שכבר אושרו. תן לי פעולה מעשית אחת לפריסה או התקנה, ונבדוק שהגרסה עובדת גם בלי השרת במחשב."
+    },
+    {
+      "id": "09",
+      "chat_title": "בדיקת הפיילוט וסיכום הניסיון",
+      "depends_on": [
+        "08"
+      ],
+      "goal": "Observe real beginner use, revise the first unit and record honest engineering/learning evidence.",
+      "deliverables": [
+        "Small beginner test plan and observed comprehension/usability issues",
+        "Prioritized corrections and rechecks",
+        "A short architecture explanation, debugging example and evidence of Dor's practical work",
+        "A decision on the next course increment"
+      ],
+      "dor_actions": [
+        "Run a learner observation with the agreed participants",
+        "Distinguish confusion in wording from navigation or language difficulty",
+        "Explain a design tradeoff and reproduce a tested issue/solution"
+      ],
+      "done_when": [
+        "Blocking issues are resolved or explicitly scoped",
+        "Feedback is used to revise the lesson",
+        "Portfolio/interview statements match what Dor actually performed and understood"
+      ],
+      "limits": "A small usability trial is not evidence of language proficiency or long-term learning effectiveness. Tests have already been run throughout the earlier stages.",
+      "prompt_addition": "השלב הנוכחי הוא 09. נכין בדיקה קצרה של היחידה עם מתחילים, נבחן תוצאה אחת בכל פעם ונחליט יחד מה לתקן ומה למדנו לפני הרחבה."
+    },
+    {
+      "id": "10",
+      "chat_title": "הרחבת הקורס יחידה אחר יחידה",
+      "depends_on": [
+        "09"
+      ],
+      "goal": "Expand content in order: finish all ofC01, verify it, then all ofC02; wider outlines follow learner/market feedback.",
+      "deliverables": [
+        "One newly reviewed lesson with explicit language prerequisites",
+        "Only the media/branches needed for that lesson",
+        "Cumulative review and prerequisite/resume checks",
+        "Updated learning and handoff records"
+      ],
+      "dor_actions": [
+        "Coauthor Hebrew/Spanish one stage at a time",
+        "Add or inspect lesson data and verify a branch",
+        "Test the new lesson and one earlier flow"
+      ],
+      "done_when": [
+        "New language is prepared before use",
+        "The lesson is reviewed and works with the existing progression",
+        "Only justified engine changes are introduced"
+      ],
+      "limits": "Repeat this stage in a new chat per lesson or agreed small content increment. Do not generate the remaining ten-module course automatically.",
+      "prompt_addition": "השלב הנוכחי הוא 10 עבור היחידה הבאה שנבחרה. נשתמש במנוע הקיים, נעבור על שלב אחד של התוכן בכל פעם, ונרחיב רק אחרי התיקונים והבדיקה המשותפת."
+    }
+  ],
+  "approved_decisions_reference": "docs/planning/approved-decisions.json",
+  "planning_choices_history": [
+    {
+      "id": "stack",
+      "decision": "Confirm the final mobile/API stack",
+      "proposal": "TypeScript, React Native with Expo, Node.js with NestJS; PostgreSQL/Supabase already selected",
+      "why": "The middle Backend scope is agreed, but the exact framework list should be a single explicit decision before setup.",
+      "status": "Answered; see approved-decisions.json for accepted scope and remaining implementation/access questions"
+    },
+    {
+      "id": "first_milestone",
+      "decision": "Define the first testable version and success criteria",
+      "proposal": "Unit 1A fully working on the iPhone, a small learning map, saved resume, audio, recording/replay and one prepared choice-driven scenario; expand after testing",
+      "why": "One complete lesson is the first engineering milestone. The number of lessons in a wider learner pilot remains a separate choice.",
+      "status": "Answered; see approved-decisions.json for accepted scope and remaining implementation/access questions"
+    },
+    {
+      "id": "identity_and_recordings",
+      "decision": "Choose initial sign-in behavior and recording retention",
+      "proposal": "Use Supabase-managed identity. Choose guest/anonymous versus a simple account flow. Start learner recordings on-device for self-replay; cloud retention only if selected",
+      "why": "Identity determines progress ownership, API authorization and recovery; recording retention affects storage and user expectations.",
+      "status": "Answered; see approved-decisions.json for accepted scope and remaining implementation/access questions"
+    },
+    {
+      "id": "time_and_budget",
+      "decision": "Set weekly practical learning time, any target date and spending limit",
+      "proposal": "Start with free Supabase and a locally running API; choose any paid step separately when needed",
+      "why": "Learning checkpoints are part of the work and must be included in estimates; no delivery date has been established.",
+      "status": "Answered; see approved-decisions.json for accepted scope and remaining implementation/access questions"
+    },
+    {
+      "id": "ios_access",
+      "decision": "Confirm the available iPhone build/signing path",
+      "proposal": "Identify whether Dor already has Apple Developer and Expo accounts from the previous app. Use a short Expo Go proof if useful, then an owned development build early when access is available",
+      "why": "Windows/iPhone delivery and native-library support should be proved early rather than deferred to final publication.",
+      "status": "Answered; see approved-decisions.json for accepted scope and remaining implementation/access questions"
+    }
+  ],
+  "remaining_before_setup": [],
+  "proposed_week_sequence": [
+    {
+      "week": 1,
+      "outcome": "Prove one authenticated content/database/API/iPhone/resume flow, complete1A and measure authoring/audio review capacity."
+    },
+    {
+      "week": "2–3",
+      "outcome": "Expand the updated course through the same pipeline at measured capacity; not a delivery guarantee."
+    }
+  ],
+  "schedule_note": "Target: launch both complete opening chapters within one week. Finish planning, implementation and checks for C01 before starting planning or implementation for C02. Keep shared learning and chapter-readiness criteria; record Apple submission and approval separately. No new infrastructure spending.",
+  "first_setup_checks": [
+    "Verify existing local tool versions",
+    "Verify access to reported active Apple membership and free Expo account",
+    "Select product repository boundary",
+    "Prepare the own-iPhone cloud-build path in stage01; verify actual signing/install with native authentication in stage04"
+  ],
+  "reported_setup_context": {
+    "apple_developer_membership": "Active, reported by Dor",
+    "computer": "Windows only; no Mac access",
+    "daily_time": "4-5 hours, variable",
+    "verification": "Dor reports successful Apple browser login, active membership and access to Certificates, Identifiers & Profiles, plus successful Expo browser login/dashboard access. Actual signing, CLI authentication, cloud build and iPhone install remain unverified; see the stage01 learning log."
+  },
+  "next_action": "Revision metadata/lifecycle/immutability/access SQL check passed with Dor's exact supplied result. Review why a learner's started revision1 must remain when revision2 changes an activity; wait for his brief explanation before the next small storage-model increment. No repeat check, real lesson import/publication or native build.",
+  "division_of_work": {
+    "authority": "Dor's explicit clarification on 2026-10-15",
+    "code_implementation": "Codex writes/edits code within the current agreed stage and explains meaningful parts; standing authorization, no repeated coding approval.",
+    "dor_practical_actions": "Environment installation, account/settings work and meaningful device/API/database/Git checks; no code typing/pasting unless Dor asks.",
+    "checkpoint_size": "Useful behavior or important setup milestone, not each import or minor edit; keep learning concise enough for the one-week target.",
+    "waiting": "Leave specifically assigned practical actions to Dor and wait for results; routine coding and verification proceed autonomously."
+  },
+  "build_timing_review": {
+    "date": "2026-10-15",
+    "user_direction": "Dor again questioned why a build is needed now and asked whether continuing development would be better.",
+    "distinction": "Expo Go and an owned development build are both development environments. A development build is a native container for the project, still normally loading JavaScript/TypeScript from Metro; screen/logic changes do not each require a new native build.",
+    "recommendation": "Continue the currently supported Expo Go work; defer the owned build until a concrete native requirement, especially the selected Google/Apple login integration in stage04, and include its needed native modules/configuration before building.",
+    "original_rationale": "Early stage01 build was an infrastructure-risk check for Apple signing/install from Windows, not a technical prerequisite for authoring basic screens or lesson flow.",
+    "current_action": "Deferral accepted in the continuation; no immediate cloud build. Preserve completed setup and reassess native config/quota/credentials before stage04 build.",
+    "stage_boundary": "Stage01 closed on revised criteria with explicit deferred proof; stage04 must complete own signed app installation/media and Google/Apple login tests. Stage02 is ready, not auto-dispatched.",
+    "sources": [
+      "https://docs.expo.dev/develop/development-builds/introduction/",
+      "https://docs.expo.dev/guides/authentication/",
+      "https://docs.expo.dev/guides/google-authentication/"
+    ]
+  },
+  "stage_scope_changes": [
+    {
+      "date": "2026-10-15",
+      "authority": "Dor continuation after the recommendation to defer the build, then asks remaining stage01 work and when Figma starts",
+      "prior_requirement": "Verified own-iPhone development build/signing/install during stage01",
+      "revised_requirement": "Stage01 proves Expo Go execution/audio and prepares cloud-build path. First owned build/signing/install/media retest is a stage04 prerequisite before both social-login tests.",
+      "reason": "Continue useful development in Expo Go and include the native authentication dependencies/configuration when a build is needed.",
+      "historical_plan": ".codex-review/archive/work-plan-before-stage01-scope-update-2026-10-15.json"
+    },
+    {
+      "date": "2026-10-16",
+      "authority": "User-approved practical implementation plan",
+      "revised_requirement": "Bounded02 planning handoff ->03 real data contract; remaining exact copy reviewed incrementally. Pronunciation deferred after working unit.",
+      "historical_plan": ".codex-review/archive/before-practical-delivery-plan-2026-10-16/.codex-review/work-plan.json"
+    }
+  ],
+  "design_workflow": {
+    "tool": "Figma",
+    "stage": "02",
+    "timing": "Starts with unit1A/screen planning before further product UI implementation",
+    "sequence": [
+      "Review the inherited lesson content jointly, one learner stage at a time in conversation and unit1a-content.json",
+      "Map the stage to the existing interaction catalog and reuse a covered template",
+      "Design only new interactions/layouts/uncovered states with representative content and relevant edge cases",
+      "Review a small representative prototype flow; verify the real full data-driven lesson at the agreed app implementation stage"
+    ],
+    "later_polish": "Recurring GPT character references and first scene now begin in stage02 at Dor request; review identity/style before reuse. Final reviewed scene assets, voices and motion are completed in stage07.",
+    "file_status": "Existing dialogue and meaning-check families are reusable. Hola37:90 and Buenos días51:199 are representative examples of the same36:160 interaction, not a requirement for future per-item frames. Meaning-check interaction is covered; generic speak_reveal is next. Other content is reviewed as data. No canvas changes in this workflow correction.",
+    "scope": "One first unit and first screen initially; no whole-app or bulk lesson generation",
+    "content_reuse_policy": "No new frame/variant or required user Present checkpoint solely for wording, answer or audio substitution. Joint content review remains required in conversation/content files.",
+    "interaction_catalog": "docs/design/interaction-catalog.json"
+  },
+  "figma_workflow_correction": {
+    "date": "2026-10-16",
+    "authority": "Dor asks to verify and adopt generic design per exercise type to avoid wasted Figma work.",
+    "status": "researched_and_applied",
+    "conclusion": "Figma specifies reusable interaction templates, meaningful states and representative flows. Lesson content is separate; shared runtime components will render it at the agreed implementation stage.",
+    "new_design_gate": [
+      "New interaction type",
+      "Meaningfully different layout",
+      "Uncovered state or accessibility behavior",
+      "Observed usability/readability problem"
+    ],
+    "content_only_policy": "No new frame/variant or required user Present checkpoint solely for wording, answer or audio substitution. Joint content review remains required in conversation/content files.",
+    "existing_assets": "Keep current examples and shared templates; no bulk cleanup needed.",
+    "pending_action_superseded": "The newly assigned per-exercise Buenos días Present test is optional and no longer a prerequisite to progress. No user execution or exact retry-copy acceptance inferred.",
+    "catalog": "docs/design/interaction-catalog.json",
+    "sources": [
+      "https://help.figma.com/hc/en-us/articles/5579474826519-Explore-component-properties",
+      "https://help.figma.com/hc/en-us/articles/360061175334-Create-interactive-components-with-variants",
+      "https://react.dev/learn/passing-props-to-a-component"
+    ],
+    "boundary": "Stage02 remains content/template planning. No runtime implementation, build, new service or purchase authorized by this correction."
+  },
+  "pronunciation_scope_change": {
+    "date": "2026-10-16",
+    "authority": "Dor explicitly requests a system that evaluates whether the spoken phrase was said correctly and asks for independent cost/technical research.",
+    "status": "retained_deferred_after_working_unit",
+    "prior_scope": "Optional local recording/self-comparison; automatic pronunciation scoring excluded",
+    "current_scope": "Automated pronunciation assessment for prepared Spanish speaking tasks, calibrated against human judgments before learner pass/fail use",
+    "candidate_provider": "Azure Speech Pronunciation Assessment",
+    "candidate_locale": "es-MX",
+    "research": "docs/research/pronunciation/research-2026-10-16.json",
+    "spending": "No purchase, paid upgrade, commitment plan or provider contract authorized",
+    "build": "No native build now; preserve stage04 deferral",
+    "privacy": "Temporary provider processing is needed for assessment; persistent cloud recording storage is not selected",
+    "quality": "ASR transcript matching alone is insufficient. No arbitrary threshold or unsupported Spanish phoneme/prosody diagnosis. Calibrate on understandable Israeli-accented speech and wrong/noisy/silent cases.",
+    "account": "Dor created Azure account and reported portal access; signed-in portal and active free-trial UI verified by Codex",
+    "resource_ref": "docs/research/pronunciation/azure-speech-resource.json",
+    "setup_status": "F0 Speech resource created by Codex under explicit user authorization; portal Overview Active/Free, Italy North",
+    "test_status": "Two human browser trials observed: Hola pronunciation96/accuracy93; user-reported deliberate גרקיאס against Gracias. pronunciation90.4 (UI90)/accuracy84, ErrorType None, phoneme scores88,98,44,86,100,100,45 with blank phoneme names. Correct Gracias baseline pending. No direct API/mobile integration or validated pass threshold.",
+    "resource_creation_authority": "Dor: פתחתי חשבון Azure והפורטל פתוח, אפשר להמשיך להגדרת Speech במסלול החינמי. Dor adds שים לב גם ל region, אנחנו בישראל.",
+    "first_human_result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
+    "comparison_ref": "docs/research/pronunciation/gracias-comparison-2026-10-16.json",
+    "latest_human_trial_ref": "docs/research/pronunciation/gracias-c-as-k-result-2026-10-16.json",
+    "current_status_ref": "docs/planning/work-plan.json#delivery"
+  },
+  "active_curriculum_plan": {
+    "path": "docs/curriculum/curriculum-plan.json",
+    "version": 4,
+    "pdf": "docs/curriculum/Spanish_For_Trip_Curriculum.pdf",
+    "chapters": 16,
+    "unit_outlines": 57,
+    "generator": ".codex-review/build_course_plan.py",
+    "status": "16chapters57outlines; first3plus4units unchanged; exact copy/reviews remain incremental",
+    "delivery_ref": "docs/planning/work-plan.json#delivery",
+    "legacy_bank": "docs/curriculum/pilot-spec.json",
+    "legacy_mapping": "docs/curriculum/curriculum-plan.json#legacy_content.legacy_lesson_mapping",
+    "first_delivery": "Complete1A proves the flow; finish all3units ofC01, then all4units ofC02. Public release contains only complete verified chapters."
+  },
+  "delivery": {
+    "adopted_on": "2026-10-16",
+    "authority": "Dor: PLEASE IMPLEMENT THIS PLAN",
+    "current_stage": "04",
+    "current_checkpoint": "unit_revisions_verified_learning_checkpoint",
+    "status_source": "This object and stage statuses are authoritative; other artifacts are dated evidence or references.",
+    "course_plan_ref": "docs/curriculum/curriculum-plan.json",
+    "content_ref": "content/units/unit1a.json",
+    "storage_model_ref": "content/storage-model.json",
+    "checks_ref": "docs/evidence/checks/03-expanded-contract-2026-10-16.json",
+    "toolchain_ref": "docs/planning/toolchain.json",
+    "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
+    "pronunciation": "retained_deferred_after_working_unit",
+    "native_build": "stage04_after_native_auth_configuration; no build now",
+    "next_action": "Revision metadata/lifecycle/immutability/access SQL check passed with Dor's exact supplied result. Review why a learner's started revision1 must remain when revision2 changes an activity; wait for his brief explanation before the next small storage-model increment. No repeat check, real lesson import/publication or native build.",
+    "opening_chapters": {
+      "policy": "complete_chapters_in_order",
+      "production_order": [
+        "C01",
+        "C02"
+      ],
+      "opening_unit_ids": [
+        "C01-U01",
+        "C01-U02",
+        "C01-U03",
+        "C02-U01",
+        "C02-U02",
+        "C02-U03",
+        "C02-U04"
+      ],
+      "fixed_week_unit_quota": null,
+      "week_goal_he": "יעד השבוע הוא להשיק את שני פרקי הפתיחה במלואם: לתכנן, לבנות ולבדוק את כל פרק1; רק לאחר השלמתו להתחיל לתכנן ולבנות את פרק2.",
+      "chapter_done_he": [
+        "סקירה משותפת של העברית והספרדית",
+        "שמע טבעי שנבדק והקלטה להשוואה",
+        "זרימה באייפון: טעות, עזרה, יציאה וחזרה",
+        "שמירת התקדמות ותרחיש סיום",
+        "תגובה לפרט מוכר שהשתנה"
+      ],
+      "checkpoints_he": [
+        "אחרי יחידה1A מלאה",
+        "אחרי השלמת הפרק הראשון"
+      ],
+      "release_he": "השקה ציבורית חינמית לאחר בדיקות ואישור Apple; פרק חלקי אינו מוצג כפרק זמין.",
+      "budget_he": "ללא תשלום תשתית חדש; מכסות קיימות ייבדקו לפני שימוש.",
+      "pronunciation_he": "הקלטה והשוואה לדוגמה זמינות בגרסה הראשונה; הערכה אוטומטית לאחר כיול.",
+      "later_he": "יתר הפרקים נשארים מתווים; הרחבת התוכן לאחר משוב מהגרסה הראשונה, ללא התחייבות להפיק הכול ב-2–3 שבועות.",
+      "authority": "Dor explicitly requests implementing the complete first chapter, then complete second chapter, in order and according to available time.",
+      "source": "docs/curriculum/curriculum-plan.json#delivery",
+      "development_boundary_he": "אין לעבור לתכנון או לבנייה של פרק2 לפני השלמת התכנון, הבנייה והבדיקות של פרק1. התשתית המשותפת נבנית מתוך צורכי פרק1.",
+      "launch_target_chapter_ids": [
+        "C01",
+        "C02"
+      ],
+      "latest_clarification": {
+        "date": "2026-10-16",
+        "authority_he": "אתה טועה, אני אמרתי שאנחנו נסגור כל פרק ורק אז נתקדם, כלומר עד שלא אסיים לתכנן את כל פרק 1 ולבנות אותו, לא אעבור לפרק 2. הרצון הוא להשיק בשבוע שני פרקים",
+        "meaning": "Sequential planning and implementation, complete C01 before starting C02. Weekly launch target is both complete opening chapters; review criteria remain required. This clarification concerns our development workflow."
+      }
+    },
+    "release_gate_ref": "content/src/chapter-release.ts",
+    "release_manifest_ref": "content/release-plan.json",
+    "chapter_reviews_ref": "content/release-reviews.json",
+    "opening_chapter_checkpoint": "local_release_gate_implemented; real_chapter_reviews_pending; existing03joint_review_still_next",
+    "gap_review_ref": "docs/evidence/checks/03-model-gap-review-2026-10-16.json",
+    "api_contract_ref": "content/api-contract.json",
+    "stage03_handoff_ref": "docs/planning/stage-handoffs/03-content-data-api.json",
+    "stage03_approved_policies": {
+      "speaking": "self_comparison_confirmation_with_microphone_free_alternative; no correctness claim",
+      "network": "wait_for_server_ack; one user-scoped pending attempt; retry same request ID",
+      "scope": "Local content/progress/API contracts only; no new service/dependency/auth/native/runtime setup."
+    }
+  },
+  "opening_week_sequence": [
+    {
+      "step": 1,
+      "goal_he": "השלמת1A והזרימה הטכנית",
+      "checkpoint_he": "סקירה משותפת ובדיקת הזרימה לפני הרחבת התוכן"
+    },
+    {
+      "step": 2,
+      "goal_he": "השלמת יתר יחידות פרק1 לפי הסדר",
+      "checkpoint_he": "בדיקת כל הפרק, שמע, חזרה ושינוי פרט"
+    },
+    {
+      "step": 3,
+      "goal_he": "לאחר השלמת התכנון, הבנייה והבדיקות של פרק1, לתכנן ולבנות את פרק2 במלואו כחלק מיעד השקת שני הפרקים השבוע",
+      "checkpoint_he": "רק פרק שלם שנבדק נכלל בתכולת הפרסום"
+    },
+    {
+      "step": 4,
+      "goal_he": "בדיקת מוכנות לחנות ומשוב ראשוני",
+      "checkpoint_he": "מועד הגשה ומועד אישור מתועדים בנפרד"
+    }
+  ],
+  "proposed_week_sequence_status": "historical; current schedule is opening_week_sequence and delivery.opening_chapters"
+}

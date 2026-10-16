@@ -1,0 +1,104 @@
+{
+  "stage_id": "03",
+  "status": "local_implementation_verified_joint_checkpoint_pending",
+  "approved_decisions": {
+    "authority": "Dor: Implement the proposed plan; policy selections and sequential-development correction in current chat.",
+    "decisions_ref": "docs/planning/approved-decisions.json#stage03_content_data_api",
+    "workflow": "docs/DEVELOPMENT_GUIDE.md; Codex writes/explains, Dor performs meaningful checks; never infer his execution/understanding from agent checks.",
+    "scope": "C01 only; do not plan/build C02 before allC01 planning/build/checks finish. Weekly launch target: both complete chapters.",
+    "limits": "No new dependencies, cloud, SQL migrations, JWT guard, NestJS service, mobile UI, native build, audio generation or automatic pronunciation assessment."
+  },
+  "implemented_files": [
+    "content/src/schema.ts",
+    "content/src/curriculum.ts",
+    "content/src/digest.ts",
+    "content/src/progress.ts",
+    "content/src/api-contract.ts",
+    "content/src/checkpoint.ts",
+    "content/src/chapter-release.ts",
+    "content/src/cli.ts",
+    "content/units/unit1a.json",
+    "content/release-plan.json",
+    "content/release-reviews.json",
+    "content/storage-model.json",
+    "content/api-contract.json",
+    "content/README.md",
+    "content/tests/fixtures.ts",
+    "content/tests/stage03.test.ts",
+    "content/tests/chapter-release.test.ts",
+    "content/tests/schema.test.ts",
+    "content/package.json",
+    ".codex-review/build_course_plan.py"
+  ],
+  "how_to_run": {
+    "directory": "C:\\Users\\doric\\Documents\\SpanishForTrip\\spanish-for-the-big-trip\\content",
+    "checks": [
+      "npm.cmd run validate",
+      "npm.cmd test",
+      "npm.cmd run check:publish",
+      "npm.cmd run check:chapters"
+    ],
+    "expected": "validate/tests exit0; real-draft publish and chapter checks exit1 intentionally.",
+    "joint_demo": "npm.cmd run demo:progress; local synthetic scenario only, no HTTP/DB."
+  },
+  "checks_and_evidence": {
+    "report": "docs/evidence/checks/03-expanded-contract-2026-10-16.json",
+    "gap_review": "docs/evidence/checks/03-model-gap-review-2026-10-16.json",
+    "local_tests_passed": 44,
+    "copy_and_approval_preservation": true,
+    "manifest_generator_checked_in_isolation": true,
+    "application_and_cloud_tests": "Not performed; future acceptance cases in content/api-contract.json"
+  },
+  "dor_actions_and_demonstrated_understanding": {
+    "decisions": "Selected speaking/network policies, corrected development order and launch scope, requested implementation.",
+    "demo_execution": "Dor ran demo:progress and supplied expected output: correct answer, unchanged attempt count on retry, intentional409 for changed body.",
+    "api_database_understanding": "Dor explicitly reports not understanding stage03; guided explanation still required. Successful execution is not understanding."
+  },
+  "known_issues": [
+    "1A remains draft:6pending stages,6media assets,6activity reviews; mandatory final activities not authored.",
+    "C01-U02/U03 remain outlines. No C02 detailed authoring.",
+    "Local pure rules and synthetic fixtures do not establish real permissions, concurrency, database rollback or device behavior.",
+    "Remaining copy and audio require joint review; no full lesson/chapter readiness claimed."
+  ],
+  "open_choices": [
+    "No unresolved structural policy needed for local03 implementation.",
+    "Joint practical understanding checkpoint pending.",
+    "Later exact content/media approvals and04/05runtime verification remain required."
+  ],
+  "next_stage_and_first_action": {
+    "stage_id": "04",
+    "status": "not_started; awaiting_guided03explanation_and_joint_review",
+    "first_action": "After Dor demo/review is recorded, explain and assign secure Supabase development-project setup to Dor; then implement reviewed migrations/access rules in small checkpoints. Preserve04Google/Apple and owned-iPhone-build boundary.",
+    "current_action": "Explain stage03 from one concrete Hola question: lesson data, validation, local progression rules and future storage/API. Dor has run demo:progress and supplied expected output including the deliberate409 case; do not repeat the command or infer understanding. Remain03 for small guided review; do not start04."
+  },
+  "commit_or_snapshot_when_available": {
+    "base_head": "8fa45c128dc87874191b1e278f0edb8f49e5e2bc",
+    "new_commit": "not_created; existing uncommitted work preserved",
+    "baseline_archive": ".codex-review/archive/before-stage03-expanded-contract-2026-10-16",
+    "sha256": {
+      "content/api-contract.json": "7e90635fa543dddf68986de05ec1e18345a296fc859e903b220f537d7f32a8bf",
+      "content/drafts/unit1a-speak-thanks.json": "c8d033039213657aaa432aa3caee4c646fa2197e0eab445020a9b4c6b7823446",
+      "content/package-lock.json": "0ca98ad2159b00a89839d77239cf9d52e19c6d29a63f8efc8c8e2c4233966776",
+      "content/package.json": "6a3654fc623750b448a57c1bca2c9c7f9b6a71acd2f497b886f699cee5e0abd3",
+      "content/README.md": "1405db2a33f04b072d4f05257964c2da2e04e0c8d027dc028d1f40b588343838",
+      "content/release-plan.json": "ba817f5c55f91c3f20d2c73e4f5501314d341d3e2e93cb1953633951d05ab74c",
+      "content/release-reviews.json": "b30d13c1ab58fec11a5750f6563e0b67896d26b312fd707bdc72b150c5d4bbb2",
+      "content/src/api-contract.ts": "149ca6d815f0e358fd72d1b42c90e377755f88ebc38033abb80105c5fb4b4c19",
+      "content/src/chapter-release.ts": "3e936f21752da9176f54855dd77146ce93de529c0bfa5293e5c493031e8b7177",
+      "content/src/checkpoint.ts": "2a8030550b8b3c17d31badecb5e707fafebcbfff12d6f479bb42ce5827fd4b4e",
+      "content/src/cli.ts": "b102ffc3ca6aca09a2e4d94f13a2495df016923456305cd733257aebd8ffef32",
+      "content/src/curriculum.ts": "b7a9e5321f2b7c1bb4f186f0ffe742e8bd6fb2a7713f63680aed7a452368da98",
+      "content/src/digest.ts": "6e57fb911031f275916e27f53ddae6887e1de802eae0406e14dba331bc522563",
+      "content/src/progress.ts": "bad60cbeacb270013a9eed2c6a4a9656810256e28662625d1c8dee5c221295c8",
+      "content/src/release-cli.ts": "9b08c074b989335d9815a48b61ee0b78962069320c7b53a24b7eb90e399d6e18",
+      "content/src/schema.ts": "0179316746047c99175378ab74d4a6c55142eacccf2a16d5609cda2537b69d08",
+      "content/storage-model.json": "42e2aba57f503bcbb78b1364a25e5486617b228078d71343ee8aa4c2277850c1",
+      "content/tests/chapter-release.test.ts": "a1efb732aa6fa6a64862ba2735417878d9c90f869711b220e4fc673de8263463",
+      "content/tests/fixtures.ts": "c8749d66b45d63c4558dfab7d039a1354809cadd51c6c2cfc0ae3618438292c1",
+      "content/tests/schema.test.ts": "e341c3eab228e31856372daa19f9bf637593944c9aeebb7d6f11a4954188da9b",
+      "content/tests/stage03.test.ts": "b4225aea587c32a621b12ba281a0852e2f7ac024cd6ae6252d78e67f7a0a44a2",
+      "content/tsconfig.json": "4bcc1b1d9d9033ffcf988b9f5a6b77e651d81a966436bd27b84c842564131efc",
+      "content/units/unit1a.json": "2c1f3a447dc32b106963906dfe5ada70a1f2e87db99988db3581df2ecb777b8b"
+    }
+  }
+}

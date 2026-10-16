@@ -1,0 +1,608 @@
+{
+  "version": 1,
+  "recorded_on": "2026-10-13",
+  "updated_on": "2026-10-16",
+  "authority": "Dor's direct planning decisions and subsequent explicit choices in stage01",
+  "status": "Stage02 active: entry wording/action and Juan visual identity v1 approved; dedicated per-character folder policy saved. Other learner stages/voices/flow remain pending; owned build stays stage04.",
+  "product_identity": {
+    "status": "accepted by Dor",
+    "accepted_on": "2026-10-14",
+    "display_name_he": "ספרדית לטיול הגדול",
+    "tagline_he": "לומדים מה שצריך לטיול, בתרגולים קצרים וממוקדים.",
+    "authority": "Dor explicitly selected the name and the proposed accompanying sentence in stage01.",
+    "prior_workspace_label": "SpanishForTrip",
+    "availability_checks": "No app-store, domain or trademark availability has been established. This decision records Dor's chosen name and wording."
+  },
+  "product_repository": {
+    "status": "Adopted and initialized by Dor in stage01",
+    "name": "spanish-for-the-big-trip",
+    "path": "C:/Users/doric/Documents/SpanishForTrip/spanish-for-the-big-trip",
+    "branch": "main",
+    "initialized_on": "2026-10-14",
+    "evidence": "Dor supplied New-Item, git init -b main and git status output; Codex independently confirmed the product Git root before adding the agreed four foundation files.",
+    "planned_layout": [
+      "mobile",
+      "api",
+      "supabase"
+    ],
+    "layout_authority": "Dor explicitly selected mobile/ and api/ directly under the product Git root on 2026-10-14, replacing the earlier apps/ grouping proposal.",
+    "initial_files": [
+      "AGENTS.md",
+      "docs/DEVELOPMENT_GUIDE.md",
+      "README.md",
+      ".gitignore"
+    ],
+    "initial_file_owner": "Codex; Dor executed the Git status/file inspection and correctly explained the node_modules/ ignore rule.",
+    "first_commit": "bdaa41af397a085c25a3a7502948b90c425fb2ec — Add repository foundation; performed by Dor and independently verified by Codex",
+    "remote_repository": "not configured in this checkpoint"
+  },
+  "stack": {
+    "status": "accepted",
+    "language": "TypeScript",
+    "mobile": "React Native with Expo",
+    "api": "Node.js with NestJS",
+    "database": "PostgreSQL",
+    "managed_database_and_identity": "Supabase",
+    "api_host": "Vercel Hobby accepted default for personal non-commercial pilot; access/preflight at05, not deployed.",
+    "delivery": "Installable iPhone-first app; eventual Android compatibility",
+    "navigation": "React Navigation with React Native/StyleSheet; navigation package not yet installed.",
+    "content": "JSON + Zod; reviewed files -> validation -> published Supabase revisions."
+  },
+  "first_milestone": {
+    "status": "accepted scope; lesson wording and media still require joint review",
+    "unit": "1A",
+    "features": [
+      "Mandatory Google or Apple sign-in before learning",
+      "Explicit vocabulary and grammar preparation before use",
+      "Full dialogue before graded practice",
+      "Listening, word tiles and one prepared simulation with meaningful choices",
+      "Saved progress and resume after closing",
+      "Learner recording and self-playback",
+      "A small illustrated map, one reviewed scene and modest animation",
+      "Reviewed natural-sounding Spanish-only audio"
+    ],
+    "authoring": "Plan and review the whole unit with Dor, one learner stage at a time, before final content/audio production. Technology approval does not approve existing Hebrew or Spanish wording.",
+    "excluded_from_first_milestone": [
+      "Full offline support",
+      "Unrestricted live AI dialogue",
+      "Full course production"
+    ],
+    "wider_pilot_size": "First3units ofC01, then4units ofC02; publish only whole verified chapters, according to actual readiness.",
+    "deferred_features": [
+      "Automated pronunciation assessment after working unit and human-compared feasibility."
+    ],
+    "role": "Reusable-engine proof; not a complete chapter for public release."
+  },
+  "identity": {
+    "status": "accepted",
+    "providers": [
+      "Google",
+      "Apple"
+    ],
+    "guest_or_anonymous_access": false,
+    "password_or_email_login": "not selected",
+    "manager": "Supabase Auth",
+    "early_device_check": "Configure and prove both selected sign-in paths on the own iPhone build during stage04 before expanding lesson implementation.",
+    "recording_retention": "On-device self-replay remains the implementation proposal; cloud recording upload or retention has not been selected."
+  },
+  "voices": {
+    "status": "Juan César voice and v4 slow delivery approved by Dor from one Buenos días sample; remaining voices and final phrase assets still require review",
+    "rejected_for_final_delivery": [
+      "Microsoft Raul",
+      "Microsoft Sabina",
+      "Default robotic device/browser voices"
+    ],
+    "selection": "Listen together to short samples and choose consistent character voices before producing all unit1A audio. Start auditions in stage02; complete reviewed assets in stage07.",
+    "production": "Prepared reusable Spanish audio files, with one-time generation or recording rather than live speech generation per learner request",
+    "cost": "Prefer suitable free options or human recordings; a paid provider is not approved merely by selecting better voices.",
+    "juan": {
+      "provider": "ElevenLabs",
+      "voice_id": "GcxVzkrklctDNSL0D1AO",
+      "catalog_name": "César - Latin American Spanish Narration",
+      "authority": "עכשיו זה נשמע טוב ומתאים למתחילים. נשמור את הקול והקצב האלה ונמשיך",
+      "status": "voice_and_delivery_profile_approved_by_dor",
+      "manifest": "assets/characters/juan/voice/audition-v4.json",
+      "samples": [
+        "assets/characters/juan/voice/unit1a-buenos-dias-audition-v4/buenos-dias.mp3"
+      ],
+      "playback_profile": {
+        "status": "approved_voice_and_delivery_profile",
+        "voice_id": "GcxVzkrklctDNSL0D1AO",
+        "model_id": "eleven_v4",
+        "delivery_tag": "[slowly]",
+        "generation_speed": 0.7,
+        "playback_rate": 1.0,
+        "scope": "Juan beginner delivery baseline approved from Buenos días v4; each later phrase still needs listening verification",
+        "manifest": "assets/characters/juan/voice/audition-v4.json",
+        "profile": "assets/characters/juan/voice/approved-profile.json",
+        "approval_evidence_he": "עכשיו זה נשמע טוב ומתאים למתחילים. נשמור את הקול והקצב האלה ונמשיך",
+        "approved_on": "2026-10-15"
+      },
+      "approved_profile": "assets/characters/juan/voice/approved-profile.json"
+    },
+    "audition_efficiency": {
+      "authority": "Dor says even short phrases may need slower pacing, wants to preserve free credits, and says the longest one sample should have been presented before all five.",
+      "representative_sample": "Buenos días, longest current expression",
+      "workflow": "Use one longest representative phrase for any new delivery experiment; review it before group generation. Reuse approved samples. Half-speed playback was rejected; do not reintroduce it.",
+      "current_voice": "César retained; timbre positive feedback",
+      "current_rate": "Approved Juan baseline: eleven_v4 [slowly], synthesis0.7, normal playback1.0",
+      "longer_content": "Start from approved slow Juan profile; when complex sentences are reached, audition one representative sentence and jointly check clarity before a batch."
+    },
+    "playback_policy": "assets/audio/playback-policy.json"
+  },
+  "time_and_budget": {
+    "target": "Working1A, complete first chapter, then second chapter as available in the first week; no numeric unit quota.",
+    "target_status": "Target, not guarantee;4–5variable hours/day with joint learning.",
+    "spending_policy": "No new infrastructure payments in the first phase; existing quotas checked before use.",
+    "numeric_spending_cap": "not specified",
+    "paid_actions_authorized": false,
+    "scope_interpretation": "Complete chapter production in sequence; the16chapter57unit course remains an outline for later expansion after feedback.",
+    "learning": "Keep Dor's actual hands-on participation and explanations inside the schedule; do not replace them with an autonomous batch implementation.",
+    "reported_daily_hours": "4-5, sometimes more or less",
+    "approximate_weekly_hours": "28-35 if seven days are available; planning capacity, not observed effort"
+  },
+  "iphone_prerequisites": {
+    "local_tools": [
+      "Windows computer",
+      "A supported Node.js LTS runtime",
+      "Git",
+      "Editor and terminal",
+      "Physical iPhone"
+    ],
+    "accounts": [
+      "Expo account",
+      "Supabase account",
+      "Google account/project access for OAuth configuration",
+      "Apple Account with two-factor authentication",
+      "Apple Developer Program access for the Windows/cloud iPhone build and selected Apple identity setup"
+    ],
+    "standard_build_path": "EAS cloud build from Windows, install own development build on iPhone; no local Mac required for this path",
+    "free_local_alternative": "Some local iPhone development-build testing can use a Mac with Xcode and free Apple signing. This does not establish all selected Apple sign-in/distribution requirements.",
+    "expo_go": "Optional limited exploration only if a compatible version is available; not the delivery or complete social-auth validation path. Do not assume current iOS Expo Go availability or free installation from older guidance.",
+    "apple_program_price_usd_per_year": 99,
+    "apple_price_note": "Official base price; regional/local-currency checkout can differ. Reuse an existing active membership if available; no purchase made. Dor reports an existing active membership, so plan no new Apple membership expense while it remains active.",
+    "expo_and_supabase": "Start with Free plans within quotas. Supabase social OAuth providers are included in Free. Paid Expo or Supabase upgrades have not been selected.",
+    "open_questions": [],
+    "reported_access": {
+      "apple_developer_membership": "Active, reported by Dor",
+      "computer": "Windows only; no Mac access",
+      "daily_time": "4-5 hours, variable",
+      "verification": "Dor reports successful Apple browser login, active membership and access to Certificates, Identifiers & Profiles, plus successful Expo browser login/dashboard access. Actual signing, CLI authentication, cloud build and iPhone install remain unverified; see the stage01 learning log."
+    }
+  },
+  "proposed_week_sequence": [
+    {
+      "week": 1,
+      "outcome": "Prove one authenticated content/database/API/iPhone/resume flow, complete1A and measure authoring/audio review capacity."
+    },
+    {
+      "week": "2–3",
+      "outcome": "Expand the updated course through the same pipeline at measured capacity; not a delivery guarantee."
+    }
+  ],
+  "schedule_note": "Working first flow and measured production in week1; provisional2–3week full-course planning window, recalibrated after two representative units. No promised App Store date or skipped joint checkpoints.",
+  "next_action": "See docs/planning/work-plan.json#delivery.next_action",
+  "verified_sources": [
+    {
+      "url": "https://developer.apple.com/programs/enroll/",
+      "supports": "Apple membership price and account/two-factor enrollment prerequisites"
+    },
+    {
+      "url": "https://docs.expo.dev/develop/development-builds/introduction/",
+      "supports": "Cloud iOS builds from any OS; local native build distinction and iPhone signing paths"
+    },
+    {
+      "url": "https://expo.dev/pricing",
+      "supports": "Free EAS plan with limited cloud builds and lower queue priority"
+    },
+    {
+      "url": "https://supabase.com/pricing",
+      "supports": "Free plan includes social OAuth providers within quotas"
+    },
+    {
+      "url": "https://supabase.com/docs/guides/auth/social-login/auth-google",
+      "supports": "Google provider/project configuration for Supabase identity"
+    },
+    {
+      "url": "https://supabase.com/docs/guides/auth/social-login/auth-apple",
+      "supports": "Native Apple identity versus browser OAuth configuration"
+    }
+  ],
+  "division_of_work": {
+    "authority": "Dor's explicit clarification on 2026-10-15",
+    "code_implementation": "Codex writes/edits code within the current agreed stage and explains meaningful parts; standing authorization, no repeated coding approval.",
+    "dor_practical_actions": "Environment installation, account/settings work and meaningful device/API/database/Git checks; no code typing/pasting unless Dor asks.",
+    "checkpoint_size": "Useful behavior or important setup milestone, not each import or minor edit; keep learning concise enough for the one-week target.",
+    "waiting": "Leave specifically assigned practical actions to Dor and wait for results; routine coding and verification proceed autonomously."
+  },
+  "ios_application_identifier": {
+    "value": "com.doric2000.spanishforthebigtrip",
+    "configured_by": "Codex",
+    "apple_availability": "pending signing",
+    "configured_on": "2026-10-15"
+  },
+  "build_timing_review": {
+    "date": "2026-10-15",
+    "user_direction": "Dor again questioned why a build is needed now and asked whether continuing development would be better.",
+    "distinction": "Expo Go and an owned development build are both development environments. A development build is a native container for the project, still normally loading JavaScript/TypeScript from Metro; screen/logic changes do not each require a new native build.",
+    "recommendation": "Continue the currently supported Expo Go work; defer the owned build until a concrete native requirement, especially the selected Google/Apple login integration in stage04, and include its needed native modules/configuration before building.",
+    "original_rationale": "Early stage01 build was an infrastructure-risk check for Apple signing/install from Windows, not a technical prerequisite for authoring basic screens or lesson flow.",
+    "current_action": "Deferral accepted in the continuation; no immediate cloud build. Preserve completed setup and reassess native config/quota/credentials before stage04 build.",
+    "stage_boundary": "Stage01 closed on revised criteria with explicit deferred proof; stage04 must complete own signed app installation/media and Google/Apple login tests. Stage02 is ready, not auto-dispatched.",
+    "sources": [
+      "https://docs.expo.dev/develop/development-builds/introduction/",
+      "https://docs.expo.dev/guides/authentication/",
+      "https://docs.expo.dev/guides/google-authentication/"
+    ]
+  },
+  "stage01_scope_adjustment": {
+    "date": "2026-10-15",
+    "authority": "Dor continuation after the recommendation to defer the build, then asks remaining stage01 work and when Figma starts",
+    "prior_requirement": "Verified own-iPhone development build/signing/install during stage01",
+    "revised_requirement": "Stage01 proves Expo Go execution/audio and prepares cloud-build path. First owned build/signing/install/media retest is a stage04 prerequisite before both social-login tests.",
+    "reason": "Continue useful development in Expo Go and include the native authentication dependencies/configuration when a build is needed.",
+    "historical_plan": ".codex-review/archive/work-plan-before-stage01-scope-update-2026-10-15.json"
+  },
+  "design_workflow": {
+    "tool": "Figma",
+    "stage": "02",
+    "timing": "Starts with unit1A/screen planning before further product UI implementation",
+    "sequence": [
+      "Review the inherited lesson content jointly, one learner stage at a time in conversation and unit1a-content.json",
+      "Map the stage to the existing interaction catalog and reuse a covered template",
+      "Design only new interactions/layouts/uncovered states with representative content and relevant edge cases",
+      "Review a small representative prototype flow; verify the real full data-driven lesson at the agreed app implementation stage"
+    ],
+    "later_polish": "Recurring GPT character references and first scene now begin in stage02 at Dor request; review identity/style before reuse. Final reviewed scene assets, voices and motion are completed in stage07.",
+    "file_status": "Existing dialogue and meaning-check families are reusable. Hola37:90 and Buenos días51:199 are representative examples of the same36:160 interaction, not a requirement for future per-item frames. Meaning-check interaction is covered; generic speak_reveal is next. Other content is reviewed as data. No canvas changes in this workflow correction.",
+    "scope": "One first unit and first screen initially; no whole-app or bulk lesson generation",
+    "content_reuse_policy": "No new frame/variant or required user Present checkpoint solely for wording, answer or audio substitution. Joint content review remains required in conversation/content files.",
+    "interaction_catalog": "docs/design/interaction-catalog.json"
+  },
+  "visual_storytelling": {
+    "requested_on": "2026-10-15",
+    "authority": "Dor explicitly requested GPT-generated consistent recurring character identities so the units feel like one story, with engaging AI-created graphics",
+    "direction": "Build versioned character reference images and reuse them as image inputs for later scenes; visually verify identity continuity. Start with Juan and this first entry scene, reviewing before expanding.",
+    "registry": ".codex-review/visual-story/character-bible.json",
+    "current_assets": "Juan visual identity v1 approved by Dor2026-10-15; canonical profile, reference, scene and prompts saved under assets/characters/juan. Review future appearances against the approved reference.",
+    "learner_labels": "Keep internal content IDs such as1A out of the learner UI. Codex selected פרק ראשון for this entry draft under Dor's naming discretion.",
+    "work_scope": "User's saved Figma text edits preserved; one current screen and one candidate identity only. No bulk cast/course production, paid provisioning or native build.",
+    "character_folder_policy": "Each recurring character gets a separate folder in the product repository at assets/characters/<character_id>/; asset index assets/characters/index.json"
+  },
+  "unit1a_entry": {
+    "approved_on": "2026-10-15",
+    "authority": "Dor supplied the revised entry title/body/button and explicitly accepted the proposed vocabulary-first action",
+    "content_reference": "docs/curriculum/unit1a-content.json",
+    "figma_url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=3-2",
+    "scope": "Entry wording and first action only; visual draft pending Dor review. Remaining vocabulary, grammar, dialogue, practice and voices are not approved by this decision."
+  },
+  "curriculum_baseline": {
+    "clarified_on": "2026-10-15",
+    "authority": "Dor explicitly asks to update the study plan from the research/simulation findings and requires chapter names based on travel interactions. This authorizes plan restructuring, not bulk approval of lesson copy.",
+    "curriculum_spec": "docs/curriculum/curriculum-plan.json",
+    "detailed_curriculum_pdf": "docs/curriculum/Spanish_For_Trip_Curriculum.pdf",
+    "detailed_curriculum_scope": "15interaction chapters and53unit outlines with explicit skill prerequisites. These are not53authored or learner-validated lessons.",
+    "word_brief": "Spanish_For_The_Big_Trip_Project_Brief_Final.docx",
+    "word_role": "Broader historical brief and earlier opening outline; current interaction plan and subsequent direct decisions govern lesson order.",
+    "working_unit": "docs/curriculum/unit1a-content.json",
+    "workflow": "Before each learner stage, show the existing planned content as the starting point, identify proposed wording/content/UI changes explicitly, incorporate Dor corrections, and extend one reviewed stage/screen at a time. Do not silently replace the baseline with a new reduced curriculum.",
+    "before_interaction_plan": {
+      "clarified_on": "2026-10-15",
+      "authority": "Dor recalls the detailed existing Word/PDF plan and requires continuing from it with joint corrections and improvements",
+      "curriculum_spec": "docs/curriculum/pilot-spec.json",
+      "detailed_curriculum_pdf": "output/pdf/Spanish_Trip_First_10_Modules.pdf",
+      "detailed_curriculum_scope": "Ten modules, twenty short units; module1 is שומעים, מברכים ומבקשים חזרה; unit1A vocabulary on PDF page4",
+      "word_brief": "Spanish_For_The_Big_Trip_Project_Brief_Final.docx",
+      "word_role": "Broader product/project brief retaining an earlier12-unit opening outline; current ten-module curriculum and later direct user decisions govern detailed lesson sequencing",
+      "working_unit": "docs/curriculum/unit1a-content.json",
+      "workflow": "Before each learner stage, show the existing planned content as the starting point, identify proposed wording/content/UI changes explicitly, incorporate Dor corrections, and extend one reviewed stage/screen at a time. Do not silently replace the baseline with a new reduced curriculum."
+    },
+    "updated_on": "2026-10-16",
+    "legacy_detail_spec": "docs/curriculum/pilot-spec.json",
+    "legacy_detail_pdf": "output/pdf/Spanish_Trip_First_10_Modules.pdf",
+    "legacy_role": "Previous detailed content bank and historical PDF, not the active order; all20source units mapped into the active plan."
+  },
+  "unit1a_vocabulary_layout": {
+    "recorded_on": "2026-10-15",
+    "authority": "Dor: הכרטיס נראה טוב וברור, נמשיך לשאר הביטויים לפי התוכנית ולבחירת הקול של חואן.",
+    "approved": "Hola card visual clarity and continuation from saved curriculum",
+    "implemented": "Five editable expression cards linked in Figma; playback label השמעה retained",
+    "pending": "Dor review of four new cards and voice auditions; no final audio, grammar/dialogue or later-stage approval inferred",
+    "source": "docs/curriculum/unit1a-content.json",
+    "voice_shortlist": "assets/characters/juan/voice/audition-v1.json"
+  },
+  "unit1a_pronunciation_first_tip": {
+    "status": "wording_and_visual_approved_by_dor",
+    "recorded_on": "2026-10-15",
+    "authority": "Dor: כן, הניסוח ברור.",
+    "title_he": "טיפ קטן להגייה",
+    "body_he": "במילה Hola לא הוגים את האות h. הקשיבו ונסו לומר בקול.",
+    "scope": "First silent-h tip only; not entire pronunciation primer, later vowels or question-mark placement",
+    "figma": {
+      "screen_id": "23:35",
+      "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=23-35",
+      "wording": "approved",
+      "visual": "approved_by_dor",
+      "access": "optional_from_Hola27:108; return23:52_to_Hola"
+    },
+    "visual_approval_evidence": "Dor: נראה מעולה. — visual acceptance of pronunciation tip23:35. No explicit report of executing the No -> tip transition."
+  },
+  "unit1a_pronunciation_placement": {
+    "status": "approved_by_dor",
+    "date": "2026-10-15",
+    "authority_he": "כן, זה נשמע יותר הגיוני. נשלב את טיפ ה־h לצד Hola ואת התנועות כעזר מתוך הכרטיסים, ונמשיך לפי הסדר הזה.",
+    "decision": "h tip accessible beside Hola; five vowels as optional help from word cards. Main flow continues vocabulary -> supported comprehension check -> full dialogue.",
+    "implementation": "Figma contextual help configured; .codex-review/figma/02-contextual-pronunciation-state.json",
+    "scope": "Placement/optional status and story sequence approved. New help presentation and check copy remain reviewable drafts. No audio-generation, runtime or build approval inferred."
+  },
+  "unit1a_supported_check": {
+    "status": "core_prompt_choices_supported_behavior_approved",
+    "authority": "Dor: כן, replying to the single Hola preparation-check proposal",
+    "prompt_he": "מה פירוש הביטוי ששמעתם?",
+    "stimulus_es": "Hola.",
+    "choices_he": [
+      "שלום",
+      "תודה",
+      "בוקר טוב"
+    ],
+    "correct_answer_he": "שלום",
+    "behavior": "Manual replay, explanation after incorrect choice, retry and no grade",
+    "scope": "One supported preparation check only. Four-state visual layout, written-hint control and exact feedback copy still need visual review; dialogue and actual audio not approved by this reply.",
+    "figma": {
+      "screen_id": "37:90",
+      "instance_id": "37:91",
+      "component_set_id": "36:160",
+      "library_page_id": "35:168",
+      "variant_ids": {
+        "question": "35:164",
+        "hint": "35:165",
+        "retry": "35:166",
+        "success": "35:167"
+      },
+      "audio_card_component_id": "32:91",
+      "incoming_button_id": "17:101",
+      "retry_button_master_id": "32:204",
+      "continuation_button_master_id": "32:230",
+      "continuation_pending": false,
+      "audio_attached": false,
+      "navigation": "CHANGE_TO within one instance",
+      "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=37-90",
+      "state": ".codex-review/figma/02-meaning-template-state.json",
+      "verification": ".codex-review/figma/02-meaning-template-verification.json",
+      "preview": ".codex-review/figma/02-meaning-template-v1.png",
+      "template_contract": "docs/design/templates/meaning-check.json",
+      "continuation_button_instance_id": "I37:91;32:230",
+      "continuation_destination_id": "44:148"
+    }
+  },
+  "learner_ui_generic_language": {
+    "authority": "Dor rejects repeated generic ברכה and suggests מילה or ביטוי",
+    "selected_he": "ביטוי",
+    "question_he": "מה פירוש הביטוי ששמעתם?",
+    "hint_he": "הצגת הביטוי",
+    "scope": "Generic lesson UI, preserving source quotations and specific greeting context"
+  },
+  "figma_meaning_check_reuse": {
+    "authority": "Dor requests templates instead of repeatedly creating screens for copy changes",
+    "status": "implemented_for_current_meaning_check",
+    "template": "docs/design/templates/meaning-check.json",
+    "one_learner_frame": "37:90",
+    "shared_states": "36:160 on רכיבים35:168",
+    "scope": "This interaction only; no claim all existing vocabulary screens are refactored",
+    "latest_dor_acceptance": "מעולה, נתקדם; no Present execution inferred"
+  },
+  "unit1a_dialogue": {
+    "status": "two_turn_script_and_presentation_accepted; user_Present_checkpoint_passed",
+    "approval": {
+      "authority_he": "כן, זה נשמע טבעי יותר.",
+      "date": "2026-10-15",
+      "scope": "Consolidated two-turn Spanish/Hebrew dialogue. New UI wording, layout, show/hide translation and actual playback require their own review."
+    },
+    "turns": [
+      {
+        "speaker": "juan",
+        "es": "Hola. Buenos días.",
+        "he": "שלום. בוקר טוב."
+      },
+      {
+        "speaker": "learner",
+        "es": "Hola. Buenos días.",
+        "he": "שלום. בוקר טוב."
+      }
+    ],
+    "source_retained": "docs/curriculum/pilot-spec.json original4turns copied in unit1a-content.json",
+    "figma": {
+      "screen_id": "44:148",
+      "instance_id": "44:149",
+      "component_set_id": "43:233",
+      "turn_component_id": "42:193",
+      "library_page_id": "35:168",
+      "variants": {
+        "spanish": "42:200",
+        "translated": "42:239"
+      },
+      "incoming_button_instance_id": "I37:91;32:230",
+      "previous_screen_id": "37:90",
+      "continuation_pending": false,
+      "audio_attached": false,
+      "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=44-148",
+      "state": ".codex-review/figma/02-dialogue-state.json",
+      "verification": ".codex-review/figma/02-dialogue-verification.json",
+      "preview": ".codex-review/figma/02-dialogue-v1.png",
+      "template": "docs/design/templates/dialogue.json",
+      "continuation_destination_id": "51:199"
+    },
+    "boundary": "Script acceptance and reported successful dialogue Present checkpoint do not establish audio execution, full-unit navigation, practice approval or implementation mastery.",
+    "presentation_review": {
+      "date": "2026-10-16",
+      "authority_he": "עובד מעולה, מה השלב הבא?",
+      "status": "passed_by_dor_report",
+      "scope": "Dor reports success after the assigned Figma Present dialogue/translation checkpoint. No detailed button-by-button account, whole-unit navigation run, audio execution or independent implementation understanding inferred.",
+      "audio_tested": false
+    }
+  },
+  "unit1a_post_dialogue_listen_select": {
+    "status": "core_content_approved; shared_interaction_covered; no_per_item_Present_gate",
+    "approval": {
+      "date": "2026-10-16",
+      "authority_he": "כן.",
+      "context": "Direct reply to first post-dialogue listen_select proposal and question about wording/difficulty.",
+      "scope": "Buenos días adaptation, title קצת תרגול, prompt, answer meanings, correct feedback and supportive replay/retry behavior. Exact retry hint and example remain agent wording for visual review."
+    },
+    "stimulus_es": "Buenos días.",
+    "choices_he": [
+      "בוקר טוב",
+      "שלום",
+      "תודה"
+    ],
+    "correct_answer_he": "בוקר טוב",
+    "figma": {
+      "screen_id": "51:199",
+      "instance_id": "51:200",
+      "component_set_id": "36:160",
+      "library_page_id": "35:168",
+      "new_master_components": 0,
+      "previous_screen_id": "44:148",
+      "incoming_button_instance_ids": [
+        "I44:149;42:233",
+        "I44:149;42:250"
+      ],
+      "continuation_pending": true,
+      "audio_attached": false,
+      "url": "https://www.figma.com/design/vGKirilyDhMUJbKad16yU1?node-id=51-199",
+      "state": ".codex-review/figma/02-practice-listen-state.json",
+      "verification": ".codex-review/figma/02-practice-listen-verification.json",
+      "preview": ".codex-review/figma/02-practice-listen-v1.png",
+      "template": "docs/design/templates/meaning-check.json"
+    },
+    "boundary": "Exact retry hint/example remain copy drafts for joint content review. Actual audio and user execution not reported. A separate per-content Figma/Present checkpoint is not required; later activities still need content review."
+  },
+  "figma_workflow_correction": {
+    "date": "2026-10-16",
+    "authority": "Dor asks to verify and adopt generic design per exercise type to avoid wasted Figma work.",
+    "status": "researched_and_applied",
+    "conclusion": "Figma specifies reusable interaction templates, meaningful states and representative flows. Lesson content is separate; shared runtime components will render it at the agreed implementation stage.",
+    "new_design_gate": [
+      "New interaction type",
+      "Meaningfully different layout",
+      "Uncovered state or accessibility behavior",
+      "Observed usability/readability problem"
+    ],
+    "content_only_policy": "No new frame/variant or required user Present checkpoint solely for wording, answer or audio substitution. Joint content review remains required in conversation/content files.",
+    "existing_assets": "Keep current examples and shared templates; no bulk cleanup needed.",
+    "pending_action_superseded": "The newly assigned per-exercise Buenos días Present test is optional and no longer a prerequisite to progress. No user execution or exact retry-copy acceptance inferred.",
+    "catalog": "docs/design/interaction-catalog.json",
+    "sources": [
+      "https://help.figma.com/hc/en-us/articles/5579474826519-Explore-component-properties",
+      "https://help.figma.com/hc/en-us/articles/360061175334-Create-interactive-components-with-variants",
+      "https://react.dev/learn/passing-props-to-a-component"
+    ],
+    "boundary": "Stage02 remains content/template planning. No runtime implementation, build, new service or purchase authorized by this correction."
+  },
+  "pronunciation_assessment": {
+    "date": "2026-10-16",
+    "authority": "Dor explicitly requests a system that evaluates whether the spoken phrase was said correctly and asks for independent cost/technical research.",
+    "status": "retained_deferred_after_working_unit",
+    "prior_scope": "Optional local recording/self-comparison; automatic pronunciation scoring excluded",
+    "current_scope": "Automated pronunciation assessment for prepared Spanish speaking tasks, calibrated against human judgments before learner pass/fail use",
+    "candidate_provider": "Azure Speech Pronunciation Assessment",
+    "candidate_locale": "es-MX",
+    "research": "docs/research/pronunciation/research-2026-10-16.json",
+    "spending": "No purchase, paid upgrade, commitment plan or provider contract authorized",
+    "build": "No native build now; preserve stage04 deferral",
+    "privacy": "Temporary provider processing is needed for assessment; persistent cloud recording storage is not selected",
+    "quality": "ASR transcript matching alone is insufficient. No arbitrary threshold or unsupported Spanish phoneme/prosody diagnosis. Calibrate on understandable Israeli-accented speech and wrong/noisy/silent cases.",
+    "account": "Dor created Azure account and reported portal access; signed-in portal and active free-trial UI verified by Codex",
+    "resource_ref": "docs/research/pronunciation/azure-speech-resource.json",
+    "setup_status": "F0 Speech resource created by Codex under explicit user authorization; portal Overview Active/Free, Italy North",
+    "test_status": "Two human browser trials observed: Hola pronunciation96/accuracy93; user-reported deliberate גרקיאס against Gracias. pronunciation90.4 (UI90)/accuracy84, ErrorType None, phoneme scores88,98,44,86,100,100,45 with blank phoneme names. Correct Gracias baseline pending. No direct API/mobile integration or validated pass threshold.",
+    "resource_creation_authority": "Dor: פתחתי חשבון Azure והפורטל פתוח, אפשר להמשיך להגדרת Speech במסלול החינמי. Dor adds שים לב גם ל region, אנחנו בישראל.",
+    "selected_region": "italynorth",
+    "region_rationale": "Israel Central is not offered for Speech; Italy North supports speech-to-text and therefore the documented Spanish assessment. Geographically closer European option than proposed West Europe; not a measured latency optimum.",
+    "first_human_result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
+    "comparison_ref": "docs/research/pronunciation/gracias-comparison-2026-10-16.json",
+    "latest_human_trial_ref": "docs/research/pronunciation/gracias-c-as-k-result-2026-10-16.json",
+    "current_status_ref": "docs/planning/work-plan.json#delivery"
+  },
+  "interaction_curriculum": {
+    "path": "docs/curriculum/curriculum-plan.json",
+    "version": 4,
+    "pdf": "docs/curriculum/Spanish_For_Trip_Curriculum.pdf",
+    "chapters": 16,
+    "unit_outlines": 57,
+    "generator": ".codex-review/build_course_plan.py",
+    "status": "16chapters57outlines; first3plus4units unchanged; exact copy/reviews remain incremental",
+    "delivery_ref": "docs/planning/work-plan.json#delivery",
+    "legacy_bank": "docs/curriculum/pilot-spec.json",
+    "legacy_mapping": "docs/curriculum/curriculum-plan.json#legacy_content.legacy_lesson_mapping",
+    "first_delivery": "Complete1A proves the flow; finish all3units ofC01, then all4units ofC02. Public release contains only complete verified chapters."
+  },
+  "practical_delivery_plan": {
+    "accepted_on": "2026-10-16",
+    "authority": "PLEASE IMPLEMENT THIS PLAN",
+    "work_plan": "docs/planning/work-plan.json",
+    "toolchain": "docs/planning/toolchain.json",
+    "content_workflow": "files_and_validated_import; no admin UI now",
+    "pronunciation_timing": "after_working_unit",
+    "native_build": "stage04"
+  },
+  "delivery_workflow_ref": "docs/planning/work-plan.json#delivery",
+  "sequential_opening_chapters": {
+    "accepted_on": "2026-10-16",
+    "policy": "complete_chapters_in_order",
+    "production_order": [
+      "C01",
+      "C02"
+    ],
+    "opening_unit_ids": [
+      "C01-U01",
+      "C01-U02",
+      "C01-U03",
+      "C02-U01",
+      "C02-U02",
+      "C02-U03",
+      "C02-U04"
+    ],
+    "fixed_week_unit_quota": null,
+    "week_goal_he": "להשלים 1A ותשתית זרימה, אחריה את פרק1 במלואו, ואז פרק2 לפי הזמן שנותר; לשמור על עומק ובדיקות.",
+    "chapter_done_he": [
+      "סקירה משותפת של העברית והספרדית",
+      "שמע טבעי שנבדק והקלטה להשוואה",
+      "זרימה באייפון: טעות, עזרה, יציאה וחזרה",
+      "שמירת התקדמות ותרחיש סיום",
+      "תגובה לפרט מוכר שהשתנה"
+    ],
+    "checkpoints_he": [
+      "אחרי יחידה1A מלאה",
+      "אחרי השלמת הפרק הראשון"
+    ],
+    "release_he": "השקה ציבורית חינמית לאחר בדיקות ואישור Apple; פרק חלקי אינו מוצג כפרק זמין.",
+    "budget_he": "ללא תשלום תשתית חדש; מכסות קיימות ייבדקו לפני שימוש.",
+    "pronunciation_he": "הקלטה והשוואה לדוגמה זמינות בגרסה הראשונה; הערכה אוטומטית לאחר כיול.",
+    "later_he": "יתר הפרקים נשארים מתווים; הרחבת התוכן לאחר משוב מהגרסה הראשונה, ללא התחייבות להפיק הכול ב-2–3 שבועות.",
+    "authority": "Dor explicitly requests implementing the complete first chapter, then complete second chapter, in order and according to available time.",
+    "source": "docs/curriculum/curriculum-plan.json#delivery"
+  },
+  "public_release": {
+    "authority": "Dor selected public App Store launch, then corrected scope to complete opening chapters in sequence.",
+    "consumer_price": "free_initial_version",
+    "content_policy": "complete_verified_chapters_only",
+    "timing": "Aim for week readiness; Apple approval is an external dependency, not a guaranteed date.",
+    "pronunciation": "Recording and self/model comparison are sufficient for initial release; automated assessment after calibration.",
+    "infrastructure": "No new paid infrastructure; public host compatibility/access/quota still require stage preflight. No provisioning in this checkpoint."
+  },
+  "stage03_content_data_api": {
+    "accepted_on": "2026-10-16",
+    "authority": "Dor selected self-comparison completion and wait-for-save, then requested Implement the proposed plan.",
+    "work_plan": "docs/planning/work-plan.json#delivery",
+    "development_sequence": "Finish planning/build/checks for all C01 before beginning C02; weekly launch target is both complete opening chapters.",
+    "speaking": "Self-comparison confirmation with microphone-free alternative; no pronunciation correctness inferred.",
+    "network": "Wait for acknowledgement; keep one user-scoped pending request and retry same ID/body.",
+    "scope": "Local contracts/checks, logical storage and handoff; no service provisioning, package installation or native build.",
+    "references": [
+      "content/README.md",
+      "content/api-contract.json",
+      "content/storage-model.json"
+    ]
+  }
+}

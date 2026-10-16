@@ -2,7 +2,7 @@
   "version": 2,
   "status": "logical_design_for_joint_review_not_deployed",
   "provider": "Supabase PostgreSQL + Auth + Storage",
-  "workflow": "../DEVELOPMENT_GUIDE.md",
+  "workflow": "../docs/DEVELOPMENT_GUIDE.md",
   "contentContract": "src/schema.ts (schemaVersion2)",
   "entities": [
     {
@@ -192,7 +192,7 @@
   "workflow_decisions": {
     "development": "Finish planning, implementation and testing for all C01 before planning/implementing C02. Weekly launch target is both complete opening chapters.",
     "learning": "Codex implements and explains; Dor reviews behavior and performs meaningful checks. Record execution and demonstrated understanding separately.",
-    "learning_log": "../../.codex-review/development-learning-log.json",
+    "learning_log": "../docs/learning/development-learning-log.json",
     "new_services": "None created in03."
   }
 }

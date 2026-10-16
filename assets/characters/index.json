@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updated_on": "2026-10-15",
-  "workflow": "../../DEVELOPMENT_GUIDE.md",
+  "workflow": "../../docs/DEVELOPMENT_GUIDE.md",
   "folder_rule": "Every recurring character has a separate stable assets/characters/<character_id>/ directory in this product repository",
   "required_contents": [
     "character.json: approved identity traits, role and story continuity",

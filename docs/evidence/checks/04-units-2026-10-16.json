@@ -1,0 +1,27 @@
+{
+  "stage_id": "04",
+  "recorded_on": "2026-10-16",
+  "kind": "Dated unit-metadata checkpoint evidence; live status is work-plan.json#delivery",
+  "migration": {
+    "file": "supabase/migrations/20261016085242_create_units.sql",
+    "sha256": "05b408239b633f2e615761838b21671ca784dca89e847b41f547573d34938833",
+    "application_evidence": "Dor replied completed to the assigned preview/conditional application; full CLI output was not supplied. Subsequent SQL PASS verifies the table/check path."
+  },
+  "sql_check": {
+    "file": "supabase/checks/02_units.sql",
+    "sha256": "7fd9b1fc9e005f1316b88bfbfec7f7d194dbd98a88ad7b0b06065c2e1d877791",
+    "executor": "Dor in development SQL Editor",
+    "evidence_source": "Dor explicitly reports running the entire file and supplies its exact result; no agent remote execution.",
+    "result": "PASS: unit relationships, identity, constraints and role access; synthetic rows rolled back",
+    "coverage": [
+      "Two synthetic units under one valid chapter/course",
+      "Alias-array storage/default and a sample title/reorder preserving identity and alias",
+      "Rejected orphan, duplicate ID/position, non-positive position and null alias entry",
+      "Referenced chapter deletion rejected",
+      "RLS and explicit role grants; actual direct anon/authenticated SELECT denied",
+      "Rollback isolates synthetic fixtures"
+    ]
+  },
+  "learning_boundary": "Prior parent/transaction explanations were demonstrated. PASS does not establish independent SQL authorship or detailed alias/role/provider understanding.",
+  "limits": "No lesson import, revision pinning, HTTP/JWT/provider/iPhone verification or chapter publication."
+}

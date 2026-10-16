@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "status": "stage03_local_contract_not_running_API",
-  "workflow": "../DEVELOPMENT_GUIDE.md",
+  "workflow": "../docs/DEVELOPMENT_GUIDE.md",
   "authentication": "All routes require a verified Supabase Google/Apple session; no guest/anonymous path. NestJS derives userId from verified claims. Mobile JSON must not select userId or correctness.",
   "routes": [
     {

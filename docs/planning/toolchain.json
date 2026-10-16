@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "adopted_on": "2026-10-16",
+  "delivery_status_ref": "docs/planning/work-plan.json#delivery",
+  "workflow": "docs/DEVELOPMENT_GUIDE.md",
+  "tools": [
+    {
+      "area": "implementation",
+      "tools": [
+        "Codex",
+        "PowerShell",
+        "Git",
+        "npm"
+      ],
+      "status": "existing"
+    },
+    {
+      "area": "mobile",
+      "tools": [
+        "TypeScript6.0.3",
+        "React Native0.86.3",
+        "Expo57.0.29",
+        "expo-audio57.0.5"
+      ],
+      "status": "existing_stage01; untouched_here"
+    },
+    {
+      "area": "navigation_ui",
+      "tools": [
+        "React Navigation",
+        "React Native components",
+        "StyleSheet"
+      ],
+      "status": "selected; navigation_not_installed"
+    },
+    {
+      "area": "content",
+      "tools": [
+        "JSON",
+        "Zod4.6.7",
+        "TypeScript6.0.3",
+        "Node test runner"
+      ],
+      "status": "schema2, eight data templates, pure progress/API contracts and local checks implemented; existing locked dependencies only"
+    },
+    {
+      "area": "backend",
+      "tools": [
+        "Node.js",
+        "NestJS",
+        "supabase-js"
+      ],
+      "status": "selected_not_scaffolded"
+    },
+    {
+      "area": "cloud_data_identity",
+      "tools": [
+        "Supabase PostgreSQL",
+        "Supabase Auth",
+        "Supabase Storage"
+      ],
+      "status": "selected; Dor-reported project provisioning and SQL Editor evidence recorded on2026-10-16; live status: work-plan.json#delivery"
+    },
+    {
+      "area": "database_tooling",
+      "tools": [
+        "Supabase CLI2.121.0 as a repository-local npm devDependency"
+      ],
+      "manifest": "package.json",
+      "status": "installed_by_Dor_and_locally_verified2.121.0_on2026-10-16; lockfile inspected; first migration locally generated; Dor supplied actual application and SQL regression PASS; dated evidence checks/04-courses-chapters-2026-10-16.json; no local runtime or agent remote execution"
+    },
+    {
+      "area": "design",
+      "tools": [
+        "Figma Design",
+        "Figma MCP"
+      ],
+      "status": "existing_connection; no_canvas_changes"
+    },
+    {
+      "area": "media",
+      "tools": [
+        "built-in imagegen",
+        "ElevenLabs MCP"
+      ],
+      "status": "existing_references; metadata_read_is_not_synthesis_proof"
+    },
+    {
+      "area": "future_tests",
+      "tools": [
+        "Jest",
+        "jest-expo",
+        "React Native Testing Library",
+        "Supertest",
+        "physical iPhone"
+      ],
+      "status": "install_at_corresponding_behavior; content_uses_Node_tests"
+    },
+    {
+      "area": "build",
+      "tools": [
+        "EAS Build",
+        "expo-dev-client"
+      ],
+      "status": "path_prepared; owned_build_signing_install_at04"
+    },
+    {
+      "area": "hosting",
+      "tools": [
+        "Vercel Hobby"
+      ],
+      "status": "accepted_default_personal_noncommercial_pilot; no_deploy"
+    }
+  ],
+  "installed_skills": [
+    {
+      "name": "expo-overview",
+      "repository": "expo/skills",
+      "commit": "d4f484024fec15196bfd3c272e953e3f983972cf",
+      "path": "C:/Users/doric/.codex/skills/expo-overview/SKILL.md",
+      "sha256": "5bad914eebeb816e261f8d626ac0119fda2bfcea4e0fba3ac69dd066440edf30",
+      "status": "installed; auto-discovery available next turn"
+    },
+    {
+      "name": "expo-native-ui",
+      "repository": "expo/skills",
+      "commit": "d4f484024fec15196bfd3c272e953e3f983972cf",
+      "path": "C:/Users/doric/.codex/skills/expo-native-ui/SKILL.md",
+      "sha256": "f6f92e12c7ba5e6cd7e731734286ae707adda873227c563ceb2d0f9ac5037107",
+      "status": "installed; auto-discovery available next turn"
+    },
+    {
+      "name": "expo-design-system",
+      "repository": "expo/skills",
+      "commit": "d4f484024fec15196bfd3c272e953e3f983972cf",
+      "path": "C:/Users/doric/.codex/skills/expo-design-system/SKILL.md",
+      "sha256": "581d755baacc268373229f79546ddd6907bbf4f002e5182b9ec6c72ad0c8f31d",
+      "status": "installed; auto-discovery available next turn"
+    },
+    {
+      "name": "expo-data-fetching",
+      "repository": "expo/skills",
+      "commit": "d4f484024fec15196bfd3c272e953e3f983972cf",
+      "path": "C:/Users/doric/.codex/skills/expo-data-fetching/SKILL.md",
+      "sha256": "30cbf20ce56f4acf3adb5ff44d94509174b40d1612481c94a48f874d5d2bdd21",
+      "status": "installed; auto-discovery available next turn"
+    },
+    {
+      "name": "expo-dev-client",
+      "repository": "expo/skills",
+      "commit": "d4f484024fec15196bfd3c272e953e3f983972cf",
+      "path": "C:/Users/doric/.codex/skills/expo-dev-client/SKILL.md",
+      "sha256": "401c48b5273c4363717033db154353bb1f59bc7a79da925fa51dd48aa8636ca9",
+      "status": "installed; auto-discovery available next turn"
+    },
+    {
+      "name": "supabase",
+      "repository": "supabase/agent-skills",
+      "commit": "c9be0e931b7930f7d02126d04774d904c381e7d7",
+      "path": "C:/Users/doric/.codex/skills/supabase/SKILL.md",
+      "sha256": "697e0e949f97621c6fc1784169eb3ccbf673747d6bb8299a52962d3d84d93dc6",
+      "status": "installed; auto-discovery available next turn"
+    },
+    {
+      "name": "supabase-postgres-best-practices",
+      "repository": "supabase/agent-skills",
+      "commit": "c9be0e931b7930f7d02126d04774d904c381e7d7",
+      "path": "C:/Users/doric/.codex/skills/supabase-postgres-best-practices/SKILL.md",
+      "sha256": "ad65e776f45e761bafc609d3f506c77c1032225aa65e0c4c02f241b8071e5855",
+      "status": "installed; auto-discovery available next turn"
+    }
+  ],
+  "existing_skills": [
+    "figma-use",
+    "figma-generate-library",
+    "figma-generate-design",
+    "figma-design-to-code",
+    "imagegen"
+  ],
+  "connections": {
+    "supabase": "Hosted project/SQL Editor reported by Dor and CLI2.121.0 locally verified; no MCP connection configured. CLI login and live status: work-plan.json#delivery",
+    "expo": "Individual official skills installed; no additional MCP permission configured"
+  },
+  "sources": [
+    "https://docs.expo.dev/skills/",
+    "https://supabase.com/docs/guides/ai-tools/ai-skills",
+    "https://zod.dev/",
+    "https://vercel.com/docs/frameworks/backend/nestjs",
+    "https://vercel.com/docs/plans/hobby"
+  ],
+  "spending": "No purchase, paid upgrade, synthesis or native build. Isolated content dependency installation only.",
+  "stage03_hosting_review": {
+    "recorded_on": "2026-10-16",
+    "meaning": "Planning evidence only; inspect actual account eligibility/remaining quotas before use. No purchase or provisioning.",
+    "vercel": {
+      "constraint": "Hobby personal non-commercial use only; exceeding included resource quotas can pause usage. Public/free distribution alone does not prove eligibility.",
+      "source": "https://vercel.com/docs/plans/hobby"
+    },
+    "supabase": {
+      "constraints": "Free:500MB database,1GB storage,5GB egress plus5GB cached egress; inactivity pause after one week; automatic backups not included. Measure lesson media volume.",
+      "source": "https://supabase.com/pricing"
+    },
+    "eas": {
+      "constraint": "Free:up to15iOS builds and low-priority queue; owned build remains04.",
+      "source": "https://expo.dev/pricing"
+    },
+    "voice": {
+      "constraint": "ElevenLabs Free publication requires attribution and non-commercial use; verify chosen voice/assets and available credits before production.",
+      "source": "https://help.elevenlabs.io/hc/en-us/articles/13313564601361-Can-I-publish-the-content-I-generate-on-the-platform"
+    }
+  }
+}

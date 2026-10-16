@@ -1,0 +1,107 @@
+{
+  "version": 2,
+  "recorded_on": "2026-10-13",
+  "updated_on": "2026-10-15",
+  "authority": "Direct user instruction in the current conversation",
+  "status": "Confirmed joint working method; current technical decisions are tracked in project-context.json",
+  "guide": "docs/DEVELOPMENT_GUIDE.md",
+  "agent_instructions": [
+    "AGENTS.md",
+    "prototype/AGENTS.md"
+  ],
+  "learning_log": "docs/learning/development-learning-log.json",
+  "goal_he": "דור ו־Codex מפתחים יחד. Codex כותב ועורך את הקוד ומסביר את החלקים המשמעותיים כדי שדור ילמד תוך כדי פיתוח. דור משתתף בהתקנת הסביבה, בהגדרות ובבדיקות חשובות. זו חלוקת העבודה שדור קבע ב־15 באוקטובר 2026 כדי להתקדם ליעד של שבוע; אין להקצות לו הקלדה או הדבקה של קוד כברירת מחדל ואין צורך לבקש שוב אישור לכתיבת קוד בהיקף השלב. השתתפות והבנה מתועדות בנפרד מהשלמת האפליקציה.",
+  "division_of_work": {
+    "authority": "Dor's explicit clarification on 2026-10-15",
+    "code_implementation": "Codex writes/edits code within the current agreed stage and explains meaningful parts; standing authorization, no repeated coding approval.",
+    "dor_practical_actions": "Environment installation, account/settings work and meaningful device/API/database/Git checks; no code typing/pasting unless Dor asks.",
+    "checkpoint_size": "Useful behavior or important setup milestone, not each import or minor edit; keep learning concise enough for the one-week target.",
+    "waiting": "Leave specifically assigned practical actions to Dor and wait for results; routine coding and verification proceed autonomously."
+  },
+  "mandatory_cycle_he": [
+    "לפני שלב פיתוח משמעותי מסבירים בעברית מה עושים, למה צריך אותו, באילו כלים משתמשים, היכן הפעולה מתבצעת ואיך נבדוק שהצליחה. מונח חדש מקבל דוגמה מתוך הפרויקט.",
+    "Codex כותב ועורך את הקוד ומסביר אותו. דור מבצע פעולות מעשיות משמעותיות בהתקנת הסביבה, בהגדרות ובבדיקות מכשיר, API, מסד נתונים או Git. מסבירים מראש כל פקודה, היכן היא רצה ואת התוצאה הצפויה. אין להקצות לו הקלדה או הדבקה של קוד כברירת מחדל.",
+    "כאשר פעולה מעשית מוקצית לדור, משאירים אותה לביצועו וממתינים לתוצאה. כתיבת הקוד כבר הועברה ל־Codex ואינה דורשת אישור חוזר בהיקף השלב. מרכזים נקודות למידה סביב התנהגות שימושית או הקמה חשובה, בלי לעצור אחרי כל שינוי קטן.",
+    "מממשים חלק קטן, עוברים על הקבצים וההתנהגות ובודקים את התוצאה. תקלה מקבלת הסבר של האבחון והפתרון. שאלות ותיקונים של דור משולבים לפני המעבר לשלב הבא.",
+    "מסכמים את הלמידה באמצעות הסבר במילים של דור או שינוי קטן שהוא מנסה. מתעדים בנפרד קוד שנכתב על ידי Codex, פעולה שדור ביצע והבנה שהודגמה. אין להסיק ניסיון עצמאי רק מכך שהאפליקציה עובדת."
+  ],
+  "areas_he": [
+    {
+      "title": "סביבת העבודה וההקמה",
+      "detail": "תיקיות, עורך, טרמינל, גרסאות, תלויות, משתני סביבה ו־Git. דור מתרגל הרצה, קריאת פלט ומעקב אחרי שינוי בקוד."
+    },
+    {
+      "title": "צד הלקוח והמובייל",
+      "detail": "מסכים, רכיבים, מצב, ניווט, כיווניות עברית ובקשות לשרת. דור בודק איך פעולה שלו משנה את הממשק ואת הנתונים."
+    },
+    {
+      "title": "צד השרת",
+      "detail": "בקשה ותשובה, נקודות גישה, אימות נתונים, זיהוי המשתמש, הרשאות וכללי ההתקדמות. דור שולח בקשה ובודק מקרה הצלחה ומקרה שגיאה."
+    },
+    {
+      "title": "מסד הנתונים",
+      "detail": "סכימה, קשרים בין טבלאות, SQL, שינויי סכימה, אינדקסים וטרנזקציות. דור מריץ או משנה שאילתה ובודק את התוצאה ואת משמעותה."
+    },
+    {
+      "title": "שמע תמונות ואנימציה",
+      "detail": "הקלטה והשמעה, הרשאות מכשיר, קבצי מדיה, איורים, תנועת דמויות ומפת הלמידה. הבדיקה כוללת התנהגות במכשיר אמיתי."
+    },
+    {
+      "title": "בדיקות פריסה ותפעול",
+      "detail": "סביבה מקומית לעומת ענן, בנייה, הפצה ולוגים. לפי ההיקף שנבחר יחד נלמד גם קונטיינרים ופריסה אוטומטית."
+    },
+    {
+      "title": "הכנה לראיונות",
+      "detail": "דור מסביר החלטה טכנית, חלופה שנשקלה ותקלה שנפתרה. התיאור מתבסס על הפעולות שביצע ועל תוצאות שבדק בפועל."
+    }
+  ],
+  "boundaries_he": "תשתית נבחרת: TypeScript, Expo, NestJS ו-PostgreSQL/Supabase. משלימים1A, אחריה פרק1 במלואו ואז פרק2 לפי הזמן. אין יעד כמותי של עשר יחידות או הבטחת השלמת הקורס בתוך2–3שבועות. פרסום רק לפרקים שלמים שנבדקו; ללא תשלום תשתית חדש. כל הקמה ובדיקה מעשית לפי דרך העבודה המשותפת.",
+  "secrets_he": "הזנת מפתחות וסיסמאות מתבצעת בממשק המאובטח המתאים. אין לבקש סוד בצ'אט או לשמור אותו ביומן הלמידה.",
+  "history_he": "קיים אבטיפוס ניסיוני למודולים 1 עד 3. הוא משמש להמחשה ולבדיקה; אינו קובע את הטכנולוגיה למוצר. החלטות הפיתוח והתוכן הבאות מתקבלות במסגרת העבודה המשותפת.",
+  "persistence_he": "הכללים נכללים בכל מסמך פעיל ובהוראות לסוכנים, וחלים גם על משימות המשך. מחוללי מסמכים קוראים את המדיניות כדי שיצירה מחדש תשמור אותה. גרסאות קודמות נשמרות בארכיון.",
+  "figma_and_content_workflow": {
+    "date": "2026-10-16",
+    "authority": "Dor asks to verify and adopt generic design per exercise type to avoid wasted Figma work.",
+    "status": "researched_and_applied",
+    "conclusion": "Figma specifies reusable interaction templates, meaningful states and representative flows. Lesson content is separate; shared runtime components will render it at the agreed implementation stage.",
+    "new_design_gate": [
+      "New interaction type",
+      "Meaningfully different layout",
+      "Uncovered state or accessibility behavior",
+      "Observed usability/readability problem"
+    ],
+    "content_only_policy": "No new frame/variant or required user Present checkpoint solely for wording, answer or audio substitution. Joint content review remains required in conversation/content files.",
+    "existing_assets": "Keep current examples and shared templates; no bulk cleanup needed.",
+    "pending_action_superseded": "The newly assigned per-exercise Buenos días Present test is optional and no longer a prerequisite to progress. No user execution or exact retry-copy acceptance inferred.",
+    "catalog": "docs/design/interaction-catalog.json",
+    "sources": [
+      "https://help.figma.com/hc/en-us/articles/5579474826519-Explore-component-properties",
+      "https://help.figma.com/hc/en-us/articles/360061175334-Create-interactive-components-with-variants",
+      "https://react.dev/learn/passing-props-to-a-component"
+    ],
+    "boundary": "Stage02 remains content/template planning. No runtime implementation, build, new service or purchase authorized by this correction."
+  },
+  "pronunciation_assessment_scope_change": {
+    "date": "2026-10-16",
+    "authority": "Dor explicitly requests a system that evaluates whether the spoken phrase was said correctly and asks for independent cost/technical research.",
+    "status": "retained_deferred_after_working_unit",
+    "prior_scope": "Optional local recording/self-comparison; automatic pronunciation scoring excluded",
+    "current_scope": "Automated pronunciation assessment for prepared Spanish speaking tasks, calibrated against human judgments before learner pass/fail use",
+    "candidate_provider": "Azure Speech Pronunciation Assessment",
+    "candidate_locale": "es-MX",
+    "research": "docs/research/pronunciation/research-2026-10-16.json",
+    "spending": "No purchase, paid upgrade, commitment plan or provider contract authorized",
+    "build": "No native build now; preserve stage04 deferral",
+    "privacy": "Temporary provider processing is needed for assessment; persistent cloud recording storage is not selected",
+    "quality": "ASR transcript matching alone is insufficient. No arbitrary threshold or unsupported Spanish phoneme/prosody diagnosis. Calibrate on understandable Israeli-accented speech and wrong/noisy/silent cases.",
+    "account": "Dor created Azure account and reported portal access; signed-in portal and active free-trial UI verified by Codex",
+    "resource_ref": "docs/research/pronunciation/azure-speech-resource.json",
+    "setup_status": "F0 Speech resource created by Codex under explicit user authorization; portal Overview Active/Free, Italy North",
+    "test_status": "Pronunciation/audio/API test not run; keys not revealed/copied/stored",
+    "resource_creation_authority": "Dor: פתחתי חשבון Azure והפורטל פתוח, אפשר להמשיך להגדרת Speech במסלול החינמי. Dor adds שים לב גם ל region, אנחנו בישראל.",
+    "current_status_ref": "docs/planning/work-plan.json#delivery"
+  },
+  "delivery_workflow_ref": "docs/planning/work-plan.json#delivery",
+  "toolchain_ref": "docs/planning/toolchain.json",
+  "opening_chapter_delivery_ref": "docs/planning/work-plan.json#delivery"
+}
