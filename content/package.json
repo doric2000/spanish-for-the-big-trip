@@ -4,6 +4,16 @@
   "private": true,
   "type": "module",
   "description": "Reviewed lesson data and local validation; no cloud writes",
+  "exports": {
+    "./schema": {
+      "types": "./dist/src/schema.d.ts",
+      "default": "./dist/src/schema.js"
+    },
+    "./api-contract": {
+      "types": "./dist/src/api-contract.d.ts",
+      "default": "./dist/src/api-contract.js"
+    }
+  },
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "validate": "npm run build --silent && node dist/src/cli.js units/unit1a.json",

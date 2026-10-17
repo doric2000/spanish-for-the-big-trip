@@ -141,6 +141,24 @@ test('runtime projection allowlists all supported types and hides answers, feedb
   assert.equal(text.includes('"id":"end"'), false, 'future scenario nodes are not exposed');
   assert.throws(() => projectUnit(realDraft(), urls));
   assert.throws(() => projectUnit(unit, { ...urls, [unit.media[0]!.id]: 'file:///private' }));
+  assert.throws(() => projectUnit(unit, {}), /Missing approved HTTPS media/, 'published stays strict about media');
+});
+
+test('draft projection needs explicit allowDraft and returns null for unhosted or unapproved media', () => {
+  const draft = realDraft();
+  assert.throws(() => projectUnit(draft, {}), /Drafts are not learner-readable/);
+  assert.throws(() => projectUnit(draft, {}, {}, { allowDraft: false }), /Drafts are not learner-readable/);
+  const hosted = draft.media.find(m => m.status === 'approved')!;
+  const pending = draft.media.find(m => m.status !== 'approved')!;
+  const urls = { [hosted.id]: `https://assets.example/${hosted.id}`, [pending.id]: `https://assets.example/${pending.id}` };
+  const projected = projectUnit(draft, urls, {}, { allowDraft: true });
+  const urlOf = (id: string) => projected.media.find(m => m.id === id)!.url;
+  assert.equal(urlOf(hosted.id), urls[hosted.id]);
+  assert.equal(urlOf(pending.id), null, 'pending audio is not served even when a URL exists');
+  assert.ok(projected.media.filter(m => m.id !== hosted.id).every(m => m.url === null));
+  assert.throws(() => projectUnit(draft, { [hosted.id]: 'file:///private' }, {}, { allowDraft: true }), /HTTPS/);
+  const text = JSON.stringify(projected);
+  for (const forbidden of ['correctChoiceId', 'expectedTileIds', 'feedbackHe', 'nextNodeId', 'editorial', 'pendingStages', 'assets/characters']) assert.equal(text.includes(forbidden), false, forbidden);
 });
 
 test('attempt input rejects client-selected user, correctness, raw audio and unknown response fields', () => {
