@@ -3004,6 +3004,28 @@
         "Device check that 1A preview playback and the recorder still play after the playAudible refactor"
       ],
       "next_step": "Stage 04 handoff."
+    },
+    {
+      "id": "stage05-request-path-and-draft-access-2026-10-17",
+      "stage_id": "05",
+      "goal": "Open stage 05: agree on the request path of the first API endpoint and how the API may read the unpublished 1A draft during development.",
+      "practical_owner": "Claude read the stage 04 handoff, the delivery plan and the API contract, explained the path phone -> NestJS guard -> service (server key) -> projectUnit -> phone, and proposed one endpoint, GET /v1/units/C01-U01. Dor answered the understanding check and chose option A for drafts.",
+      "practical_action": "No code yet. Decision recorded in docs/planning/approved-decisions.json#stage05_draft_units_in_development. Next practical action is Dor's: create api/ with the NestJS CLI.",
+      "evidence": [
+        "Dor's answer in the stage05 chat (understanding check below)",
+        "Decision: docs/planning/approved-decisions.json#stage05_draft_units_in_development"
+      ],
+      "concepts": [
+        "Why a trusted server sits between the phone and the content tables",
+        "RLS filters rows, not columns: a readable row exposes every column, including the answer key inside authoring_payload",
+        "NestJS guard, controller and service",
+        "A development-only setting that is off by default and proven off by a test"
+      ],
+      "dor_participation": "Answered the check question and chose option A.",
+      "understanding_demonstrated": "Mostly correct, in his own words: anyone holding the app's token could use another tool to query Supabase directly, so if the phone could read unit_revisions it would see the answers stored there; user_unit_progress only returns the sender's own row and holds nothing dangerous for its owner. Added in the chat: that is why unit_revisions has no grant to authenticated at all, since RLS can limit which rows are visible but not hide the answer fields inside a visible row.",
+      "interview_takeaway": "Explain why the client may read its own progress directly under RLS but must get lesson content through a server that strips the answer key, and why RLS alone cannot do that.",
+      "open_questions": [],
+      "next_step": "Dor creates api/ with npx.cmd @nestjs/cli@12.0.8 new api --package-manager npm --skip-git --strict; then review the generated files together."
     }
   ],
   "entry_template": {
