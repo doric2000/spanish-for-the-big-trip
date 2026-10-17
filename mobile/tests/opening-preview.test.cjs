@@ -61,6 +61,32 @@ test('entry screen: explicit image size, padded centring, no hard-coded unit cop
   for (const copy of ['חואן', 'HOSTEL', 'פרק ראשון', 'בוא נתחיל']) assert.equal(screen.includes(copy), false, copy);
 });
 
+test('vocabulary cards carry the character image id; long expressions use the long-text state', () => {
+  const cards = data.openingSteps(projected(unit)).filter(s => s.type === 'vocabulary');
+  assert.equal(JSON.stringify(cards.map(c => c.expressionEs)), JSON.stringify(['Hola', 'Buenos días', 'Gracias', 'Sí', 'No']));
+  assert.ok(cards.every(c => c.characterImageAssetId === 'juan-reference-v1' && c.characterImageUrl === null));
+  assert.equal(JSON.stringify(cards.map(c => data.isLongExpression(c.expressionEs))), JSON.stringify([false, true, false, false, false]));
+});
+
+test('vocabulary card screen: fixed heading, unit copy from data, disabled play without a file', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/vocabulary-card-screen.tsx'), 'utf8');
+  assert.match(screen, /const TITLE_HE = 'המילים שנצטרך'/);
+  // An auto-fitting heading needs a definite width: flex 1, not only flexShrink.
+  assert.match(screen, /title: \{ flex: 1,/);
+  for (const copy of ['Hola', 'שלום', 'חואן']) assert.equal(screen.includes(`'${copy}'`) || screen.includes(`>${copy}<`), false, copy);
+  assert.match(screen, /audio \? <Playback[^]*: <LessonAudioButton label="השמעה" playing=\{false\} disabled/);
+  // The avatar image has an explicit size (see the entry screen test).
+  assert.match(screen, /width: crop\.imageWidth \* scale, height: crop\.imageHeight \* scale/);
+  assert.doesNotMatch(screen, /alignSelf: 'center'/);
+});
+
+test('every bundled development file exists', () => {
+  const media = fs.readFileSync(path.join(__dirname, '../src/lesson/media.ts'), 'utf8');
+  const files = [...media.matchAll(/require\('([^']+)'\)/g)].map(m => path.resolve(__dirname, '../src/lesson', m[1]));
+  assert.ok(files.length >= 3);
+  for (const file of files) assert.ok(fs.existsSync(file), file);
+});
+
 test('media URLs come only from the server projection: pending audio stays null even with a URL', () => {
   const urls = { 'juan-buenos-dias-v1': 'https://assets.example/buenos-dias.mp3', 'juan-hola-v1': 'https://assets.example/old-hola.mp3' };
   const cards = data.openingSteps(projected(unit, urls)).filter(s => s.type === 'vocabulary');

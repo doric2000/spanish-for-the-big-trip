@@ -3,7 +3,8 @@ import type { PublicUnit } from '../../../content/src/api-contract';
 export type OpeningStep =
   | { type: 'entry'; id: string; titleHe: string; bodyHe: string; actionLabelHe: string; sceneAssetId: string; sceneUrl: string | null;
     kickerHe: string | null; sceneCaption: string | null; characterNameHe: string | null }
-  | { type: 'vocabulary'; id: string; expressionEs: string; meaningHe: string; characterNameHe: string; audioAssetId: string; audioUrl: string | null };
+  | { type: 'vocabulary'; id: string; expressionEs: string; meaningHe: string; characterNameHe: string;
+    characterImageAssetId: string | null; characterImageUrl: string | null; audioAssetId: string; audioUrl: string | null };
 
 // Reads the learner projection from the API, so answers never reach the app.
 export function openingSteps(unit: PublicUnit): OpeningStep[] {
@@ -20,9 +21,11 @@ export function openingSteps(unit: PublicUnit): OpeningStep[] {
         kickerHe: activity.kickerHe ?? null, sceneCaption: activity.sceneCaption ?? null,
         characterNameHe: activity.characterId ? nameOf(activity.characterId) : null });
     } else if (activity.type === 'vocabulary_card') {
+      const imageAssetId = unit.characters.find(c => c.id === activity.characterId)?.imageAssetId ?? null;
       steps.push({ type: 'vocabulary', id: activity.id, expressionEs: activity.expressionEs,
         meaningHe: activity.meaningHe,
         characterNameHe: nameOf(activity.characterId) ?? '',
+        characterImageAssetId: imageAssetId, characterImageUrl: imageAssetId ? urlOf(imageAssetId) : null,
         audioAssetId: activity.audioAssetId, audioUrl: urlOf(activity.audioAssetId) });
     } else break;
   }
@@ -47,4 +50,10 @@ export function unitCodes(unitId: string) {
 export function activityCode(unitId: string, index: number, count: number) {
   const pad = (n: number) => String(n).padStart(2, '0');
   return `${unitCodes(unitId).short}·${pad(index + 1)}/${pad(count)}`;
+}
+
+// Figma vocabulary State=Long text (Karantina 60 instead of 104): a phrase, or a word
+// too long for one line at 104pt. "Gracias" (7) still fits; "Buenos días" does not.
+export function isLongExpression(expressionEs: string) {
+  return expressionEs.trim().length > 8;
 }
