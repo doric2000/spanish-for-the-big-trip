@@ -1,0 +1,42 @@
+{
+  "stage_id": "04",
+  "status": "complete_for_development; public-release gates listed in known_issues",
+  "approved_decisions": [
+    "Supabase Postgres with explicit RLS and grants per table; user_unit_progress readable only by its owner (docs/planning/approved-decisions.json)",
+    "Sign in with Apple (SHA-256 nonce) and Google (free @react-native-google-signin, Supabase Skip nonce check) are both mandatory; no guest mode (#stage04_google_sign_in_build)",
+    "Hebrew is the only iOS language, so layout is native right-to-left; custom Hebrew Apple button",
+    "Retro visual direction: boarding-pass sign-in, trip map of all chapters, passport account screen, retro lesson templates (docs/design/interaction-catalog.json)",
+    "Account deletion through the Postgres function delete_my_account(); Apple token revocation is a release gate (#account_deletion)",
+    "npm audit policy: no --force, triage by where code runs (#dependency_audit)"
+  ],
+  "implemented_files": [
+    "supabase/migrations/* (courses, chapters, units, unit_revisions, user_unit_progress, delete_my_account) and supabase/checks/01-05",
+    "mobile/src/app/ (Expo Router with Stack.Protected guards: sign-in, home map, lesson preview, account, recorder)",
+    "mobile/src/auth/ (Apple, Google, chunked Keychain session, boarding-pass sign-in, passport account, deletion)",
+    "mobile/src/map/ (journey layout from the curriculum plan, map screen), mobile/src/retro/, mobile/src/theme.ts",
+    "mobile/app.json (D1 icon and splash, Hebrew localization, Google plugin), mobile/eslint.config.js, .github/workflows/ci.yml",
+    "content/units/unit1a.json (16 activities incl. approved review and summary), content/src/schema.ts"
+  ],
+  "how_to_run": "From mobile/: npx.cmd expo start -c, then open the second EAS development build on the iPhone (not Expo Go). Checks: npm run typecheck, npm run lint, npm test (mobile); npm test and npm run validate (content). Migrations: npx.cmd --no-install supabase db push --linked --dry-run --skip-vault, then without --dry-run; SQL checks run whole in the SQL Editor.",
+  "checks_and_evidence": [
+    "CI on every push: content tests and 1A validation, mobile typecheck, lint, tests, gitleaks",
+    "Local at handoff: mobile typecheck and lint clean, mobile tests 31/31; content tests 61/61; 1A VALID DRAFT (16 activities)",
+    "Dor-reported on iPhone: Apple and Google sign-in, sign-out, the six sign-in checks, D1 icon, Hebrew RTL, retro sign-in, map, passport account, account deletion for Google and Apple",
+    "SQL checks 01-05 PASS (Dor-reported)",
+    "Learning log entries stage04-* in docs/learning/development-learning-log.json"
+  ],
+  "dor_actions_and_demonstrated_understanding": "Dor did all console work (Google Cloud, Supabase), installs, migrations, SQL checks, EAS builds, Git and device checks, and steered every design. Understanding checks: nonce (partial), stolen-token audience check (correct), safe areas (partial), account deletion (variation correct, reason partial). Details per entry in the learning log.",
+  "known_issues": [
+    "Before any public release: revoke the Sign in with Apple token on account deletion (server with the .p8 key); privacy policy and Privacy Manifest; publish the Google consent screen (still Testing)",
+    "Map progress is static (current = first unit) until saved progress drives it; the 1A unit description in the map sheet is a placeholder",
+    "1A audio for Si/No/Hola/Gracias still pending listening review; the full 1A flow is not yet verified on device",
+    "The JS opening animation from the prototype is not implemented; the native splash is the green D1",
+    "npm audit: 4 transitive advisories waiting for Expo patch releases"
+  ],
+  "open_choices": [
+    "Where the Apple token revocation runs (NestJS API on Vercel Hobby vs another server) when stage 05 sets up the API",
+    "When to automate EAS builds/updates (CD)"
+  ],
+  "next_stage_and_first_action": "Stage 05 'API ראשון וחיבור למסך באפליקציה': prove one authenticated activity end to end (small NestJS service with supabase-js: published lesson read, own progress, idempotent submission; the phone reads through the API and resumes). First action: in a new stage chat, read this handoff, work-plan.json#delivery and the stage 05 definition, then explain the request path and propose the first small API step. In parallel or before it, build the shared React Native lesson components from the approved retro templates.",
+  "commit_or_snapshot_when_available": "77a0684 (main) before this handoff file; this file is committed by Dor"
+}

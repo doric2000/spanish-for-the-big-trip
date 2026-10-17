@@ -239,8 +239,8 @@
         "03"
       ],
       "goal": "Implement reviewed SQL and identity/access rules in a development environment.",
-      "status": "second_dev_build_google_and_apple_sign_in_working",
-      "current_next_action": "2026-10-17: in-app account deletion works on Dor's iPhone (Postgres delete_my_account, migration applied, SQL check PASS, Google and Apple tested), with the retro passport account screen; retro sign-in, map and account are approved in Figma. Next in stage 04: ESLint and an npm audit review, then the stage 04 handoff. Before any public release: revoke the Sign in with Apple token on deletion (server), privacy policy and Privacy Manifest, publish the Google consent screen. Then: build the lesson components from the retro templates; listening review of Si/No/Hola/Gracias audio.",
+      "status": "complete_for_development; handoff docs/planning/stage-handoffs/04-identity-database-native-build.json",
+      "current_next_action": "2026-10-17: stage 04 closed for development (handoff: docs/planning/stage-handoffs/04-identity-database-native-build.json). Next: stage 05 in a new chat, prove one authenticated activity end to end through a small NestJS API; build the shared lesson components from the retro templates. Public-release gates (Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
       "organization_setup": {
         "observed_on": "2026-10-16",
         "evidence": "Dor's screenshot codex-clipboard-2a125438-b19f-4939-b8bf-307276b60761.png shows the organization form with Personal and Free - $0/month selected.",
@@ -789,7 +789,7 @@
   "delivery": {
     "adopted_on": "2026-10-16",
     "authority": "Dor: PLEASE IMPLEMENT THIS PLAN",
-    "current_stage": "04",
+    "current_stage": "05",
     "current_checkpoint": "unit_revisions_verified_learning_checkpoint",
     "status_source": "This object and stage statuses are authoritative; other artifacts are dated evidence or references.",
     "course_plan_ref": "docs/curriculum/curriculum-plan.json",
@@ -800,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "2026-10-17: in-app account deletion works on Dor's iPhone (Postgres delete_my_account, migration applied, SQL check PASS, Google and Apple tested), with the retro passport account screen; retro sign-in, map and account are approved in Figma. Next in stage 04: ESLint and an npm audit review, then the stage 04 handoff. Before any public release: revoke the Sign in with Apple token on deletion (server), privacy policy and Privacy Manifest, publish the Google consent screen. Then: build the lesson components from the retro templates; listening review of Si/No/Hola/Gracias audio.",
+    "next_action": "2026-10-17: stage 04 closed for development (handoff: docs/planning/stage-handoffs/04-identity-database-native-build.json). Next: stage 05 in a new chat, prove one authenticated activity end to end through a small NestJS API; build the shared lesson components from the retro templates. Public-release gates (Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [
