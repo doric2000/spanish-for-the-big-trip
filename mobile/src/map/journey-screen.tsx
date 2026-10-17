@@ -156,9 +156,10 @@ function PosterArt({ id, palette }: { id: string; palette: typeof PALETTES[numbe
 
 function Stamp({ stamp, width, reduceMotion, onPress }: { stamp: PlacedStamp; width: number; reduceMotion: boolean; onPress: () => void }) {
   const pulse = useSharedValue(0);
+  const isCurrent = stamp.current;
   useEffect(() => {
-    if (stamp.current && !reduceMotion) pulse.value = withRepeat(withTiming(1, { duration: 1800, easing: Easing.out(Easing.quad) }), -1);
-  }, [pulse, stamp.current, reduceMotion]);
+    if (isCurrent && !reduceMotion) pulse.value = withRepeat(withTiming(1, { duration: 1800, easing: Easing.out(Easing.quad) }), -1);
+  }, [pulse, isCurrent, reduceMotion]);
   const pulseStyle = useAnimatedStyle(() => ({ opacity: 0.6 * (1 - pulse.value), transform: [{ scale: 1 + pulse.value * 0.9 }] }));
   const onRight = stamp.x > width / 2;
   return <>

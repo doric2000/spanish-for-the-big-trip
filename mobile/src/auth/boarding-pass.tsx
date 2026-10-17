@@ -128,7 +128,11 @@ function Perforation() {
 }
 
 const FIELDS: [string, string, boolean][] = [['נוסע/ת', 'אתם', false], ['שער', '1A', false], ['מושב', 'חלון', false], ['עלייה', 'עכשיו', true]];
-const BARS = [3, 1.5, 4, 1.5, 2.5, 5, 1.5, 3, 1.5, 4, 2, 1.5, 5, 2, 1.5, 3, 4, 1.5, 2.5, 1.5, 5, 2, 3, 1.5, 4, 2, 1.5, 5, 2, 3, 1.5, 4, 2, 3];
+const BAR_WIDTHS = [3, 1.5, 4, 1.5, 2.5, 5, 1.5, 3, 1.5, 4, 2, 1.5, 5, 2, 1.5, 3, 4, 1.5, 2.5, 1.5, 5, 2, 3, 1.5, 4, 2, 1.5, 5, 2, 3, 1.5, 4, 2, 3];
+const BAR_GAP = 2.5;
+// Barcode bars laid out once: each bar starts where the previous one and its gap end.
+const BARS = BAR_WIDTHS.map((width, i) => ({ width, x: BAR_WIDTHS.slice(0, i).reduce((sum, w) => sum + w + BAR_GAP, 0) }));
+const BARCODE_WIDTH = BAR_WIDTHS.reduce((sum, w) => sum + w + BAR_GAP, 0);
 
 // The stub's dashed arc, from the Hebrew side (right) to the Spanish side (left).
 const ARC = { x0: 92, y0: 18, x1: 66, y1: 2, x2: 30, y2: 2, x3: 4, y3: 18 };
@@ -152,8 +156,7 @@ function Stub() {
     return { opacity: fade, transform: [{ translateX: x - 10 }, { translateY: y - 10 }, { rotate: `${Math.atan2(dy, dx) - Math.PI}rad` }] };
   });
   const blinkStyle = useAnimatedStyle(() => ({ opacity: 1 - blink.value * 0.55 }));
-  let x = 0;
-  const bars = BARS.map((width, i) => { const bar = <Rect key={i} x={x} width={width} height={34} fill={c.night} />; x += width + 2.5; return bar; });
+
   return <View style={styles.stub}>
     <View style={styles.route}>
       <View><Text style={styles.label}>מ־</Text><Text style={styles.city}>עברית</Text></View>
@@ -171,7 +174,7 @@ function Stub() {
       </View>)}
     </View>
     <View style={styles.barcodeRow}>
-      <Svg width={x} height={34}>{bars}</Svg>
+      <Svg width={BARCODE_WIDTH} height={34}>{BARS.map((bar, i) => <Rect key={i} x={bar.x} width={bar.width} height={34} fill={c.night} />)}</Svg>
       <Text style={styles.buenViaje}>{'BUEN\nVIAJE'}</Text>
     </View>
   </View>;

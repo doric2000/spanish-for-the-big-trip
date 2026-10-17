@@ -10,6 +10,7 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Button, Linking, StyleSheet, Text, View } from 'react-native';
+import { playAudible } from './audio-playback';
 
 export default function AudioLab({ onBack }: { onBack?: () => void } = {}) {
   const [recordingUri, setRecordingUri] = useState<string | null>(null);
@@ -142,9 +143,7 @@ export default function AudioLab({ onBack }: { onBack?: () => void } = {}) {
       });
       // Start each replay from the beginning, including after the clip finishes.
       await player.seekTo(0);
-      player.muted = false;
-      player.volume = 1;
-      player.play();
+      playAudible(player);
     } catch {
       Alert.alert('לא הצלחנו להשמיע את ההקלטה', 'אפשר לנסות שוב או להקליט מחדש.');
     } finally {

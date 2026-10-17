@@ -78,6 +78,14 @@ function createApp() {
     react,
     'react/jsx-runtime': { jsx: element, jsxs: element },
     'expo-audio': audio,
+    // The real shared helper, so the test also covers how playback is started.
+    './audio-playback': (() => {
+      const { outputText: helper } = ts.transpileModule(fs.readFileSync(path.join(__dirname, '../src/audio-playback.ts'), 'utf8'),
+        { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } });
+      const helperExports = {};
+      vm.runInNewContext(helper, { exports: helperExports, require: () => ({}) });
+      return helperExports;
+    })(),
     'expo-status-bar': { StatusBar: 'StatusBar' },
     'react-native': {
       Alert: { alert: (...args) => alerts.push(args) },

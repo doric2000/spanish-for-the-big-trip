@@ -25,9 +25,9 @@ export default function AccountScreen({ session, onBack }: { session: Session; o
   const insets = useSafeAreaInsets();
   const provider = session.user.app_metadata.provider;
 
+  // The effect only fetches; "loading" is set where a new read starts (initial state, retry).
   useEffect(() => {
     let active = true;
-    setProgress({ state: 'loading' });
     // No user filter on purpose: the database policy must do the filtering.
     supabase.from('user_unit_progress').select('unit_id', { count: 'exact', head: true })
       .then(({ count, error }) => {
@@ -103,7 +103,7 @@ export default function AccountScreen({ session, onBack }: { session: Session; o
           {progress.state === 'loading' ? <View accessibilityLabel="טוענים" style={styles.skeleton} />
             : progress.state === 'error' ? <View style={styles.errorArea}>
               <Text accessibilityRole="alert" style={styles.error}>לא הצלחנו לטעון את ההתקדמות.</Text>
-              <Pressable accessibilityRole="button" accessibilityLabel="נסו שוב" onPress={() => setAttempt(n => n + 1)}
+              <Pressable accessibilityRole="button" accessibilityLabel="נסו שוב" onPress={() => { setProgress({ state: 'loading' }); setAttempt(n => n + 1); }}
                 style={({ pressed }) => [styles.retry, pressed && { opacity: 0.8 }]}>
                 <Text style={styles.retryLabel}>נסו שוב</Text>
               </Pressable>

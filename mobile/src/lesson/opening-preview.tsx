@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Unit } from '../../../content/src/schema';
 import source from '../../../content/units/unit1a.json';
+import { playAudible } from '../audio-playback';
 import { theme as t } from '../theme';
 import { moveOpeningStep, openingSteps } from './opening-data';
 
@@ -58,7 +59,7 @@ function ApprovedAudio() {
       if (!active.current) return;
       await player.seekTo(0);
       if (!active.current) return;
-      player.muted = false; player.volume = 1; player.play();
+      playAudible(player);
     } catch {
       if (active.current) setError('לא הצלחנו להשמיע את הדוגמה. אפשר לטעון אותה שוב.');
     } finally {
