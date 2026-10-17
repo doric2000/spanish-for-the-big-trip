@@ -3125,6 +3125,33 @@
       "interview_takeaway": "Explain how a mobile client authenticates to your own API with the Supabase access token, how token refresh is handled, and how you diagnosed and tested a connection failure.",
       "open_questions": [],
       "next_step": "Build the shared retro lesson components from the Figma templates (docs/design/interaction-catalog.json#retro_lesson_templates) on the API data, starting with entry and vocabulary_card."
+    },
+    {
+      "id": "stage05-entry-component-2026-10-17",
+      "stage_id": "05",
+      "goal": "Build the first shared retro lesson component, the unit entry (Figma template 80:269), on the API data and verify it on the iPhone.",
+      "practical_owner": "Claude wrote the code, tests and docs. Dor approved the design decisions, ran the regenerated seed SQL in the development SQL Editor, reloaded the app and checked the screen on the iPhone.",
+      "practical_action": "content: entry gains optional kickerHe, sceneCaption and characterId (schema, projection, 1A values approved by Dor 2026-10-17). mobile: shared LessonHeader (flight progress, one dot per unit activity, close) and LessonButton (primary), EntryScreen (poster with expo-image scene, fade, caption, character name, unit stamp, drop/sway/sheen/stamp motion, static under Reduce Motion). Unit codes 1A and C01·U01 and the header code 1A·01/16 are derived from the unit id. Vocabulary cards still use the old preview look.",
+      "evidence": [
+        "content 63/63, api 8/8, mobile 38/38; mobile typecheck and lint clean",
+        "First iPhone check (Dor screenshot): column pushed to the right edge, Juan scene drawn at pixel size showing only a window, caption/name/kicker missing, header 01/12. Fixed: centring by padding instead of alignSelf in the RTL ScrollView; explicit image width and height with expo-image; regression test added",
+        "Dor ran a read-only query: unit_revisions C01-U01 revision 1 had 12 activities, no kicker and digest 2a5dbfd6 (the 2026-10-16 seed), so the new SQL had not been stored; running the current file in a new query fixed it",
+        "Dor-reported on iPhone: everything correct (centred, Juan visible, kicker, caption, name, 16 activities)"
+      ],
+      "concepts": [
+        "Optional content fields: a shared component shows a detail only when the unit provides it",
+        "RTL layout on iOS: alignSelf on a ScrollView content container is not reliable; centre with padding",
+        "An image sized only by its edges can be drawn at pixel size on iOS; give it an explicit size",
+        "A source digest shows whether the database holds the same content as the file in Git",
+        "The SQL Editor runs the text in its tab, not the file on disk"
+      ],
+      "dor_participation": "Approved decisions 1, 2 and 4 directly and 3 after an explanation; asked that design and component skills be used without reminders (recorded in AGENTS.md); ran the diagnostic query and the seed; verified on the iPhone.",
+      "understanding_demonstrated": "pending: check question asked after the verification.",
+      "interview_takeaway": "Explain how you found that a change was missing in production-like data by comparing a content digest instead of guessing, and why an iOS RTL layout needed padding-based centring and explicit image sizes.",
+      "open_questions": [
+        "Vocabulary card silent-h tip and five-vowel sheet need joint content authoring and a help schema with several audio files before they appear."
+      ],
+      "next_step": "Build the vocabulary card from Figma 82:1026 (Default, Playing, Audio error, Long text; tip and vowel buttons only when the card has help; disabled play when the draft has no audio file)."
     }
   ],
   "entry_template": {

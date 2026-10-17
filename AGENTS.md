@@ -83,6 +83,8 @@ For a planned stage chat, read `work-plan.json`, the learning log and the previo
 
 ## Design (Figma)
 
+Before designing, building or changing any screen or UI component, load the design and component skills without being asked (Dor, 2026-10-17): `vercel-react-native-skills` always, `vercel-composition-patterns` for shared lesson components, `ui-ux-pro-max` for layout, copy or accessibility decisions, and the Figma `figma-design-to-code` skill when implementing a Figma frame (selection and review: `docs/planning/toolchain.json#skill_review_2026_10_16`).
+
 One reusable template per interaction type and meaningful state (hint, error, success), with representative content (Dor, 2026-10-16). Do not create frames/variants or Present checkpoints per phrase, answer list or audio change. Add Figma work only for a new interaction, layout or state, or a real usability issue. Shared React Native components render lesson data; verify the real flow in the app.
 
 ## Pronunciation assessment
