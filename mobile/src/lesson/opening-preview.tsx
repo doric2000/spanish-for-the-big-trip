@@ -1,20 +1,30 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
+import { ActivityIndicator, Image, type ImageSourcePropType, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { type AudioSource, setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import type { Unit } from '../../../content/src/schema';
-import source from '../../../content/units/unit1a.json';
+import { fetchUnit, type UnitFailure } from '../api/units';
 import { playAudible } from '../audio-playback';
+import { supabase } from '../auth/supabase';
 import { theme as t } from '../theme';
-import { moveOpeningStep, openingSteps } from './opening-data';
+import { moveOpeningStep, openingSteps, type OpeningStep } from './opening-data';
 
-const steps = openingSteps(source as Unit);
-const vocabularyCount = steps.filter(step => step.type === 'vocabulary').length;
-const scenePath = 'assets/characters/juan/scenes/unit1a-entry-hostel-v1.png';
-const approvedScene = require('../../../assets/characters/juan/scenes/unit1a-entry-hostel-v1.png');
-const audioPath = 'assets/characters/juan/voice/unit1a-buenos-dias-audition-v4/buenos-dias.mp3';
-const approvedAudio = require('../../../assets/characters/juan/voice/unit1a-buenos-dias-audition-v4/buenos-dias.mp3');
+// Approved files bundled in the development build, by media id, until they are
+// served from Supabase Storage. A URL from the API always wins.
+const bundledScenes: Record<string, ImageSourcePropType> = {
+  'juan-hostel-v1': require('../../../assets/characters/juan/scenes/unit1a-entry-hostel-v1.png'),
+};
+const bundledAudio: Record<string, AudioSource> = {
+  'juan-buenos-dias-v1': require('../../../assets/characters/juan/voice/unit1a-buenos-dias-audition-v4/buenos-dias.mp3'),
+};
+
+const failureMessages: Record<UnitFailure, string> = {
+  not_configured: 'כתובת השרת לא הוגדרה (EXPO_PUBLIC_API_URL ב-mobile/.env.local).',
+  unreachable: 'לא הצלחנו להתחבר לשרת. בדקו שהוא רץ ושהטלפון והמחשב באותה רשת.',
+  unauthorized: 'השרת לא אישר את החיבור לחשבון. נסו להתנתק ולהתחבר שוב.',
+  not_found: 'היחידה לא נמצאה בשרת.',
+  server: 'השרת החזיר שגיאה. בדקו את הלוג שלו.',
+};
 
 function Action({ title, onPress, secondary = false, disabled = false, busy = false }: {
   title: string; onPress: () => void; secondary?: boolean; disabled?: boolean; busy?: boolean;
@@ -28,19 +38,20 @@ function Action({ title, onPress, secondary = false, disabled = false, busy = fa
   </Pressable>;
 }
 
-function Scene({ path }: { path: string | null }) {
+function Scene({ assetId, url }: { assetId: string; url: string | null }) {
   const [failed, setFailed] = useState(false);
-  if (path !== scenePath || failed) return <Text accessibilityRole="alert" style={styles.note}>התמונה אינה זמינה כרגע.</Text>;
+  const source = url ? { uri: url } : bundledScenes[assetId];
+  if (!source || failed) return <Text accessibilityRole="alert" style={styles.note}>התמונה אינה זמינה כרגע.</Text>;
   // The frame sets the size; the image only fills it. Sizing the Image itself
   // with width '100%' let iOS draw it at its pixel size and overflow the screen.
   return <View style={styles.sceneFrame}>
-    <Image source={approvedScene} style={styles.sceneImage} resizeMode="cover"
+    <Image source={source} style={styles.sceneImage} resizeMode="cover"
       accessibilityLabel="חואן מברך אתכם בהוסטל" onError={() => setFailed(true)} />
   </View>;
 }
 
-function ApprovedAudio() {
-  const player = useAudioPlayer(approvedAudio, { keepAudioSessionActive: true });
+function ApprovedAudio({ source }: { source: AudioSource }) {
+  const player = useAudioPlayer(source, { keepAudioSessionActive: true });
   const status = useAudioPlayerStatus(player);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +82,7 @@ function ApprovedAudio() {
     <Text accessibilityRole="alert" style={styles.error}>{error ?? 'לא הצלחנו לטעון את הדוגמה.'}</Text>
     <Action title="טעינת השמע מחדש" secondary onPress={() => {
       setError(null);
-      try { player.replace(approvedAudio); }
+      try { player.replace(source); }
       catch { setError('הטעינה לא הצליחה. אפשר לנסות שוב.'); }
     }} />
   </View>;
@@ -79,12 +90,49 @@ function ApprovedAudio() {
     onPress={() => { void toggle(); }} secondary disabled={!status.isLoaded} busy={busy} />;
 }
 
-export default function OpeningPreview({ onOpenRecorder, onOpenAccount }: { onOpenRecorder: () => void; onOpenAccount?: () => void }) {
+type Load = { status: 'loading' } | { status: 'failed'; reason: UnitFailure } | { status: 'ready'; steps: OpeningStep[] };
+
+type PreviewProps = { onOpenRecorder: () => void; onOpenAccount?: () => void };
+
+export default function OpeningPreview(props: PreviewProps) {
+  const [load, setLoad] = useState<Load>({ status: 'loading' });
+  const [attempt, setAttempt] = useState(0);
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      // Read the session at request time: getSession refreshes an expired token,
+      // and a token refresh must not restart the lesson.
+      const { data } = await supabase.auth.getSession();
+      const token = data.session?.access_token;
+      const result = token ? await fetchUnit(process.env.EXPO_PUBLIC_API_URL, 'C01-U01', token)
+        : { ok: false as const, reason: 'unauthorized' as const };
+      if (!active) return;
+      setLoad(result.ok ? { status: 'ready', steps: openingSteps(result.unit) } : { status: 'failed', reason: result.reason });
+    })();
+    return () => { active = false; };
+  }, [attempt]);
+
+  if (load.status === 'ready') return <PreviewSteps steps={load.steps} {...props} />;
+  return <View style={[styles.root, styles.centered]}>
+    <StatusBar style="dark" />
+    {load.status === 'loading' ? <>
+      <ActivityIndicator color={t.colors.primary} />
+      <Text style={styles.note}>טוענים את היחידה מהשרת…</Text>
+    </> : <View style={styles.stack}>
+      <Text accessibilityRole="alert" style={styles.error}>{failureMessages[load.reason]}</Text>
+      <Action title="נסו שוב" onPress={() => { setLoad({ status: 'loading' }); setAttempt(n => n + 1); }} />
+    </View>}
+  </View>;
+}
+
+function PreviewSteps({ steps, onOpenRecorder, onOpenAccount }: PreviewProps & { steps: OpeningStep[] }) {
+  const vocabularyCount = steps.filter(step => step.type === 'vocabulary').length;
   const [index, setIndex] = useState(0);
   const step = steps[index];
   const finishedPreview = index === steps.length;
   const vocabularyIndex = steps.slice(0, index + 1).filter(item => item.type === 'vocabulary').length;
   const advance = () => setIndex(current => moveOpeningStep(current, 'next', steps.length));
+  const audio = step?.type === 'vocabulary' ? audioFor(step) : undefined;
   // Safe areas are padded by hand: with 'automatic' insets iOS shifted the
   // full-height content down by the top inset, pushing the footer under the
   // home indicator.
@@ -107,7 +155,7 @@ export default function OpeningPreview({ onOpenRecorder, onOpenAccount }: { onOp
           <Text style={styles.note}>זו סקירת פיתוח מקומית. היחידה עדיין אינה מלאה, ואין כאן שמירת התקדמות בחשבון.</Text>
         </> : step?.type === 'entry' ? <>
           <Text accessibilityRole="header" style={styles.title}>{step.titleHe}</Text>
-          <Scene path={step.scenePath} />
+          <Scene assetId={step.sceneAssetId} url={step.sceneUrl} />
           <Text style={styles.body}>{step.bodyHe}</Text>
         </> : step?.type === 'vocabulary' ? <>
           <Text accessibilityRole="header" style={styles.title}>המילים שנצטרך</Text>
@@ -118,7 +166,7 @@ export default function OpeningPreview({ onOpenRecorder, onOpenAccount }: { onOp
             </View>
             <Text selectable style={styles.expression}>{step.expressionEs}</Text>
             <Text style={styles.meaning}>{step.meaningHe}</Text>
-            {step.audioPath === audioPath ? <ApprovedAudio key={step.id} />
+            {audio ? <ApprovedAudio key={step.id} source={audio} />
               : <Text style={styles.note}>השמע לביטוי הזה עדיין בהכנה.</Text>}
           </View>
         </> : <Text accessibilityRole="alert" style={styles.error}>לא נמצאו מסכים לסקירה.</Text>}
@@ -136,8 +184,13 @@ export default function OpeningPreview({ onOpenRecorder, onOpenAccount }: { onOp
   </>;
 }
 
+function audioFor(step: Extract<OpeningStep, { type: 'vocabulary' }>): AudioSource | undefined {
+  return step.audioUrl ? { uri: step.audioUrl } : bundledAudio[step.audioAssetId];
+}
+
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: t.colors.background },
+  centered: { justifyContent: 'center', alignItems: 'center', padding: t.space.lg, gap: t.space.md },
   page: { flexGrow: 1, padding: t.space.lg, gap: t.space.xl, width: '100%', maxWidth: 600, alignSelf: 'center' },
   stack: { gap: t.space.md },
   topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },

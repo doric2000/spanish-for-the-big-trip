@@ -17,31 +17,36 @@ function compile(relative, requireMock) {
   return exports;
 }
 const data = compile('../src/lesson/opening-data.ts');
+// The same projection the API returns (content/ is built first: npm --prefix ../content run build).
+const { projectUnit } = require(path.join(root, 'content/dist/src/api-contract.js'));
+const projected = (source, urls = {}) => projectUnit(source, urls, {}, { allowDraft: true });
 
 test('mobile preview reads the actual preparation prefix and never skips an unsupported interaction', () => {
-  const before = JSON.stringify(unit);
-  const steps = data.openingSteps(unit);
+  const learnerUnit = projected(unit);
+  const steps = data.openingSteps(learnerUnit);
   assert.equal(steps.length, 6);
   assert.equal(steps[0].bodyHe, unit.activities[0].bodyHe);
   assert.equal(steps[0].actionLabelHe, unit.activities[0].actionLabelHe);
-  assert.equal(JSON.stringify(steps).includes('correctChoiceId'), false);
-  assert.equal(JSON.stringify(steps).includes('review'), false);
-  assert.equal(JSON.stringify(unit), before);
-  const interrupted = structuredClone(unit);
+  assert.equal(steps[0].sceneAssetId, 'juan-hostel-v1');
+  assert.equal(steps[1].characterNameHe, 'חואן');
+  const interrupted = structuredClone(learnerUnit);
   interrupted.activities.splice(2, 0, { type: 'explanation', id: 'new-required-preparation' });
   assert.equal(data.openingSteps(interrupted).length, 2, 'do not skip unseen preparation to render later cards');
 });
 
-test('pending audio is unavailable even if a historical path exists; only the approved recording is offered', () => {
-  const draft = structuredClone(unit);
-  draft.media.find(m => m.id === 'juan-hola-v1').path = 'assets/old-audition.mp3';
-  const cards = data.openingSteps(draft).filter(s => s.type === 'vocabulary');
-  assert.equal(cards[0].audioPath, null);
-  assert.equal(cards.filter(c => c.audioPath !== null).length, 1);
-  assert.equal(cards[1].expressionEs, 'Buenos días');
-  assert.ok(fs.existsSync(path.join(root, cards[1].audioPath)));
-  draft.media.find(m => m.id === 'juan-buenos-dias-v1').status = 'pending';
-  assert.equal(data.openingSteps(draft).filter(s => s.type === 'vocabulary').every(c => c.audioPath === null), true);
+test('media URLs come only from the server projection: pending audio stays null even with a URL', () => {
+  const urls = { 'juan-buenos-dias-v1': 'https://assets.example/buenos-dias.mp3', 'juan-hola-v1': 'https://assets.example/old-hola.mp3' };
+  const cards = data.openingSteps(projected(unit, urls)).filter(s => s.type === 'vocabulary');
+  assert.equal(cards[0].expressionEs, 'Hola');
+  assert.equal(cards[0].audioUrl, null, 'pending audio is not served');
+  assert.equal(cards[1].audioUrl, urls['juan-buenos-dias-v1']);
+  assert.equal(data.openingSteps(projected(unit)).every(s => (s.type === 'entry' ? s.sceneUrl : s.audioUrl) === null), true, 'nothing hosted yet');
+});
+
+test('the preview no longer bundles the raw unit with its answers', () => {
+  const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
+  assert.equal(preview.includes('units/unit1a.json'), false);
+  assert.match(preview, /fetchUnit\(/);
 });
 
 function loadRoute(relative, development, modules) {
