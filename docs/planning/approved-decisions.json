@@ -623,5 +623,10 @@
     "apple_token_revocation": "Release gate before any public release: revoke the Sign in with Apple token on deletion through Apple's REST API with the .p8 key on a server (planned with the API in stage 05). Apple says apps 'should' do this.",
     "google": "The app revokes its own Google access (GoogleSignin.revokeAccess) after a successful server deletion; best effort.",
     "ux": "Underlined delete link under sign-out, native destructive confirmation, 'מוחקים את החשבון…' while deleting, one-shot 'החשבון נמחק.' on sign-in; on failure the learner stays signed in and sees 'לא הצלחנו למחוק את החשבון' / 'בדקו את החיבור לאינטרנט ונסו שוב.'."
+  },
+  "dependency_audit": {
+    "decided_on": "2026-10-17",
+    "policy": "Do not run npm audit fix --force: its fixes downgrade Expo (to 44) and React Native (to 0.72). Triage by where the vulnerable code runs and wait for Expo patch releases (Dependabot watches; SDK majors stay blocked).",
+    "findings_2026_10_17": "30 warnings from 4 transitive advisories: braces (Metro, dev machine), node-forge (Expo CLI, dev machine), uuid (iOS build plugins, build time), decode-uri-component (expo-router query parsing, in the app; a malformed link can only hang the app it is opened in). Recheck after each Expo patch upgrade."
   }
 }

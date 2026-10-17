@@ -129,6 +129,14 @@
         "expo-image57.0.5"
       ],
       "status": "Installed by Dor 2026-10-16 before the second development build to avoid extra builds; all but expo-splash-screen unused until a screen needs them. expo-doctor 21/21."
+    },
+    {
+      "area": "lint",
+      "tools": [
+        "ESLint 9 (flat config)",
+        "eslint-config-expo 57.0.2"
+      ],
+      "status": "Set up by Dor with npx expo lint on 2026-10-17; covers src/ and the Node tests (tests and *.config.js get Node globals); runs in CI after typecheck. The 'npm audit' review (4 transitive advisories; npm's fix would downgrade Expo to 44) is recorded in approved-decisions.json#dependency_audit."
     }
   ],
   "installed_skills": [

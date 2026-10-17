@@ -2979,6 +2979,31 @@
         "Google consent screen is still in Testing"
       ],
       "next_step": "Housekeeping (ESLint, npm audit review), then the stage 04 handoff."
+    },
+    {
+      "id": "stage04-eslint-and-audit-2026-10-17",
+      "stage_id": "04",
+      "goal": "Add linting to the mobile app and CI, and review the npm audit warnings without breaking the SDK.",
+      "practical_owner": "Dor ran npx expo lint, which installed ESLint and eslint-config-expo and created the config. Claude explained each finding, fixed them, extended linting to the Node tests, added lint to CI, and reviewed npm audit read-only.",
+      "practical_action": "Findings fixed: setState inside useEffect in the account screen (loading is now set by the retry action); a mutable variable while rendering the barcode (positions computed once); a missing hook dependency in the map stamp; property writes on the expo-audio player moved into one shared helper (playAudible); the deliberate __DEV__-only require kept with a one-line disable and a reason. npm audit: 30 warnings come from 4 transitive advisories (braces in Metro, node-forge in Expo CLI, uuid in the iOS build plugins, decode-uri-component in expo-router); only the last ships in the app and is low risk; npm's suggested fix downgrades Expo to 44 and React Native to 0.72, so no --force.",
+      "evidence": [
+        "Local: mobile typecheck clean; lint clean (src and tests); tests 31/31",
+        ".github/workflows/ci.yml runs Mobile lint after Mobile typecheck"
+      ],
+      "concepts": [
+        "Linting vs type checking: patterns that compile but cause bugs",
+        "React hook rules: effects synchronize, events cause state changes; dependency lists",
+        "Disabling a rule narrowly and saying why",
+        "Transitive vulnerabilities, where code runs (dev tool vs app), and why audit fix --force can be worse than the issue"
+      ],
+      "dor_participation": "Ran the ESLint setup and shared the findings.",
+      "understanding_demonstrated": "Not checked in this step.",
+      "interview_takeaway": "Walk through a real lint finding (setState in an effect), why it mattered, and how the fix changed where state changes happen; explain how you triaged npm audit instead of forcing upgrades.",
+      "open_questions": [
+        "Recheck npm audit when Expo ships patch releases (Dependabot watches)",
+        "Device check that 1A preview playback and the recorder still play after the playAudible refactor"
+      ],
+      "next_step": "Stage 04 handoff."
     }
   ],
   "entry_template": {
