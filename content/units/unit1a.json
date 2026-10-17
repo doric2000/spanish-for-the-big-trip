@@ -109,8 +109,11 @@
       "review": {
         "status": "approved",
         "source": "docs/curriculum/unit1a-content.json#entry",
-        "note": "Exact title, body and primary action supplied by Dor."
+        "note": "Exact title, body and primary action supplied by Dor. Kicker, scene caption and character name from Figma template 80:269 approved by Dor on 2026-10-17."
       },
+      "kickerHe": "פרק ראשון",
+      "sceneCaption": "HOSTEL · 07:30",
+      "characterId": "juan",
       "titleHe": "המפגש הראשון",
       "bodyHe": "בוקר ראשון בהוסטל.\nמטייל אחר, חואן, פונה אליכם בספרדית. נלמד להבין מה הוא אומר ולענות בחזרה.",
       "actionLabelHe": "בוא נתחיל!",

@@ -161,6 +161,20 @@ test('draft projection needs explicit allowDraft and returns null for unhosted o
   for (const forbidden of ['correctChoiceId', 'expectedTileIds', 'feedbackHe', 'nextNodeId', 'editorial', 'pendingStages', 'assets/characters']) assert.equal(text.includes(forbidden), false, forbidden);
 });
 
+test('entry poster details are optional, projected when present and checked against characters', () => {
+  const entry = projectUnit(realDraft(), {}, {}, { allowDraft: true }).activities[0]!;
+  assert.ok(entry.type === 'entry');
+  assert.deepEqual([entry.kickerHe, entry.sceneCaption, entry.characterId], ['פרק ראשון', 'HOSTEL · 07:30', 'juan']);
+  const bare = realDraft(); const first = bare.activities[0]!;
+  assert.ok(first.type === 'entry');
+  delete first.kickerHe; delete first.sceneCaption; delete first.characterId;
+  assert.equal(validateUnit(bare).success, true, 'the details stay optional');
+  const projected = projectActivity(first);
+  assert.equal('kickerHe' in projected || 'sceneCaption' in projected || 'characterId' in projected, false);
+  const unknown = realDraft(); const scene = unknown.activities[0]!;
+  assert.ok(scene.type === 'entry'); scene.characterId = 'nobody'; invalid(unknown, 'Unknown character');
+});
+
 test('attempt input rejects client-selected user, correctness, raw audio and unknown response fields', () => {
   const state = begin(); const valid = request(state, { kind: 'continue' });
   for (const key of ['userId', 'correct', 'audio', 'completed']) assert.equal(AttemptRequestSchema.safeParse({ ...valid, [key]: 'injected' }).success, false);

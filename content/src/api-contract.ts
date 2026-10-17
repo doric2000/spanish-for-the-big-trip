@@ -28,7 +28,10 @@ export function restorePending(input: unknown, userId: string) {
 export function projectActivity(activity: Activity, scenarioNodeId?: string) {
   const common = { id: activity.id, phase: activity.phase, required: activity.required, helpIds: [...activity.helpIds] };
   switch (activity.type) {
-    case 'entry': return { ...common, type: activity.type, titleHe: activity.titleHe, bodyHe: activity.bodyHe, actionLabelHe: activity.actionLabelHe, sceneAssetId: activity.sceneAssetId };
+    case 'entry': return { ...common, type: activity.type, titleHe: activity.titleHe, bodyHe: activity.bodyHe, actionLabelHe: activity.actionLabelHe, sceneAssetId: activity.sceneAssetId,
+      ...(activity.kickerHe ? { kickerHe: activity.kickerHe } : {}),
+      ...(activity.sceneCaption ? { sceneCaption: activity.sceneCaption } : {}),
+      ...(activity.characterId ? { characterId: activity.characterId } : {}) };
     case 'vocabulary_card': return { ...common, type: activity.type, expressionEs: activity.expressionEs, meaningHe: activity.meaningHe, characterId: activity.characterId, audioAssetId: activity.audioAssetId };
     case 'explanation': return { ...common, type: activity.type, titleHe: activity.titleHe, generalHe: activity.generalHe, examples: activity.examples.map(e => ({ textEs: e.textEs, meaningHe: e.meaningHe })) };
     case 'dialogue': return { ...common, type: activity.type, titleHe: activity.titleHe, translationInitiallyVisible: activity.translationInitiallyVisible, turns: activity.turns.map(t => ({ id: t.id, speakerId: t.speakerId, textEs: t.textEs, translationHe: t.translationHe, audioAssetId: t.audioAssetId })) };

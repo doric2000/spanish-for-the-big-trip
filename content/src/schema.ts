@@ -17,6 +17,9 @@ const choice = z.strictObject({ id, textHe: text });
 const entry = z.strictObject({
   ...base, type: z.literal('entry'), titleHe: text, bodyHe: text,
   actionLabelHe: text, sceneAssetId: id,
+  // Optional poster details: a line above the title, a caption on the scene and
+  // the character whose name appears on it.
+  kickerHe: text.optional(), sceneCaption: text.optional(), characterId: id.optional(),
 });
 const vocabulary = z.strictObject({
   ...base, type: z.literal('vocabulary_card'), expressionEs: text,
@@ -170,7 +173,7 @@ export const UnitSchema = z.strictObject({
     }
     if (activity.type === 'entry') assetRef(activity.sceneAssetId, 'image', [...path, 'sceneAssetId']);
     if ('audioAssetId' in activity) assetRef(activity.audioAssetId, 'audio', [...path, 'audioAssetId']);
-    if (activity.type === 'vocabulary_card' && !characters.has(activity.characterId)) issue([...path, 'characterId'], 'Unknown character');
+    if ((activity.type === 'vocabulary_card' || activity.type === 'entry') && activity.characterId !== undefined && !characters.has(activity.characterId)) issue([...path, 'characterId'], 'Unknown character');
     if (activity.type === 'dialogue') {
       unique(activity.turns.map(t => t.id), [...path, 'turns']);
       activity.turns.forEach((turn, j) => {

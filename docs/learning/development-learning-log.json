@@ -3076,6 +3076,55 @@
         "Dor's global npm is 10.9.8, which crashes on a fresh install of this tree. Either Dor upgrades npm to 11 in his Node 22 or new installs in api/ keep using npx npm@11.21.1. CI's npm ci uses the lockfile and is not affected."
       ],
       "next_step": "Dor commits api/; then replace the Hello World example with GET /v1/units/:unitId, a token guard and tests for 200, 401 and 404."
+    },
+    {
+      "id": "stage05-get-unit-endpoint-2026-10-17",
+      "stage_id": "05",
+      "goal": "First real endpoint: GET /v1/units/:unitId returns the learner projection of the newest revision to a signed-in user, and nothing to anyone else.",
+      "practical_owner": "Claude wrote the code, tests and CI steps (Dor: 'תבצע גם את ההתקנה'). Dor chose draft media option A, created api/.env with the Supabase URL and secret key himself, ran the server and sent the requests.",
+      "practical_action": "content: projectUnit gained an explicit allowDraft option; in draft projection unhosted or unapproved media return url null, published stays strict; package.json exports schema and api-contract. api: @supabase/supabase-js 2.118.0 and file:../content; CoreModule (config + server Supabase client), AuthGuard (Bearer token -> getClaims; rejects missing, forged, anonymous and service tokens), UnitsController (Cache-Control no-store), UnitsService (404 unknown or malformed id, 503 database error, 500 stored payload failing Zod, projectUnit), UnitRevisionsRepository (only code that reads unit_revisions), request log middleware (method, path, status, time, never headers). readConfig refuses ALLOW_DRAFT_UNITS on Vercel. CI installs, builds, lints and tests api.",
+      "evidence": [
+        "content tests 62/62 (new: draft projection needs allowDraft, pending media never served)",
+        "api: 8 unit tests (config, service), 4 e2e tests (200 without private fields, 401 x5 cases, 404 unknown, 404 draft without the setting), build and lint pass; npm 10 npm ci installs from the lockfile",
+        "Dor-reported: server started with his api/.env; curl without token and with a forged token both returned 401 and the server logged both requests"
+      ],
+      "concepts": [
+        "Guard vs controller vs service vs repository, and why the repository boundary makes the service testable",
+        "Verifying a JWT with getClaims (signature and expiry against the project's keys); the user id comes only from verified claims",
+        "Fail closed: missing settings stop startup; drafts refused in a deployed environment",
+        "Status codes as a contract: 401 identity, 404 not available, 503 dependency down, 500 our bad data",
+        "Test doubles: e2e tests replace Supabase with fakes"
+      ],
+      "dor_participation": "Chose draft media option A, configured the local secret, ran the server and both requests, answered the check question.",
+      "understanding_demonstrated": "Asked what the e2e tests prove versus his real curl check: answered that the tests prove the general policy for the sender's token (trusted or not), not the request to Supabase itself, and that a valid response is proved later. Partly correct. Added in the chat: the fakes prove our decisions given assumed Supabase answers; only the real run proves the wiring (api/.env loading, the real client, Supabase actually rejecting a forged signature).",
+      "interview_takeaway": "Walk a request through middleware, guard, controller, service, repository and projection, and explain which tests use fakes and what only an integration run can prove.",
+      "open_questions": [
+        "The 200 path with a real learner token is not yet proven; it comes from the phone.",
+        "Whether the 1A revision stored by the stage 04 seed is the 16-activity version is not yet checked."
+      ],
+      "next_step": "Connect the lesson preview on the iPhone to the API over the home Wi-Fi and see 200 in the server log."
+    },
+    {
+      "id": "stage05-phone-reads-unit-from-api-2026-10-17",
+      "stage_id": "05",
+      "goal": "The iPhone reads unit 1A from our API with the learner's token, instead of bundling the raw unit file (which included the answers).",
+      "practical_owner": "Claude wrote the code and tests. Dor added EXPO_PUBLIC_API_URL to mobile/.env.local, ran the API and Metro, and checked the success and failure paths on the iPhone.",
+      "practical_action": "mobile/src/api/units.ts: fetchUnit sends Authorization: Bearer to the API, has a 10 s timeout, and maps 401/404/5xx/network failure to reasons the screen explains. The development lesson preview loads through fetchUnit (loading, failure with retry, ready) and reads the token from supabase.auth.getSession() at request time. It no longer imports content/units/unit1a.json. Media: an API URL wins; until Storage exists the preview falls back to the approved files bundled in the development build, by media id. content: each projected activity carries a literal type, so PublicActivity narrows in TypeScript.",
+      "evidence": [
+        "mobile typecheck and lint clean; mobile tests 35/35 (new: fetchUnit header, status mapping, timeout; the preview no longer bundles the raw unit); content 62/62; api 12/12",
+        "Dor-reported on iPhone over home Wi-Fi (PC 10.100.102.7:3000): the preview loaded from the API with server log GET /v1/units/C01-U01 200; with the server stopped the app showed the connection error, and retry loaded the unit after restarting the server"
+      ],
+      "concepts": [
+        "Client-side request path: session token -> Authorization header -> API -> learner projection",
+        "Timeouts turn a silent hang (blocked port) into a diagnosable failure",
+        "Mapping HTTP status codes to user-facing reasons",
+        "Removing private data from the app bundle by moving the read behind the server"
+      ],
+      "dor_participation": "Configured the API URL, ran both servers, verified the 200 path and the failure/retry path on the iPhone, answered the check question.",
+      "understanding_demonstrated": "Asked why the app reads the token from getSession() when sending instead of keeping the token from when the screen opened: answered that the token may have expired or been replaced since the screen opened. Correct.",
+      "interview_takeaway": "Explain how a mobile client authenticates to your own API with the Supabase access token, how token refresh is handled, and how you diagnosed and tested a connection failure.",
+      "open_questions": [],
+      "next_step": "Build the shared retro lesson components from the Figma templates (docs/design/interaction-catalog.json#retro_lesson_templates) on the API data, starting with entry and vocabulary_card."
     }
   ],
   "entry_template": {
