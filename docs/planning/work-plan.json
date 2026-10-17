@@ -790,7 +790,7 @@
     "adopted_on": "2026-10-16",
     "authority": "Dor: PLEASE IMPLEMENT THIS PLAN",
     "current_stage": "05",
-    "current_checkpoint": "stage05_api_scaffold",
+    "current_checkpoint": "stage05_first_endpoint",
     "status_source": "This object and stage statuses are authoritative; other artifacts are dated evidence or references.",
     "course_plan_ref": "docs/curriculum/curriculum-plan.json",
     "content_ref": "content/units/unit1a.json",
@@ -800,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "2026-10-17: stage 05 open. Request path agreed and draft access decided (approved-decisions.json#stage05_draft_units_in_development). Next: Dor creates api/ with the NestJS CLI; then the first endpoint GET /v1/units/C01-U01 with a token guard, tested locally (200, 401, 404) before connecting one phone screen. Public-release gates (Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
+    "next_action": "2026-10-17: stage 05 open. Request path agreed and draft access decided (approved-decisions.json#stage05_draft_units_in_development). api/ scaffold created (NestJS 12, @nestjs/mau removed, audit clean). Next: the first endpoint GET /v1/units/C01-U01 with a token guard, tested locally (200, 401, 404) before connecting one phone screen. Public-release gates (Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [

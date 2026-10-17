@@ -3050,6 +3050,32 @@
         "If a non-developer editor ever needs to edit content, add an editing tool (admin screen or CMS) that still produces validated revisions; not needed now."
       ],
       "next_step": "Continue stage 05: Dor creates api/ with the NestJS CLI."
+    },
+    {
+      "id": "stage05-api-scaffold-2026-10-17",
+      "stage_id": "05",
+      "goal": "Create the api/ NestJS project, verify the skeleton runs, and review what the CLI generated before writing the first endpoint.",
+      "practical_owner": "Claude, delegated by Dor ('תריץ אתה את הפקודה'). Claude ran the CLI, diagnosed the failed install, removed @nestjs/mau on Dor's decision and ran the checks.",
+      "practical_action": "npx.cmd @nestjs/cli@12.0.8 new api --package-manager npm --skip-git --strict created the files but its silent npm install failed. Rerunning npm install showed npm 10.9.8 crashing with 'Cannot read properties of null (reading edgesOut)' in arborist #loadPeerSet while resolving vite 8 optional peers, a known npm 10 bug. Installed once with npx npm@11.21.1 install; afterwards npm 10 works against the lockfile (npm ci --dry-run passes). npm audit showed 5 findings, all through @nestjs/mau (NestJS's paid AWS deploy tool: tmp, external-editor, inquirer, undici). We deploy to Vercel, so Dor chose to remove @nestjs/mau and the nest deploy script: 0 vulnerabilities.",
+      "evidence": [
+        "api/package.json, api/package-lock.json",
+        "npm test 1/1, npm run test:e2e 1/1, npm run build and npm run lint pass; npm audit 0 vulnerabilities",
+        "node dist/main.js: GET / -> 200 'Hello World!', GET /v1/units/C01-U01 -> 404 (route not written yet); Nest log 'Mapped {/, GET} route'"
+      ],
+      "concepts": [
+        "NestJS module, controller, service and the bootstrap in main.ts",
+        "Dependency injection: Nest constructs AppService and passes it to the controller's constructor",
+        "ESM ('type': 'module'): relative imports end in .js because they name the compiled file",
+        "Reading a hidden failure: rerun without --silent, then read the npm debug log stack",
+        "Audit triage by dependency path: remove a dev tool we do not use instead of npm audit fix --force"
+      ],
+      "dor_participation": "Delegated the scaffold command, chose to remove @nestjs/mau, answered the check question.",
+      "understanding_demonstrated": "Asked why Supabase calls belong in the service, not the controller: answered separation of concerns (each part has one job) and reuse of the read. Correct. Added in the chat: testability, because injection lets a test replace the service with a fake, so the guard and controller can be tested without a real database.",
+      "interview_takeaway": "Explain the controller/service split and how dependency injection makes the controller testable with a fake service; describe how you diagnosed an install failure that the tool hid.",
+      "open_questions": [
+        "Dor's global npm is 10.9.8, which crashes on a fresh install of this tree. Either Dor upgrades npm to 11 in his Node 22 or new installs in api/ keep using npx npm@11.21.1. CI's npm ci uses the lockfile and is not affected."
+      ],
+      "next_step": "Dor commits api/; then replace the Hello World example with GET /v1/units/:unitId, a token guard and tests for 200, 401 and 404."
     }
   ],
   "entry_template": {
