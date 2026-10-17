@@ -14,3 +14,7 @@ b21a549014df1e5f7c59ae13eb8196c4ac5819c1:docs/evidence/checks/03-expanded-contra
 b21a549014df1e5f7c59ae13eb8196c4ac5819c1:docs/design/templates/meaning-check.json:generic-api-key:4
 b21a549014df1e5f7c59ae13eb8196c4ac5819c1:docs/design/templates/dialogue.json:generic-api-key:4
 b21a549014df1e5f7c59ae13eb8196c4ac5819c1:docs/curriculum/unit1a-content.json:generic-api-key:29
+
+# Placeholder badge token (abc123def456) in the README that the NestJS CLI
+# generated (2026-10-17). The README was replaced in the next commit.
+52525f014567a1874f3200c713c2c1b953774323:api/README.md:generic-api-key:5
