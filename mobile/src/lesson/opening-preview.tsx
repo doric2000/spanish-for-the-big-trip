@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Image, type ImageSourcePropType, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, type ImageSourcePropType, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { type AudioSource, setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,7 +7,8 @@ import { fetchUnit, type UnitFailure } from '../api/units';
 import { playAudible } from '../audio-playback';
 import { supabase } from '../auth/supabase';
 import { theme as t } from '../theme';
-import { moveOpeningStep, openingSteps, type OpeningStep } from './opening-data';
+import { EntryScreen } from './entry-screen';
+import { activityCode, moveOpeningStep, openingSteps, type OpeningStep, unitCodes } from './opening-data';
 
 // Approved files bundled in the development build, by media id, until they are
 // served from Supabase Storage. A URL from the API always wins.
@@ -36,18 +37,6 @@ function Action({ title, onPress, secondary = false, disabled = false, busy = fa
     {busy ? <ActivityIndicator color={secondary ? t.colors.primary : t.colors.onPrimary} />
       : <Text style={[styles.actionLabel, secondary && styles.secondaryLabel]}>{title}</Text>}
   </Pressable>;
-}
-
-function Scene({ assetId, url }: { assetId: string; url: string | null }) {
-  const [failed, setFailed] = useState(false);
-  const source = url ? { uri: url } : bundledScenes[assetId];
-  if (!source || failed) return <Text accessibilityRole="alert" style={styles.note}>התמונה אינה זמינה כרגע.</Text>;
-  // The frame sets the size; the image only fills it. Sizing the Image itself
-  // with width '100%' let iOS draw it at its pixel size and overflow the screen.
-  return <View style={styles.sceneFrame}>
-    <Image source={source} style={styles.sceneImage} resizeMode="cover"
-      accessibilityLabel="חואן מברך אתכם בהוסטל" onError={() => setFailed(true)} />
-  </View>;
 }
 
 function ApprovedAudio({ source }: { source: AudioSource }) {
@@ -90,9 +79,10 @@ function ApprovedAudio({ source }: { source: AudioSource }) {
     onPress={() => { void toggle(); }} secondary disabled={!status.isLoaded} busy={busy} />;
 }
 
-type Load = { status: 'loading' } | { status: 'failed'; reason: UnitFailure } | { status: 'ready'; steps: OpeningStep[] };
+type Ready = { unitId: string; activityCount: number; steps: OpeningStep[] };
+type Load = { status: 'loading' } | { status: 'failed'; reason: UnitFailure } | ({ status: 'ready' } & Ready);
 
-type PreviewProps = { onOpenRecorder: () => void; onOpenAccount?: () => void };
+type PreviewProps = { onOpenRecorder: () => void; onOpenAccount?: () => void; onClose: () => void };
 
 export default function OpeningPreview(props: PreviewProps) {
   const [load, setLoad] = useState<Load>({ status: 'loading' });
@@ -107,12 +97,14 @@ export default function OpeningPreview(props: PreviewProps) {
       const result = token ? await fetchUnit(process.env.EXPO_PUBLIC_API_URL, 'C01-U01', token)
         : { ok: false as const, reason: 'unauthorized' as const };
       if (!active) return;
-      setLoad(result.ok ? { status: 'ready', steps: openingSteps(result.unit) } : { status: 'failed', reason: result.reason });
+      setLoad(result.ok
+        ? { status: 'ready', unitId: result.unit.id, activityCount: result.unit.activities.length, steps: openingSteps(result.unit) }
+        : { status: 'failed', reason: result.reason });
     })();
     return () => { active = false; };
   }, [attempt]);
 
-  if (load.status === 'ready') return <PreviewSteps steps={load.steps} {...props} />;
+  if (load.status === 'ready') return <PreviewSteps {...load} {...props} />;
   return <View style={[styles.root, styles.centered]}>
     <StatusBar style="dark" />
     {load.status === 'loading' ? <>
@@ -125,7 +117,7 @@ export default function OpeningPreview(props: PreviewProps) {
   </View>;
 }
 
-function PreviewSteps({ steps, onOpenRecorder, onOpenAccount }: PreviewProps & { steps: OpeningStep[] }) {
+function PreviewSteps({ unitId, activityCount, steps, onOpenRecorder, onOpenAccount, onClose }: PreviewProps & Ready) {
   const vocabularyCount = steps.filter(step => step.type === 'vocabulary').length;
   const [index, setIndex] = useState(0);
   const step = steps[index];
@@ -137,6 +129,9 @@ function PreviewSteps({ steps, onOpenRecorder, onOpenAccount }: PreviewProps & {
   // full-height content down by the top inset, pushing the footer under the
   // home indicator.
   const insets = useSafeAreaInsets();
+  if (step?.type === 'entry') return <EntryScreen content={step} scene={sceneFor(step)}
+    unitCode={unitCodes(unitId)} headerCode={activityCode(unitId, index, activityCount)} index={index} count={activityCount}
+    onStart={advance} onClose={onClose} />;
   return <>
     <StatusBar style="dark" />
     <ScrollView style={styles.root} contentInsetAdjustmentBehavior="never"
@@ -153,10 +148,6 @@ function PreviewSteps({ steps, onOpenRecorder, onOpenAccount }: PreviewProps & {
           <Text accessibilityRole="header" style={styles.title}>סיימתם את מקטע הסקירה</Text>
           <Text style={styles.body}>ראינו את הכניסה ואת הכנת המילים. השיחה והתרגולים יתחברו בהמשך.</Text>
           <Text style={styles.note}>זו סקירת פיתוח מקומית. היחידה עדיין אינה מלאה, ואין כאן שמירת התקדמות בחשבון.</Text>
-        </> : step?.type === 'entry' ? <>
-          <Text accessibilityRole="header" style={styles.title}>{step.titleHe}</Text>
-          <Scene assetId={step.sceneAssetId} url={step.sceneUrl} />
-          <Text style={styles.body}>{step.bodyHe}</Text>
         </> : step?.type === 'vocabulary' ? <>
           <Text accessibilityRole="header" style={styles.title}>המילים שנצטרך</Text>
           <View style={styles.card}>
@@ -176,12 +167,16 @@ function PreviewSteps({ steps, onOpenRecorder, onOpenAccount }: PreviewProps & {
           <Action title="חזרה לתחילת הסקירה" onPress={() => setIndex(0)} />
           <Action title="תרגול הקלטה" onPress={onOpenRecorder} secondary />
         </> : step ? <>
-          <Action title={step.type === 'entry' ? step.actionLabelHe : index === steps.length - 1 ? 'סיום הסקירה' : 'לביטוי הבא'} onPress={advance} />
+          <Action title={index === steps.length - 1 ? 'סיום הסקירה' : 'לביטוי הבא'} onPress={advance} />
           {index > 0 && <Action title="חזרה" onPress={() => setIndex(current => moveOpeningStep(current, 'back', steps.length))} secondary />}
         </> : <Action title="תרגול הקלטה" onPress={onOpenRecorder} />}
       </View>
     </ScrollView>
   </>;
+}
+
+function sceneFor(step: Extract<OpeningStep, { type: 'entry' }>): ImageSourcePropType | null {
+  return step.sceneUrl ? { uri: step.sceneUrl } : bundledScenes[step.sceneAssetId] ?? null;
 }
 
 function audioFor(step: Extract<OpeningStep, { type: 'vocabulary' }>): AudioSource | undefined {
@@ -198,8 +193,6 @@ const styles = StyleSheet.create({
   previewLabel: { fontSize: t.type.small, color: t.colors.muted, writingDirection: 'rtl' },
   chapter: { fontSize: t.type.small, color: t.colors.primary, writingDirection: 'rtl' },
   title: { fontSize: t.type.title, fontWeight: '700', color: t.colors.ink, writingDirection: 'rtl' },
-  sceneFrame: { alignSelf: 'stretch', aspectRatio: 1391 / 1131, borderRadius: t.radius.card, overflow: 'hidden' },
-  sceneImage: { width: '100%', height: '100%' },
   body: { fontSize: t.type.body, lineHeight: 30, color: t.colors.muted, writingDirection: 'rtl' },
   card: { backgroundColor: t.colors.surface, borderColor: t.colors.border, borderWidth: 1, borderRadius: t.radius.card, padding: t.space.lg, gap: t.space.lg },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', gap: t.space.md },

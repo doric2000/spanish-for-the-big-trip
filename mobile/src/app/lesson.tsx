@@ -8,7 +8,8 @@ export default function Lesson() {
     const OpeningPreview: typeof import('../lesson/opening-preview').default =
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('../lesson/opening-preview').default;
-    return <OpeningPreview onOpenRecorder={() => router.push('/recorder')} onOpenAccount={() => router.push('/account')} />;
+    return <OpeningPreview onOpenRecorder={() => router.push('/recorder')} onOpenAccount={() => router.push('/account')}
+      onClose={() => router.back()} />;
   }
   return <AudioLab />;
 }

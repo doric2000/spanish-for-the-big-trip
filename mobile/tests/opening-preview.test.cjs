@@ -28,10 +28,37 @@ test('mobile preview reads the actual preparation prefix and never skips an unsu
   assert.equal(steps[0].bodyHe, unit.activities[0].bodyHe);
   assert.equal(steps[0].actionLabelHe, unit.activities[0].actionLabelHe);
   assert.equal(steps[0].sceneAssetId, 'juan-hostel-v1');
+  assert.equal(steps[0].kickerHe, 'פרק ראשון');
+  assert.equal(steps[0].sceneCaption, 'HOSTEL · 07:30');
+  assert.equal(steps[0].characterNameHe, 'חואן');
   assert.equal(steps[1].characterNameHe, 'חואן');
   const interrupted = structuredClone(learnerUnit);
   interrupted.activities.splice(2, 0, { type: 'explanation', id: 'new-required-preparation' });
   assert.equal(data.openingSteps(interrupted).length, 2, 'do not skip unseen preparation to render later cards');
+});
+
+test('entry poster details are optional: a unit without them shows none', () => {
+  const bare = projected(unit);
+  for (const key of ['kickerHe', 'sceneCaption', 'characterId']) delete bare.activities[0][key];
+  const [entry] = data.openingSteps(bare);
+  assert.deepEqual([entry.kickerHe, entry.sceneCaption, entry.characterNameHe], [null, null, null]);
+});
+
+test('unit and header codes come from the stable unit id', () => {
+  assert.deepEqual({ ...data.unitCodes('C01-U01') }, { short: '1A', long: 'C01·U01' });
+  assert.deepEqual({ ...data.unitCodes('C02-U04') }, { short: '2D', long: 'C02·U04' });
+  assert.deepEqual({ ...data.unitCodes('draft-x') }, { short: 'draft-x', long: 'draft-x' }, 'unknown shapes are shown as is');
+  assert.equal(data.activityCode('C01-U01', 0, 16), '1A·01/16');
+  assert.equal(data.activityCode('C01-U01', 15, 16), '1A·16/16');
+});
+
+test('entry screen: explicit image size, padded centring, no hard-coded unit copy', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/entry-screen.tsx'), 'utf8');
+  // Sized only by its edges, iOS drew Juan's scene at pixel size (Dor's iPhone, 2026-10-17).
+  assert.match(screen, /<Image source=\{source\} style=\{\{ width, height \}\}/);
+  // alignSelf on the RTL ScrollView content was ignored and the column sat on the right edge.
+  assert.doesNotMatch(screen, /alignSelf: 'center'/);
+  for (const copy of ['חואן', 'HOSTEL', 'פרק ראשון', 'בוא נתחיל']) assert.equal(screen.includes(copy), false, copy);
 });
 
 test('media URLs come only from the server projection: pending audio stays null even with a URL', () => {
@@ -90,7 +117,7 @@ test('lesson route never loads the draft preview in production and links to reco
     function AudioLab() {}
     function OpeningPreview() {}
     const Home = loadRoute('lesson.tsx', development, {
-      'expo-router': () => ({ router: { push: href => pushed.push(href) } }),
+      'expo-router': () => ({ router: { push: href => pushed.push(href), back: () => pushed.push('back') } }),
       '../audio-lab': () => ({ __esModule: true, default: AudioLab }),
       '../lesson/opening-preview': () => {
         assert.equal(development, true, 'release cannot require draft content');
@@ -106,7 +133,8 @@ test('lesson route never loads the draft preview in production and links to reco
       assert.equal(screen.type, OpeningPreview);
       screen.props.onOpenRecorder();
       screen.props.onOpenAccount();
-      assert.equal(JSON.stringify(pushed), JSON.stringify(['/recorder', '/account']));
+      screen.props.onClose();
+      assert.equal(JSON.stringify(pushed), JSON.stringify(['/recorder', '/account', 'back']));
     }
   }
 });
