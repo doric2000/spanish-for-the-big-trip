@@ -3026,6 +3026,30 @@
       "interview_takeaway": "Explain why the client may read its own progress directly under RLS but must get lesson content through a server that strips the answer key, and why RLS alone cannot do that.",
       "open_questions": [],
       "next_step": "Dor creates api/ with npx.cmd @nestjs/cli@12.0.8 new api --package-manager npm --skip-git --strict; then review the generated files together."
+    },
+    {
+      "id": "stage05-jsonb-revision-design-review-2026-10-17",
+      "stage_id": "05",
+      "goal": "Check whether storing a whole unit revision in one JSONB cell (unit_revisions.authoring_payload) is a standard, sound choice or a mistake that makes editing hard.",
+      "practical_owner": "Dor inspected the table in Supabase himself and raised the concern. Claude searched the web (PostgreSQL JSON documentation guidance, JSONB vs normalized tables, headless CMS and language-app content practices) and compared them with our design.",
+      "practical_action": "Design review only, no change. Conclusion: keep the design. The cell is a published snapshot, not the place where content is edited: lessons are edited in content/units/*.json in Git, validated by Zod, and the seed/import writes a new revision. Each revision is read whole and never partly updated, which matches PostgreSQL's advice that a JSON document should be an atomic datum. Fields that are queried, joined or constrained stay relational: units, chapters, media_assets, and activity_id and revision columns in progress and attempts.",
+      "evidence": [
+        "Sources cited in the stage05 chat (PostgreSQL docs 'Designing JSON Documents' via search, JSONB vs normalized guides, Asakiri and LibreLingo keep courses as files in Git)",
+        "content/storage-model.json, supabase/migrations/20261016091112_create_unit_revisions.sql"
+      ],
+      "concepts": [
+        "Document (JSONB) vs normalized tables: read and written as a unit vs queried, joined or constrained independently",
+        "Hybrid model: relational columns for what is queried, JSONB for the immutable snapshot",
+        "Source of truth (Git JSON) vs derived copy (database row), like source code vs a build",
+        "Immutable revisions: editing creates a new revision, never changes a published row"
+      ],
+      "dor_participation": "Inspected the stored data on his own initiative and questioned the design before building on it.",
+      "understanding_demonstrated": "Not checked in this step.",
+      "interview_takeaway": "Explain why a versioned lesson snapshot is stored as one JSONB document while progress and attempts are relational, and where content is actually edited.",
+      "open_questions": [
+        "If a non-developer editor ever needs to edit content, add an editing tool (admin screen or CMS) that still produces validated revisions; not needed now."
+      ],
+      "next_step": "Continue stage 05: Dor creates api/ with the NestJS CLI."
     }
   ],
   "entry_template": {
