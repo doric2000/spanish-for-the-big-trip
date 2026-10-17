@@ -3146,12 +3146,40 @@
         "The SQL Editor runs the text in its tab, not the file on disk"
       ],
       "dor_participation": "Approved decisions 1, 2 and 4 directly and 3 after an explanation; asked that design and component skills be used without reminders (recorded in AGENTS.md); ran the diagnostic query and the seed; verified on the iPhone.",
-      "understanding_demonstrated": "pending: check question asked after the verification.",
+      "understanding_demonstrated": "Not yet answered: the check question (summary text changed in unit1a.json but the phone shows the old text: what do you check first?) was asked twice and both replies arrived without an answer.",
       "interview_takeaway": "Explain how you found that a change was missing in production-like data by comparing a content digest instead of guessing, and why an iOS RTL layout needed padding-based centring and explicit image sizes.",
       "open_questions": [
         "Vocabulary card silent-h tip and five-vowel sheet need joint content authoring and a help schema with several audio files before they appear."
       ],
       "next_step": "Build the vocabulary card from Figma 82:1026 (Default, Playing, Audio error, Long text; tip and vowel buttons only when the card has help; disabled play when the draft has no audio file)."
+    },
+    {
+      "id": "stage05-vocabulary-card-component-2026-10-17",
+      "stage_id": "05",
+      "goal": "Build the shared retro vocabulary card (Figma template 82:1026) on the API data and verify it on the iPhone.",
+      "practical_owner": "Claude wrote the code and tests and loaded vercel-react-native-skills, vercel-composition-patterns and figma-design-to-code first (new AGENTS.md rule). Dor checked the cards on the iPhone and reported the missing heading.",
+      "practical_action": "mobile: VocabularyCardScreen (fixed heading המילים שנצטרך, count pill, tilted ticket sliding in per card, SunPosterArt drawn from the exact Figma shapes with slowly swaying rays, avatar cropped to the face of the approved reference image, card code, Spanish with a Long text state above 8 characters, perforation, meaning, playback). Playback keeps the previous logic: Default, Playing (pause), loading, Audio error with reload; disabled play when the draft has no file. LessonButton split into explicit variants (primary, secondary, outline, audio). Bundled development media moved to src/lesson/media.ts. The old preview card UI was removed.",
+      "evidence": [
+        "mobile typecheck and lint clean; mobile tests 41/41 (new: character image id, long-text rule, fixed heading, disabled play without a file, explicit avatar size, every bundled file exists)",
+        "First iPhone check (Dor screenshot): card, avatar, poster, disabled play and buttons correct; heading המילים שנצטרך missing. Cause: an auto-fitting Text with only flexShrink in a row was measured at zero width on iOS. Fixed with flex: 1 and a test",
+        "Dor-reported on iPhone after the fix: heading shown and everything in place"
+      ],
+      "concepts": [
+        "Explicit variant components instead of boolean props (composition patterns)",
+        "Drawing vector art from design coordinates with react-native-svg in a fixed design space",
+        "adjustsFontSizeToFit needs a definite width",
+        "Disabled state for missing draft media versus an error state for failed loading"
+      ],
+      "dor_participation": "Verified the cards on the iPhone and reported the missing heading; confirmed the fix.",
+      "understanding_demonstrated": "Not checked in this step.",
+      "interview_takeaway": "Explain how one data-driven card component renders any expression, and how you separated \"no file yet\" (disabled) from \"file failed\" (error with reload).",
+      "open_questions": [
+        "Help chips (silent-h tip, five vowels) and their sheets are not built; they come with the joint help content and a help schema with several audio files.",
+        "Figma Playing shows the pause icon after the label; the app keeps play and pause icons before it for consistency. Dor has not decided.",
+        "The avatar face crop for juan-reference-v1 lives in mobile/src/lesson/media.ts; a content-level focal point may replace it when more characters arrive."
+      ],
+      "audio_error_state": "Covered by code only; the bundled recording cannot be made to fail on the device.",
+      "next_step": "Build the dialogue template (Figma 86:1186: translation hidden, shown, playing), then the summary (90:1719)."
     }
   ],
   "entry_template": {

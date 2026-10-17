@@ -233,8 +233,8 @@
     },
     {
       "type": "retro_lesson_templates",
-      "status": "prototype_and_figma_templates_approved_by_Dor_2026-10-16; runtime: entry built and Dor-verified on iPhone 2026-10-17, other templates not built",
-      "runtime": "mobile/src/lesson/entry-screen.tsx (entry), lesson-header.tsx (Lesson / Header 77:288), lesson-button.tsx (Lesson / Button 77:344, primary only so far). Entry poster details kickerHe, sceneCaption and characterId are optional content fields (content/src/schema.ts).",
+      "status": "prototype_and_figma_templates_approved_by_Dor_2026-10-16; runtime: entry and vocabulary_card built and Dor-verified on iPhone 2026-10-17, other templates not built",
+      "runtime": "mobile/src/lesson/entry-screen.tsx (entry), lesson-header.tsx (Lesson / Header 77:288), lesson-button.tsx (Lesson / Button 77:344: primary, secondary, outline, audio), vocabulary-card-screen.tsx and sun-poster-art.tsx (vocabulary_card; help chips and sheets not built until help content exists), media.ts (bundled development media and avatar face crops). Entry poster details kickerHe, sceneCaption and characterId are optional content fields (content/src/schema.ts).",
       "approval_evidence_he": "זה מעולה, אני רוצה שזה יהפוך להיות תבנית, שנוכל להוסיף גם משפטים אחרים, וגם תמונות אחרות, ביחידות אחרות",
       "figma_approval_evidence_he": "התבניות בפיגמה נראות מעולות.",
       "figma_approval_scope": "Visual review of the eight templates, their states and the two listed changes from the prototype. The summary copy was approved separately afterwards; no device or runtime check is implied.",

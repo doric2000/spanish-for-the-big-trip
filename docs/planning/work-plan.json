@@ -800,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "2026-10-17: stage 05 open. GET /v1/units/:unitId works end to end: token guard, draft-only setting, learner projection; the iPhone lesson preview reads 1A from the API over home Wi-Fi (Dor-verified 200 and connection-failure retry). The retro entry component is built on the API data and Dor-verified on the iPhone (docs/design/interaction-catalog.json#retro_lesson_templates). Next: the vocabulary card, then dialogue and summary; interactive templates come with POST /attempts because the server decides correctness. Then Supabase Storage for approved media. Public-release gates (Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
+    "next_action": "2026-10-17: stage 05 open. GET /v1/units/:unitId works end to end: token guard, draft-only setting, learner projection; the iPhone lesson preview reads 1A from the API over home Wi-Fi (Dor-verified 200 and connection-failure retry). The retro entry and vocabulary card components are built on the API data and Dor-verified on the iPhone (docs/design/interaction-catalog.json#retro_lesson_templates). Next: dialogue, then summary; interactive templates come with POST /attempts because the server decides correctness. Then Supabase Storage for approved media. Public-release gates (Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [
