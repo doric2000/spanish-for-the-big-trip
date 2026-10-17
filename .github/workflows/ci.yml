@@ -39,13 +39,16 @@ jobs:
           cache-dependency-path: |
             content/package-lock.json
             mobile/package-lock.json
+            api/package-lock.json
 
       # npm ci installs exactly what the lock files record.
-      # mobile imports the content schema, so both need their packages.
+      # mobile and api import the content package, so all three need their packages.
       - name: Install content packages
         run: npm ci --prefix content
       - name: Install mobile packages
         run: npm ci --prefix mobile
+      - name: Install api packages
+        run: npm ci --prefix api
 
       - name: Content tests
         run: npm --prefix content test
@@ -58,6 +61,16 @@ jobs:
         run: npm --prefix mobile run lint
       - name: Mobile tests
         run: npm --prefix mobile test
+
+      # Each api script builds content first (its pre* scripts).
+      - name: API build
+        run: npm --prefix api run build
+      - name: API lint
+        run: npm --prefix api run lint
+      - name: API tests
+        run: npm --prefix api test
+      - name: API end-to-end tests
+        run: npm --prefix api run test:e2e
 
   secrets:
     name: Secret scan

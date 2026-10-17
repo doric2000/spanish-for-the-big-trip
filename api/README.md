@@ -19,10 +19,15 @@ npm.cmd run lint
 - `test` מריץ בדיקות יחידה (`src/**/*.spec.ts`), ו-`test:e2e` שולח בקשות HTTP אמיתיות לאפליקציה שרצה בזיכרון (`test/*.e2e-spec.ts`).
 - התקנה חדשה (`npm install` ולא `npm ci`) קורסת ב-npm 10 בגלל באג. במקרה כזה יש להריץ `npx.cmd npm@11.21.1 install`.
 
-ערכים מקומיים, כמו המפתח הסודי של Supabase, נכנסים לקובץ `api/.env`. Git מתעלם מהקובץ, ואת הערכים לא מדביקים בצ'אט או במסמכים.
+- כל סקריפט בונה קודם את `../content` (סקריפטי `pre*`), כדי שהשרת ישתמש תמיד ב-`projectUnit` העדכני.
+
+ערכים מקומיים, כמו המפתח הסודי של Supabase, נכנסים לקובץ `api/.env`. Git מתעלם מהקובץ, ואת הערכים לא מדביקים בצ'אט או במסמכים. התבנית נמצאת ב-[.env.example](.env.example).
 
 ## מבנה
 
-- `src/main.ts`: נקודת הכניסה. יוצרת את האפליקציה ומאזינה לפורט.
-- `src/app.module.ts`: המודול הראשי, שבו נרשמים ה-Controllers וה-Services.
-- Controller מקבל את בקשת ה-HTTP. Service מכיל את הלוגיקה ואת הגישה ל-Supabase, ו-NestJS מזריק אותו ל-Controller.
+- `src/main.ts`: נקודת הכניסה. טוענת את `.env`, יוצרת את האפליקציה ומאזינה לפורט.
+- `src/config.ts` ו-`src/core.module.ts`: ההגדרות ולקוח Supabase אחד בצד השרת, שזמינים לכל המודולים.
+- `src/auth/auth.guard.ts`: ה-Guard. בודק את ה-token מול Supabase ומחזיר 401 לפני שהבקשה מגיעה לקוד של הנתיב.
+- `src/units/`: נקודת הגישה `GET /v1/units/:unitId`. ה-Controller מקבל את הבקשה, ה-Service מחליט מה מחזירים, וה-Repository הוא הקוד היחיד שקורא את `unit_revisions`.
+- `src/request-log.middleware.ts`: שורת לוג אחת לכל בקשה (שיטה, נתיב, סטטוס, זמן), בלי כותרות ובלי token.
+- `test/`: בדיקות e2e שמחליפות את Supabase בגרסה מזויפת, כך שהן לא צריכות רשת או מפתחות.

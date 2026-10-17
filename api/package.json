@@ -7,6 +7,13 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
+    "content:build": "npm --prefix ../content run build --silent",
+    "prebuild": "npm run content:build",
+    "prestart": "npm run content:build",
+    "prestart:dev": "npm run content:build",
+    "pretest": "npm run content:build",
+    "pretest:e2e": "npm run content:build",
+    "prelint": "npm run content:build",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -24,6 +31,8 @@
     "@nestjs/common": "^12.0.1",
     "@nestjs/core": "^12.0.1",
     "@nestjs/platform-express": "^12.0.1",
+    "@spanish-for-trip/content": "file:../content",
+    "@supabase/supabase-js": "2.118.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
