@@ -111,7 +111,7 @@
         "model_id": "eleven_v4",
         "delivery_tag": "[slowly]",
         "generation_speed": 0.7,
-        "playback_rate": 1.0,
+        "playback_rate": 1,
         "scope": "Juan beginner delivery baseline approved from Buenos días v4; each later phrase still needs listening verification",
         "manifest": "assets/characters/juan/voice/audition-v4.json",
         "profile": "assets/characters/juan/voice/approved-profile.json",
@@ -636,5 +636,26 @@
     "decision": "A development-only setting ALLOW_DRAFT_UNITS=true in the local, Git-ignored api/.env lets the API return the latest draft revision. Without the setting the API returns only published revisions; a draft-only unit is 404.",
     "guardrails": "The setting is never configured in a deployed environment (Vercel). A test proves that without it a draft-only unit returns 404. Drafts still go through projectUnit, so answers and review data never leave the server. This does not publish 1A or change the whole-chapter release rule.",
     "draft_media": "Dor chose option A on 2026-10-17 ('אפשרות א: במצב טיוטה קובץ שלא הועלה חוזר עם url null, ו-Storage בצעד נפרד אחר כך'). In draft projection a media item without a hosted HTTPS URL returns url null and the app shows the missing-media state. Published projection stays strict: every media item needs an approved HTTPS URL. Uploading approved media to Supabase Storage is a separate later stage 05 step."
+  },
+  "stage05_build_in_lesson_order": {
+    "decided_on": "2026-10-17",
+    "authority": "Dor: 'מבחינתי הסדר הטבעי הוא הכי טוב אלא אם אין סיבה אקוטית'",
+    "decision": "Build the lesson components in the natural order of the unit: after entry and vocabulary comes the listen-select check (u1a-primer-listen) with POST /v1/units/:unitId/attempts, then the dialogue and the rest. Deviate only for an acute reason, explained to Dor first.",
+    "supersedes": "The order \"display templates first, interactive templates only with POST /attempts\" came from a stage handoff prompt and was not confirmed by Dor."
+  },
+  "stage05_dialogue_template": {
+    "decided_on": "2026-10-17",
+    "authority": "Dor approved recommendations 1 and 2 in the stage05 chat ('אני גם מאשר את1 ו 2')",
+    "fixed_copy": "Component text, the same in every dialogue: instruction \"הקשיבו לשיחה. אפשר להציג תרגום ולהקשיב שוב.\", buttons \"הצגת תרגום\" / \"הסתרת תרגום\", \"השמעה\" / \"עצירת השמעה\", \"ממשיכים\".",
+    "learner_turns": "A turn whose speakerId is learner uses the gold learner card with the plane badge; every other speaker uses the cream character card with its avatar. A missing image does not mean learner.",
+    "per_turn_playback": "Dor asked for a play button on every turn as well as the whole-dialogue play (for focusing on one line and for longer dialogues). To be drawn in Figma (Lesson / Dialogue turn) and approved before it is built; only one playback at a time."
+  },
+  "stage05_activity_attempts": {
+    "decided_on": "2026-10-19",
+    "authority": "Dor approved the presented design and both recommendations ('1. לא 2. לפי המלצתך ... ואת השאר אני מאשר')",
+    "table": "public.activity_attempts as planned in content/storage-model.json: key (user_id, request_id); unit_id, revision (FK to unit_revisions, restrict), activity_id, request_fingerprint (SHA-256), response and server_result (JSON objects), created_at. Migration supabase/migrations/20261019164644_create_activity_attempts.sql, check supabase/checks/06_activity_attempts.sql.",
+    "learner_access": "None, not even own rows: RLS on with no policy, all anon/authenticated privileges revoked. The app gets everything it needs from the API.",
+    "server_access": "service_role SELECT and INSERT only; the log is append-only (no UPDATE or DELETE).",
+    "retention": "Kept until the account is deleted (on delete cascade from auth.users); revisit a retention policy before the public release together with the privacy policy."
   }
 }

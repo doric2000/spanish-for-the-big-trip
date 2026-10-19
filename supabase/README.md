@@ -111,3 +111,19 @@ npx.cmd --no-install supabase db push --linked --skip-vault
 `migrations/20261017080000_create_delete_my_account.sql` מוסיף את הפונקציה `public.delete_my_account()`, שמאפשרת ללומד למחוק את החשבון שלו מתוך האפליקציה (דרישת Apple, סעיף 5.1.1(v)). האפליקציה אינה מחזיקה את מפתח `service_role`, ולכן המחיקה רצה בתוך המסד: הפונקציה מוגדרת `security definer` (רצה בהרשאות הבעלים), עם `search_path` ריק, בלי פרמטרים, ומוחקת רק את `auth.uid()`, כלומר את המשתמש שהאסימון המאומת שלו מבצע את הקריאה. ההתקדמות נמחקת יחד איתו בזכות `on delete cascade`. ההרשאה ניתנת רק ל־`authenticated`; ל־`anon` ול־`PUBLIC` אין גישה. ביטול האסימון של Sign in with Apple הוא שלב נפרד לפני פרסום, ודורש שרת.
 
 `checks/05_delete_my_account.sql` רץ במלואו ב־SQL Editor אחרי ההחלה. הוא יוצר שני משתמשים סינתטיים עם התקדמות, מוודא ש־`anon` וקריאה בלי מזהה משתמש נחסמות, מוחק את משתמש A כ־A, ובודק ש־A וההתקדמות שלו נמחקו ו־B לא נפגע. התוצאה הצפויה: `PASS: only the calling user and their progress are deleted; anon and token-less calls refused; synthetic rows rolled back`. דור החיל את המיגרציה וקיבל PASS ב־2026-10-17.
+
+## התוספת השישית: יומן הניסיונות
+
+`migrations/20261019164644_create_activity_attempts.sql` מוסיף את `activity_attempts` לפי `../content/storage-model.json`. כל שורה היא פעולה אחת של לומד, למשל בחירה ב"ננסה יחד", עם מה שהשרת ענה. המפתח `(user_id, request_id)` הופך שליחה חוזרת לבטוחה (idempotency): אם הרשת נפלה והאפליקציה שולחת שוב את אותה בקשה, השרת מוצא אותה ומחזיר את אותה תשובה בלי לקדם פעמיים. `request_fingerprint` הוא SHA-256 של הבקשה, ולכן אותו מזהה עם תוכן אחר הוא התנגשות (409) ולא ניסיון חוזר.
+
+| כלל | איך הוא נאכף |
+| --- | --- |
+| אותה בקשה נשמרת פעם אחת | מפתח ראשי `(user_id, request_id)` |
+| ניסיון שייך לגרסה מדויקת | מפתח זר `(unit_id, revision)` ל־`unit_revisions` עם `restrict`: אי אפשר למחוק גרסה שיש עליה ניסיונות |
+| מחיקת חשבון מוחקת את הניסיונות | `on delete cascade` מ־`auth.users` |
+| ללומד אין גישה ישירה, גם לא לשורות שלו | RLS מופעל בלי מדיניות, וכל ההרשאות של `anon`/`authenticated` מוסרות (החלטה של דור, 2026-10-19) |
+| יומן שלא משנים | ל־`service_role` יש רק `SELECT` ו־`INSERT` |
+
+ההחלטה אם תשובה נכונה, והשמירה המשותפת של ניסיון ועדכון התקדמות בטרנזקציה אחת, הן הצעד הבא (פונקציה במסד ושרת). הטבלה לבדה לא מחליטה דבר.
+
+מחילים באותו תהליך CLI: קודם dry-run, שבו צפוי רק `20261019164644_create_activity_attempts.sql`, ואחר כך ההחלה. אחרי החלה מוצלחת מריצים את `checks/06_activity_attempts.sql` **במלואו** ב־SQL Editor. התוצאה הצפויה: `PASS: attempt idempotency key, constraints, append-only server grants, no learner access, revision protection and account-deletion cascade; synthetic rows rolled back`.
