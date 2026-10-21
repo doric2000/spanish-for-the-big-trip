@@ -1,5 +1,7 @@
 # ספרדית לטיול הגדול
 
+**English summary:** A Spanish-learning iPhone app for Hebrew speakers, in development. Stack: React Native/Expo, TypeScript, a NestJS API (auth guard, repository layer, unit and e2e tests), Supabase PostgreSQL with SQL migrations, and Zod-validated lesson content. Not yet released.
+
 **לומדים מה שצריך לטיול, בתרגולים קצרים וממוקדים.**
 
 אפליקציית אייפון לדוברי עברית, שמלמדת להבין ולענות בספרדית במצבים מעשיים בטיול. היעד הראשון הוא יחידה 1A מלאה. אחריה מגיע פרק 1 כולו, ואחריו פרק 2.
@@ -16,7 +18,7 @@
 | מובייל | React Native ‏0.86 עם Expo SDK 57, ‏TypeScript 6 |
 | תוכן | JSON עם חוזה Zod ובדיקות Node |
 | מסד, התחברות ואחסון | Supabase (PostgreSQL), עם כניסה דרך Google ו־Apple בלבד |
-| שרת | NestJS. עוד לא הוקם |
+| שרת | NestJS (`api/`): API קטן עם אימות לפי token ונקודת הגישה `GET /v1/units/:unitId` מעל Supabase, עם בדיקות יחידה ו-e2e. עדיין בפיתוח |
 | בנייה | EAS Build בענן (מתוכנן לשלב 04) |
 
 ## מבנה המאגר
