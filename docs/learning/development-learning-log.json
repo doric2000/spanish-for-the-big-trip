@@ -3204,6 +3204,32 @@
         "Retention policy for attempts before the public release, together with the privacy policy."
       ],
       "next_step": "Design the atomic submit function (one transaction: look up request id, check fingerprint and progress_version, insert the attempt, update progress) and the POST start/attempts endpoints, including draft access in development."
+    },
+    {
+      "id": "stage05-atomic-attempt-functions-2026-10-23",
+      "stage_id": "05",
+      "goal": "Make starting a unit and saving an attempt safe in the database: one transaction, one learner/unit at a time, retries answered from the log, stale progress refused.",
+      "practical_owner": "Claude presented the design, wrote the migration, the check file and the docs. Dor approved the design (correctness decided in NestJS, draft option extended), applied the migration, ran supabase/checks/07_attempt_functions.sql, committed, resolved the rejected push and pushed.",
+      "practical_action": "supabase/migrations/20261019173552_create_attempt_functions.sql: start_unit_progress (advisory lock per learner/unit; existing, completed or started) and submit_activity_attempt (FOR UPDATE row lock; replay on same request id and fingerprint; conflict on reused id or stale version/activity; guard against an impossible new version; insert attempt and update progress together). SECURITY INVOKER, empty search_path, EXECUTE only for service_role.",
+      "evidence": [
+        "Dor-reported: check 07 gave PASS (the PASS line itself was not pasted)",
+        "First push rejected as non-fast-forward: GitHub had Dor's README commit ffc37b9 from 2026-10-21. Diagnosed with git log main..origin/main and origin/main..main (no shared files); Dor ran git pull --rebase --autostash and pushed ef59877; CI success (run 39931570398)",
+        "Not covered by the SQL check: two truly simultaneous requests (one SQL Editor connection); to be tested through the API"
+      ],
+      "concepts": [
+        "Transaction: both writes or neither",
+        "Row lock (SELECT ... FOR UPDATE) and advisory lock to serialize one learner/unit",
+        "Optimistic concurrency with progress_version",
+        "SECURITY INVOKER vs SECURITY DEFINER, and revoking Supabase's default EXECUTE grants",
+        "Non-fast-forward push: diverged histories, rebase on top of the remote"
+      ],
+      "dor_participation": "Approved the design, applied and checked the migration, handled the rejected push with the rebase.",
+      "understanding_demonstrated": "Not answered: the check question (two phones, two different request ids at almost the same moment) arrived without an answer. Earlier unanswered: stage05-entry-component-2026-10-17.",
+      "interview_takeaway": "Explain how a row lock plus a version check prevents a lost update when the same learner answers from two devices, and why correctness logic stays in one tested place while the database guarantees atomicity.",
+      "open_questions": [
+        ".claude/settings.json changes and the new .claude/hooks/ folder are uncommitted and were not created in this chat; review them separately before committing."
+      ],
+      "next_step": "Draft option for startUnit/applyAttempt in content (development only), then POST /v1/units/:unitId/start and /attempts in the API with tests, including two parallel requests."
     }
   ],
   "entry_template": {
