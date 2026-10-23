@@ -3256,6 +3256,34 @@
         "Optional: a DHCP reservation in the router so the development machine address stays fixed."
       ],
       "next_step": "Part 3: POST /v1/units/:unitId/start and /attempts in a progress module, with tests including two parallel requests against the development database."
+    },
+    {
+      "id": "stage05-start-and-attempts-endpoints-2026-10-23",
+      "stage_id": "05",
+      "goal": "POST /v1/units/:unitId/start and /attempts in the API: the server decides correctness with the tested rules and the database functions make every write atomic, then prove it against the real development database.",
+      "practical_owner": "Claude wrote the progress module, the tests and the real-database test and explained each part before writing it. Dor approved the real-database test plan, ran it against the development project, checked the cleanup in the SQL Editor, and committed and pushed every part.",
+      "practical_action": "api/src/progress/: controller (both routes, 200, no-store, user only from the token), service (start: latest validated unit, own rows, published prerequisites only, startUnit, then start_unit_progress; submit: Zod body, attemptFingerprint, replay from the log first, pinned revision, applyAttempt, submit_activity_attempt mapped to 200/400/404/409, database failure 503), repository (the only code that knows the progress table and both functions). content: exports ./progress and one attemptFingerprint helper. api/test/integration/progress.int-spec.ts: synthetic @check.invalid user, start twice, store/replay/reused id, two simultaneous submits, cascade cleanup; refuses to run without INTEGRATION_DB=dev.",
+      "evidence": [
+        "api unit 24/24, e2e 10/10, build and lint clean; content 64/64",
+        "Debugging: two first start tests failed with 500 because the test marked the real 1A as published and the validator correctly refused it (unapproved audio and copy). Fixed the fixture (publishedFixture), not the code",
+        "Without INTEGRATION_DB the real-database test refused before connecting (checked by Claude)",
+        "Dor-reported: test:integration against the development project passed 3/3 (start once, replay and reused id, exactly one of two simultaneous requests stored), and select count(*) of check-%@check.invalid users returned 0 after the run",
+        "Commits 5a6a829 (start), cbc40fc (attempts), 4ec44b9 (real-database test) pushed"
+      ],
+      "concepts": [
+        "Controller / service / repository layering in NestJS",
+        "Replay before compute: a retry is answered from the log before the rules call it stale",
+        "A wrong answer is a 200 with corrective feedback, not an error",
+        "Testing a race deterministically by sending both requests straight to the database function",
+        "A synthetic user plus cascade delete as a self-cleaning integration test"
+      ],
+      "dor_participation": "Approved the plan, ran the real-database test and the cleanup check, committed and pushed.",
+      "understanding_demonstrated": "Not checked in this step.",
+      "interview_takeaway": "Walk through an idempotent, server-decided attempt endpoint from token to transaction, and how you proved the concurrency guarantee against the real database.",
+      "open_questions": [
+        "GET /v1/units returns the latest revision; when a learner is pinned to an older revision after a new one is published, GET must return the pinned revision (contract). Not needed while 1A has one revision."
+      ],
+      "next_step": "Mobile: drive the lesson from server progress (start, continue as attempts, resume after reopening), then the listen-select screen for \"ננסה יחד\" from Figma 84:1014, shown to Dor before building."
     }
   ],
   "entry_template": {
