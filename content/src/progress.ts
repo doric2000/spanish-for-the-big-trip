@@ -25,15 +25,19 @@ export type SubmissionState = { progress: Progress; attempts: StoredAttempt[] };
 function identity(actor: VerifiedActor | null): asserts actor is VerifiedActor {
   if (!actor?.userId || !['google', 'apple'].includes(actor.provider)) throw new ContractError(401, 'A verified Google/Apple session is required');
 }
-function published(unit: Unit) {
-  if (unit.status !== 'published') throw new ContractError(404, 'Unit is not available');
+// allowDraft is only for local development (approved-decisions.json#stage05_atomic_attempt_functions):
+// it lets a learner start and answer the latest draft. It never makes a draft count as a
+// completed unit; prerequisites below read only published revisions.
+export type ProgressOptions = { allowDraft?: boolean };
+function available(unit: Unit, options: ProgressOptions) {
+  if (unit.status !== 'published' && !options.allowDraft) throw new ContractError(404, 'Unit is not available');
 }
-export function startUnit(actor: VerifiedActor | null, latest: Unit, existing: readonly Progress[], completedRevisions: readonly Unit[]): Progress {
+export function startUnit(actor: VerifiedActor | null, latest: Unit, existing: readonly Progress[], completedRevisions: readonly Unit[], options: ProgressOptions = {}): Progress {
   identity(actor);
   const own = existing.filter(p => p.userId === actor.userId && p.unitId === latest.id);
   const active = own.find(p => p.status === 'in_progress');
   if (active) return structuredClone(active); // Caller must load this pinned revision, not latest.
-  published(latest);
+  available(latest, options);
   const skills = new Set(completedRevisions.filter(u => u.status === 'published' && existing.some(p => p.userId === actor.userId && p.unitId === u.id && p.revision === u.revision && p.status === 'completed')).flatMap(u => u.provides));
   if (latest.requires.some(s => !skills.has(s))) throw new ContractError(404, 'Prerequisites are not complete');
   const completed = own.find(p => p.revision === latest.revision && p.status === 'completed');
@@ -44,8 +48,8 @@ export function startUnit(actor: VerifiedActor | null, latest: Unit, existing: r
 
 // Pure local reference implementation. PostgreSQL transaction/lock/unique-key
 // enforcement belongs to04; the NestJS transport and durable mobile queue to05.
-export function applyAttempt(actor: VerifiedActor | null, unit: Unit, state: SubmissionState, input: unknown): { state: SubmissionState; result: AttemptResult; replayed: boolean } {
-  identity(actor); published(unit);
+export function applyAttempt(actor: VerifiedActor | null, unit: Unit, state: SubmissionState, input: unknown, options: ProgressOptions = {}): { state: SubmissionState; result: AttemptResult; replayed: boolean } {
+  identity(actor); available(unit, options);
   if (state.progress.userId !== actor.userId || state.progress.unitId !== unit.id) throw new ContractError(404, 'Progress is not available');
   const parsed = AttemptRequestSchema.safeParse(input);
   if (!parsed.success) throw new ContractError(400, 'Invalid attempt request');

@@ -161,6 +161,27 @@ test('draft projection needs explicit allowDraft and returns null for unhosted o
   for (const forbidden of ['correctChoiceId', 'expectedTileIds', 'feedbackHe', 'nextNodeId', 'editorial', 'pendingStages', 'assets/characters']) assert.equal(text.includes(forbidden), false, forbidden);
 });
 
+test('drafts start and take attempts only with allowDraft, and never count as a completed prerequisite', () => {
+  const draft = realDraft();
+  rejects(() => startUnit(actor, draft, [], []), 404);
+  const progress = startUnit(actor, draft, [], [], { allowDraft: true });
+  assert.equal(progress.currentActivityId, 'u1a-entry');
+  const state: SubmissionState = { progress, attempts: [] };
+  const continueEntry = request(state, { kind: 'continue' });
+  rejects(() => applyAttempt(actor, draft, state, continueEntry), 404);
+  const moved = applyAttempt(actor, draft, state, continueEntry, { allowDraft: true });
+  assert.equal(moved.result.progress.currentActivityId, 'u1a-vocab-hola');
+
+  // Finishing a draft is development data: it never unlocks a published unit.
+  const next = publishableUnit(); next.id = 'next-unit'; next.requires = [...draft.provides];
+  const completedDraft = { ...progress, status: 'completed' as const, currentActivityId: null };
+  rejects(() => startUnit(actor, next, [completedDraft], [draft]), 404);
+  rejects(() => startUnit(actor, next, [completedDraft], [draft], { allowDraft: true }), 404);
+  // The same completion of a published revision does unlock it.
+  const publishedRevision = { ...draft, status: 'published' as const };
+  assert.equal(startUnit(actor, next, [completedDraft], [publishedRevision]).unitId, 'next-unit');
+});
+
 test('entry poster details are optional, projected when present and checked against characters', () => {
   const entry = projectUnit(realDraft(), {}, {}, { allowDraft: true }).activities[0]!;
   assert.ok(entry.type === 'entry');
