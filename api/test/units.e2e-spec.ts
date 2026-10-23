@@ -8,7 +8,10 @@ import { SUPABASE } from '../src/core.module.js';
 import { UnitRevisionsRepository } from '../src/units/unit-revisions.repository.js';
 import { fakeRevisions, PRIVATE_FIELDS, unit1aPayload } from './unit1a.js';
 
-const learner = { sub: '00000000-0000-4000-8000-000000000001', role: 'authenticated', aud: 'authenticated', is_anonymous: false };
+const learner = {
+  sub: '00000000-0000-4000-8000-000000000001', role: 'authenticated', aud: 'authenticated', is_anonymous: false,
+  app_metadata: { provider: 'google', providers: ['google'] },
+};
 
 // Stands in for Supabase Auth: each test token maps to the claims it would verify to.
 const fakeSupabase = {
@@ -16,6 +19,9 @@ const fakeSupabase = {
     getClaims: (token: string) => {
       const claims = {
         'valid-token': learner,
+        'apple-token': { ...learner, app_metadata: { provider: 'apple', providers: ['apple'] } },
+        'email-token': { ...learner, app_metadata: { provider: 'email', providers: ['email'] } },
+        'no-provider-token': { ...learner, app_metadata: {} },
         'anonymous-token': { ...learner, is_anonymous: true },
         'service-token': { ...learner, role: 'service_role' },
       }[token];
@@ -58,8 +64,15 @@ describe('GET /v1/units/:unitId', () => {
     const server = app.getHttpServer();
     await request(server).get('/v1/units/C01-U01').expect(401);
     await request(server).get('/v1/units/C01-U01').set('Authorization', 'valid-token').expect(401);
-    for (const token of ['forged-token', 'anonymous-token', 'service-token']) {
+    for (const token of ['forged-token', 'anonymous-token', 'service-token', 'email-token', 'no-provider-token']) {
       await request(server).get('/v1/units/C01-U01').set('Authorization', `Bearer ${token}`).expect(401);
+    }
+  });
+
+  it('accepts both product sign-in providers, Google and Apple', async () => {
+    app = await startApp(true);
+    for (const token of ['valid-token', 'apple-token']) {
+      await request(app.getHttpServer()).get('/v1/units/C01-U01').set('Authorization', `Bearer ${token}`).expect(200);
     }
   });
 

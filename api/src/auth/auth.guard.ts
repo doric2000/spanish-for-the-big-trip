@@ -10,8 +10,18 @@ import { isAuthRetryableFetchError, type SupabaseClient } from '@supabase/supaba
 import type { Request } from 'express';
 import { SUPABASE } from '../core.module.js';
 
+// The product allows only these sign-in providers (AGENTS.md, Product boundaries).
+export const SIGN_IN_PROVIDERS = ['google', 'apple'] as const;
+export type SignInProvider = (typeof SIGN_IN_PROVIDERS)[number];
+
 export interface VerifiedUser {
   userId: string;
+  provider: SignInProvider;
+}
+
+function signInProvider(appMetadata: unknown): SignInProvider | null {
+  const provider = (appMetadata as { provider?: unknown } | undefined)?.provider;
+  return SIGN_IN_PROVIDERS.find((p) => p === provider) ?? null;
 }
 
 export type AuthenticatedRequest = Request & { user?: VerifiedUser };
@@ -41,8 +51,12 @@ export class AuthGuard implements CanActivate {
     ) {
       throw new UnauthorizedException();
     }
+    // app_metadata is set by Supabase Auth, not by the user, so it is part of the
+    // verified token. Any provider other than Google or Apple is refused.
+    const provider = signInProvider(claims.app_metadata);
+    if (!provider) throw new UnauthorizedException();
     // The user id comes only from the verified token, never from the request body.
-    request.user = { userId: claims.sub };
+    request.user = { userId: claims.sub, provider };
     return true;
   }
 }
