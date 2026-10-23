@@ -5,7 +5,9 @@ import type { App } from 'supertest/types.js';
 import { AppModule } from '../src/app.module.js';
 import { API_CONFIG, type ApiConfig } from '../src/config.js';
 import { SUPABASE } from '../src/core.module.js';
+import { ProgressRepository } from '../src/progress/progress.repository.js';
 import { UnitRevisionsRepository } from '../src/units/unit-revisions.repository.js';
+import { fakeProgress } from './fake-progress.js';
 import { fakeRevisions, PRIVATE_FIELDS, unit1aPayload } from './unit1a.js';
 
 const learner = {
@@ -36,6 +38,7 @@ async function startApp(allowDraftUnits: boolean): Promise<INestApplication<App>
     .overrideProvider(API_CONFIG).useValue(config)
     .overrideProvider(SUPABASE).useValue(fakeSupabase)
     .overrideProvider(UnitRevisionsRepository).useValue(fakeRevisions([unit1aPayload()]))
+    .overrideProvider(ProgressRepository).useValue(fakeProgress())
     .compile();
   const app = module.createNestApplication<INestApplication<App>>({ logger: false });
   await app.init();
@@ -84,5 +87,37 @@ describe('GET /v1/units/:unitId', () => {
   it('returns 404 for the 1A draft when ALLOW_DRAFT_UNITS is off', async () => {
     app = await startApp(false);
     await request(app.getHttpServer()).get('/v1/units/C01-U01').set('Authorization', 'Bearer valid-token').expect(404);
+  });
+});
+
+describe('POST /v1/units/:unitId/start', () => {
+  let app: INestApplication<App>;
+  afterEach(async () => {
+    await app.close();
+  });
+
+  it('starts the unit for the signed-in learner, then returns the same progress', async () => {
+    app = await startApp(true);
+    const server = app.getHttpServer();
+    const first = await request(server).post('/v1/units/C01-U01/start').set('Authorization', 'Bearer valid-token').expect(200)
+      .expect('Cache-Control', 'no-store');
+    expect(first.body.status).toBe('started');
+    expect(first.body.progress).toMatchObject({ userId: learner.sub, currentActivityId: 'u1a-entry', progressVersion: 0 });
+    const again = await request(server).post('/v1/units/C01-U01/start').set('Authorization', 'Bearer valid-token').expect(200);
+    expect(again.body.status).toBe('existing');
+  });
+
+  it('ignores a user id in the body: the learner comes only from the token', async () => {
+    app = await startApp(true);
+    const response = await request(app.getHttpServer()).post('/v1/units/C01-U01/start')
+      .set('Authorization', 'Bearer apple-token').send({ userId: '00000000-0000-4000-8000-000000000099' }).expect(200);
+    expect(response.body.progress.userId).toBe(learner.sub);
+  });
+
+  it('returns 401 without a token and 404 for the draft without ALLOW_DRAFT_UNITS', async () => {
+    app = await startApp(false);
+    const server = app.getHttpServer();
+    await request(server).post('/v1/units/C01-U01/start').expect(401);
+    await request(server).post('/v1/units/C01-U01/start').set('Authorization', 'Bearer valid-token').expect(404);
   });
 });

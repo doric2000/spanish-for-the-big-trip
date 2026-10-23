@@ -7,7 +7,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { projectUnit, type PublicUnit } from '@spanish-for-trip/content/api-contract';
-import { validateUnit } from '@spanish-for-trip/content/schema';
+import { type Unit, validateUnit } from '@spanish-for-trip/content/schema';
 import { API_CONFIG, type ApiConfig } from '../config.js';
 import { UnitRevisionsRepository } from './unit-revisions.repository.js';
 
@@ -24,6 +24,14 @@ export class UnitsService {
   ) {}
 
   async learnerUnit(unitId: string): Promise<PublicUnit> {
+    const unit = await this.latestUnit(unitId);
+    // Answers and review data are removed here. Media URLs come with Supabase Storage (a later step).
+    return projectUnit(unit, {}, {}, { allowDraft: this.config.allowDraftUnits });
+  }
+
+  // The newest revision a learner may use (drafts only with ALLOW_DRAFT_UNITS), validated.
+  // Shared with the progress routes, which need the full unit including answers.
+  async latestUnit(unitId: string): Promise<Unit> {
     if (!UNIT_ID.test(unitId)) throw new NotFoundException();
 
     let row: { payload: unknown } | null;
@@ -41,7 +49,6 @@ export class UnitsService {
       this.logger.error(`Stored revision of ${unitId} does not match the content schema`);
       throw new InternalServerErrorException();
     }
-    // Answers and review data are removed here. Media URLs come with Supabase Storage (a later step).
-    return projectUnit(unit.data, {}, {}, { allowDraft: this.config.allowDraftUnits });
+    return unit.data;
   }
 }

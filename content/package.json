@@ -12,6 +12,10 @@
     "./api-contract": {
       "types": "./dist/src/api-contract.d.ts",
       "default": "./dist/src/api-contract.js"
+    },
+    "./progress": {
+      "types": "./dist/src/progress.d.ts",
+      "default": "./dist/src/progress.js"
     }
   },
   "scripts": {

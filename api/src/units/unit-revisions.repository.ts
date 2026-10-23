@@ -21,4 +21,17 @@ export class UnitRevisionsRepository {
     if (error) throw new Error(`unit_revisions read failed: ${error.message}`);
     return data ? { payload: data.authoring_payload } : null;
   }
+
+  /** One exact published revision, or null. Used for completed prerequisites: drafts never count. */
+  async published(unitId: string, revision: number): Promise<{ payload: unknown } | null> {
+    const { data, error } = await this.supabase
+      .from('unit_revisions')
+      .select('authoring_payload')
+      .eq('unit_id', unitId)
+      .eq('revision', revision)
+      .eq('status', 'published')
+      .maybeSingle<{ authoring_payload: unknown }>();
+    if (error) throw new Error(`unit_revisions read failed: ${error.message}`);
+    return data ? { payload: data.authoring_payload } : null;
+  }
 }
