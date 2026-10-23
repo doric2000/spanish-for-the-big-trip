@@ -3180,6 +3180,30 @@
       ],
       "audio_error_state": "Covered by code only; the bundled recording cannot be made to fail on the device.",
       "next_step": "Build the dialogue template (Figma 86:1186: translation hidden, shown, playing), then the summary (90:1719)."
+    },
+    {
+      "id": "stage05-activity-attempts-table-2026-10-19",
+      "stage_id": "05",
+      "goal": "Create the activity_attempts log so a retried attempt request is answered once (idempotency), as the first step of the listen-select check in the natural lesson order.",
+      "practical_owner": "Claude presented the design, wrote the migration, the check file and the docs. Dor chose no learner access and retention until account deletion, ran the dry-run, applied the migration with db push, ran supabase/checks/06_activity_attempts.sql, committed and pushed.",
+      "practical_action": "supabase/migrations/20261019164644_create_activity_attempts.sql: key (user_id, request_id), FK (unit_id, revision) restrict, SHA-256 fingerprint and JSON-object checks, RLS on with no policy, anon/authenticated revoked, service_role SELECT and INSERT only, cascade on account deletion. supabase/checks/06_activity_attempts.sql: structure and grants, duplicate request, invalid fingerprint/response/activity id, missing revision/user, server cannot update or delete, revision protected, learner and anon blocked, deletion cascade, rollback.",
+      "evidence": [
+        "Dor-reported: dry-run listed only the new migration, the apply succeeded and the check file passed (\"סיימתי את כל השאר והכל עובד\"); the PASS line itself was not pasted",
+        "Commit b9b76d7 pushed; CI success (run 39290119320)"
+      ],
+      "concepts": [
+        "Idempotency key: the same request id is stored once",
+        "Request fingerprint distinguishes a retry from a reused id with different input (409)",
+        "Append-only log versus current-state table (activity_attempts vs user_unit_progress)",
+        "RLS enabled with no policy plus revoked grants = no learner access; the server role bypasses RLS and must check ownership itself"
+      ],
+      "dor_participation": "Approved the design and both decisions, applied and checked the migration, committed and pushed.",
+      "understanding_demonstrated": "Partly. Asked what the server does when the app resends an answer after a disconnect, Dor answered that the server rejects the second request because it recognises a duplicate. Correct that the duplicate is recognised by its request id; the nuance discussed afterwards: the server does not reject it but returns the stored result (HTTP 200), so the app still gets the feedback and the progress, and nothing advances twice. Rejection (409) is only for the same id with different content.",
+      "interview_takeaway": "Explain idempotent POST requests with a client-generated request id, why a retry returns the stored result instead of an error, and how a fingerprint catches a reused id with different input.",
+      "open_questions": [
+        "Retention policy for attempts before the public release, together with the privacy policy."
+      ],
+      "next_step": "Design the atomic submit function (one transaction: look up request id, check fingerprint and progress_version, insert the attempt, update progress) and the POST start/attempts endpoints, including draft access in development."
     }
   ],
   "entry_template": {

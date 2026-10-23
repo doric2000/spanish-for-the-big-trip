@@ -657,5 +657,13 @@
     "learner_access": "None, not even own rows: RLS on with no policy, all anon/authenticated privileges revoked. The app gets everything it needs from the API.",
     "server_access": "service_role SELECT and INSERT only; the log is append-only (no UPDATE or DELETE).",
     "retention": "Kept until the account is deleted (on delete cascade from auth.users); revisit a retention policy before the public release together with the privacy policy."
+  },
+  "stage05_atomic_attempt_functions": {
+    "decided_on": "2026-10-19",
+    "authority": "Dor approved the presented design and both recommendations ('I approve the design and both recommendations')",
+    "division": "NestJS decides correctness, feedback and the next activity with applyAttempt/startUnit in content/src/progress.ts (one tested copy of the rules). The database only makes the write safe.",
+    "functions": "public.start_unit_progress (advisory lock per learner and unit; returns existing active, completed of this revision, or a new row) and public.submit_activity_attempt (row lock FOR UPDATE; replay a stored request with the same fingerprint; conflict for a reused id with other content or for stale version/activity; then insert the attempt and update progress in one transaction). SECURITY INVOKER, empty search_path, EXECUTE only for service_role. Migration supabase/migrations/20261019173552_create_attempt_functions.sql, check supabase/checks/07_attempt_functions.sql.",
+    "request_order": "The API looks up the request id first and replays before computing, so a retry after the progress moved on still gets its stored answer; the function repeats the lookup under the lock for simultaneous retries.",
+    "draft_units": "Extends stage05_draft_units_in_development: with ALLOW_DRAFT_UNITS=true in the local api/.env, start and attempts also work on the latest draft revision. Without it a draft is 404. Progress saved on a draft is development data, never evidence for completing a published unit."
   }
 }

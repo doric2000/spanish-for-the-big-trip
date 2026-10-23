@@ -127,3 +127,16 @@ npx.cmd --no-install supabase db push --linked --skip-vault
 ההחלטה אם תשובה נכונה, והשמירה המשותפת של ניסיון ועדכון התקדמות בטרנזקציה אחת, הן הצעד הבא (פונקציה במסד ושרת). הטבלה לבדה לא מחליטה דבר.
 
 מחילים באותו תהליך CLI: קודם dry-run, שבו צפוי רק `20261019164644_create_activity_attempts.sql`, ואחר כך ההחלה. אחרי החלה מוצלחת מריצים את `checks/06_activity_attempts.sql` **במלואו** ב־SQL Editor. התוצאה הצפויה: `PASS: attempt idempotency key, constraints, append-only server grants, no learner access, revision protection and account-deletion cascade; synthetic rows rolled back`.
+
+## התוספת השביעית: שמירה אטומית של התחלה וניסיון
+
+`migrations/20261019173552_create_attempt_functions.sql` מוסיף שתי פונקציות שרק השרת (`service_role`) רשאי להפעיל. ההחלטה מה נכון ולאן ממשיכים נשארת בשרת, בקוד הנבדק `../content/src/progress.ts`. הפונקציות רק דואגות שהכתיבה תהיה בטוחה.
+
+| פונקציה | מה היא עושה | איך היא מונעת התנגשות |
+| --- | --- | --- |
+| `start_unit_progress` | מחזירה את ההתקדמות הפעילה, או את הסיום של אותה גרסה, או יוצרת שורה חדשה | נעילה (advisory lock) לכל לומד ויחידה, כך ששתי לחיצות "בוא נתחיל!" יוצרות שורה אחת |
+| `submit_activity_attempt` | שומרת ניסיון ומעדכנת התקדמות בטרנזקציה אחת | נועלת את שורת ההתקדמות (`FOR UPDATE`), מחזירה תשובה שמורה לבקשה חוזרת, ומסרבת למזהה שחוזר עם תוכן אחר או להתקדמות שהשתנתה (`progress_version`) |
+
+שתיהן `SECURITY INVOKER` עם `search_path` ריק. הרשאת ההפעלה מבוטלת במפורש ל־`anon`, ל־`authenticated` ול־`PUBLIC`, כי Supabase נותן אותה כברירת מחדל לכל פונקציה חדשה ב־`public`.
+
+מחילים באותו תהליך CLI: קודם dry-run, שבו צפוי רק `20261019173552_create_attempt_functions.sql`, ואחר כך ההחלה. אחרי החלה מוצלחת מריצים את `checks/07_attempt_functions.sql` **במלואו** ב־SQL Editor. התוצאה הצפויה: `PASS: start/resume/completion, atomic store, replay after progress moved, reused id and stale progress refused, learner isolation, no learner or anon access; synthetic rows rolled back`. הבדיקה רצה בחיבור אחד, ולכן אינה שולחת שתי בקשות באותו רגע; את הנעילה מול בקשות מקבילות בודקים דרך השרת.
