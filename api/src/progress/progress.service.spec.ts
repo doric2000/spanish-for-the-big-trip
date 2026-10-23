@@ -1,4 +1,4 @@
-import { Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import type { Progress } from '@spanish-for-trip/content/progress';
 import { fakeProgress } from '../../test/fake-progress.js';
 import { fakeRevisions, publishedFixture, unit1aPayload } from '../../test/unit1a.js';
@@ -88,5 +88,77 @@ describe('ProgressService.start', () => {
     progress.forUnit = () => Promise.reject(new Error('connection reset'));
     vi.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
     await expect(service.start(learner, 'C01-U01')).rejects.toThrow(ServiceUnavailableException);
+  });
+});
+
+describe('ProgressService.submit', () => {
+  const requestId = (n: number) => `00000000-0000-4000-8000-0000000000${String(n).padStart(2, '0')}`;
+  // A learner who reached "ננסה יחד" (u1a-primer-listen) after the entry and five cards.
+  function atPrimer(allowDraftUnits = true) {
+    const row: Progress = { userId: learner.userId, unitId: 'C01-U01', revision: 1, status: 'in_progress',
+      currentActivityId: 'u1a-primer-listen', progressVersion: 6, scenarioNodeId: null, usedHelpForCurrent: false, completed: [] };
+    return setup([unit1aPayload()], allowDraftUnits, [row]);
+  }
+  const choose = (n: number, choiceId: string, expectedProgressVersion = 6) => ({
+    requestId: requestId(n), revision: 1, activityId: 'u1a-primer-listen', expectedProgressVersion,
+    response: { kind: 'choice', choiceId },
+  });
+
+  it('decides a correct answer on the server and moves on to the dialogue', async () => {
+    const { service, progress } = atPrimer();
+    const result = await service.submit(learner, 'C01-U01', choose(1, 'hello'));
+    expect(result.outcome).toBe('correct');
+    expect(result.feedbackHe).toBe('נכון! המשמעות של Hola היא שלום.');
+    expect(result.progress).toMatchObject({ currentActivityId: 'u1a-dialogue', progressVersion: 7 });
+    expect(progress.rows[0]).toMatchObject({ currentActivityId: 'u1a-dialogue', progressVersion: 7 });
+    expect(progress.attempts).toHaveLength(1);
+  });
+
+  it('keeps a wrong answer on the same activity with corrective feedback, and never reveals the answer key', async () => {
+    const { service } = atPrimer();
+    const result = await service.submit(learner, 'C01-U01', choose(1, 'thanks'));
+    expect(result.outcome).toBe('retry');
+    expect(result.feedbackHe).toBe('המשמעות של Hola היא שלום. הקשיבו שוב ונסו עוד פעם.');
+    expect(result.progress).toMatchObject({ currentActivityId: 'u1a-primer-listen', progressVersion: 7, usedHelpForCurrent: true });
+    expect(JSON.stringify(result)).not.toContain('correctChoiceId');
+  });
+
+  it('answers a retry of the same request from the log, even after the progress moved on', async () => {
+    const { service, progress } = atPrimer();
+    const first = await service.submit(learner, 'C01-U01', choose(1, 'hello'));
+    const again = await service.submit(learner, 'C01-U01', choose(1, 'hello'));
+    expect(again).toEqual(first);
+    expect(progress.attempts).toHaveLength(1);
+    expect(progress.rows[0].progressVersion).toBe(7);
+  });
+
+  it('refuses a reused request id with other content and a stale progress version (409)', async () => {
+    const { service, progress } = atPrimer();
+    await service.submit(learner, 'C01-U01', choose(1, 'hello'));
+    await expect(service.submit(learner, 'C01-U01', choose(1, 'thanks'))).rejects.toThrow(ConflictException);
+    // A new request computed from the old version 6: the learner already moved on.
+    await expect(service.submit(learner, 'C01-U01', choose(2, 'hello'))).rejects.toThrow(ConflictException);
+    expect(progress.attempts).toHaveLength(1);
+  });
+
+  it('turns a conflict found by the database (a simultaneous request) into 409', async () => {
+    const { service, progress } = atPrimer();
+    progress.submit = () => Promise.resolve({ status: 'conflict', reason: 'progress_changed' });
+    await expect(service.submit(learner, 'C01-U01', choose(1, 'hello'))).rejects.toThrow(ConflictException);
+  });
+
+  it('returns 400 for a malformed body, an unknown choice or a client-chosen outcome', async () => {
+    const { service, progress } = atPrimer();
+    await expect(service.submit(learner, 'C01-U01', { nonsense: true })).rejects.toThrow(BadRequestException);
+    await expect(service.submit(learner, 'C01-U01', choose(1, 'not-a-choice'))).rejects.toThrow(BadRequestException);
+    await expect(service.submit(learner, 'C01-U01', { ...choose(2, 'hello'), outcome: 'correct' })).rejects.toThrow(BadRequestException);
+    expect(progress.attempts).toHaveLength(0);
+  });
+
+  it('returns 404 before a start, for another learner, and for the draft without ALLOW_DRAFT_UNITS', async () => {
+    const { service } = atPrimer();
+    await expect(service.submit(other, 'C01-U01', choose(1, 'hello'))).rejects.toThrow(NotFoundException);
+    await expect(atPrimer(false).service.submit(learner, 'C01-U01', choose(1, 'hello'))).rejects.toThrow(NotFoundException);
+    await expect(setup([unit1aPayload()], true).service.submit(learner, 'C01-U01', choose(1, 'hello'))).rejects.toThrow(NotFoundException);
   });
 });

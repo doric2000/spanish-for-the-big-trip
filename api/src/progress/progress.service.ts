@@ -4,12 +4,14 @@ import {
   HttpException,
   Inject,
   Injectable,
+  InternalServerErrorException,
   Logger,
   NotFoundException,
   ServiceUnavailableException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ContractError, type Progress, startUnit } from '@spanish-for-trip/content/progress';
+import { AttemptRequestSchema } from '@spanish-for-trip/content/api-contract';
+import { applyAttempt, attemptFingerprint, type AttemptResult, ContractError, type Progress, startUnit } from '@spanish-for-trip/content/progress';
 import { type Unit, validateUnit } from '@spanish-for-trip/content/schema';
 import type { VerifiedUser } from '../auth/auth.guard.js';
 import { API_CONFIG, type ApiConfig } from '../config.js';
@@ -45,6 +47,54 @@ export class ProgressService {
     // A new start goes through the atomic function, which also settles a simultaneous start.
     return this.storage(() => this.progress.start(user.userId, planned.unitId, planned.revision,
       planned.currentActivityId!, planned.scenarioNodeId));
+  }
+
+  // One learner action. The order matters: a retry is answered from the log before
+  // anything is computed, because by then the progress has usually moved on and the
+  // rules would (correctly) call the old request stale.
+  async submit(user: VerifiedUser, unitId: string, body: unknown): Promise<AttemptResult> {
+    const parsed = AttemptRequestSchema.safeParse(body);
+    if (!parsed.success) throw new BadRequestException();
+    const request = parsed.data;
+    const fingerprint = attemptFingerprint(unitId, request);
+
+    const previous = await this.storage(() => this.progress.attempt(user.userId, request.requestId));
+    if (previous) {
+      if (previous.fingerprint !== fingerprint) throw new ConflictException('Request ID was already used for different input');
+      return previous.result;
+    }
+
+    // The learner stays on the revision they started, even if a newer one exists.
+    const own = await this.storage(() => this.progress.forUnit(user.userId, unitId));
+    const current = own.find(p => p.status === 'in_progress') ?? own.find(p => p.revision === request.revision);
+    if (!current) throw new NotFoundException();
+    const unit = await this.pinnedUnit(unitId, current.revision);
+
+    // The tested rules decide: correct or not, feedback, the next activity.
+    const decided = this.rules(() => applyAttempt(user, unit, { progress: current, attempts: [] }, request,
+      { allowDraft: this.config.allowDraftUnits }));
+
+    const saved = await this.storage(() => this.progress.submit({ userId: user.userId, unitId, request, fingerprint, result: decided.result }));
+    switch (saved.status) {
+      case 'stored':
+      case 'replayed':
+        return saved.result;
+      case 'conflict':
+        throw new ConflictException(saved.reason === 'request_id_reused' ? 'Request ID was already used for different input' : 'Progress changed; reload progress');
+      case 'not_found':
+        throw new NotFoundException();
+    }
+  }
+
+  private async pinnedUnit(unitId: string, revision: number): Promise<Unit> {
+    const stored = await this.storage(() => this.revisions.exact(unitId, revision, this.config.allowDraftUnits));
+    if (!stored) throw new NotFoundException();
+    const unit = validateUnit(stored.payload);
+    if (!unit.success) {
+      this.logger.error(`Stored revision ${revision} of ${unitId} does not match the content schema`);
+      throw new InternalServerErrorException();
+    }
+    return unit.data;
   }
 
   // Completed rows and their exact published revisions. A draft never counts.

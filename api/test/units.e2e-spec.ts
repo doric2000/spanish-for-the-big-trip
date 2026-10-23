@@ -121,3 +121,36 @@ describe('POST /v1/units/:unitId/start', () => {
     await request(server).post('/v1/units/C01-U01/start').set('Authorization', 'Bearer valid-token').expect(404);
   });
 });
+
+describe('POST /v1/units/:unitId/attempts', () => {
+  let app: INestApplication<App>;
+  afterEach(async () => {
+    await app.close();
+  });
+  const continueEntry = {
+    requestId: '00000000-0000-4000-8000-000000000011', revision: 1, activityId: 'u1a-entry',
+    expectedProgressVersion: 0, response: { kind: 'continue' },
+  };
+
+  it('starts, then a continue on the entry moves to the first card; a retry gets the same answer', async () => {
+    app = await startApp(true);
+    const server = app.getHttpServer();
+    await request(server).post('/v1/units/C01-U01/start').set('Authorization', 'Bearer valid-token').expect(200);
+    const first = await request(server).post('/v1/units/C01-U01/attempts').set('Authorization', 'Bearer valid-token')
+      .send(continueEntry).expect(200).expect('Cache-Control', 'no-store');
+    expect(first.body).toMatchObject({ outcome: 'viewed', progress: { currentActivityId: 'u1a-vocab-hola', progressVersion: 1 } });
+    const retry = await request(server).post('/v1/units/C01-U01/attempts').set('Authorization', 'Bearer valid-token')
+      .send(continueEntry).expect(200);
+    expect(retry.body).toEqual(first.body);
+  });
+
+  it('returns 400 for a malformed body, 401 without a token and 409 for a stale version', async () => {
+    app = await startApp(true);
+    const server = app.getHttpServer();
+    await request(server).post('/v1/units/C01-U01/start').set('Authorization', 'Bearer valid-token').expect(200);
+    await request(server).post('/v1/units/C01-U01/attempts').send(continueEntry).expect(401);
+    await request(server).post('/v1/units/C01-U01/attempts').set('Authorization', 'Bearer valid-token').send({ kind: 'continue' }).expect(400);
+    await request(server).post('/v1/units/C01-U01/attempts').set('Authorization', 'Bearer valid-token')
+      .send({ ...continueEntry, expectedProgressVersion: 3 }).expect(409);
+  });
+});

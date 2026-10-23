@@ -26,6 +26,10 @@ export function fakeRevisions(payloads: Record<string, unknown>[]) {
       const match = payloads.find(p => p.id === unitId && (includeDrafts || p.status === 'published'));
       return Promise.resolve(match ? { payload: match } : null);
     },
+    exact: (unitId: string, revision: number, includeDrafts: boolean) => {
+      const match = payloads.find(p => p.id === unitId && p.revision === revision && (includeDrafts || p.status === 'published'));
+      return Promise.resolve(match ? { payload: match } : null);
+    },
     published: (unitId: string, revision: number) => {
       const match = payloads.find(p => p.id === unitId && p.revision === revision && p.status === 'published');
       return Promise.resolve(match ? { payload: match } : null);

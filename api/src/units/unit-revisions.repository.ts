@@ -22,6 +22,19 @@ export class UnitRevisionsRepository {
     return data ? { payload: data.authoring_payload } : null;
   }
 
+  /** One exact revision a learner is pinned to; drafts only when included. */
+  async exact(unitId: string, revision: number, includeDrafts: boolean): Promise<{ payload: unknown } | null> {
+    let query = this.supabase
+      .from('unit_revisions')
+      .select('authoring_payload')
+      .eq('unit_id', unitId)
+      .eq('revision', revision);
+    if (!includeDrafts) query = query.eq('status', 'published');
+    const { data, error } = await query.maybeSingle<{ authoring_payload: unknown }>();
+    if (error) throw new Error(`unit_revisions read failed: ${error.message}`);
+    return data ? { payload: data.authoring_payload } : null;
+  }
+
   /** One exact published revision, or null. Used for completed prerequisites: drafts never count. */
   async published(unitId: string, revision: number): Promise<{ payload: unknown } | null> {
     const { data, error } = await this.supabase

@@ -46,6 +46,12 @@ export function startUnit(actor: VerifiedActor | null, latest: Unit, existing: r
   return { userId: actor.userId, unitId: latest.id, revision: latest.revision, status: 'in_progress', currentActivityId: first.id, progressVersion: 0, scenarioNodeId: first.type === 'bounded_scenario' ? first.startNodeId : null, usedHelpForCurrent: false, completed: [] };
 }
 
+// The idempotency fingerprint: SHA-256 of the canonical request including the path unitId.
+// One definition, used here and by the API before it asks the database.
+export function attemptFingerprint(unitId: string, request: AttemptRequest): string {
+  return sha256(canonicalJson({ unitId, ...request }));
+}
+
 // Pure local reference implementation. PostgreSQL transaction/lock/unique-key
 // enforcement belongs to04; the NestJS transport and durable mobile queue to05.
 export function applyAttempt(actor: VerifiedActor | null, unit: Unit, state: SubmissionState, input: unknown, options: ProgressOptions = {}): { state: SubmissionState; result: AttemptResult; replayed: boolean } {
@@ -54,7 +60,7 @@ export function applyAttempt(actor: VerifiedActor | null, unit: Unit, state: Sub
   const parsed = AttemptRequestSchema.safeParse(input);
   if (!parsed.success) throw new ContractError(400, 'Invalid attempt request');
   const request: AttemptRequest = parsed.data;
-  const fingerprint = sha256(canonicalJson({ unitId: unit.id, ...request }));
+  const fingerprint = attemptFingerprint(unit.id, request);
   const previous = state.attempts.find(a => a.userId === actor.userId && a.requestId === request.requestId);
   if (previous) {
     if (previous.fingerprint !== fingerprint) throw new ContractError(409, 'Request ID was already used for different input');

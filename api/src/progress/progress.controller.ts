@@ -1,4 +1,4 @@
-import { Controller, Header, HttpCode, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Header, HttpCode, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard, type AuthenticatedRequest } from '../auth/auth.guard.js';
 import { ProgressService } from './progress.service.js';
 
@@ -14,5 +14,14 @@ export class ProgressController {
   @Header('Cache-Control', 'no-store')
   start(@Param('unitId') unitId: string, @Req() request: AuthenticatedRequest) {
     return this.progress.start(request.user!, unitId);
+  }
+
+  // 200 for every valid submission, including a wrong answer (its feedback is in the
+  // body) and a replayed retry. The body is validated against AttemptRequestSchema.
+  @Post(':unitId/attempts')
+  @HttpCode(200)
+  @Header('Cache-Control', 'no-store')
+  attempt(@Param('unitId') unitId: string, @Body() body: unknown, @Req() request: AuthenticatedRequest) {
+    return this.progress.submit(request.user!, unitId, body);
   }
 }

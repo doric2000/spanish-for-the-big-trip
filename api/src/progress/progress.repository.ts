@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { Progress } from '@spanish-for-trip/content/progress';
+import type { AttemptRequest } from '@spanish-for-trip/content/api-contract';
+import type { AttemptResult, Progress } from '@spanish-for-trip/content/progress';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { SUPABASE } from '../core.module.js';
 
@@ -17,6 +18,17 @@ export interface ProgressRow {
 }
 
 export type StartStatus = 'started' | 'existing' | 'completed';
+
+// What public.submit_activity_attempt answers.
+export type SubmitOutcome =
+  | { status: 'stored' | 'replayed'; result: AttemptResult }
+  | { status: 'conflict'; reason: 'request_id_reused' | 'progress_changed' }
+  | { status: 'not_found' };
+
+export interface SubmitInput {
+  userId: string; unitId: string; request: AttemptRequest; fingerprint: string;
+  result: AttemptResult;
+}
 
 export function progressFromRow(row: ProgressRow): Progress {
   return {
@@ -47,6 +59,33 @@ export class ProgressRepository {
       .from('user_unit_progress').select('*').eq('user_id', userId).eq('status', 'completed');
     if (error) throw new Error(`user_unit_progress read failed: ${error.message}`);
     return (data as ProgressRow[]).map(progressFromRow);
+  }
+
+  /** A stored attempt of this learner with this request id, or null. */
+  async attempt(userId: string, requestId: string): Promise<{ fingerprint: string; result: AttemptResult } | null> {
+    const { data, error } = await this.supabase
+      .from('activity_attempts').select('request_fingerprint, server_result')
+      .eq('user_id', userId).eq('request_id', requestId)
+      .maybeSingle<{ request_fingerprint: string; server_result: AttemptResult }>();
+    if (error) throw new Error(`activity_attempts read failed: ${error.message}`);
+    return data ? { fingerprint: data.request_fingerprint, result: data.server_result } : null;
+  }
+
+  /**
+   * Atomic submit (public.submit_activity_attempt): locks this learner's progress row,
+   * replays a stored request, refuses a reused id or stale progress, otherwise stores
+   * the attempt and the new progress in one transaction.
+   */
+  async submit(input: SubmitInput): Promise<SubmitOutcome> {
+    const { request, result } = input;
+    const { data, error } = await this.supabase.rpc('submit_activity_attempt', {
+      p_user_id: input.userId, p_request_id: request.requestId, p_unit_id: input.unitId,
+      p_revision: request.revision, p_activity_id: request.activityId, p_fingerprint: input.fingerprint,
+      p_response: request.response, p_expected_version: request.expectedProgressVersion,
+      p_result: result, p_progress: result.progress,
+    });
+    if (error) throw new Error(`submit_activity_attempt failed: ${error.message}`);
+    return data as SubmitOutcome;
   }
 
   /**
