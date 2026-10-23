@@ -30,6 +30,21 @@ check("docs edit leaves no marker", !fs.existsSync(marker));
 
 hook("track-edits.mjs", { tool_input: { file_path: path.join(root, "mobile/src/app/_layout.tsx") } });
 check("mobile edit is recorded", fs.existsSync(marker) && JSON.parse(fs.readFileSync(marker, "utf8")).files.includes("mobile/src/app/_layout.tsx"));
+hook("track-edits.mjs", { tool_input: { file_path: path.join(root, "api/src/main.ts") } });
+check("api edit is recorded", JSON.parse(fs.readFileSync(marker, "utf8")).files.includes("api/src/main.ts"));
+fs.rmSync(marker, { force: true });
+
+// verify-on-stop plans content -> api -> mobile: content/dist is rebuilt before anything reads it.
+fs.writeFileSync(marker, JSON.stringify({ files: ["mobile/src/app/_layout.tsx", "api/src/main.ts", "content/package.json"], attempts: 0 }));
+const plan = spawnSync("node", [path.join(root, ".claude/hooks/verify-on-stop.mjs")], {
+  input: JSON.stringify({ session_id: "t1" }), env: { ...env, HOOK_DRY_RUN: "1" }, encoding: "utf8",
+});
+const names = plan.status === 0 ? JSON.parse(plan.stdout) : [];
+const first = (prefix) => names.findIndex((n) => n.startsWith(prefix));
+check("jobs run content, then api, then mobile", first("content") === 0 && first("api") > first("content") && first("eslint") > first("api"), JSON.stringify(names));
+check("api build, lint and tests are planned", ["api build (typecheck)", "api lint", "api tests"].every((n) => names.includes(n)));
+const source = fs.readFileSync(path.join(root, ".claude/hooks/verify-on-stop.mjs"), "utf8");
+check("jobs run one at a time", !source.includes("Promise.all"));
 fs.rmSync(marker, { force: true });
 
 // verify-on-stop

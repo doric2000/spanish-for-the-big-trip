@@ -1,6 +1,7 @@
-// Stop hook: if code was edited this turn, run lint (changed files), typecheck and tests.
+// Stop hook: if code was edited this turn, run lint, typecheck and tests for the parts touched.
 // Exit 2 refuses to end the turn and sends the failure output back to the agent.
 // After MAX_ATTEMPTS failed attempts it lets go, so a stubborn failure cannot loop forever.
+// HOOK_DRY_RUN=1 prints the planned jobs instead of running them (used by verify.test.mjs).
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
@@ -21,15 +22,29 @@ const state = JSON.parse(fs.readFileSync(marker, "utf8"));
 const files = state.files.filter((f) => fs.existsSync(path.join(root, f)));
 const mobile = files.filter((f) => f.startsWith("mobile/"));
 const content = files.filter((f) => f.startsWith("content/"));
+const api = files.filter((f) => f.startsWith("api/"));
 
+// Order matters: content tests rebuild content/dist, every api script rebuilds it too
+// (pre* scripts), and the mobile tests read it. Run content, then api, then mobile, one
+// job at a time, so no job reads content/dist while another is writing it.
 const jobs = [];
+if (content.length) jobs.push({ name: "content tests", cwd: "content", cmd: "npm test --silent" });
+if (api.length) {
+  jobs.push({ name: "api build (typecheck)", cwd: "api", cmd: "npm run build --silent" });
+  jobs.push({ name: "api lint", cwd: "api", cmd: "npm run lint --silent" });
+  jobs.push({ name: "api tests", cwd: "api", cmd: "npm test --silent" });
+}
 if (mobile.length) {
   const lintable = mobile.filter((f) => /\.(ts|tsx|js)$/.test(f)).map((f) => `"${f.slice("mobile/".length)}"`);
   if (lintable.length) jobs.push({ name: "eslint (edited files)", cwd: "mobile", cmd: `npx eslint ${lintable.join(" ")}` });
   jobs.push({ name: "mobile typecheck", cwd: "mobile", cmd: "npm run typecheck --silent" });
   jobs.push({ name: "mobile tests", cwd: "mobile", cmd: "npm test --silent" });
 }
-if (content.length) jobs.push({ name: "content tests", cwd: "content", cmd: "npm test --silent" });
+
+if (process.env.HOOK_DRY_RUN === "1") {
+  console.log(JSON.stringify(jobs.map((j) => j.name)));
+  process.exit(0);
+}
 
 const run = (job) =>
   new Promise((resolve) => {
@@ -40,7 +55,8 @@ const run = (job) =>
     child.on("close", (code) => resolve({ ...job, code, out }));
   });
 
-const results = await Promise.all(jobs.map(run));
+const results = [];
+for (const job of jobs) results.push(await run(job));
 const failed = results.filter((r) => r.code !== 0);
 
 if (!failed.length) {

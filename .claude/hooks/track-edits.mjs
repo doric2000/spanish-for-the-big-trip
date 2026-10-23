@@ -26,7 +26,7 @@ if (rel.startsWith("docs/") && rel.endsWith(".json")) {
   process.exit(0);
 }
 
-if (/^(mobile|content)\/.+\.(ts|tsx|js|cjs|mjs|json)$/.test(rel) && !rel.includes("node_modules")) {
+if (/^(mobile|content|api)\/.+\.(ts|tsx|js|cjs|mjs|json)$/.test(rel) && !rel.includes("node_modules")) {
   fs.mkdirSync(stateDir, { recursive: true });
   const marker = path.join(stateDir, `${sessionId.replace(/[^\w-]/g, "_")}.json`);
   const state = fs.existsSync(marker) ? JSON.parse(fs.readFileSync(marker, "utf8")) : { files: [], attempts: 0 };
