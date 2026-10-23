@@ -3230,6 +3230,32 @@
         ".claude/settings.json changes and the new .claude/hooks/ folder are uncommitted and were not created in this chat; review them separately before committing."
       ],
       "next_step": "Draft option for startUnit/applyAttempt in content (development only), then POST /v1/units/:unitId/start and /attempts in the API with tests, including two parallel requests."
+    },
+    {
+      "id": "stage05-guard-provider-and-draft-progress-2026-10-23",
+      "stage_id": "05",
+      "goal": "Prepare the server for POST start/attempts: let startUnit/applyAttempt run on the 1A draft in development only, and have the guard pass the verified sign-in provider (Google or Apple only).",
+      "practical_owner": "Claude wrote the code and tests and diagnosed the 401 report. Dor committed both parts, restarted the server, moved it into the Claude terminal panel so the log could be read, updated EXPO_PUBLIC_API_URL and restarted Metro, and verified on the iPhone.",
+      "practical_action": "content/src/progress.ts: ProgressOptions { allowDraft } for startUnit and applyAttempt; prerequisites still read only published revisions, so a finished draft never unlocks anything. api/src/auth/auth.guard.ts: reads app_metadata.provider from the verified claims, refuses anything but google/apple, passes { userId, provider }; logs the refusal reason as WARN [Auth] 401 without token or user id.",
+      "evidence": [
+        "content 64/64 (new: draft start/attempt only with allowDraft; a completed draft does not unlock the next unit even with the option, the same completion on a published revision does)",
+        "api build and lint clean; unit 10/10 (new guard spec: Google and Apple pass, refusal reasons logged without token or user id); e2e 5/5 (Apple token 200, email and missing-provider tokens 401)",
+        "Dor reported a not-authorized screen after part 2. The server log in Terminal 2 showed no request at all, and port 3000 had no connections: the computer Wi-Fi address had changed from 10.100.102.7 (2026-10-17) to 10.100.102.9, so the app was calling an address where nothing listened. After Dor updated EXPO_PUBLIC_API_URL and restarted Metro with -c: GET /v1/units/C01-U01 200 at 13:53:04 with the provider guard active",
+        "Commits e0140bf (content) and 2a140e5 (guard) pushed; the refusal logging is not committed yet"
+      ],
+      "concepts": [
+        "app_metadata (set by Supabase Auth, trustworthy) vs user_metadata (editable by the user)",
+        "Logging a refusal reason without secrets or personal identifiers",
+        "Debugging by evidence: no log line means the request never arrived, so look at the network before the code",
+        "DHCP can change the development machine address; EXPO_PUBLIC_ variables are inlined at bundle time and need a cache-cleared restart"
+      ],
+      "dor_participation": "Committed parts 1 and 2, ran the server and the app, moved the server into the panel, fixed the API URL and restarted Metro, verified on the iPhone.",
+      "understanding_demonstrated": "Not checked in this step.",
+      "interview_takeaway": "Tell the story of a 401 that was not a 401: the server log proved the request never arrived, the machine IP had changed, and the guard turned out to be correct.",
+      "open_questions": [
+        "Optional: a DHCP reservation in the router so the development machine address stays fixed."
+      ],
+      "next_step": "Part 3: POST /v1/units/:unitId/start and /attempts in a progress module, with tests including two parallel requests against the development database."
     }
   ],
   "entry_template": {
