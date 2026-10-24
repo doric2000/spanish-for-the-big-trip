@@ -2,6 +2,10 @@
 
 **English summary:** A Spanish-learning iPhone app for Hebrew speakers, in development. Stack: React Native/Expo, TypeScript, a NestJS API (auth guard, repository layer, unit and e2e tests), Supabase PostgreSQL with SQL migrations, and Zod-validated lesson content. Not yet released.
 
+![Screens: sign-in, learning path, first lesson](docs/portfolio/screens.png)
+
+_Screens from the in-development iOS build._
+
 **לומדים מה שצריך לטיול, בתרגולים קצרים וממוקדים.**
 
 אפליקציית אייפון לדוברי עברית, שמלמדת להבין ולענות בספרדית במצבים מעשיים בטיול. היעד הראשון הוא יחידה 1A מלאה. אחריה מגיע פרק 1 כולו, ואחריו פרק 2.
