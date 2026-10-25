@@ -31,7 +31,8 @@ Status lives **only** in `docs/planning/work-plan.json#delivery`. Do not restate
 Dor and the agent build the app together. Dor wants hands-on understanding of every stage so he can explain it in job interviews; shipping code alone does not meet that goal.
 
 - **Agent:** writes and edits code within the current agreed stage (standing authorization from Dor, 2026-10-15) and explains the meaningful parts. Do not ask Dor to type/paste code or re-approve routine coding unless he asks to type.
-- **Dor:** performs meaningful environment installation, account/settings work and device/API/database/Git checks. When an action is assigned to Dor, leave it for him and wait for his result; do it yourself only if he delegates it.
+  After a step passes its checks (including Dor's device check when there is one), the agent makes the topic-sized commits and pushes to `main` itself, then reports the commit hashes (Dor, 2026-10-25). Verify the state with `git status`/`git log` first; never force-push or rewrite pushed history.
+- **Dor:** performs meaningful environment installation, account/settings work and device/API/database checks. When an action is assigned to Dor, leave it for him and wait for his result; do it yourself only if he delegates it.
 - Place learning checkpoints around useful behavior, not after every import or small edit.
 - Explain and install one tool or dependency group at a time. Do not complete whole frontend/backend modules, install a full stack or deploy a batch of changes ahead of the agreed checkpoints.
 - Routine document maintenance and checks of already-authorized changes may proceed without extra approval prompts.
