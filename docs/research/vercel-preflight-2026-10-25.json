@@ -25,7 +25,7 @@
   "expected_in_a_deployment": [
     "ALLOW_DRAFT_UNITS is never set in Vercel, and readConfig refuses it when VERCEL is set. The 1A draft therefore answers 404 there until 1A is published. A deployment proves build, settings, HTTPS and the token guard, not the lesson; lesson development continues against the local server.",
     "The Vercel project must keep 'Include files outside the root directory in the Build Step' enabled (default), or ../content is not available to the build.",
-    "The function region should be the one closest to the Supabase project's region (Supabase: Project Settings, General)."
+    "The Supabase development project is in eu-west-3 (Paris, reported by Dor). api/vercel.json pins the function to cdg1 (Paris); Hobby allows a single region, and the default would be iad1 (Washington)."
   ],
   "open_until_first_deployment": [
     "Whether Vercel's NestJS integration accepts the top-level 'await bootstrap()' in src/main.ts (ESM) without change; the first deployment log answers it.",
