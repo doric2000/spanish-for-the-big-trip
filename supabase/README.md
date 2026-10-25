@@ -140,3 +140,16 @@ npx.cmd --no-install supabase db push --linked --skip-vault
 שתיהן `SECURITY INVOKER` עם `search_path` ריק. הרשאת ההפעלה מבוטלת במפורש ל־`anon`, ל־`authenticated` ול־`PUBLIC`, כי Supabase נותן אותה כברירת מחדל לכל פונקציה חדשה ב־`public`.
 
 מחילים באותו תהליך CLI: קודם dry-run, שבו צפוי רק `20261019173552_create_attempt_functions.sql`, ואחר כך ההחלה. אחרי החלה מוצלחת מריצים את `checks/07_attempt_functions.sql` **במלואו** ב־SQL Editor. התוצאה הצפויה: `PASS: start/resume/completion, atomic store, replay after progress moved, reused id and stale progress refused, learner isolation, no learner or anon access; synthetic rows rolled back`. הבדיקה רצה בחיבור אחד, ולכן אינה שולחת שתי בקשות באותו רגע; את הנעילה מול בקשות מקבילות בודקים דרך השרת.
+
+## איפוס ההתקדמות שלי בזמן פיתוח
+
+כדי לעבור שוב את 1A מההתחלה במכשיר, מריצים ב־SQL Editor של פרויקט **הפיתוח** את השורות הבאות, אחרי שמחליפים את כתובת המייל בזו שאיתה מתחברים לאפליקציה. הן מוחקות רק את השורות של המשתמש הזה, ביחידה הזו. אין כפתור איפוס באפליקציה (ההחלטה התקבלה עם Dor ב־2026-10-25).
+
+```sql
+delete from public.activity_attempts
+ where unit_id = 'C01-U01' and user_id = (select id from auth.users where email = 'your-email@example.com');
+delete from public.user_unit_progress
+ where unit_id = 'C01-U01' and user_id = (select id from auth.users where email = 'your-email@example.com');
+```
+
+אחרי ההרצה סוגרים את השיעור ופותחים אותו מחדש. הבקשה `start` תיצור שורה חדשה שמתחילה במסך הכניסה.

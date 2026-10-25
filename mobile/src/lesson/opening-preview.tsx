@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import * as Crypto from 'expo-crypto';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { fetchUnit, type UnitFailure } from '../api/units';
+import type { AttemptRequest } from '../../../content/src/api-contract';
+import type { Progress } from '../../../content/src/progress-types';
+import { fetchUnit, startUnit, submitAttempt, type UnitFailure } from '../api/units';
 import { supabase } from '../auth/supabase';
 import { theme as t } from '../theme';
 import { EntryScreen } from './entry-screen';
+import type { SaveState } from './lesson-button';
 import { audioFor, faceCropFor, imageFor } from './media';
-import { activityCode, moveOpeningStep, openingSteps, type OpeningStep, unitCodes } from './opening-data';
+import { activityCode, continueRequest, frontierIndex, moveOpeningStep, openingSteps, type OpeningStep, unitCodes } from './opening-data';
 import { VocabularyCardScreen } from './vocabulary-card-screen';
 
 const failureMessages: Record<UnitFailure, string> = {
@@ -15,8 +19,27 @@ const failureMessages: Record<UnitFailure, string> = {
   unreachable: 'לא הצלחנו להתחבר לשרת. בדקו שהוא רץ ושהטלפון והמחשב באותה רשת.',
   unauthorized: 'השרת לא אישר את החיבור לחשבון. נסו להתנתק ולהתחבר שוב.',
   not_found: 'היחידה לא נמצאה בשרת.',
+  conflict: 'ההתקדמות השתנתה בזמן הטעינה. נסו שוב.',
   server: 'השרת החזיר שגיאה. בדקו את הלוג שלו.',
 };
+
+// A tap the server did not confirm. The same request is resent on the next tap.
+const saveMessages: Record<UnitFailure, string> = {
+  not_configured: failureMessages.not_configured,
+  unreachable: 'לא הצלחנו לשמור. בדקו את החיבור ונסו שוב.',
+  unauthorized: 'החיבור לחשבון פג. נסו להתנתק ולהתחבר שוב.',
+  not_found: 'היחידה לא נמצאה בשרת.',
+  conflict: 'ההתקדמות התעדכנה ממקום אחר. ממשיכים מהנקודה השמורה.',
+  server: 'השרת לא הצליח לשמור. נסו שוב בעוד רגע.',
+};
+
+// Read the session at request time: getSession refreshes an expired token,
+// and a token refresh must not restart the lesson.
+async function accessToken() {
+  const { data } = await supabase.auth.getSession();
+  return data.session?.access_token ?? null;
+}
+const apiUrl = () => process.env.EXPO_PUBLIC_API_URL;
 
 function Action({ title, onPress, secondary = false }: { title: string; onPress: () => void; secondary?: boolean }) {
   return <Pressable accessibilityRole="button" accessibilityLabel={title} onPress={onPress}
@@ -25,7 +48,7 @@ function Action({ title, onPress, secondary = false }: { title: string; onPress:
   </Pressable>;
 }
 
-type Ready = { unitId: string; activityCount: number; steps: OpeningStep[] };
+type Ready = { unitId: string; activityCount: number; steps: OpeningStep[]; progress: Progress };
 type Load = { status: 'loading' } | { status: 'failed'; reason: UnitFailure } | ({ status: 'ready' } & Ready);
 
 type PreviewProps = { onOpenRecorder: () => void; onOpenAccount?: () => void; onClose: () => void };
@@ -36,16 +59,17 @@ export default function OpeningPreview(props: PreviewProps) {
   useEffect(() => {
     let active = true;
     void (async () => {
-      // Read the session at request time: getSession refreshes an expired token,
-      // and a token refresh must not restart the lesson.
-      const { data } = await supabase.auth.getSession();
-      const token = data.session?.access_token;
-      const result = token ? await fetchUnit(process.env.EXPO_PUBLIC_API_URL, 'C01-U01', token)
-        : { ok: false as const, reason: 'unauthorized' as const };
+      const token = await accessToken();
+      if (!token) { if (active) setLoad({ status: 'failed', reason: 'unauthorized' }); return; }
+      // The content, then where this learner stands. Start is safe to repeat: it
+      // returns the saved progress, so reopening the lesson resumes it.
+      const unit = await fetchUnit(apiUrl(), 'C01-U01', token);
+      if (!unit.ok) { if (active) setLoad({ status: 'failed', reason: unit.reason }); return; }
+      const started = await startUnit(apiUrl(), unit.unit.id, token);
       if (!active) return;
-      setLoad(result.ok
-        ? { status: 'ready', unitId: result.unit.id, activityCount: result.unit.activities.length, steps: openingSteps(result.unit) }
-        : { status: 'failed', reason: result.reason });
+      if (!started.ok) { setLoad({ status: 'failed', reason: started.reason }); return; }
+      setLoad({ status: 'ready', unitId: unit.unit.id, activityCount: unit.unit.activities.length,
+        steps: openingSteps(unit.unit), progress: started.progress });
     })();
     return () => { active = false; };
   }, [attempt]);
@@ -63,11 +87,56 @@ export default function OpeningPreview(props: PreviewProps) {
   </View>;
 }
 
-function PreviewSteps({ unitId, activityCount, steps, onOpenRecorder, onOpenAccount, onClose }: PreviewProps & Ready) {
-  const [index, setIndex] = useState(0);
+function PreviewSteps({ unitId, activityCount, steps, progress: initial, onOpenRecorder, onOpenAccount, onClose }: PreviewProps & Ready) {
+  // The server's progress is the truth; index is only what is on screen. "חזרה" moves
+  // the view back without touching the saved progress (approved by Dor, 2026-10-25).
+  const [progress, setProgress] = useState(initial);
+  const frontier = frontierIndex(steps, progress);
+  const [index, setIndex] = useState(frontier);
+  const [save, setSave] = useState<SaveState>({ busy: false, errorHe: null });
+  // The tap the server has not confirmed yet. Kept in memory only for now: closing the
+  // app forgets it, and the next tap creates a new request from the saved progress.
+  const pending = useRef<AttemptRequest | null>(null);
+  const mounted = useRef(true);
+  useEffect(() => () => { mounted.current = false; }, []);
   const step = steps[index];
-  const advance = () => setIndex(current => moveOpeningStep(current, 'next', steps.length));
-  const back = () => setIndex(current => moveOpeningStep(current, 'back', steps.length));
+
+  const send = async (request: AttemptRequest) => {
+    const token = await accessToken();
+    const sent = token ? await submitAttempt(apiUrl(), unitId, token, request) : { ok: false as const, reason: 'unauthorized' as const };
+    if (!mounted.current) return;
+    if (sent.ok) {
+      pending.current = null;
+      setProgress(sent.result.progress);
+      setIndex(frontierIndex(steps, sent.result.progress));
+      setSave({ busy: false, errorHe: null });
+      return;
+    }
+    if (sent.reason === 'conflict' && token) {
+      // Saved elsewhere first (another phone, or a lost answer to an earlier tap):
+      // drop this request and continue from what the server holds.
+      pending.current = null;
+      const saved = await startUnit(apiUrl(), unitId, token);
+      if (!mounted.current) return;
+      if (saved.ok) { setProgress(saved.progress); setIndex(frontierIndex(steps, saved.progress)); }
+    }
+    setSave({ busy: false, errorHe: saveMessages[sent.reason] });
+  };
+
+  const advance = () => {
+    if (save.busy) return;
+    // Reviewing an earlier step: view only, nothing to save.
+    if (index < frontier) { setIndex(current => moveOpeningStep(current, 'next', steps.length)); return; }
+    if (progress.status !== 'in_progress' || !progress.currentActivityId) return;
+    // A retry resends the very same request, so the server counts the tap once.
+    const request = pending.current ?? continueRequest({ ...progress, currentActivityId: progress.currentActivityId }, Crypto.randomUUID());
+    pending.current = request;
+    setSave({ busy: true, errorHe: null });
+    void send(request);
+  };
+  const back = () => { if (!save.busy) setIndex(current => moveOpeningStep(current, 'back', steps.length)); };
+  // A save error belongs to the step where the tap happened.
+  const shownSave = index === frontier ? save : { busy: false, errorHe: null };
   const header = { code: activityCode(unitId, index, activityCount), index, count: activityCount };
   // Safe areas are padded by hand: with 'automatic' insets iOS shifted the
   // full-height content down by the top inset, pushing the footer under the
@@ -76,7 +145,7 @@ function PreviewSteps({ unitId, activityCount, steps, onOpenRecorder, onOpenAcco
 
   if (step?.type === 'entry') return <EntryScreen content={step} scene={imageFor(step.sceneAssetId, step.sceneUrl)}
     unitCode={unitCodes(unitId)} headerCode={header.code} index={index} count={activityCount}
-    onStart={advance} onClose={onClose} />;
+    save={shownSave} onStart={advance} onClose={onClose} />;
 
   if (step?.type === 'vocabulary') {
     const cards = steps.filter(s => s.type === 'vocabulary');
@@ -88,7 +157,7 @@ function PreviewSteps({ unitId, activityCount, steps, onOpenRecorder, onOpenAcco
       avatar={avatarSource && crop ? { source: avatarSource, crop } : null}
       audio={audioFor(step.audioAssetId, step.audioUrl)}
       nextLabel={index === steps.length - 1 ? 'סיום הסקירה' : 'הביטוי הבא'}
-      onNext={advance} onBack={back} onClose={onClose} />;
+      save={shownSave} onNext={advance} onBack={back} onClose={onClose} />;
   }
 
   // The end of the supported prefix: a development boundary, not lesson completion.
@@ -106,7 +175,7 @@ function PreviewSteps({ unitId, activityCount, steps, onOpenRecorder, onOpenAcco
         {steps.length ? <>
           <Text accessibilityRole="header" style={styles.title}>סיימתם את מקטע הסקירה</Text>
           <Text style={styles.body}>ראינו את הכניסה ואת הכנת המילים. השיחה והתרגולים יתחברו בהמשך.</Text>
-          <Text style={styles.note}>זו סקירת פיתוח מקומית. היחידה עדיין אינה מלאה, ואין כאן שמירת התקדמות בחשבון.</Text>
+          <Text style={styles.note}>זו סקירת פיתוח. ההתקדמות נשמרת בחשבון, ומכאן היא תמשיך כשהמסך הבא ייבנה.</Text>
         </> : <Text accessibilityRole="alert" style={styles.error}>לא נמצאו מסכים לסקירה.</Text>}
       </View>
       <View style={styles.footer}>

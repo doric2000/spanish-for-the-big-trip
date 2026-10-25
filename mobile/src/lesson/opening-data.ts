@@ -37,6 +37,23 @@ export function moveOpeningStep(index: number, direction: 'next' | 'back', count
   return Math.max(0, Math.min(count, index + (direction === 'next' ? 1 : -1)));
 }
 
+type ServerProgress = { status: 'in_progress' | 'completed'; currentActivityId: string | null; revision: number; progressVersion: number };
+
+// The furthest step the server allows. An activity past the supported prefix, or a
+// completed unit, maps to steps.length: the preview's end screen.
+export function frontierIndex(steps: readonly OpeningStep[], progress: ServerProgress) {
+  if (progress.status === 'completed') return steps.length;
+  const index = steps.findIndex(s => s.id === progress.currentActivityId);
+  return index === -1 ? steps.length : index;
+}
+
+// "Continue" on the current activity. The requestId is created once per tap and reused
+// for every retry of that tap, so a resend never counts twice.
+export function continueRequest(progress: ServerProgress & { currentActivityId: string }, requestId: string) {
+  return { requestId, revision: progress.revision, activityId: progress.currentActivityId,
+    expectedProgressVersion: progress.progressVersion, response: { kind: 'continue' as const } };
+}
+
 // Display codes from the stable unit id: C01-U01 -> { short: '1A', long: 'C01·U01' }.
 // Any other id shape is shown as is.
 export function unitCodes(unitId: string) {

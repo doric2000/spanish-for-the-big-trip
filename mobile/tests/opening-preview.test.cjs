@@ -224,3 +224,23 @@ test('every screen file under src/app is declared in the root layout', () => {
   const declared = [...layout.matchAll(/Stack\.Screen name="([^"]+)"/g)].map(m => m[1]).sort();
   assert.equal(JSON.stringify(routes), JSON.stringify(declared), 'an undeclared route would bypass the sign-in guard');
 });
+
+test('the server progress decides where the lesson resumes; past the supported steps is the end screen', () => {
+  const steps = data.openingSteps(projected(unit));
+  const at = (currentActivityId, status = 'in_progress') => ({ status, currentActivityId, revision: 1, progressVersion: 0 });
+  assert.equal(data.frontierIndex(steps, at('u1a-entry')), 0);
+  assert.equal(data.frontierIndex(steps, at(steps[3].id)), 3);
+  // u1a-primer-listen is not built yet: the preview ends there.
+  assert.equal(data.frontierIndex(steps, at('u1a-primer-listen')), steps.length);
+  assert.equal(data.frontierIndex(steps, at(null, 'completed')), steps.length);
+});
+
+test('a continue request comes from the saved progress and carries no user id or outcome', () => {
+  const progress = { status: 'in_progress', currentActivityId: 'u1a-vocab-hola', revision: 1, progressVersion: 1, userId: 'not-sent' };
+  const request = data.continueRequest(progress, '00000000-0000-4000-8000-000000000001');
+  assert.equal(JSON.stringify(request), JSON.stringify({ requestId: '00000000-0000-4000-8000-000000000001', revision: 1,
+    activityId: 'u1a-vocab-hola', expectedProgressVersion: 1, response: { kind: 'continue' } }));
+  // It must pass the server's own schema.
+  const { AttemptRequestSchema } = require(path.join(root, 'content/dist/src/api-contract.js'));
+  assert.equal(AttemptRequestSchema.safeParse(request).success, true);
+});

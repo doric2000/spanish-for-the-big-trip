@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Line } from 'react-native-svg';
 import { playAudible } from '../audio-playback';
 import { retro } from '../theme';
-import { LessonAudioButton, LessonButton, LessonButtonRow, LessonOutlineButton, LessonSecondaryButton } from './lesson-button';
+import { LessonAudioButton, LessonButton, LessonButtonRow, LessonOutlineButton, LessonSaveError, LessonSecondaryButton, type SaveState } from './lesson-button';
 import { LessonHeader } from './lesson-header';
 import type { FaceCrop } from './media';
 import { isLongExpression } from './opening-data';
@@ -30,10 +30,10 @@ export type VocabularyContent = { id: string; expressionEs: string; meaningHe: s
 type Props = {
   card: VocabularyContent; avatar: { source: ImageSourcePropType; crop: FaceCrop } | null; audio: AudioSource | null;
   position: { index: number; count: number }; header: { code: string; index: number; count: number };
-  nextLabel: string; onNext: () => void; onBack: () => void; onClose: () => void;
+  nextLabel: string; save: SaveState; onNext: () => void; onBack: () => void; onClose: () => void;
 };
 
-export function VocabularyCardScreen({ card, avatar, audio, position, header, nextLabel, onNext, onBack, onClose }: Props) {
+export function VocabularyCardScreen({ card, avatar, audio, position, header, nextLabel, save, onNext, onBack, onClose }: Props) {
   const insets = useSafeAreaInsets();
   const { width: windowWidth } = useWindowDimensions();
   const column = Math.min(windowWidth, 600) - 40;
@@ -85,10 +85,11 @@ export function VocabularyCardScreen({ card, avatar, audio, position, header, ne
       </Animated.View>
     </ScrollView>
     <View style={[styles.footer, { paddingHorizontal: gutter, paddingBottom: Math.max(insets.bottom, 20) }]}>
+      <LessonSaveError message={save.errorHe} />
       <LessonButtonRow>
         {/* Right to left: back on the right, the main action on the left. */}
         <View style={styles.back}><LessonSecondaryButton label="חזרה" onPress={onBack} /></View>
-        <View style={styles.next}><LessonButton label={nextLabel} onPress={onNext} /></View>
+        <View style={styles.next}><LessonButton label={nextLabel} busy={save.busy} onPress={onNext} /></View>
       </LessonButtonRow>
     </View>
   </View>;

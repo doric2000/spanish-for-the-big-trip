@@ -8,7 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 import { retro } from '../theme';
-import { LessonButton } from './lesson-button';
+import { LessonButton, LessonSaveError, type SaveState } from './lesson-button';
 import { LessonHeader } from './lesson-header';
 
 // Unit entry (Figma "Template / Entry" 80:269, approved by Dor 2026-10-16).
@@ -29,10 +29,10 @@ export type EntryContent = {
 type Props = {
   content: EntryContent; scene: ImageSourcePropType | null;
   unitCode: { short: string; long: string }; headerCode: string; index: number; count: number;
-  onStart: () => void; onClose: () => void;
+  save: SaveState; onStart: () => void; onClose: () => void;
 };
 
-export function EntryScreen({ content, scene, unitCode, headerCode, index, count, onStart, onClose }: Props) {
+export function EntryScreen({ content, scene, unitCode, headerCode, index, count, save, onStart, onClose }: Props) {
   const insets = useSafeAreaInsets();
   const { width: windowWidth } = useWindowDimensions();
   const column = Math.min(windowWidth, 600) - 40;
@@ -113,7 +113,8 @@ export function EntryScreen({ content, scene, unitCode, headerCode, index, count
       <Text style={styles.body}>{content.bodyHe}</Text>
     </ScrollView>
     <View style={[styles.footer, { paddingHorizontal: gutter, paddingBottom: Math.max(insets.bottom, 20) }]}>
-      <LessonButton label={content.actionLabelHe} onPress={onStart} />
+      <LessonSaveError message={save.errorHe} />
+      <LessonButton label={content.actionLabelHe} busy={save.busy} onPress={onStart} />
     </View>
   </View>;
 }

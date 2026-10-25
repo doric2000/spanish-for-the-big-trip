@@ -18,15 +18,26 @@ function Base({ label, onPress, disabled = false, style, labelStyle, busy = fals
     accessibilityState={{ disabled: disabled || busy, busy }} disabled={disabled || busy} onPress={onPress}
     style={({ pressed }) => [styles.base, style, (disabled || busy) && styles.disabled, pressed && styles.pressed]}>
     {/* In the right-to-left row the icon comes first, at the start of the line. */}
-    {busy ? <ActivityIndicator color={c.plum} /> : <>
+    {busy ? <ActivityIndicator color={style === styles.primary ? c.night : c.plum} /> : <>
       {children}
       <Text style={[styles.label, labelStyle]}>{label}</Text>
     </>}
   </Pressable>;
 }
 
-export function LessonButton(props: Common) {
-  return <Base {...props} style={styles.primary} labelStyle={styles.onGold} />;
+// busy: waiting for the server to confirm the action; further taps are ignored.
+export function LessonButton({ busy, ...props }: Common & { busy?: boolean }) {
+  return <Base {...props} busy={busy} style={styles.primary} labelStyle={styles.onGold} />;
+}
+
+// The main action's save state, shared by every lesson screen.
+export type SaveState = { busy: boolean; errorHe: string | null };
+
+// Shown above the footer buttons when the server did not confirm a tap. Tapping the
+// main action again resends the same request.
+export function LessonSaveError({ message }: { message: string | null }) {
+  if (!message) return null;
+  return <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.error}>{message}</Text>;
 }
 
 export function LessonSecondaryButton(props: Common) {
@@ -67,4 +78,5 @@ const styles = StyleSheet.create({
   onCream: { color: c.night, fontSize: 16 },
   onSunset: { color: c.plum },
   row: { flexDirection: 'row', gap: 12 },
+  error: { fontFamily: retro.fonts.medium, fontSize: 15, lineHeight: 22, color: c.pink, textAlign: 'center', writingDirection: 'rtl', marginBottom: 10 },
 });
