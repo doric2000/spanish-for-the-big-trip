@@ -3332,6 +3332,31 @@
       "interview_takeaway": "How a mobile client keeps an action exactly-once across a crash or app close: persisted idempotency key, cleared only on a definite server answer, discarded when the server state moved on.",
       "open_questions": [],
       "next_step": "Close stage 05: Vercel Hobby deployment preflight (research and a written decision, no deployment or account without Dor), optional hand-sent valid and invalid attempts, then the stage 05 handoff and a new chat for stage 06."
+    },
+    {
+      "id": "stage05-vercel-preflight-local-2026-10-25",
+      "stage_id": "05",
+      "goal": "Before any Vercel account: check whether api/ builds and starts the way Vercel would run it, and record the Hobby limits and terms.",
+      "practical_owner": "Claude explained what Vercel is and why (a fixed HTTPS address instead of the changing local IP), read the current Vercel docs, ran the clean-clone simulation and made the fix. Dor approved the two-part plan; part B (account and first deployment) is his, with Claude guiding.",
+      "practical_action": "Clean clone, npm ci and build inside api/ only, run dist/main.js without settings and with dummy values. Added api/vercel.json (installCommand installs ../content first) and a clearer missing-settings error. Findings: docs/research/vercel-preflight-2026-10-25.json.",
+      "evidence": [
+        "Build inside api/ alone failed with TS2688 (content's packages not installed); passed after installing content",
+        "Built server without settings stopped with an explicit error; with dummy values it started and answered 401 to GET unit and POST start without a token",
+        "api unit tests 24/24, lint clean"
+      ],
+      "concepts": [
+        "Serverless function versus an always-on server; cold start",
+        "Reproducing a CI/cloud build locally from a clean clone before trusting it",
+        "A monorepo dependency (file:../content) and the cloud install step",
+        "Configuration from environment variables, and a guard that refuses development-only settings in the cloud"
+      ],
+      "dor_participation": "Approved the plan.",
+      "understanding_demonstrated": "Not checked in this step.",
+      "interview_takeaway": "Explain how you de-risked a first cloud deployment: simulate the build from a clean clone, find the monorepo install gap, fix it in versioned config, and know in advance what the deployment can and cannot prove.",
+      "open_questions": [
+        "Top-level await in src/main.ts under Vercel's NestJS integration, and cold-start time: answered by the first deployment."
+      ],
+      "next_step": "Part B with Dor: Vercel Hobby account through GitHub, import with Root Directory api, Sensitive environment variables in the Vercel UI, region near Supabase, deploy, then check 401 without a token and 404 for the 1A draft from the iPhone and in Vercel's runtime logs."
     }
   ],
   "entry_template": {

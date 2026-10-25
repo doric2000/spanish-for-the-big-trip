@@ -1,0 +1,35 @@
+{
+  "topic": "Stage 05 deployment preflight: can api/ run on Vercel Hobby as a personal pilot",
+  "checked_on": "2026-10-25",
+  "decision_ref": "docs/planning/approved-decisions.json (api_host: Vercel Hobby accepted default for a personal non-commercial pilot)",
+  "vercel_facts": {
+    "nestjs": "Zero-configuration support. The entry file src/main.ts is detected; the whole app becomes one Vercel Function on Fluid compute. Bundle limit 250 MB.",
+    "hobby_limits": "Free. Monthly: 4 active CPU-hours, 360 GB-hours provisioned memory, 1,000,000 function invocations, 100 GB fast data transfer. Function maximum duration 300 s. Runtime logs kept 1 hour. 100 deployments per day.",
+    "over_limit": "No billing on Hobby: a feature that exceeds its limit is paused, usually until 30 days have passed.",
+    "terms": "Hobby is for non-commercial, personal use only. A public commercial release needs a new hosting-terms check (AGENTS.md, Product boundaries).",
+    "sources": [
+      "https://vercel.com/docs/frameworks/backend/nestjs",
+      "https://vercel.com/docs/plans/hobby"
+    ]
+  },
+  "local_simulation": {
+    "method": "Clean clone of main (826774b) in a scratch folder; install and build inside api/ only, as a Vercel project with Root Directory api would; then run dist/main.js without a settings file and with dummy values.",
+    "results": [
+      "npm ci inside api/ then npm run build: FAILED. The prebuild step builds ../content, whose own packages (typescript types, zod) were never installed: error TS2688 Cannot find type definition file for 'node'.",
+      "After also installing content (npm ci --prefix ../content): build passed.",
+      "Without SUPABASE_URL and SUPABASE_SECRET_KEY the server stops at startup with an explicit error.",
+      "With dummy values it starts; GET /v1/units/C01-U01 and POST /v1/units/C01-U01/start without a token answer 401 and the log shows the reason only."
+    ],
+    "fix": "api/vercel.json sets installCommand to install content and then api. The missing-settings error now names both places (local file, Vercel Environment Variables)."
+  },
+  "expected_in_a_deployment": [
+    "ALLOW_DRAFT_UNITS is never set in Vercel, and readConfig refuses it when VERCEL is set. The 1A draft therefore answers 404 there until 1A is published. A deployment proves build, settings, HTTPS and the token guard, not the lesson; lesson development continues against the local server.",
+    "The Vercel project must keep 'Include files outside the root directory in the Build Step' enabled (default), or ../content is not available to the build.",
+    "The function region should be the one closest to the Supabase project's region (Supabase: Project Settings, General)."
+  ],
+  "open_until_first_deployment": [
+    "Whether Vercel's NestJS integration accepts the top-level 'await bootstrap()' in src/main.ts (ESM) without change; the first deployment log answers it.",
+    "Cold-start time from the iPhone on the first request after idle."
+  ],
+  "account_steps_for_dor": "Create a Vercel Hobby account with GitHub, import doric2000/spanish-for-the-big-trip with Root Directory api, enter SUPABASE_URL and SUPABASE_SECRET_KEY as Sensitive environment variables in the Vercel UI (never in chat or Git), choose the function region, deploy. Free; no payment method needed."
+}
