@@ -3284,6 +3284,32 @@
         "GET /v1/units returns the latest revision; when a learner is pinned to an older revision after a new one is published, GET must return the pinned revision (contract). Not needed while 1A has one revision."
       ],
       "next_step": "Mobile: drive the lesson from server progress (start, continue as attempts, resume after reopening), then the listen-select screen for \"ננסה יחד\" from Figma 84:1014, shown to Dor before building."
+    },
+    {
+      "id": "stage05-app-follows-server-progress-2026-10-25",
+      "stage_id": "05",
+      "goal": "The app drives 1A from the server's progress: start on open, every continue is an attempt the server confirms, reopening resumes, a failed save is resent with the same requestId.",
+      "practical_owner": "Claude wrote the client, the flow, the button states and the tests and explained the design first. Dor approved the three recommendations (view-only back, pending request in memory for now, reset by README SQL), ran the six-step iPhone check including the server-down failure case, and committed.",
+      "practical_action": "mobile/src/api/units.ts: one callApi helper (timeout, Bearer token, 401/404/409/other mapping) behind fetchUnit, startUnit and submitAttempt. mobile/src/lesson/opening-data.ts: frontierIndex (server progress to screen index; past the supported prefix or completed is the end screen) and continueRequest. opening-preview.tsx: loads unit then start, keeps server progress apart from the shown index, sends continue only at the frontier, keeps the unconfirmed request in a ref and resends it, on 409 reloads the saved progress. lesson-button.tsx: busy primary button and LessonSaveError. content/src/progress-types.ts: the progress types without node:crypto, re-exported from progress.ts. supabase/README.md: dev reset SQL for one learner in C01-U01.",
+      "evidence": [
+        "mobile typecheck and lint clean, tests 45/45; api build and unit 24/24; content build and 64/64 (Claude)",
+        "Debugging: the first mobile typecheck failed because importing types from content/src/progress.ts pulled digest.ts (node:crypto) into the app. Fixed by moving the types to a Node-free file rather than adding Node types to the app",
+        "Dor-reported on the iPhone: start then attempts 200 in the server log; reopening resumed at the third card; back then forward sent no new attempt; with the server stopped the save error appeared and the screen stayed, after restarting one tap advanced exactly one card; the end screen survived reopening; the reset SQL started again from the entry"
+      ],
+      "concepts": [
+        "Server state versus view state: the progress is the truth, the screen index is only what is shown",
+        "Idempotent retry from the client: one requestId per tap, reused for every resend",
+        "409 as a signal to reload, not an error to show",
+        "Keeping Node-only code out of a React Native bundle through type-only modules"
+      ],
+      "dor_participation": "Approved the recommendations, ran the full device check including the failure case, committed.",
+      "understanding_demonstrated": "Not checked in this step.",
+      "interview_takeaway": "Explain how a mobile client stays correct on a flaky network: server-decided progress, an idempotency key per user action, and a reload on version conflict.",
+      "open_questions": [
+        "The unconfirmed request is lost if the app is closed; persist it with expo-secure-store (restorePending in the contract) in the next small step.",
+        "GET /v1/units still returns the latest revision, not the learner's pinned one (unchanged from the previous entry)."
+      ],
+      "next_step": "Persist the pending request with expo-secure-store, then the listen-select screen for \"ננסה יחד\" from Figma 84:1014, shown to Dor before building."
     }
   ],
   "entry_template": {
