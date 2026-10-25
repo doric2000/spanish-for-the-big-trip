@@ -3357,6 +3357,33 @@
         "Top-level await in src/main.ts under Vercel's NestJS integration, and cold-start time: answered by the first deployment."
       ],
       "next_step": "Part B with Dor: Vercel Hobby account through GitHub, import with Root Directory api, Sensitive environment variables in the Vercel UI, region near Supabase, deploy, then check 401 without a token and 404 for the 1A draft from the iPhone and in Vercel's runtime logs."
+    },
+    {
+      "id": "stage05-first-vercel-deployment-2026-10-25",
+      "stage_id": "05",
+      "goal": "Deploy api/ to Vercel Hobby and have the iPhone use it instead of the local server.",
+      "practical_owner": "Dor created the Vercel Hobby account through GitHub (access to this repository only), imported the project with Root Directory api, changed the detected preset from Vite to NestJS, entered the settings in the Vercel UI, added ALLOW_DRAFT_UNITS, redeployed, switched the app's API URL and checked on the iPhone. Claude guided each screen, probed the deployment, diagnosed and fixed the hang, and changed the draft rule after Dor's decision.",
+      "practical_action": "api/vercel.json (install content first; region cdg1 next to Supabase eu-west-3). api/src/main.ts calls bootstrap() without a top-level await. readConfig no longer refuses ALLOW_DRAFT_UNITS on Vercel; removing it there became a release gate (approved-decisions.json#stage05_draft_units_in_development).",
+      "evidence": [
+        "First deployment: build passed, but every request (with or without a token) hung 60 s and returned 500 INTERNAL_FUNCTION_INVOCATION_FAILED; runtime logs were empty (probed by Claude, logs checked by Dor)",
+        "Debugging: empty logs meant nothing failed, the code was waiting. Vercel's own NestJS example ends with bootstrap(); ours awaited it at the top level, so the module never finished loading while Vercel owns app.listen. After the fix (4eb41d3): 401 without a token in under 0.5 s",
+        "Vercel flagged SUPABASE_SECRET_KEY 'Needs Attention': saved as a plain (readable) variable instead of Sensitive. Claude advised rotating it at Supabase and re-adding it as Sensitive",
+        "Dor-reported: with the app pointed at https://spanish-for-the-big-trip.vercel.app the lesson opened at the same point as before (same database), and the requests appeared in Vercel's logs"
+      ],
+      "concepts": [
+        "Serverless platforms own the HTTP listener; a module that never finishes loading looks like a timeout, not a crash",
+        "Framework auto-detection can be wrong (Vitest made Vercel guess Vite)",
+        "Plain versus Sensitive environment variables, and key rotation when a secret may have been visible",
+        "Moving a safety rule to the point where it matters (a release gate) instead of keeping it where it only blocks development"
+      ],
+      "dor_participation": "Ran every account and settings step, challenged the draft rule and decided to move it to the release gate, verified on the iPhone and in Vercel's logs.",
+      "understanding_demonstrated": "Shown in his decision: he argued correctly that blocking drafts protected nothing while he is the only learner; the remaining risk (future testers on the same deployment) was then recorded as a release gate.",
+      "interview_takeaway": "Tell the story of a first serverless deployment that built fine but hung: what empty logs told you, how the platform's own example pointed to the top-level await, and how you verified the fix.",
+      "open_questions": [
+        "Rotation of the Vercel secret key (new Supabase secret key, re-added as Sensitive, old one deleted): not confirmed yet.",
+        "Cold-start time on the first request after idle: not measured yet."
+      ],
+      "next_step": "Optional: Dor sends one valid and one invalid attempt by hand. Then the stage 05 handoff, the work-plan update (drop stage 06 work from stage 05's next action) and a new chat for stage 06."
     }
   ],
   "entry_template": {
