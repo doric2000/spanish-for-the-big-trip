@@ -3401,14 +3401,16 @@
         "Every attempt, including a wrong answer or a hint, raises progress_version, so the app updates the version it holds after each reply"
       ],
       "dor_participation": "Made the three design and copy decisions, asked to test on Vercel instead of the local server and to connect Vercel through MCP rather than the plugin, did the connector and team-access approval, the seed and the device check.",
-      "understanding_demonstrated": "Not yet shown for this step. Asked why 'ממשיכים' after a correct answer sends no request while each vocabulary 'continue' does, Dor answered that he did not know; Claude explained it and asked a smaller variation (which tap completes the arrange activity).",
+      "understanding_demonstrated": "Not yet shown for this step. Asked why 'ממשיכים' after a correct answer sends no request while each vocabulary 'continue' does, Dor answered that he did not know; Claude explained it and asked a smaller variation (which tap completes the arrange activity). On the variation Dor guessed that a send-style button completes the arrange activity (correct in substance) and noted fairly that he had not seen that screen; the wrong-order case was not answered. Check again on the arrange screen itself.",
       "interview_takeaway": "Explain why the client never knows the right answer: the server decides and stores the attempt in one transaction, and the client only renders the reply. Then how a retried tap is made safe with an idempotency key.",
       "open_questions": [
-        "Answer to the variation question on the arrange activity",
-        "Whether the listen-select screen needs a back button to the cards (Figma has none)",
-        "Whether later steps also push before the device check (this time: Dor, 'Use Vercel for this')"
+        "Revisit the completing-request question on the arrange screen once it is built"
       ],
-      "next_step": "The dialogue screen (u1a-dialogue): draw the per-turn play button in Figma (approved-decisions.json#stage05_dialogue_template) and review it with Dor before building."
+      "next_step": "The dialogue screen (u1a-dialogue): draw the per-turn play button in Figma (approved-decisions.json#stage05_dialogue_template) and review it with Dor before building.",
+      "decisions_after_check": [
+        "Add a back button to the listen-select screen (Dor: 'נצטרך להוסיף כפתור חזרה כמובן'); drawn in Figma first",
+        "Push after the automated checks, before the device check, while Dor is the only learner (Dor: 'תקבע את זה כלל אם לדעתך זה בטוח ובסדר'); rule and limits in AGENTS.md"
+      ]
     }
   ],
   "entry_template": {
