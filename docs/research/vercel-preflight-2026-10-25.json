@@ -29,7 +29,7 @@
   ],
   "open_until_first_deployment": [
     "Answered 2026-10-25: the top-level 'await bootstrap()' made every request hang 60 s and fail with 500 INTERNAL_FUNCTION_INVOCATION_FAILED and empty runtime logs; Vercel takes over app.listen, so the module never finished loading. Fixed by calling bootstrap() without awaiting it (commit 4eb41d3); afterwards requests without a valid token answered 401 in under 0.5 s.",
-    "Cold-start time from the iPhone on the first request after idle."
+    "Cold start: Dor reported the first lesson load from Vercel as relatively fast (2026-10-25, not timed)."
   ],
   "account_steps_for_dor": "Create a Vercel Hobby account with GitHub, import doric2000/spanish-for-the-big-trip with Root Directory api, enter SUPABASE_URL and SUPABASE_SECRET_KEY as Sensitive environment variables in the Vercel UI (never in chat or Git), choose the function region, deploy. Free; no payment method needed."
 }
