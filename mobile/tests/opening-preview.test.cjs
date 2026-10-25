@@ -24,7 +24,9 @@ const projected = (source, urls = {}) => projectUnit(source, urls, {}, { allowDr
 test('mobile preview reads the actual preparation prefix and never skips an unsupported interaction', () => {
   const learnerUnit = projected(unit);
   const steps = data.openingSteps(learnerUnit);
-  assert.equal(steps.length, 6);
+  // Entry, five cards and the listen-select check; the dialogue is not built yet.
+  assert.equal(steps.length, 7);
+  assert.equal(steps[6].type, 'listen_select');
   assert.equal(steps[0].bodyHe, unit.activities[0].bodyHe);
   assert.equal(steps[0].actionLabelHe, unit.activities[0].actionLabelHe);
   assert.equal(steps[0].sceneAssetId, 'juan-hostel-v1');
@@ -76,7 +78,8 @@ test('vocabulary card screen: fixed heading, unit copy from data, disabled play 
   for (const copy of ['Hola', 'שלום', 'חואן']) assert.equal(screen.includes(`'${copy}'`) || screen.includes(`>${copy}<`), false, copy);
   assert.match(screen, /audio \? <Playback[^]*: <LessonAudioButton label="השמעה" playing=\{false\} disabled/);
   // The avatar image has an explicit size (see the entry screen test).
-  assert.match(screen, /width: crop\.imageWidth \* scale, height: crop\.imageHeight \* scale/);
+  const avatar = fs.readFileSync(path.join(__dirname, '../src/lesson/lesson-avatar.tsx'), 'utf8');
+  assert.match(avatar, /width: crop\.imageWidth \* scale, height: crop\.imageHeight \* scale/);
   assert.doesNotMatch(screen, /alignSelf: 'center'/);
 });
 
@@ -94,6 +97,8 @@ test('media URLs come only from the server projection: pending audio stays null 
   assert.equal(cards[0].audioUrl, null, 'pending audio is not served');
   assert.equal(cards[1].audioUrl, urls['juan-buenos-dias-v1']);
   assert.equal(data.openingSteps(projected(unit)).every(s => (s.type === 'entry' ? s.sceneUrl : s.audioUrl) === null), true, 'nothing hosted yet');
+  const check = data.openingSteps(projected(unit, urls)).find(s => s.type === 'listen_select');
+  assert.equal(check.audioUrl, null, 'the pending Hola recording is not served on the check either');
 });
 
 test('the preview no longer bundles the raw unit with its answers', () => {
@@ -230,8 +235,9 @@ test('the server progress decides where the lesson resumes; past the supported s
   const at = (currentActivityId, status = 'in_progress') => ({ status, currentActivityId, revision: 1, progressVersion: 0 });
   assert.equal(data.frontierIndex(steps, at('u1a-entry')), 0);
   assert.equal(data.frontierIndex(steps, at(steps[3].id)), 3);
-  // u1a-primer-listen is not built yet: the preview ends there.
-  assert.equal(data.frontierIndex(steps, at('u1a-primer-listen')), steps.length);
+  assert.equal(data.frontierIndex(steps, at('u1a-primer-listen')), 6);
+  // The dialogue is not built yet: the preview ends there.
+  assert.equal(data.frontierIndex(steps, at('u1a-dialogue')), steps.length);
   assert.equal(data.frontierIndex(steps, at(null, 'completed')), steps.length);
 });
 
@@ -265,4 +271,71 @@ test('a saved tap is restored only for the same learner, unit and exact server p
   assert.equal(data.restorablePending('{not json', me, 'C01-U01', progress), null);
   assert.equal(data.restorablePending(saved({ request: { ...request, response: { kind: 'skip' } } }), me, 'C01-U01', progress), null);
   assert.equal(data.restorablePending(saved({ request: { ...request, outcome: 'correct' } }), me, 'C01-U01', progress), null);
+});
+
+test('the listen-select step carries the question and choices but never the answer or the expression', () => {
+  const check = data.openingSteps(projected(unit)).find(s => s.type === 'listen_select');
+  const source = unit.activities.find(a => a.id === 'u1a-primer-listen');
+  assert.equal(check.titleHe, 'ננסה יחד');
+  assert.equal(check.promptHe, source.promptHe);
+  assert.equal(JSON.stringify(check.choices), JSON.stringify(source.choices));
+  assert.equal(check.allowWrittenHint, true);
+  assert.equal(check.characterNameHe, 'חואן');
+  assert.equal(check.characterImageAssetId, 'juan-reference-v1');
+  const text = JSON.stringify(check);
+  for (const secret of ['correctChoiceId', 'Hola.', source.feedback.correctHe, source.feedback.retryHe]) assert.equal(text.includes(secret), false, secret);
+});
+
+test('choice and hint requests pass the server schema and carry no outcome', () => {
+  const { AttemptRequestSchema } = require(path.join(root, 'content/dist/src/api-contract.js'));
+  const progress = { status: 'in_progress', currentActivityId: 'u1a-primer-listen', revision: 1, progressVersion: 6 };
+  const id = '00000000-0000-4000-8000-000000000002';
+  const choice = data.attemptRequest(progress, id, { kind: 'choice', choiceId: 'thanks' });
+  assert.equal(JSON.stringify(choice), JSON.stringify({ requestId: id, revision: 1, activityId: 'u1a-primer-listen',
+    expectedProgressVersion: 6, response: { kind: 'choice', choiceId: 'thanks' } }));
+  assert.equal(AttemptRequestSchema.safeParse(choice).success, true);
+  assert.equal(AttemptRequestSchema.safeParse(data.attemptRequest(progress, id, { kind: 'written_hint' })).success, true);
+});
+
+test('only the same unconfirmed tap reuses its requestId', () => {
+  const progress = { status: 'in_progress', currentActivityId: 'u1a-primer-listen', revision: 1, progressVersion: 6 };
+  const sent = data.attemptRequest(progress, '00000000-0000-4000-8000-000000000003', { kind: 'choice', choiceId: 'thanks' });
+  assert.equal(data.sameTap(sent, progress, { kind: 'choice', choiceId: 'thanks' }), true);
+  assert.equal(data.sameTap(sent, progress, { kind: 'choice', choiceId: 'hello' }), false, 'another answer is a new tap');
+  assert.equal(data.sameTap(sent, progress, { kind: 'written_hint' }), false);
+  assert.equal(data.sameTap(sent, { ...progress, progressVersion: 7 }, { kind: 'choice', choiceId: 'thanks' }), false, 'after the server moved on');
+});
+
+test('a saved answer or hint is restored only at the exact server position', () => {
+  const me = '00000000-0000-4000-8000-0000000000aa';
+  const progress = { status: 'in_progress', currentActivityId: 'u1a-primer-listen', revision: 1, progressVersion: 6 };
+  for (const response of [{ kind: 'choice', choiceId: 'hello' }, { kind: 'written_hint' }]) {
+    const request = data.attemptRequest(progress, '00000000-0000-4000-8000-000000000004', response);
+    const saved = (r = request) => JSON.stringify({ userId: me, unitId: 'C01-U01', request: r });
+    assert.equal(JSON.stringify(data.restorablePending(saved(), me, 'C01-U01', progress)), JSON.stringify(request));
+    // A wrong answer the server stored bumps the version: the saved one is dropped.
+    assert.equal(data.restorablePending(saved(), me, 'C01-U01', { ...progress, progressVersion: 7 }), null);
+    assert.equal(data.restorablePending(saved({ ...request, response: { ...response, outcome: 'correct' } }), me, 'C01-U01', progress), null);
+  }
+  const bad = data.attemptRequest(progress, '00000000-0000-4000-8000-000000000005', { kind: 'choice', choiceId: 'hello' });
+  bad.response.choiceId = 7;
+  assert.equal(data.restorablePending(JSON.stringify({ userId: me, unitId: 'C01-U01', request: bad }), me, 'C01-U01', progress), null);
+});
+
+test('listen-select screen: unit copy only from data, states only from the server reply', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/listen-select-screen.tsx'), 'utf8');
+  for (const copy of ['ננסה יחד', 'מה פירוש', 'שלום', 'תודה', 'Hola', 'חואן', 'נכון!', 'לא בדיוק']) assert.equal(screen.includes(copy), false, copy);
+  assert.equal(screen.includes('correctChoiceId'), false, 'the app never knows the answer');
+  assert.match(screen, /result\.outcome === 'correct' \|\| result\.outcome === 'correct_with_help'/);
+  assert.match(screen, /result\.outcome === 'retry'/);
+  assert.doesNotMatch(screen, /alignSelf: 'center'/);
+  // Figma's TAG code label is not drawn (Dor, 2026-10-25).
+  assert.equal(screen.includes('TAG'), false);
+});
+
+test('the lesson flow keeps an answer on its screen and moves only on continue', () => {
+  const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
+  assert.match(preview, /onAnswer=\{response => tap\(response, false\)\}/);
+  assert.match(preview, /void tap\(\{ kind: 'continue' \}, true\)/);
+  assert.match(preview, /reviewOnly=\{index < frontier\}/);
 });

@@ -44,6 +44,11 @@ export function LessonSecondaryButton(props: Common) {
   return <Base {...props} style={styles.secondary} labelStyle={styles.onNight} />;
 }
 
+// Dark = night teal with gold text, on cream panels such as the success sheet.
+export function LessonDarkButton(props: Common) {
+  return <Base {...props} style={styles.dark} labelStyle={styles.onDark} />;
+}
+
 export function LessonOutlineButton(props: Common) {
   return <Base {...props} style={styles.outline} labelStyle={styles.onCream} />;
 }
@@ -69,6 +74,7 @@ const styles = StyleSheet.create({
   primary: { backgroundColor: c.gold },
   secondary: { borderWidth: 1.5, borderColor: c.cream },
   outline: { minHeight: 48, borderWidth: 1.5, borderColor: c.night },
+  dark: { backgroundColor: c.night },
   audio: { backgroundColor: c.sunset },
   disabled: { opacity: 0.5 },
   pressed: { opacity: 0.85, transform: [{ scale: 0.98 }] },
@@ -76,6 +82,7 @@ const styles = StyleSheet.create({
   onGold: { color: c.night },
   onNight: { color: c.cream },
   onCream: { color: c.night, fontSize: 16 },
+  onDark: { color: c.gold },
   onSunset: { color: c.plum },
   row: { flexDirection: 'row', gap: 12 },
   error: { fontFamily: retro.fonts.medium, fontSize: 15, lineHeight: 22, color: c.pink, textAlign: 'center', writingDirection: 'rtl', marginBottom: 10 },

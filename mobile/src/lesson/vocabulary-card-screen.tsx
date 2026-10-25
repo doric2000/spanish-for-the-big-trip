@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { type ImageSourcePropType, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withTiming } from 'react-native-reanimated';
-import { type AudioSource, setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
-import { Image } from 'expo-image';
+import type { AudioSource } from 'expo-audio';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Line } from 'react-native-svg';
-import { playAudible } from '../audio-playback';
 import { retro } from '../theme';
 import { LessonAudioButton, LessonButton, LessonButtonRow, LessonOutlineButton, LessonSaveError, LessonSecondaryButton, type SaveState } from './lesson-button';
+import { LessonAvatar } from './lesson-avatar';
 import { LessonHeader } from './lesson-header';
 import type { FaceCrop } from './media';
 import { isLongExpression } from './opening-data';
+import { usePlayback } from './playback';
 import { SunPosterArt } from './sun-poster-art';
 
 // Vocabulary card (Figma "Template / Vocabulary card" 82:1026, approved by Dor
@@ -21,7 +21,7 @@ import { SunPosterArt } from './sun-poster-art';
 const c = retro.colors;
 const f = retro.fonts;
 // Design space: a 350pt ticket; the poster is 268pt tall with a 6pt cream frame.
-const TICKET = 350, POSTER_H = 268, FRAME = 6, AVATAR = 44;
+const TICKET = 350, POSTER_H = 268, FRAME = 6;
 // The heading is the same in every unit (approved by Dor 2026-10-17).
 const TITLE_HE = 'המילים שנצטרך';
 
@@ -65,7 +65,7 @@ export function VocabularyCardScreen({ card, avatar, audio, position, header, ne
         <View style={[styles.poster, { height: POSTER_H * k }]}>
           <SunPosterArt width={column - 2 * FRAME} />
           <View style={styles.speaker}>
-            {avatar ? <Avatar {...avatar} /> : null}
+            {avatar ? <LessonAvatar {...avatar} /> : null}
             <Text style={styles.speakerName}>{card.characterNameHe}</Text>
           </View>
           <Text style={styles.cardCode}>Nº {pad(position.index + 1)}/{pad(position.count)}</Text>
@@ -95,18 +95,6 @@ export function VocabularyCardScreen({ card, avatar, audio, position, header, ne
   </View>;
 }
 
-function Avatar({ source, crop }: { source: ImageSourcePropType; crop: FaceCrop }) {
-  const inner = AVATAR - 5;
-  const scale = inner / crop.size;
-  // The crop is placed in left-to-right image coordinates whatever the app direction.
-  return <View style={styles.avatar}>
-    <View style={[StyleSheet.absoluteFill, { direction: 'ltr' }]}>
-      <Image source={source} accessible={false} contentFit="fill"
-        style={{ position: 'absolute', left: -crop.x * scale, top: -crop.y * scale, width: crop.imageWidth * scale, height: crop.imageHeight * scale }} />
-    </View>
-  </View>;
-}
-
 // Ticket tear line (Figma 78:338): notches in the screen colour and a dashed line.
 function Perforation({ width }: { width: number }) {
   return <Svg width={width} height={24} accessible={false} style={styles.perforation}>
@@ -116,46 +104,15 @@ function Perforation({ width }: { width: number }) {
   </Svg>;
 }
 
-// The same playback flow as the development preview had: play from the start,
-// pause, and an explained reload when loading or playing fails.
+// Play and pause on the stub; the shared flow explains a failed load and offers a reload.
 function Playback({ source }: { source: AudioSource }) {
-  const player = useAudioPlayer(source, { keepAudioSessionActive: true });
-  const status = useAudioPlayerStatus(player);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const active = useRef(true);
-  const actionInProgress = useRef(false);
-  useEffect(() => {
-    active.current = true;
-    return () => { active.current = false; };
-  }, []);
-  async function toggle() {
-    if (actionInProgress.current) return;
-    actionInProgress.current = true; setBusy(true); setError(null);
-    try {
-      if (player.playing) { player.pause(); return; }
-      await setAudioModeAsync({ allowsRecording: false, playsInSilentMode: true, shouldPlayInBackground: false });
-      if (!active.current) return;
-      await player.seekTo(0);
-      if (!active.current) return;
-      playAudible(player);
-    } catch {
-      if (active.current) setError('לא הצלחנו להשמיע את הדוגמה. אפשר לטעון אותה שוב.');
-    } finally {
-      actionInProgress.current = false;
-      if (active.current) setBusy(false);
-    }
-  }
-  if (error || status.error) return <View style={styles.errorStack}>
-    <View style={styles.alert}><Text accessibilityRole="alert" style={styles.alertText}>{error ?? 'לא הצלחנו לטעון את הדוגמה.'}</Text></View>
-    <LessonOutlineButton label="טעינת השמע מחדש" onPress={() => {
-      setError(null);
-      try { player.replace(source); }
-      catch { setError('הטעינה לא הצליחה. אפשר לנסות שוב.'); }
-    }} />
+  const playback = usePlayback(source);
+  if (playback.failure) return <View style={styles.errorStack}>
+    <View style={styles.alert}><Text accessibilityRole="alert" style={styles.alertText}>{playback.failure}</Text></View>
+    <LessonOutlineButton label="טעינת השמע מחדש" onPress={playback.reload} />
   </View>;
-  return <LessonAudioButton label={status.playing ? 'עצירת השמעה' : status.isLoaded ? 'השמעה' : 'טוענים את השמע…'}
-    playing={status.playing} disabled={!status.isLoaded} busy={busy} onPress={() => { void toggle(); }} />;
+  return <LessonAudioButton label={playback.playing ? 'עצירת השמעה' : playback.loaded ? 'השמעה' : 'טוענים את השמע…'}
+    playing={playback.playing} disabled={!playback.loaded} busy={playback.busy} onPress={playback.toggle} />;
 }
 
 const styles = StyleSheet.create({
@@ -178,7 +135,6 @@ const styles = StyleSheet.create({
   // Right to left: the avatar sits in the top-right corner with the name before it.
   speaker: { position: 'absolute', top: 14, start: 14, flexDirection: 'row', alignItems: 'center', gap: 8 },
   speakerName: { fontFamily: f.bold, fontSize: 15, lineHeight: 20, color: c.cream, writingDirection: 'rtl' },
-  avatar: { width: AVATAR, height: AVATAR, borderRadius: AVATAR / 2, borderWidth: 2.5, borderColor: c.cream, overflow: 'hidden', backgroundColor: c.cream },
   cardCode: { position: 'absolute', top: 28, end: 14, fontFamily: f.mono, fontSize: 11, lineHeight: 14, letterSpacing: 1.5, color: c.gold, writingDirection: 'ltr' },
   expression: {
     position: 'absolute', start: 14, end: 14, fontFamily: f.poster, fontSize: 104, lineHeight: 100, color: c.cream,

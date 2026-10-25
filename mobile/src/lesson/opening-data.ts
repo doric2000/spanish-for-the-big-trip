@@ -4,13 +4,17 @@ export type OpeningStep =
   | { type: 'entry'; id: string; titleHe: string; bodyHe: string; actionLabelHe: string; sceneAssetId: string; sceneUrl: string | null;
     kickerHe: string | null; sceneCaption: string | null; characterNameHe: string | null }
   | { type: 'vocabulary'; id: string; expressionEs: string; meaningHe: string; characterNameHe: string;
-    characterImageAssetId: string | null; characterImageUrl: string | null; audioAssetId: string; audioUrl: string | null };
+    characterImageAssetId: string | null; characterImageUrl: string | null; audioAssetId: string; audioUrl: string | null }
+  | { type: 'listen_select'; id: string; titleHe: string; promptHe: string; choices: { id: string; textHe: string }[];
+    allowWrittenHint: boolean; characterNameHe: string | null; characterImageAssetId: string | null; characterImageUrl: string | null;
+    audioAssetId: string; audioUrl: string | null };
 
 // Reads the learner projection from the API, so answers never reach the app.
 export function openingSteps(unit: PublicUnit): OpeningStep[] {
   // The server returns url null for media that is not hosted or not approved yet.
   const urlOf = (assetId: string) => unit.media.find(m => m.id === assetId)?.url ?? null;
   const nameOf = (characterId: string) => unit.characters.find(c => c.id === characterId)?.displayNameHe ?? null;
+  const imageOf = (characterId: string) => unit.characters.find(c => c.id === characterId)?.imageAssetId ?? null;
   const steps: OpeningStep[] = [];
   // Stop at the first unsupported interaction; never skip preparation.
   for (const activity of unit.activities) {
@@ -21,10 +25,19 @@ export function openingSteps(unit: PublicUnit): OpeningStep[] {
         kickerHe: activity.kickerHe ?? null, sceneCaption: activity.sceneCaption ?? null,
         characterNameHe: activity.characterId ? nameOf(activity.characterId) : null });
     } else if (activity.type === 'vocabulary_card') {
-      const imageAssetId = unit.characters.find(c => c.id === activity.characterId)?.imageAssetId ?? null;
+      const imageAssetId = imageOf(activity.characterId);
       steps.push({ type: 'vocabulary', id: activity.id, expressionEs: activity.expressionEs,
         meaningHe: activity.meaningHe,
         characterNameHe: nameOf(activity.characterId) ?? '',
+        characterImageAssetId: imageAssetId, characterImageUrl: imageAssetId ? urlOf(imageAssetId) : null,
+        audioAssetId: activity.audioAssetId, audioUrl: urlOf(activity.audioAssetId) });
+    } else if (activity.type === 'listen_select') {
+      // The projection has no correct answer and no expression: both come only in the
+      // server's reply to an attempt.
+      const imageAssetId = activity.characterId ? imageOf(activity.characterId) : null;
+      steps.push({ type: 'listen_select', id: activity.id, titleHe: activity.titleHe, promptHe: activity.promptHe,
+        choices: activity.choices.map(c => ({ id: c.id, textHe: c.textHe })), allowWrittenHint: activity.allowWrittenHint,
+        characterNameHe: activity.characterId ? nameOf(activity.characterId) : null,
         characterImageAssetId: imageAssetId, characterImageUrl: imageAssetId ? urlOf(imageAssetId) : null,
         audioAssetId: activity.audioAssetId, audioUrl: urlOf(activity.audioAssetId) });
     } else break;
@@ -47,16 +60,37 @@ export function frontierIndex(steps: readonly OpeningStep[], progress: ServerPro
   return index === -1 ? steps.length : index;
 }
 
-// "Continue" on the current activity. The requestId is created once per tap and reused
+// What a tap sends: "continue", one answer, or the written hint. Never an outcome:
+// the server decides whether a choice is correct.
+export type LessonResponse = { kind: 'continue' } | { kind: 'choice'; choiceId: string } | { kind: 'written_hint' };
+
+// Copies only the known fields, so a saved request with anything extra no longer matches.
+function cleanResponse(response: unknown): LessonResponse | null {
+  if (!response || typeof response !== 'object') return null;
+  const { kind, choiceId } = response as { kind?: unknown; choiceId?: unknown };
+  if (kind === 'continue' || kind === 'written_hint') return { kind };
+  if (kind === 'choice' && typeof choiceId === 'string') return { kind, choiceId };
+  return null;
+}
+
+// A tap on the current activity. The requestId is created once per tap and reused
 // for every retry of that tap, so a resend never counts twice.
-export function continueRequest(progress: ServerProgress & { currentActivityId: string }, requestId: string) {
+export function attemptRequest(progress: ServerProgress & { currentActivityId: string }, requestId: string, response: LessonResponse) {
   return { requestId, revision: progress.revision, activityId: progress.currentActivityId,
-    expectedProgressVersion: progress.progressVersion, response: { kind: 'continue' as const } };
+    expectedProgressVersion: progress.progressVersion, response };
+}
+export function continueRequest(progress: ServerProgress & { currentActivityId: string }, requestId: string) {
+  return attemptRequest(progress, requestId, { kind: 'continue' });
+}
+
+// The same tap again: same activity, same progress version, same response.
+export function sameTap(request: LessonRequest, progress: ServerProgress & { currentActivityId: string }, response: LessonResponse) {
+  return JSON.stringify(request) === JSON.stringify(attemptRequest(progress, request.requestId, response));
 }
 
 // A tap the server had not confirmed when the app closed, saved with its owner.
-export type ContinueRequest = ReturnType<typeof continueRequest>;
-export type PendingAttempt = { userId: string; unitId: string; request: ContinueRequest };
+export type LessonRequest = ReturnType<typeof attemptRequest>;
+export type PendingAttempt = { userId: string; unitId: string; request: LessonRequest };
 
 // Restores a saved tap only if it belongs to this learner and unit and is exactly the
 // request for where the server stands now. If the progress already moved on, resending
@@ -68,7 +102,9 @@ export function restorablePending(saved: string | null, userId: string, unitId: 
   if (!parsed || typeof parsed !== 'object') return null;
   const { userId: owner, unitId: unit, request } = parsed as Partial<PendingAttempt>;
   if (owner !== userId || unit !== unitId || !request || typeof request.requestId !== 'string') return null;
-  const expected = continueRequest({ ...progress, currentActivityId: progress.currentActivityId }, request.requestId);
+  const response = cleanResponse(request.response);
+  if (!response) return null;
+  const expected = attemptRequest({ ...progress, currentActivityId: progress.currentActivityId }, request.requestId, response);
   return JSON.stringify(request) === JSON.stringify(expected) ? expected : null;
 }
 

@@ -3,14 +3,15 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 import { StatusBar } from 'expo-status-bar';
 import * as Crypto from 'expo-crypto';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import type { Progress } from '../../../content/src/progress-types';
+import type { AttemptResult, Progress } from '../../../content/src/progress-types';
 import { fetchUnit, startUnit, submitAttempt, type UnitFailure } from '../api/units';
 import { supabase } from '../auth/supabase';
 import { theme as t } from '../theme';
 import { EntryScreen } from './entry-screen';
 import type { SaveState } from './lesson-button';
 import { audioFor, faceCropFor, imageFor } from './media';
-import { activityCode, type ContinueRequest, continueRequest, frontierIndex, moveOpeningStep, openingSteps, restorablePending, type OpeningStep, unitCodes } from './opening-data';
+import { ListenSelectScreen } from './listen-select-screen';
+import { activityCode, attemptRequest, frontierIndex, type LessonRequest, type LessonResponse, moveOpeningStep, openingSteps, restorablePending, sameTap, type OpeningStep, unitCodes } from './opening-data';
 import { clearPending, readPending, savePending } from './pending-store';
 import { VocabularyCardScreen } from './vocabulary-card-screen';
 
@@ -50,7 +51,7 @@ function Action({ title, onPress, secondary = false }: { title: string; onPress:
 }
 
 type Ready = { unitId: string; userId: string; activityCount: number; steps: OpeningStep[]; progress: Progress;
-  restored: ContinueRequest | null };
+  restored: LessonRequest | null };
 type Load = { status: 'loading' } | { status: 'failed'; reason: UnitFailure } | ({ status: 'ready' } & Ready);
 
 type PreviewProps = { onOpenRecorder: () => void; onOpenAccount?: () => void; onClose: () => void };
@@ -104,12 +105,14 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
   const [save, setSave] = useState<SaveState>({ busy: false, errorHe: null });
   // The tap the server has not confirmed yet, also kept in the Keychain so that a
   // resend after closing the app reuses its requestId.
-  const pending = useRef<ContinueRequest | null>(restored);
+  const pending = useRef<LessonRequest | null>(restored);
   const mounted = useRef(true);
   useEffect(() => () => { mounted.current = false; }, []);
   const step = steps[index];
 
-  const send = async (request: ContinueRequest) => {
+  // follow: move the screen to where the server now stands. An answer stays on its
+  // screen to show the feedback; "ממשיכים" moves on from there.
+  const send = async (request: LessonRequest, follow: boolean): Promise<AttemptResult | null> => {
     // Saved before it leaves the phone: the server may store it even if its answer is lost.
     await savePending({ userId, unitId, request });
     const token = await accessToken();
@@ -117,35 +120,43 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
     // Confirmed or refused, the server has settled this tap: forget it, even if the
     // learner already left the lesson.
     if (sent.ok || sent.reason === 'conflict') await clearPending(unitId);
-    if (!mounted.current) return;
+    if (!mounted.current) return null;
     if (sent.ok) {
       pending.current = null;
       setProgress(sent.result.progress);
-      setIndex(frontierIndex(steps, sent.result.progress));
+      if (follow) setIndex(frontierIndex(steps, sent.result.progress));
       setSave({ busy: false, errorHe: null });
-      return;
+      return sent.result;
     }
     if (sent.reason === 'conflict' && token) {
       // Saved elsewhere first (another phone, or a lost answer to an earlier tap):
       // drop this request and continue from what the server holds.
       pending.current = null;
       const saved = await startUnit(apiUrl(), unitId, token);
-      if (!mounted.current) return;
+      if (!mounted.current) return null;
       if (saved.ok) { setProgress(saved.progress); setIndex(frontierIndex(steps, saved.progress)); }
     }
     setSave({ busy: false, errorHe: saveMessages[sent.reason] });
+    return null;
+  };
+
+  // A tap on the current activity. Repeating the unconfirmed tap resends the very same
+  // request, so the server counts it once; a different tap gets a new requestId.
+  const tap = (response: LessonResponse, follow: boolean) => {
+    if (save.busy || progress.status !== 'in_progress' || !progress.currentActivityId) return Promise.resolve(null);
+    const current = { ...progress, currentActivityId: progress.currentActivityId };
+    const request = pending.current && sameTap(pending.current, current, response) ? pending.current
+      : attemptRequest(current, Crypto.randomUUID(), response);
+    pending.current = request;
+    setSave({ busy: true, errorHe: null });
+    return send(request, follow);
   };
 
   const advance = () => {
     if (save.busy) return;
     // Reviewing an earlier step: view only, nothing to save.
     if (index < frontier) { setIndex(current => moveOpeningStep(current, 'next', steps.length)); return; }
-    if (progress.status !== 'in_progress' || !progress.currentActivityId) return;
-    // A retry resends the very same request, so the server counts the tap once.
-    const request = pending.current ?? continueRequest({ ...progress, currentActivityId: progress.currentActivityId }, Crypto.randomUUID());
-    pending.current = request;
-    setSave({ busy: true, errorHe: null });
-    void send(request);
+    void tap({ kind: 'continue' }, true);
   };
   const back = () => { if (!save.busy) setIndex(current => moveOpeningStep(current, 'back', steps.length)); };
   // A save error belongs to the step where the tap happened.
@@ -169,8 +180,20 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
       position={{ index: cards.indexOf(step), count: cards.length }}
       avatar={avatarSource && crop ? { source: avatarSource, crop } : null}
       audio={audioFor(step.audioAssetId, step.audioUrl)}
-      nextLabel={index === steps.length - 1 ? 'סיום הסקירה' : 'הביטוי הבא'}
+      nextLabel={index === steps.length - 1 ? 'סיום הסקירה' : steps[index + 1]?.type === 'vocabulary' ? 'הביטוי הבא' : 'ממשיכים'}
       save={shownSave} onNext={advance} onBack={back} onClose={onClose} />;
+  }
+
+  if (step?.type === 'listen_select') {
+    const avatarSource = step.characterImageAssetId ? imageFor(step.characterImageAssetId, step.characterImageUrl) : null;
+    const crop = step.characterImageAssetId ? faceCropFor(step.characterImageAssetId) : null;
+    // Before the server confirms the answer the check is current; once solved (or seen
+    // again through "חזרה") it is behind the frontier and only "ממשיכים" remains.
+    return <ListenSelectScreen key={step.id} content={step} header={header} unitShort={unitCodes(unitId).short}
+      avatar={avatarSource && crop ? { source: avatarSource, crop } : null}
+      audio={audioFor(step.audioAssetId, step.audioUrl)} reviewOnly={index < frontier} save={shownSave}
+      onAnswer={response => tap(response, false)}
+      onContinue={() => setIndex(current => moveOpeningStep(current, 'next', steps.length))} onClose={onClose} />;
   }
 
   // The end of the supported prefix: a development boundary, not lesson completion.
@@ -187,7 +210,7 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
         </View>
         {steps.length ? <>
           <Text accessibilityRole="header" style={styles.title}>סיימתם את מקטע הסקירה</Text>
-          <Text style={styles.body}>ראינו את הכניסה ואת הכנת המילים. השיחה והתרגולים יתחברו בהמשך.</Text>
+          <Text style={styles.body}>ראינו את הכניסה, את הכנת המילים ואת הבדיקה הראשונה. השיחה והתרגולים יתחברו בהמשך.</Text>
           <Text style={styles.note}>זו סקירת פיתוח. ההתקדמות נשמרת בחשבון, ומכאן היא תמשיך כשהמסך הבא ייבנה.</Text>
         </> : <Text accessibilityRole="alert" style={styles.error}>לא נמצאו מסכים לסקירה.</Text>}
       </View>
