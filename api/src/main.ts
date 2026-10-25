@@ -9,4 +9,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await app.listen(process.env.PORT ?? 3000);
 }
-await bootstrap();
+// Not a top-level await: on Vercel, app.listen is taken over by the platform and the
+// module must finish loading, or every request waits until the 60 s timeout.
+bootstrap().catch((error: unknown) => {
+  console.error('API failed to start', error);
+  process.exit(1);
+});
