@@ -3,7 +3,6 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 import { StatusBar } from 'expo-status-bar';
 import * as Crypto from 'expo-crypto';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import type { AttemptRequest } from '../../../content/src/api-contract';
 import type { Progress } from '../../../content/src/progress-types';
 import { fetchUnit, startUnit, submitAttempt, type UnitFailure } from '../api/units';
 import { supabase } from '../auth/supabase';
@@ -11,7 +10,8 @@ import { theme as t } from '../theme';
 import { EntryScreen } from './entry-screen';
 import type { SaveState } from './lesson-button';
 import { audioFor, faceCropFor, imageFor } from './media';
-import { activityCode, continueRequest, frontierIndex, moveOpeningStep, openingSteps, type OpeningStep, unitCodes } from './opening-data';
+import { activityCode, type ContinueRequest, continueRequest, frontierIndex, moveOpeningStep, openingSteps, restorablePending, type OpeningStep, unitCodes } from './opening-data';
+import { clearPending, readPending, savePending } from './pending-store';
 import { VocabularyCardScreen } from './vocabulary-card-screen';
 
 const failureMessages: Record<UnitFailure, string> = {
@@ -35,10 +35,11 @@ const saveMessages: Record<UnitFailure, string> = {
 
 // Read the session at request time: getSession refreshes an expired token,
 // and a token refresh must not restart the lesson.
-async function accessToken() {
+async function currentSession() {
   const { data } = await supabase.auth.getSession();
-  return data.session?.access_token ?? null;
+  return data.session ? { token: data.session.access_token, userId: data.session.user.id } : null;
 }
+const accessToken = async () => (await currentSession())?.token ?? null;
 const apiUrl = () => process.env.EXPO_PUBLIC_API_URL;
 
 function Action({ title, onPress, secondary = false }: { title: string; onPress: () => void; secondary?: boolean }) {
@@ -48,7 +49,8 @@ function Action({ title, onPress, secondary = false }: { title: string; onPress:
   </Pressable>;
 }
 
-type Ready = { unitId: string; activityCount: number; steps: OpeningStep[]; progress: Progress };
+type Ready = { unitId: string; userId: string; activityCount: number; steps: OpeningStep[]; progress: Progress;
+  restored: ContinueRequest | null };
 type Load = { status: 'loading' } | { status: 'failed'; reason: UnitFailure } | ({ status: 'ready' } & Ready);
 
 type PreviewProps = { onOpenRecorder: () => void; onOpenAccount?: () => void; onClose: () => void };
@@ -59,8 +61,9 @@ export default function OpeningPreview(props: PreviewProps) {
   useEffect(() => {
     let active = true;
     void (async () => {
-      const token = await accessToken();
-      if (!token) { if (active) setLoad({ status: 'failed', reason: 'unauthorized' }); return; }
+      const session = await currentSession();
+      if (!session) { if (active) setLoad({ status: 'failed', reason: 'unauthorized' }); return; }
+      const { token, userId } = session;
       // The content, then where this learner stands. Start is safe to repeat: it
       // returns the saved progress, so reopening the lesson resumes it.
       const unit = await fetchUnit(apiUrl(), 'C01-U01', token);
@@ -68,8 +71,13 @@ export default function OpeningPreview(props: PreviewProps) {
       const started = await startUnit(apiUrl(), unit.unit.id, token);
       if (!active) return;
       if (!started.ok) { setLoad({ status: 'failed', reason: started.reason }); return; }
-      setLoad({ status: 'ready', unitId: unit.unit.id, activityCount: unit.unit.activities.length,
-        steps: openingSteps(unit.unit), progress: started.progress });
+      // A tap left unconfirmed when the app closed; dropped if it no longer fits.
+      const saved = await readPending(unit.unit.id);
+      const restored = restorablePending(saved, userId, unit.unit.id, started.progress);
+      if (saved && !restored) await clearPending(unit.unit.id);
+      if (!active) return;
+      setLoad({ status: 'ready', unitId: unit.unit.id, userId, activityCount: unit.unit.activities.length,
+        steps: openingSteps(unit.unit), progress: started.progress, restored });
     })();
     return () => { active = false; };
   }, [attempt]);
@@ -87,23 +95,28 @@ export default function OpeningPreview(props: PreviewProps) {
   </View>;
 }
 
-function PreviewSteps({ unitId, activityCount, steps, progress: initial, onOpenRecorder, onOpenAccount, onClose }: PreviewProps & Ready) {
+function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial, restored, onOpenRecorder, onOpenAccount, onClose }: PreviewProps & Ready) {
   // The server's progress is the truth; index is only what is on screen. "חזרה" moves
   // the view back without touching the saved progress (approved by Dor, 2026-10-25).
   const [progress, setProgress] = useState(initial);
   const frontier = frontierIndex(steps, progress);
   const [index, setIndex] = useState(frontier);
   const [save, setSave] = useState<SaveState>({ busy: false, errorHe: null });
-  // The tap the server has not confirmed yet. Kept in memory only for now: closing the
-  // app forgets it, and the next tap creates a new request from the saved progress.
-  const pending = useRef<AttemptRequest | null>(null);
+  // The tap the server has not confirmed yet, also kept in the Keychain so that a
+  // resend after closing the app reuses its requestId.
+  const pending = useRef<ContinueRequest | null>(restored);
   const mounted = useRef(true);
   useEffect(() => () => { mounted.current = false; }, []);
   const step = steps[index];
 
-  const send = async (request: AttemptRequest) => {
+  const send = async (request: ContinueRequest) => {
+    // Saved before it leaves the phone: the server may store it even if its answer is lost.
+    await savePending({ userId, unitId, request });
     const token = await accessToken();
     const sent = token ? await submitAttempt(apiUrl(), unitId, token, request) : { ok: false as const, reason: 'unauthorized' as const };
+    // Confirmed or refused, the server has settled this tap: forget it, even if the
+    // learner already left the lesson.
+    if (sent.ok || sent.reason === 'conflict') await clearPending(unitId);
     if (!mounted.current) return;
     if (sent.ok) {
       pending.current = null;

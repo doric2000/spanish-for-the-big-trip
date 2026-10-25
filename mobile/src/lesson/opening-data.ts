@@ -54,6 +54,24 @@ export function continueRequest(progress: ServerProgress & { currentActivityId: 
     expectedProgressVersion: progress.progressVersion, response: { kind: 'continue' as const } };
 }
 
+// A tap the server had not confirmed when the app closed, saved with its owner.
+export type ContinueRequest = ReturnType<typeof continueRequest>;
+export type PendingAttempt = { userId: string; unitId: string; request: ContinueRequest };
+
+// Restores a saved tap only if it belongs to this learner and unit and is exactly the
+// request for where the server stands now. If the progress already moved on, resending
+// it would return the old stored answer and jump the screen back, so it is dropped.
+export function restorablePending(saved: string | null, userId: string, unitId: string, progress: ServerProgress) {
+  if (!saved || progress.status !== 'in_progress' || !progress.currentActivityId) return null;
+  let parsed: unknown;
+  try { parsed = JSON.parse(saved); } catch { return null; }
+  if (!parsed || typeof parsed !== 'object') return null;
+  const { userId: owner, unitId: unit, request } = parsed as Partial<PendingAttempt>;
+  if (owner !== userId || unit !== unitId || !request || typeof request.requestId !== 'string') return null;
+  const expected = continueRequest({ ...progress, currentActivityId: progress.currentActivityId }, request.requestId);
+  return JSON.stringify(request) === JSON.stringify(expected) ? expected : null;
+}
+
 // Display codes from the stable unit id: C01-U01 -> { short: '1A', long: 'C01·U01' }.
 // Any other id shape is shown as is.
 export function unitCodes(unitId: string) {

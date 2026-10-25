@@ -244,3 +244,25 @@ test('a continue request comes from the saved progress and carries no user id or
   const { AttemptRequestSchema } = require(path.join(root, 'content/dist/src/api-contract.js'));
   assert.equal(AttemptRequestSchema.safeParse(request).success, true);
 });
+
+test('a saved tap is restored only for the same learner, unit and exact server position', () => {
+  const me = '00000000-0000-4000-8000-0000000000aa';
+  const progress = { status: 'in_progress', currentActivityId: 'u1a-vocab-hola', revision: 1, progressVersion: 1 };
+  const request = data.continueRequest(progress, '00000000-0000-4000-8000-000000000001');
+  const saved = (overrides = {}) => JSON.stringify({ userId: me, unitId: 'C01-U01', request, ...overrides });
+
+  // Same place: resent with its original requestId.
+  assert.equal(data.restorablePending(saved(), me, 'C01-U01', progress).requestId, request.requestId);
+  // Another learner signed in on this phone, or another unit.
+  assert.equal(data.restorablePending(saved(), '00000000-0000-4000-8000-0000000000bb', 'C01-U01', progress), null);
+  assert.equal(data.restorablePending(saved({ unitId: 'C01-U02' }), me, 'C01-U01', progress), null);
+  // The server already stored it (its answer was lost): progress moved, so resending
+  // would replay the old answer and jump back. Dropped.
+  assert.equal(data.restorablePending(saved(), me, 'C01-U01', { ...progress, currentActivityId: 'u1a-vocab-buenos-dias', progressVersion: 2 }), null);
+  assert.equal(data.restorablePending(saved(), me, 'C01-U01', { ...progress, status: 'completed', currentActivityId: null }), null);
+  // Nothing saved, damaged JSON, or a request that is not exactly a continue.
+  assert.equal(data.restorablePending(null, me, 'C01-U01', progress), null);
+  assert.equal(data.restorablePending('{not json', me, 'C01-U01', progress), null);
+  assert.equal(data.restorablePending(saved({ request: { ...request, response: { kind: 'skip' } } }), me, 'C01-U01', progress), null);
+  assert.equal(data.restorablePending(saved({ request: { ...request, outcome: 'correct' } }), me, 'C01-U01', progress), null);
+});
