@@ -789,8 +789,8 @@
   "delivery": {
     "adopted_on": "2026-10-16",
     "authority": "Dor: PLEASE IMPLEMENT THIS PLAN",
-    "current_stage": "05",
-    "current_checkpoint": "stage05_retro_lesson_components",
+    "current_stage": "06",
+    "current_checkpoint": "stage06_listen_select",
     "status_source": "This object and stage statuses are authoritative; other artifacts are dated evidence or references.",
     "course_plan_ref": "docs/curriculum/curriculum-plan.json",
     "content_ref": "content/units/unit1a.json",
@@ -800,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "2026-10-25: stage 05 open. Working end to end in development: GET /v1/units/:unitId (token guard with Google/Apple only, draft-only setting, learner projection), the retro entry and vocabulary card on the iPhone (docs/design/interaction-catalog.json#retro_lesson_templates), and the server-side progress path: activity_attempts and the atomic start/submit functions (approved-decisions.json#stage05_activity_attempts, #stage05_atomic_attempt_functions) behind POST /v1/units/:unitId/start and /attempts, which passed a real development-database test including simultaneous requests; the app now drives the entry and cards from that progress (resume, view-only back, same-requestId retry), checked on the iPhone. Next, in the natural lesson order (approved-decisions.json#stage05_build_in_lesson_order): persist the unconfirmed request with expo-secure-store, then the listen-select screen for ננסה יחד (Figma 84:1014, shown to Dor first), then the dialogue (approved-decisions.json#stage05_dialogue_template) and the rest of 1A. Then Supabase Storage for approved media. Public-release gates (Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
+    "next_action": "2026-10-25: stage 05 closed for development (handoff: docs/planning/stage-handoffs/05-api-and-phone-connection.json). Working end to end: the NestJS API (GET unit, POST start and attempts, Google/Apple-only token guard, atomic database functions) locally and on Vercel Hobby (https://spanish-for-the-big-trip.vercel.app, drafts allowed during development; removing ALLOW_DRAFT_UNITS there is a release gate), and the iPhone entry and vocabulary cards driven by server progress with resume and same-request retry. Next: stage 06 in a new chat, Dor opens it. Complete 1A in the natural lesson order (approved-decisions.json#stage05_build_in_lesson_order): first the listen-select screen for ננסה יחד (Figma 84:1014), shown to Dor with its states and copy before building; then the dialogue (approved-decisions.json#stage05_dialogue_template, per-turn play button drawn in Figma first) and the rest of 1A; approved media to Supabase Storage when the first approved files exist. Public-release gates (draft setting on Vercel, Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [
@@ -857,7 +857,8 @@
       "speaking": "self_comparison_confirmation_with_microphone_free_alternative; no correctness claim",
       "network": "wait_for_server_ack; one user-scoped pending attempt; retry same request ID",
       "scope": "Local content/progress/API contracts only; no new service/dependency/auth/native/runtime setup."
-    }
+    },
+    "stage05_handoff_ref": "docs/planning/stage-handoffs/05-api-and-phone-connection.json"
   },
   "opening_week_sequence": [
     {

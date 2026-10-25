@@ -1,0 +1,47 @@
+{
+  "stage_id": "05",
+  "status": "complete_for_development; release gates listed in known_issues",
+  "approved_decisions": [
+    "Draft units through ALLOW_DRAFT_UNITS, locally and (since 2026-10-25) in the development Vercel deployment; removing it from Vercel is a release gate (docs/planning/approved-decisions.json#stage05_draft_units_in_development)",
+    "Build the lesson in its natural order, not display-first (#stage05_build_in_lesson_order)",
+    "Dialogue template: fixed copy, learner turns by speakerId 'learner', a play button per turn to be drawn in Figma before building (#stage05_dialogue_template)",
+    "activity_attempts: append-only log keyed by (user_id, request_id) with a request fingerprint, RLS on with no learner policy, service_role select/insert only (#stage05_activity_attempts)",
+    "Atomic start_unit_progress and submit_activity_attempt (row lock, progress_version, replay, reused-id refusal), execute for service_role only (#stage05_atomic_attempt_functions)",
+    "The token guard accepts only Google and Apple sessions; the user id comes only from the verified token",
+    "App: 'חזרה' is view-only, the server keeps the furthest point; an unconfirmed tap is kept in the Keychain and resent with the same requestId; dev progress reset by README SQL, no in-app button (Dor, 2026-10-25)",
+    "Vercel Hobby for the personal pilot: Root Directory api, region cdg1 next to Supabase eu-west-3, secrets only as Sensitive variables entered by Dor (docs/research/vercel-preflight-2026-10-25.json)",
+    "The agent commits and pushes after each verified step (AGENTS.md, 2026-10-25)"
+  ],
+  "implemented_files": [
+    "api/: NestJS 12 service. src/auth/auth.guard.ts (Supabase getClaims, Google/Apple only, refusal reason logged without token or user id); src/units/ (GET /v1/units/:unitId, learner projection, revision repository); src/progress/ (POST start and attempts: controller, service using the content rules, repository calling the atomic functions); src/config.ts; src/main.ts; vercel.json; test/ (e2e with fake tokens, integration against the development database)",
+    "supabase/migrations/20261019164644_create_activity_attempts.sql and 20261019173552_create_attempt_functions.sql, with supabase/checks/06 and 07; supabase/README.md sections 6, 7 and the dev progress reset",
+    "content/src/progress.ts (allowDraft option, attemptFingerprint), content/src/progress-types.ts (Node-free types for the app), entry poster fields in schema.ts and api-contract.ts",
+    "mobile/src/api/units.ts (fetchUnit, startUnit, submitAttempt), mobile/src/lesson/ (entry screen, vocabulary card, header, buttons with busy and save-error states, media, opening-data flow rules, pending-store, opening-preview driven by server progress)",
+    ".claude/ hooks (secrets and dangerous-command blocks, ordered checks on stop) and settings"
+  ],
+  "how_to_run": "Local API: from api/, npm.cmd run start:dev (settings in the Git-ignored local file; ALLOW_DRAFT_UNITS=true for the 1A draft). Cloud API: https://spanish-for-the-big-trip.vercel.app, deployed on every push to main. The app uses whichever address EXPO_PUBLIC_API_URL in mobile's local settings names; restart Metro with -c after changing it. Checks: api npm test, npm run test:e2e, npm run lint, npm run build; real-database test: $env:INTEGRATION_DB = 'dev'; npm.cmd run test:integration (README 'בדיקה מול מסד הפיתוח'). mobile and content as in stage 04.",
+  "checks_and_evidence": [
+    "CI on every push now also builds, lints and tests api (unit and e2e)",
+    "Local at handoff: api unit 24/24, e2e 10/10, lint and build clean; mobile tests 46/46, typecheck and lint clean; content 64/64",
+    "Real development database: test:integration 3/3 (start once, replay and reused id, exactly one of two simultaneous submits stored), cleanup returned 0 (Dor-reported)",
+    "SQL checks 06 and 07 PASS (Dor-reported)",
+    "Dor-reported on the iPhone: entry and vocabulary cards from the API; start and continue saved on the server; resume after reopening; view-only back sends nothing; failed save shows an error and one retry advances exactly once; an unconfirmed tap survives a full app close; the same flow against the Vercel deployment",
+    "Vercel: first deployment hung (top-level await), fixed in 4eb41d3; afterwards 401 without a token in under 0.5 s and the lesson worked from the cloud",
+    "Learning log entries stage05-* in docs/learning/development-learning-log.json"
+  ],
+  "dor_actions_and_demonstrated_understanding": "Dor ran the API and the app, applied and checked both migrations, ran the real-database test and its cleanup, did every Supabase and Vercel console step (account through GitHub with access to this repository only, preset NestJS, Sensitive secret, key rotation, ALLOW_DRAFT_UNITS, redeploy), and verified each behavior on the iPhone. He changed the plan twice on substance: natural lesson order, and drafts on Vercel with the block moved to the release gate. Understanding checks: request path and draft access (mostly correct), controller versus service (correct), e2e tests versus a real request (correct), reading the token at send time (correct), resend after disconnect (partial in stage 05 table step, then correct with the requestId mechanism added on 2026-10-25). Unanswered: the entry-copy cache question and the two-phones race question (answers arrived empty). He chose not to send attempts by hand; that path is covered by the unit, e2e and integration tests only.",
+  "known_issues": [
+    "Release gate: delete ALLOW_DRAFT_UNITS from the Vercel environment variables, redeploy and check a draft-only unit answers 404 before anyone other than Dor receives the app",
+    "Release gates from stage 04 still open: Apple token revocation on account deletion (server with the .p8 key, now possible in api/), privacy policy and Privacy Manifest, publishing the Google consent screen; a hosting-terms check before any commercial use (Vercel Hobby is non-commercial)",
+    "GET /v1/units returns the latest revision; once a second revision exists it must return the learner's pinned revision",
+    "Media: the 1A draft serves url null for media not yet hosted; approved media upload to Supabase Storage is not done",
+    "The preview ends after the fifth vocabulary card: 'ננסה יחד' (listen-select) and the rest of 1A are not built; vocabulary help chips wait for the help content",
+    "Cold start on Vercel was reported as relatively fast but not measured"
+  ],
+  "open_choices": [
+    "Whether lesson development keeps using the local API or moves to the Vercel deployment by default",
+    "Where and when to add Apple token revocation (an api/ endpoint is now the natural place)"
+  ],
+  "next_stage_and_first_action": "Stage 06 'יחידה מלאה עם שמירה וחזרה': complete reviewed unit 1A across mobile, API and database, one screen at a time in lesson order. First action: in a new stage chat, read this handoff, work-plan.json#delivery and the stage 06 definition, then show Dor the listen-select template for 'ננסה יחד' (Figma 84:1014) with its states and the inherited 1A copy before building it; it will be the first screen that submits a choice answer decided by the server.",
+  "commit_or_snapshot_when_available": "35945af (main) before this handoff file; this file is committed with the work-plan update that opens stage 06"
+}
