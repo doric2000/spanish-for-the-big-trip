@@ -35,6 +35,8 @@ const dialogue = z.strictObject({
 const listenSelect = z.strictObject({
   ...base, type: z.literal('listen_select'), titleHe: text, promptHe: text,
   expressionEs: text, audioAssetId: id,
+  // The speaker shown on the audio card; without it the card shows no avatar.
+  characterId: id.optional(),
   choices: z.array(choice).min(2), correctChoiceId: id,
   feedback: z.strictObject({ correctHe: text, retryHe: text }),
   allowWrittenHint: z.boolean(), scored: z.literal(false),
@@ -173,7 +175,7 @@ export const UnitSchema = z.strictObject({
     }
     if (activity.type === 'entry') assetRef(activity.sceneAssetId, 'image', [...path, 'sceneAssetId']);
     if ('audioAssetId' in activity) assetRef(activity.audioAssetId, 'audio', [...path, 'audioAssetId']);
-    if ((activity.type === 'vocabulary_card' || activity.type === 'entry') && activity.characterId !== undefined && !characters.has(activity.characterId)) issue([...path, 'characterId'], 'Unknown character');
+    if ((activity.type === 'vocabulary_card' || activity.type === 'entry' || activity.type === 'listen_select') && activity.characterId !== undefined && !characters.has(activity.characterId)) issue([...path, 'characterId'], 'Unknown character');
     if (activity.type === 'dialogue') {
       unique(activity.turns.map(t => t.id), [...path, 'turns']);
       activity.turns.forEach((turn, j) => {

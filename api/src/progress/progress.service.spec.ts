@@ -118,7 +118,7 @@ describe('ProgressService.submit', () => {
     const { service } = atPrimer();
     const result = await service.submit(learner, 'C01-U01', choose(1, 'thanks'));
     expect(result.outcome).toBe('retry');
-    expect(result.feedbackHe).toBe('המשמעות של Hola היא שלום. הקשיבו שוב ונסו עוד פעם.');
+    expect(result.feedbackHe).toBe('לא בדיוק. הקשיבו שוב ונסו עוד פעם.');
     expect(result.progress).toMatchObject({ currentActivityId: 'u1a-primer-listen', progressVersion: 7, usedHelpForCurrent: true });
     expect(JSON.stringify(result)).not.toContain('correctChoiceId');
   });

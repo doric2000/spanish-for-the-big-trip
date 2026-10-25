@@ -667,5 +667,13 @@
     "functions": "public.start_unit_progress (advisory lock per learner and unit; returns existing active, completed of this revision, or a new row) and public.submit_activity_attempt (row lock FOR UPDATE; replay a stored request with the same fingerprint; conflict for a reused id with other content or for stale version/activity; then insert the attempt and update progress in one transaction). SECURITY INVOKER, empty search_path, EXECUTE only for service_role. Migration supabase/migrations/20261019173552_create_attempt_functions.sql, check supabase/checks/07_attempt_functions.sql.",
     "request_order": "The API looks up the request id first and replays before computing, so a retry after the progress moved on still gets its stored answer; the function repeats the lookup under the lock for simultaneous retries.",
     "draft_units": "Extends stage05_draft_units_in_development: with ALLOW_DRAFT_UNITS=true in the local api/.env, start and attempts also work on the latest draft revision. Without it a draft is 404. Progress saved on a draft is development data, never evidence for completing a published unit."
+  },
+  "stage06_listen_select_screen": {
+    "decided_on": "2026-10-25",
+    "authority": "Dor's answers in the stage 06 chat after the Figma 84:1014 review ('להסתיר כשאין תוכן', 'קריאה בלבד')",
+    "states": "Question, Hint, Retry and Correct come only from the server's answer (outcome, feedbackHe, revealed); the app never receives correctChoiceId. 'ממשיכים' after a correct answer is local navigation, since the correct choice already advanced the progress.",
+    "answer_tag": "The TAG label on an answer is hidden when the answer has no tag text (1A has none).",
+    "back_view": "Returning to a solved listen-select is view-only: playback works, answers are locked, 'ממשיכים' sends nothing (same rule as stage 05 'חזרה').",
+    "copy": "Feedback wording: docs/curriculum/unit1a-content.json#supported_comprehension_check.feedback_review"
   }
 }

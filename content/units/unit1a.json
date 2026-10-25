@@ -240,12 +240,13 @@
       "review": {
         "status": "needs_review",
         "source": "docs/curriculum/unit1a-content.json#supported_comprehension_check",
-        "note": "Core question/choices accepted; exact feedback copy remains a draft."
+        "note": "Core question/choices accepted; feedback accepted 2026-10-25 (retry no longer reveals the answer)."
       },
       "titleHe": "ננסה יחד",
       "promptHe": "מה פירוש הביטוי ששמעתם?",
       "expressionEs": "Hola.",
       "audioAssetId": "juan-hola-v1",
+      "characterId": "juan",
       "choices": [
         {
           "id": "hello",
@@ -263,7 +264,7 @@
       "correctChoiceId": "hello",
       "feedback": {
         "correctHe": "נכון! המשמעות של Hola היא שלום.",
-        "retryHe": "המשמעות של Hola היא שלום. הקשיבו שוב ונסו עוד פעם."
+        "retryHe": "לא בדיוק. הקשיבו שוב ונסו עוד פעם."
       },
       "allowWrittenHint": true,
       "scored": false,

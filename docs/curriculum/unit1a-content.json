@@ -385,6 +385,14 @@
       "retry": "Replay and retry without penalty; no forced perfect pronunciation",
       "rtl_note": "Start mixed Spanish/Hebrew feedback in Hebrew; right alignment alone did not preserve the intended reading order when the first word was Hola."
     },
+    "feedback_review": {
+      "date": "2026-10-25",
+      "authority": "Dor chose 'רמז בלי התשובה' and then the wording 'לא בדיוק. הקשיבו שוב' in the stage 06 chat",
+      "correct_he": "נכון! המשמעות של Hola היא שלום.",
+      "retry_he": "לא בדיוק. הקשיבו שוב ונסו עוד פעם.",
+      "reason": "The draft retry text named the answer, so a second try no longer checked understanding.",
+      "not_added": "The hostel example from feedback_draft stays out of the unit data."
+    },
     "no_new_language": "All three meanings and the Spanish greeting were prepared on the vocabulary cards. No vowel knowledge is tested or required; those aids are optional.",
     "audio_status": "No new synthesis. Approved Juan profile retained; Hola must be regenerated at that profile and connected before claiming real playback.",
     "next": "Dor reviews the dialogue view and show/hide translation within the same screen. Then jointly select the first1A practice activity from the saved plan; use only prepared language and existing templates where applicable.",
