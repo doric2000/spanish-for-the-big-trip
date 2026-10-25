@@ -9,9 +9,9 @@ describe('readConfig', () => {
     expect(readConfig({ ...base, ALLOW_DRAFT_UNITS: 'true' }).allowDraftUnits).toBe(true);
   });
 
-  it('refuses drafts in a Vercel deployment', () => {
-    expect(() => readConfig({ ...base, ALLOW_DRAFT_UNITS: 'true', VERCEL: '1' })).toThrow(/local development only/);
+  it('serves drafts in a Vercel deployment only when the setting is there too', () => {
     expect(readConfig({ ...base, VERCEL: '1' }).allowDraftUnits).toBe(false);
+    expect(readConfig({ ...base, ALLOW_DRAFT_UNITS: 'true', VERCEL: '1' }).allowDraftUnits).toBe(true);
   });
 
   it('fails at startup without the Supabase settings', () => {
