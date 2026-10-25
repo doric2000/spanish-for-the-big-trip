@@ -3303,13 +3303,35 @@
         "Keeping Node-only code out of a React Native bundle through type-only modules"
       ],
       "dor_participation": "Approved the recommendations, ran the full device check including the failure case, committed.",
-      "understanding_demonstrated": "Not checked in this step.",
+      "understanding_demonstrated": "Check question (2026-10-25): a tap saved on the server whose answer was lost; what does a second tap do? Dor, in his own words: the phone does not move on until the answer arrives, and the server sees the same request twice and applies it only once. Correct on both halves; Claude added the mechanism he did not name: the resend carries the same requestId, the server finds it in the attempt log and returns the stored answer (idempotency), while a new requestId would be refused with 409 because the progress version moved.",
       "interview_takeaway": "Explain how a mobile client stays correct on a flaky network: server-decided progress, an idempotency key per user action, and a reload on version conflict.",
       "open_questions": [
         "The unconfirmed request is lost if the app is closed; persist it with expo-secure-store (restorePending in the contract) in the next small step.",
         "GET /v1/units still returns the latest revision, not the learner's pinned one (unchanged from the previous entry)."
       ],
       "next_step": "Persist the pending request with expo-secure-store, then the listen-select screen for \"ננסה יחד\" from Figma 84:1014, shown to Dor before building."
+    },
+    {
+      "id": "stage05-pending-attempt-in-keychain-2026-10-25",
+      "stage_id": "05",
+      "goal": "An unconfirmed tap survives closing the app: it is kept in the iOS Keychain and resent with the same requestId, and dropped when it no longer matches the server's progress.",
+      "practical_owner": "Claude explained the plan (what is stored, when it is written and cleared, why a stale request is dropped) and wrote the code and tests. Dor approved the plan, ran the device check including the server-down case and the full app close.",
+      "practical_action": "mobile/src/lesson/pending-store.ts: read/save/clear one pending tap per unit with expo-secure-store; a storage failure falls back to memory. opening-data.ts: restorablePending restores only for the same user and unit and only when the request equals continueRequest for the current server position. opening-preview.tsx: reads it after start, saves before sending, clears on confirmation or 409 even after leaving the lesson.",
+      "evidence": [
+        "mobile tests 46/46, typecheck and lint clean (Claude)",
+        "Dor-reported on the iPhone: with the server stopped a tap at the furthest card showed the save error; after closing the app completely, restarting the server and reopening, the same card showed; one tap advanced exactly one card with one attempts request in the log; reopening afterwards resumed normally",
+        "Debugging with Dor: at first, with the server stopped, he could still move between cards. Reason: they were cards already confirmed, and moving among them is view-only by the approved rule. After the reset SQL the check was repeated from the furthest point"
+      ],
+      "concepts": [
+        "Write-ahead of a network call: persist the intent before sending, clear it on a definite answer",
+        "Why a stale saved request must be dropped rather than replayed",
+        "The Keychain as small, per-device secure storage (expo-secure-store)"
+      ],
+      "dor_participation": "Approved the plan, noticed and asked about the view-only behavior while testing, reset his progress with the README SQL, ran the full check.",
+      "understanding_demonstrated": "Partly, through his own question during testing: he guessed correctly that moving between cards worked without the server because that progress was already saved.",
+      "interview_takeaway": "How a mobile client keeps an action exactly-once across a crash or app close: persisted idempotency key, cleared only on a definite server answer, discarded when the server state moved on.",
+      "open_questions": [],
+      "next_step": "Close stage 05: Vercel Hobby deployment preflight (research and a written decision, no deployment or account without Dor), optional hand-sent valid and invalid attempts, then the stage 05 handoff and a new chat for stage 06."
     }
   ],
   "entry_template": {
