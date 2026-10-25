@@ -633,9 +633,11 @@
     "decided_on": "2026-10-17",
     "authority": "Dor chose option A in the stage05 chat ('נמשיך עם ההמלצה שלך, א')",
     "problem": "GET /v1/units/:unitId returns only published revisions (content/api-contract.json), but unit 1A is a draft and C01 cannot be published until the whole chapter passes its checks.",
-    "decision": "A development-only setting ALLOW_DRAFT_UNITS=true in the local, Git-ignored api/.env lets the API return the latest draft revision. Without the setting the API returns only published revisions; a draft-only unit is 404.",
-    "guardrails": "The setting is never configured in a deployed environment (Vercel). A test proves that without it a draft-only unit returns 404. Drafts still go through projectUnit, so answers and review data never leave the server. This does not publish 1A or change the whole-chapter release rule.",
-    "draft_media": "Dor chose option A on 2026-10-17 ('אפשרות א: במצב טיוטה קובץ שלא הועלה חוזר עם url null, ו-Storage בצעד נפרד אחר כך'). In draft projection a media item without a hosted HTTPS URL returns url null and the app shows the missing-media state. Published projection stays strict: every media item needs an approved HTTPS URL. Uploading approved media to Supabase Storage is a separate later stage 05 step."
+    "decision": "ALLOW_DRAFT_UNITS=true lets the API return the latest draft revision: in the local, Git-ignored api settings file, and since 2026-10-25 also in the development Vercel deployment. Without the setting the API returns only published revisions; a draft-only unit is 404.",
+    "guardrails": "A test proves that without the setting a draft-only unit returns 404. Drafts still go through projectUnit, so answers and review data never leave the server. This does not publish 1A or change the whole-chapter release rule.",
+    "draft_media": "Dor chose option A on 2026-10-17 ('אפשרות א: במצב טיוטה קובץ שלא הועלה חוזר עם url null, ו-Storage בצעד נפרד אחר כך'). In draft projection a media item without a hosted HTTPS URL returns url null and the app shows the missing-media state. Published projection stays strict: every media item needs an approved HTTPS URL. Uploading approved media to Supabase Storage is a separate later stage 05 step.",
+    "vercel_change_2026_10_25": "Dor ('מאשר לאפשר טיוטות ב-Vercel ולהעביר את החסימה לתנאי השחרור'): the earlier rule 'never configured in Vercel' (and readConfig refusing it when VERCEL is set) is removed. While Dor is the only learner, the Vercel deployment serves the 1A draft, so the iPhone works without the local server.",
+    "release_gate": "Before anyone other than Dor receives the app (TestFlight or public), delete ALLOW_DRAFT_UNITS from the Vercel environment variables, redeploy, and check that a draft-only unit answers 404 there."
   },
   "stage05_build_in_lesson_order": {
     "decided_on": "2026-10-17",

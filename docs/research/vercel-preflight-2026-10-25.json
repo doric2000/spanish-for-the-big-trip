@@ -23,12 +23,12 @@
     "fix": "api/vercel.json sets installCommand to install content and then api. The missing-settings error now names both places (local file, Vercel Environment Variables)."
   },
   "expected_in_a_deployment": [
-    "ALLOW_DRAFT_UNITS is never set in Vercel, and readConfig refuses it when VERCEL is set. The 1A draft therefore answers 404 there until 1A is published. A deployment proves build, settings, HTTPS and the token guard, not the lesson; lesson development continues against the local server.",
+    "Originally ALLOW_DRAFT_UNITS was never to be set in Vercel, so the 1A draft would answer 404 there. Changed by Dor on 2026-10-25: drafts are allowed in the development deployment, and removing the setting is a release gate (approved-decisions.json#stage05_draft_units_in_development).",
     "The Vercel project must keep 'Include files outside the root directory in the Build Step' enabled (default), or ../content is not available to the build.",
     "The Supabase development project is in eu-west-3 (Paris, reported by Dor). api/vercel.json pins the function to cdg1 (Paris); Hobby allows a single region, and the default would be iad1 (Washington)."
   ],
   "open_until_first_deployment": [
-    "Whether Vercel's NestJS integration accepts the top-level 'await bootstrap()' in src/main.ts (ESM) without change; the first deployment log answers it.",
+    "Answered 2026-10-25: the top-level 'await bootstrap()' made every request hang 60 s and fail with 500 INTERNAL_FUNCTION_INVOCATION_FAILED and empty runtime logs; Vercel takes over app.listen, so the module never finished loading. Fixed by calling bootstrap() without awaiting it (commit 4eb41d3); afterwards requests without a valid token answered 401 in under 0.5 s.",
     "Cold-start time from the iPhone on the first request after idle."
   ],
   "account_steps_for_dor": "Create a Vercel Hobby account with GitHub, import doric2000/spanish-for-the-big-trip with Root Directory api, enter SUPABASE_URL and SUPABASE_SECRET_KEY as Sensitive environment variables in the Vercel UI (never in chat or Git), choose the function region, deploy. Free; no payment method needed."
