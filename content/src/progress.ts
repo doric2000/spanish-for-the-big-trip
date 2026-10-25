@@ -1,5 +1,6 @@
 import { AttemptRequestSchema, projectActivity, type AttemptRequest } from './api-contract.js';
 import { canonicalJson, sha256 } from './digest.js';
+import type { AttemptResult, Evidence, Progress } from './progress-types.js';
 import type { Unit } from './schema.js';
 
 export class ContractError extends Error {
@@ -7,18 +8,7 @@ export class ContractError extends Error {
 }
 // Supplied by the future authentication guard, never parsed from a request body.
 export type VerifiedActor = { userId: string; provider: 'google' | 'apple' };
-type Evidence = 'viewed' | 'correct' | 'correct_with_help' | 'self_compared' | 'scenario_completed' | 'skipped';
-export type Progress = {
-  userId: string; unitId: string; revision: number; status: 'in_progress' | 'completed';
-  currentActivityId: string | null; progressVersion: number; scenarioNodeId: string | null;
-  usedHelpForCurrent: boolean;
-  completed: { activityId: string; evidence: Evidence; usedHelp: boolean; comparisonMode: 'recording' | 'without_microphone' | null }[];
-};
-export type AttemptResult = {
-  outcome: Evidence | 'retry' | 'advanced' | 'help'; feedbackHe: string | null;
-  revealed: ReturnType<typeof projectActivity> | { expressionEs: string } | { titleHe: string; bodyHe: string; audioAssetId: string | null } | null;
-  progress: Progress;
-};
+export type { AttemptResult, Evidence, Progress } from './progress-types.js';
 export type StoredAttempt = { userId: string; requestId: string; fingerprint: string; result: AttemptResult };
 export type SubmissionState = { progress: Progress; attempts: StoredAttempt[] };
 
