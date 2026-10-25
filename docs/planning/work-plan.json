@@ -790,7 +790,7 @@
     "adopted_on": "2026-10-16",
     "authority": "Dor: PLEASE IMPLEMENT THIS PLAN",
     "current_stage": "06",
-    "current_checkpoint": "stage06_listen_select",
+    "current_checkpoint": "stage06_dialogue",
     "status_source": "This object and stage statuses are authoritative; other artifacts are dated evidence or references.",
     "course_plan_ref": "docs/curriculum/curriculum-plan.json",
     "content_ref": "content/units/unit1a.json",
@@ -800,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "2026-10-25: stage 05 closed for development (handoff: docs/planning/stage-handoffs/05-api-and-phone-connection.json). Working end to end: the NestJS API (GET unit, POST start and attempts, Google/Apple-only token guard, atomic database functions) locally and on Vercel Hobby (https://spanish-for-the-big-trip.vercel.app, drafts allowed during development; removing ALLOW_DRAFT_UNITS there is a release gate), and the iPhone entry and vocabulary cards driven by server progress with resume and same-request retry. Next: stage 06 in a new chat, Dor opens it. Complete 1A in the natural lesson order (approved-decisions.json#stage05_build_in_lesson_order): first the listen-select screen for ננסה יחד (Figma 84:1014), shown to Dor with its states and copy before building; then the dialogue (approved-decisions.json#stage05_dialogue_template, per-turn play button drawn in Figma first) and the rest of 1A; approved media to Supabase Storage when the first approved files exist. Public-release gates (draft setting on Vercel, Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
+    "next_action": "2026-10-25: stage 06 in progress. Done: the listen-select screen 'ננסה יחד' (u1a-primer-listen, Figma 84:1014) with server-decided answers, written hint, same-request retry and view-only back; verified by Dor on the iPhone against the Vercel deployment (learning log stage06-listen-select-2026-10-25). Deployment status and logs are read through the Vercel MCP (toolchain.json#connections.vercel). Next: the dialogue (u1a-dialogue): draw the per-turn play button in Figma first (approved-decisions.json#stage05_dialogue_template), show Dor, then build; then the rest of 1A in lesson order. Approved media to Supabase Storage when the first approved files exist. Public-release gates (draft setting on Vercel, Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [

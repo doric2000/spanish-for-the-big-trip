@@ -3382,6 +3382,33 @@
       "interview_takeaway": "Tell the story of a first serverless deployment that built fine but hung: what empty logs told you, how the platform's own example pointed to the top-level await, and how you verified the fix.",
       "open_questions": [],
       "next_step": "Optional: Dor sends one valid and one invalid attempt by hand. Then the stage 05 handoff, the work-plan update (drop stage 06 work from stage 05's next action) and a new chat for stage 06."
+    },
+    {
+      "id": "stage06-listen-select-2026-10-25",
+      "stage_id": "06",
+      "goal": "Build the first screen whose answer the server decides: 'ננסה יחד' (u1a-primer-listen) from Figma 84:1014, with save and resume from the start.",
+      "practical_owner": "Claude presented the template, its four states and the inherited copy; Dor decided the retry wording, the hidden TAG label and the view-only back view. Claude implemented content, app and tests, pushed and checked the Vercel deployment through the Vercel MCP. Dor connected the MCP and approved team access, ran the seed in the SQL Editor and checked on the iPhone.",
+      "practical_action": "Content: retryHe 'לא בדיוק. הקשיבו שוב ונסו עוד פעם.' and optional characterId on listen_select (4ba18da). App: listen-select-screen.tsx, general attempt requests (choice, written_hint, continue) with same-tap requestId reuse, shared playback and avatar (d34e02e). Vercel MCP recorded in toolchain.json (a2e3ef6). Decisions: approved-decisions.json#stage06_listen_select_screen; copy: unit1a-content.json#supported_comprehension_check.feedback_review.",
+      "evidence": [
+        "Local before push: mobile 52/52, typecheck and lint clean; content 64/64; api unit 24/24, e2e 10/10, lint and build clean",
+        "Vercel MCP: deployment dpl_2UbBVzwFyfRecKo1WFdnZoK6HEF6 of a2e3ef6 READY in about 25 s, region cdg1, startup log without errors, all three routes mapped; 401 without a token in 0.58 s",
+        "Dor-reported after the seed and the listed iPhone checks against Vercel (wrong answer, hint, close and reopen, correct answer, attempts query): 'הכל עובד'. Individual results were not reported separately."
+      ],
+      "concepts": [
+        "Projection: the app receives the question and choices but never the correct answer; correctness is decided by the server",
+        "Each activity has exactly one request that completes it: 'continue' for a card, the correct choice for a check; navigation after that is local",
+        "An unconfirmed tap is resent with the same requestId; a different tap is a new request",
+        "Every attempt, including a wrong answer or a hint, raises progress_version, so the app updates the version it holds after each reply"
+      ],
+      "dor_participation": "Made the three design and copy decisions, asked to test on Vercel instead of the local server and to connect Vercel through MCP rather than the plugin, did the connector and team-access approval, the seed and the device check.",
+      "understanding_demonstrated": "Not yet shown for this step. Asked why 'ממשיכים' after a correct answer sends no request while each vocabulary 'continue' does, Dor answered that he did not know; Claude explained it and asked a smaller variation (which tap completes the arrange activity).",
+      "interview_takeaway": "Explain why the client never knows the right answer: the server decides and stores the attempt in one transaction, and the client only renders the reply. Then how a retried tap is made safe with an idempotency key.",
+      "open_questions": [
+        "Answer to the variation question on the arrange activity",
+        "Whether the listen-select screen needs a back button to the cards (Figma has none)",
+        "Whether later steps also push before the device check (this time: Dor, 'Use Vercel for this')"
+      ],
+      "next_step": "The dialogue screen (u1a-dialogue): draw the per-turn play button in Figma (approved-decisions.json#stage05_dialogue_template) and review it with Dor before building."
     }
   ],
   "entry_template": {
