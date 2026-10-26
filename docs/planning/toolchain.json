@@ -205,7 +205,7 @@
     "imagegen"
   ],
   "connections": {
-    "supabase": "Hosted project/SQL Editor reported by Dor and CLI2.121.0 locally verified; no MCP connection configured. CLI login and live status: work-plan.json#delivery",
+    "supabase": "CLI 2.121.0 (repository devDependency), logged in by Dor and linked to spanish-for-trip-dev; since 2026-10-26 the agent runs seeds, SQL checks, migrations and own-progress resets with db query/db push --linked (AGENTS.md). No MCP connection configured. Live status: work-plan.json#delivery",
     "expo": "Individual official skills installed; no additional MCP permission configured",
     "vercel": "Official Vercel MCP (https://mcp.vercel.com, OAuth) connected by Dor on 2026-10-25 as a Claude connector, chosen over the vercel/vercel-plugin (same MCP plus 37 mostly unrelated skills, session hooks and default-on telemetry). Used read-only: deployment status, build events and runtime logs of the api project. Deploys still happen only by pushing main; environment variables and secrets stay with Dor in the Vercel dashboard."
   },

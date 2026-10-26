@@ -27,7 +27,7 @@ async function main(args: string[]): Promise<number> {
     await writeFile(out, sql, 'utf8');
     console.log(`WROTE ${out}`);
     console.log(`${unit.id} revision ${unit.revision} (draft), digest ${digest}`);
-    console.log('Nothing was sent to the cloud. Run the file in the development SQL Editor to store the draft.');
+    console.log('Nothing was sent to the cloud. Store the draft with: npx.cmd --no-install supabase db query --linked -f <file>');
     return 0;
   } catch (error) {
     console.error(`SEED BLOCKED: ${error instanceof Error ? error.message : String(error)}`);
