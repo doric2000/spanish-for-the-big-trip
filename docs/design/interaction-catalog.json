@@ -289,7 +289,8 @@
             "Translation hidden",
             "Translation shown",
             "Playing"
-          ]
+          ],
+          "approved": "Dor, 2026-10-26, card 06.2. Turns are a slot: 1A's six turns scroll between the heading and the controls, and playing the whole dialogue scrolls to the current turn. A turn without its recording shows a disabled play button; the whole-dialogue button plays only the turns that have one and is disabled when none has."
         },
         "speak_reveal": {
           "id": "87:1543",
@@ -333,7 +334,7 @@
             "Playing",
             "Audio error"
           ],
-          "added": "2026-10-26, card 06.1, waiting for Dor approval",
+          "added": "2026-10-26, card 06.1, approved by Dor",
           "notes": "Rule card with a large ¿ mark; each example a ticket with Spanish (LTR), Hebrew meaning, a rising-intonation arrow and a play button (Lesson / Turn play 114:2195). Audio error reuses the vocabulary card alert and reload copy."
         }
       },

@@ -3467,6 +3467,32 @@
         "No back button on ננסה יחד (Dor noticed on the device); scheduled in card 06.2"
       ],
       "next_step": "Card 06.2: the dialogue screen and the back button on ננסה יחד, in a new chat."
+    },
+    {
+      "id": "stage06-dialogue-screen-2026-10-26",
+      "stage_id": "06",
+      "goal": "Card 06.2: the dialogue screen (u1a-dialogue) and the back button on the listen-select check.",
+      "practical_owner": "Dor approved the Figma drawing (86:1186, 84:1014), the dialogue title, the exact six turns with their translations, and the audio and scrolling decisions. Claude built the screen, the back button, the tests, committed, reseeded the dev draft and pushed.",
+      "practical_action": "Code: mobile/src/lesson/dialogue-screen.tsx (new), opening-data.ts (dialogue step, nextPlayable), playback.ts (stable start() and finished), lesson-avatar.tsx (size), lesson-button.tsx (LessonSheetSecondaryButton), listen-select-screen.tsx (חזרה in every state), opening-preview.tsx. Content: u1a-dialogue review approved. Commits 8f267ef, 32adeb8.",
+      "evidence": [
+        "content tests pass and validate VALID DRAFT; mobile typecheck and lint clean, tests 58/58",
+        "Seed run by the agent with supabase db query --linked on spanish-for-trip-dev: C01-U01 revision 1 draft, 21 activities, digest c279111f… matches. No progress reset: activity order unchanged.",
+        "All six dialogue recordings are pending, so per-line and whole-dialogue playback is covered only by code tests until card 07.2."
+      ],
+      "concepts": [
+        "Playing lines one after another: the screen keeps which line the run is on; each line starts when it is cued and its file is loaded, and reports when its clip ends (didJustFinish), which moves the run to the next line with a recording",
+        "Exclusive playback: the line that started last is the current one, every other player pauses itself; tapping another line ends the run",
+        "Measuring with onLayout: each line records its y position so the run can scroll it into view",
+        "'חזרה' changes only what is on screen; the saved progress on the server is untouched"
+      ],
+      "dor_participation": "Design and copy approval; no code typed. Device check pending.",
+      "understanding_demonstrated": "Not checked yet.",
+      "interview_takeaway": "A sequence of audio clips built from independent players coordinated by a small piece of parent state, instead of one complex player.",
+      "open_questions": [
+        "Dialogue audio (07.2)",
+        "The practice check u1a-practice-listen now follows the dialogue; its choices and feedback are still drafts"
+      ],
+      "next_step": "Dor checks the dialogue and the back button on the iPhone."
     }
   ],
   "entry_template": {
