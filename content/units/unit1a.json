@@ -172,6 +172,14 @@
       "path": null,
       "characterId": "juan",
       "note": "Voice source not chosen yet (research 2026-10-26); joint listening review pending."
+    },
+    {
+      "id": "juan-si-gracias-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Juan accepts the learner's coffee offer in the ending scenario (card 06.5). Voice source and joint listening review pending (07.2)."
     }
   ],
   "activities": [
@@ -635,18 +643,31 @@
       "titleHe": "מברכים בחזרה",
       "promptHe": "נזכרים במפגש הבוקר עם חואן. סדרו את המילים כדי לברך אותו בחזרה ב״בוקר טוב״.",
       "tiles": [
-        { "id": "dias", "textEs": "días" },
-        { "id": "buenos", "textEs": "Buenos" }
+        {
+          "id": "dias",
+          "textEs": "días"
+        },
+        {
+          "id": "buenos",
+          "textEs": "Buenos"
+        }
       ],
-      "expectedTileIds": ["buenos", "dias"],
+      "expectedTileIds": [
+        "buenos",
+        "dias"
+      ],
       "feedback": {
         "correctHe": "המשמעות של Buenos días היא בוקר טוב.",
         "retryHe": "ננסה שוב. היזכרו בסדר המילים של הברכה שלמדתם."
       },
       "required": true,
-      "helpIds": ["help-arrange-greeting"],
+      "helpIds": [
+        "help-arrange-greeting"
+      ],
       "introduces": [],
-      "uses": ["lang-buenos-dias"],
+      "uses": [
+        "lang-buenos-dias"
+      ],
       "phase": "practice"
     },
     {
@@ -654,8 +675,8 @@
       "type": "bounded_scenario",
       "review": {
         "status": "needs_review",
-        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
-        "note": "Greeting, seat offer and thanks approved earlier; the spoken coffee offer was added 2026-10-26 (middle version). New node wording is a draft."
+        "source": "docs/research/curriculum-depth/unit1a-ending-scenario-2026-10-26.md#הצעה-א",
+        "note": "Rewritten 2026-10-26 (card 06.5): Dor rejected copies of the dialogue and forced choices, and chose proposal A (the learner makes the coffee and offers it), moving café/azúcar to production. Exact node wording awaits Dor's review."
       },
       "titleHe": "פוגשים שוב את חואן",
       "startNodeId": "greeting",
@@ -663,95 +684,123 @@
       "nodes": [
         {
           "id": "greeting",
-          "contextHe": "בהמשך הבוקר אתם חוזרים לפינת הישיבה בהוסטל. חואן רואה אתכם ומברך.",
-          "promptHe": "איך תברכו אותו בחזרה?",
-          "textEs": "Hola.",
-          "translationHe": "שלום.",
-          "audioAssetId": "juan-hola-v1",
+          "contextHe": "למחרת בבוקר. הכנתם קנקן קפה במטבח של ההוסטל. חואן נכנס, עדיין מנומנם, עם כוס ריקה.",
+          "promptHe": "איך תענו?",
+          "textEs": "Buenos días.",
+          "translationHe": "בוקר טוב.",
+          "audioAssetId": "juan-buenos-dias-v1",
           "terminal": false,
           "choices": [
-            { "id": "hola", "textEs": "Hola.", "textHe": "שלום.", "outcome": "advance", "nextNodeId": "seat-offer", "feedbackHe": "ברכתם את חואן." },
-            { "id": "buenos-dias", "textEs": "Buenos días.", "textHe": "בוקר טוב.", "outcome": "advance", "nextNodeId": "seat-offer", "feedbackHe": "ברכתם את חואן." },
-            { "id": "gracias", "textEs": "Gracias.", "textHe": "תודה.", "outcome": "retry", "nextNodeId": null, "feedbackHe": "זו תודה. חואן רק בירך אתכם כרגע. נסו לבחור ברכת שלום." }
+            {
+              "id": "buenos-dias",
+              "textEs": "Buenos días.",
+              "textHe": "בוקר טוב.",
+              "outcome": "advance",
+              "nextNodeId": "offer-coffee",
+              "feedbackHe": "בירכתם את חואן בחזרה."
+            },
+            {
+              "id": "hola",
+              "textEs": "Hola.",
+              "textHe": "שלום.",
+              "outcome": "advance",
+              "nextNodeId": "offer-coffee",
+              "feedbackHe": "בירכתם את חואן."
+            },
+            {
+              "id": "hola-buenos-dias",
+              "textEs": "Hola, buenos días.",
+              "textHe": "שלום, בוקר טוב.",
+              "outcome": "advance",
+              "nextNodeId": "offer-coffee",
+              "feedbackHe": "בירכתם את חואן."
+            },
+            {
+              "id": "gracias",
+              "textEs": "Gracias.",
+              "textHe": "תודה.",
+              "outcome": "retry",
+              "nextNodeId": null,
+              "feedbackHe": "זו תודה. חואן רק אמר בוקר טוב. ענו בברכה."
+            }
           ]
         },
         {
-          "id": "seat-offer",
-          "contextHe": "חואן מצביע על כיסא פנוי לידו ומזמין אתכם לשבת בתנועת יד.",
-          "promptHe": "תרצו לשבת ליד חואן?",
-          "textEs": null,
-          "translationHe": null,
-          "audioAssetId": null,
-          "terminal": false,
-          "choices": [
-            { "id": "yes", "textEs": "Sí.", "textHe": "כן.", "outcome": "advance", "nextNodeId": "accepted-offer", "feedbackHe": "בחרתם לשבת ליד חואן." },
-            { "id": "no", "textEs": "No.", "textHe": "לא.", "outcome": "advance", "nextNodeId": "declined-offer", "feedbackHe": "בחרתם להמשיך בדרככם." }
-          ]
-        },
-        {
-          "id": "accepted-offer",
-          "contextHe": "חואן מקרב אליכם את הכיסא כדי שתוכלו לשבת.",
-          "promptHe": "מה תגידו לחואן על העזרה?",
-          "textEs": null,
-          "translationHe": null,
-          "audioAssetId": null,
-          "terminal": false,
-          "choices": [
-            { "id": "thanks", "textEs": "Gracias.", "textHe": "תודה.", "outcome": "advance", "nextNodeId": "coffee-offer", "feedbackHe": "הודיתם לחואן על העזרה." },
-            { "id": "hello", "textEs": "Hola.", "textHe": "שלום.", "outcome": "retry", "nextNodeId": null, "feedbackHe": "זו ברכת שלום. כדי להודות לחואן, בחרו בביטוי שלמדתם לתודה." }
-          ]
-        },
-        {
-          "id": "coffee-offer",
-          "contextHe": "התיישבתם. חואן מרים את קנקן הקפה.",
-          "promptHe": "מה תענו לחואן?",
-          "textEs": "¿Café?",
-          "translationHe": "קפה?",
-          "audioAssetId": "dialogue-turn-3-v1",
-          "terminal": false,
-          "choices": [
-            { "id": "yes-thanks", "textEs": "Sí, gracias.", "textHe": "כן, תודה.", "outcome": "advance", "nextNodeId": "coffee-end", "feedbackHe": "קיבלתם קפה מחואן." },
-            { "id": "no-thanks", "textEs": "No, gracias.", "textHe": "לא, תודה.", "outcome": "advance", "nextNodeId": "seated-end", "feedbackHe": "סירבתם בנימוס." },
-            { "id": "hello", "textEs": "Hola.", "textHe": "שלום.", "outcome": "retry", "nextNodeId": null, "feedbackHe": "זו ברכת שלום. חואן שואל אם תרצו קפה. ענו בכן או בלא." }
-          ]
-        },
-        {
-          "id": "coffee-end",
-          "contextHe": "אתם יושבים ליד חואן ושותים איתו קפה.",
-          "textEs": null,
-          "translationHe": null,
-          "audioAssetId": null,
-          "terminal": true,
-          "choices": []
-        },
-        {
-          "id": "declined-offer",
-          "contextHe": "אתם מסמנים לחואן שאתם ממשיכים בדרככם.",
-          "promptHe": "איך תודו לחואן על ההצעה?",
+          "id": "offer-coffee",
+          "contextHe": "חואן מסתכל על הקנקן שבידכם, ואז על הכוס הריקה שלו.",
+          "promptHe": "מה תגידו לו?",
           "textEs": null,
           "translationHe": null,
           "audioAssetId": null,
           "terminal": false,
           "choices": [
-            { "id": "thanks", "textEs": "Gracias.", "textHe": "תודה.", "outcome": "advance", "nextNodeId": "continue-end", "feedbackHe": "הודיתם לחואן על ההצעה." },
-            { "id": "hello", "textEs": "Hola.", "textHe": "שלום.", "outcome": "retry", "nextNodeId": null, "feedbackHe": "זו ברכת שלום. כדי להודות לחואן, בחרו בביטוי שלמדתם לתודה." }
+            {
+              "id": "cafe",
+              "textEs": "¿Café?",
+              "textHe": "קפה?",
+              "outcome": "advance",
+              "nextNodeId": "coffee-answer",
+              "feedbackHe": "הצעתם לחואן קפה, בשאלה של מילה אחת."
+            },
+            {
+              "id": "azucar",
+              "textEs": "¿Azúcar?",
+              "textHe": "סוכר?",
+              "outcome": "retry",
+              "nextNodeId": null,
+              "feedbackHe": "סוכר מציעים אחרי שיש קפה בכוס. קודם שאלו אם הוא רוצה קפה."
+            },
+            {
+              "id": "si-gracias",
+              "textEs": "Sí, gracias.",
+              "textHe": "כן, תודה.",
+              "outcome": "retry",
+              "nextNodeId": null,
+              "feedbackHe": "כך עונים להצעה. כאן אתם אלה שמציעים."
+            }
           ]
         },
         {
-          "id": "seated-end",
-          "contextHe": "אמרתם תודה והתיישבתם ליד חואן.",
-          "textEs": null,
-          "translationHe": null,
-          "audioAssetId": null,
-          "terminal": true,
-          "choices": []
+          "id": "coffee-answer",
+          "contextHe": "מזגתם לחואן קפה. צנצנת הסוכר עומדת לידכם.",
+          "promptHe": "מה עוד תשאלו אותו?",
+          "textEs": "Sí, gracias.",
+          "translationHe": "כן, תודה.",
+          "audioAssetId": "juan-si-gracias-v1",
+          "terminal": false,
+          "choices": [
+            {
+              "id": "azucar",
+              "textEs": "¿Azúcar?",
+              "textHe": "סוכר?",
+              "outcome": "advance",
+              "nextNodeId": "sugar-answer",
+              "feedbackHe": "שאלתם אם הוא רוצה סוכר."
+            },
+            {
+              "id": "cafe",
+              "textEs": "¿Café?",
+              "textHe": "קפה?",
+              "outcome": "retry",
+              "nextNodeId": null,
+              "feedbackHe": "חואן כבר ענה Sí ויש לו קפה בכוס. מה עוד אפשר להציע לו?"
+            },
+            {
+              "id": "no-gracias",
+              "textEs": "No, gracias.",
+              "textHe": "לא, תודה.",
+              "outcome": "retry",
+              "nextNodeId": null,
+              "feedbackHe": "כך מסרבים להצעה. אף אחד לא הציע לכם דבר."
+            }
+          ]
         },
         {
-          "id": "continue-end",
-          "contextHe": "הודיתם על ההצעה והמשכתם בדרככם.",
-          "textEs": null,
-          "translationHe": null,
-          "audioAssetId": null,
+          "id": "sugar-answer",
+          "contextHe": "חואן לוקח את הקפה בלי סוכר ומתיישב לידכם.",
+          "textEs": "No, gracias.",
+          "translationHe": "לא, תודה.",
+          "audioAssetId": "juan-no-gracias-v1",
           "terminal": true,
           "choices": []
         }
@@ -759,7 +808,15 @@
       "required": true,
       "helpIds": [],
       "introduces": [],
-      "uses": ["lang-hola", "lang-buenos-dias", "lang-si", "lang-no", "lang-gracias"],
+      "uses": [
+        "lang-hola",
+        "lang-buenos-dias",
+        "lang-cafe",
+        "lang-azucar",
+        "lang-si",
+        "lang-no",
+        "lang-gracias"
+      ],
       "phase": "scenario"
     },
     {
@@ -953,7 +1010,9 @@
       "lang-buenos-dias",
       "lang-hola",
       "lang-si",
-      "lang-no"
+      "lang-no",
+      "lang-cafe",
+      "lang-azucar"
     ]
   },
   "help": [

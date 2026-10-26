@@ -91,7 +91,7 @@ test('scenario contract rejects partial speech tuples and context-free nonverbal
 
 test('scenario projection separates Hebrew actions from speech and exposes only the current node', () => {
   const activity = scene(realDraft());
-  const shown = projectActivity(activity, 'seat-offer');
+  const shown = projectActivity(activity, 'offer-coffee');
   assert.ok('node' in shown);
   assert.equal(shown.node.contextHe, activity.nodes[1]!.contextHe);
   assert.equal(shown.node.promptHe, activity.nodes[1]!.promptHe);
@@ -100,37 +100,29 @@ test('scenario projection separates Hebrew actions from speech and exposes only 
   assert.equal(shown.node.audioAssetId, null);
   const output = JSON.stringify(shown);
   for (const key of ['nextNodeId', 'outcome', 'feedbackHe', 'review', 'nodes']) assert.equal(output.includes(`"${key}":`), false, key);
-  assert.equal(output.includes('seated-end'), false);
+  assert.equal(output.includes('sugar-answer'), false);
 });
 
-test('both greetings and both seat preferences reach distinct valid outcomes before recap', () => {
-  for (const greeting of ['hola', 'buenos-dias']) {
-    for (const preference of ['yes', 'no']) {
-      const unit = withAuthoredScene();
-      let state = choose(unit, beginScene(unit), greeting).state;
-      const preferred = choose(unit, state, preference);
-      assert.equal(preferred.result.outcome, 'advanced');
-      assert.equal(preferred.state.progress.usedHelpForCurrent, false);
-      const branch = preference === 'yes' ? 'accepted-offer' : 'declined-offer';
-      assert.equal(preferred.state.progress.scenarioNodeId, branch);
-      state = { ...preferred.state, progress: startUnit(actor, unit, [preferred.state.progress], []) };
-      assert.equal(state.progress.scenarioNodeId, branch, 'resume retains learner preference');
-      let finished = choose(unit, state, 'thanks');
-      // Sitting down leads to Juan's spoken coffee offer; both answers end the scene.
-      const coffee = greeting === 'hola' ? 'yes-thanks' : 'no-thanks';
-      if (preference === 'yes') {
-        assert.equal(finished.result.outcome, 'advanced');
-        assert.equal(finished.state.progress.scenarioNodeId, 'coffee-offer');
-        finished = choose(unit, finished.state, coffee);
-      }
-      assert.equal(finished.result.outcome, 'scenario_completed');
-      assert.equal(finished.state.progress.status, 'in_progress');
-      assert.equal(finished.state.progress.currentActivityId, 'test-review');
-      assert.equal(finished.state.progress.completed.at(-1)!.usedHelp, false);
-      assert.ok(finished.result.revealed && 'node' in finished.result.revealed);
-      assert.equal(finished.result.revealed.node.id, preference === 'no' ? 'continue-end' : coffee === 'yes-thanks' ? 'coffee-end' : 'seated-end');
-      assert.ok(finished.result.revealed.node.contextHe);
-    }
+test('every greeting leads through the coffee and sugar offers to the answer from Juan before recap', () => {
+  for (const greeting of ['buenos-dias', 'hola', 'hola-buenos-dias']) {
+    const unit = withAuthoredScene();
+    let state = choose(unit, beginScene(unit), greeting).state;
+    assert.equal(state.progress.scenarioNodeId, 'offer-coffee');
+    const offered = choose(unit, state, 'cafe');
+    assert.equal(offered.result.outcome, 'advanced');
+    assert.equal(offered.state.progress.scenarioNodeId, 'coffee-answer');
+    state = { ...offered.state, progress: startUnit(actor, unit, [offered.state.progress], []) };
+    assert.equal(state.progress.scenarioNodeId, 'coffee-answer', 'resume returns to the same node');
+    const finished = choose(unit, state, 'azucar');
+    assert.equal(finished.result.outcome, 'scenario_completed');
+    assert.equal(finished.state.progress.status, 'in_progress');
+    assert.equal(finished.state.progress.currentActivityId, 'test-review');
+    assert.equal(finished.state.progress.completed.at(-1)!.usedHelp, false);
+    assert.ok(finished.result.revealed && 'node' in finished.result.revealed);
+    // The ending carries Juan's spoken answer as well as the Hebrew outcome.
+    assert.equal(finished.result.revealed.node.id, 'sugar-answer');
+    assert.equal(finished.result.revealed.node.textEs, 'No, gracias.');
+    assert.ok(finished.result.revealed.node.contextHe);
   }
 });
 
@@ -140,7 +132,7 @@ test('retry and resume preserve the scenario node and assistance; wrong-step and
   assert.equal(wrong.result.outcome, 'retry');
   assert.equal(wrong.state.progress.scenarioNodeId, 'greeting');
   const before = structuredClone(wrong.state);
-  rejects(() => submit(unit, wrong.state, { kind: 'scenario_choice', nodeId: 'seat-offer', choiceId: 'yes' }), 409);
+  rejects(() => submit(unit, wrong.state, { kind: 'scenario_choice', nodeId: 'offer-coffee', choiceId: 'cafe' }), 409);
   rejects(() => choose(unit, wrong.state, 'unknown'), 400);
   rejects(() => submit(unit, wrong.state, { kind: 'continue' }), 400);
   rejects(() => submit(unit, wrong.state, { kind: 'skip' }), 400);
@@ -148,18 +140,26 @@ test('retry and resume preserve the scenario node and assistance; wrong-step and
   let state = { ...wrong.state, progress: startUnit(actor, unit, [wrong.state.progress], []) };
   assert.equal(state.progress.usedHelpForCurrent, true);
   state = choose(unit, state, 'hola').state;
-  state = choose(unit, state, 'no').state;
-  const finished = choose(unit, state, 'thanks');
+  // Offering sugar into an empty cup and answering instead of offering both stay in place.
+  for (const choiceId of ['azucar', 'si-gracias']) {
+    const retry = choose(unit, state, choiceId);
+    assert.equal(retry.result.outcome, 'retry');
+    assert.equal(retry.state.progress.scenarioNodeId, 'offer-coffee');
+    assert.ok(retry.result.feedbackHe);
+    state = retry.state;
+  }
+  state = choose(unit, state, 'cafe').state;
+  const finished = choose(unit, state, 'azucar');
   assert.equal(finished.state.progress.completed.at(-1)!.usedHelp, true);
 });
 
-test('lost-response replay does not repeat the seat choice and changed preference with the same request ID conflicts', () => {
+test('lost-response replay does not repeat the coffee offer and a changed choice with the same request ID conflicts', () => {
   const unit = withAuthoredScene(); const state = choose(unit, beginScene(unit), 'hola').state;
-  const attempt = request(state, { kind: 'scenario_choice', nodeId: 'seat-offer', choiceId: 'no' });
+  const attempt = request(state, { kind: 'scenario_choice', nodeId: 'offer-coffee', choiceId: 'cafe' });
   const first = applyAttempt(actor, unit, state, attempt);
   const replay = applyAttempt(actor, unit, first.state, attempt);
   assert.equal(replay.replayed, true);
   assert.deepEqual(replay.state, first.state);
   assert.deepEqual(replay.result, first.result);
-  rejects(() => applyAttempt(actor, unit, first.state, { ...attempt, response: { kind: 'scenario_choice', nodeId: 'seat-offer', choiceId: 'yes' } }), 409);
+  rejects(() => applyAttempt(actor, unit, first.state, { ...attempt, response: { kind: 'scenario_choice', nodeId: 'offer-coffee', choiceId: 'azucar' } }), 409);
 });
