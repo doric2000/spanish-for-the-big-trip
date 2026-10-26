@@ -3420,7 +3420,7 @@
       "practical_action": "Content: content/units/unit1a.json (21 activities; café/azúcar cards, u1a-explain-question, u1a-check-offer, six-turn dialogue, new practice listen, u1a-speak-decline, spoken coffee node in the scenario, summary body). Record: unit1a-content.json#depth_revision_2026_10_26. Research: docs/research/curriculum-depth/2026-10-26-chapter-depth-proposal.md, docs/research/audio/2026-10-26-character-voice-options.md. Figma evidence: docs/evidence/stage06/.",
       "evidence": [
         "content 64/64; mobile 52/52, typecheck and lint clean; api unit 24/24, e2e 10/10, lint and build clean",
-        "Draft seed SQL regenerated (digest 5063f715…); not yet run in Supabase"
+        "Draft seed (digest 5063f715…) run by the agent with supabase db query --linked: 21 activities, digest_matches true. Dor's 1A progress before reset: in_progress at u1a-dialogue, version 12; reset deleted 12 attempts and 1 progress row."
       ],
       "concepts": [
         "A dialogue needs a goal and an information gap (offer → yes/no) rather than repetition",
@@ -3436,8 +3436,10 @@
         "Learner-facing goalHe and the summary title still use older wording",
         "Story fact: Juan offers coffee on the first morning"
       ],
-      "next_step": "Dor runs the seed SQL and resets his 1A progress; then the explanation template in Figma.",
-      "decisions_after_check": []
+      "next_step": "Draw the explanation template in Figma, show Dor, build it.",
+      "decisions_after_check": [
+        "Dor (2026-10-26) ended the rule that he runs database steps: the agent runs development-database seeds, checks, migrations and his own progress resets through the linked CLI (AGENTS.md)."
+      ]
     }
   ],
   "entry_template": {
