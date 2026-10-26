@@ -3440,6 +3440,27 @@
       "decisions_after_check": [
         "Dor (2026-10-26) ended the rule that he runs database steps: the agent runs development-database seeds, checks, migrations and his own progress resets through the linked CLI (AGENTS.md)."
       ]
+    },
+    {
+      "id": "stage06-explanation-template-2026-10-26",
+      "stage_id": "06",
+      "goal": "Card 06.1: design the explanation screen (u1a-explain-question) before building it.",
+      "practical_owner": "Dor ran the iPhone check of the seven opening cards and the preview end screen, and approved the layout proposal including new rising-intonation recordings for the examples. Claude proposed the layout and drew the Figma template.",
+      "practical_action": "Figma: Template / Explanation 119:2638 (Default 119:2398, Playing 119:2476, Audio error 119:2555) on page 77:232; recorded in docs/design/interaction-catalog.json.",
+      "evidence": [
+        "Dor-reported on the iPhone: sign-in, the seven cards including Café and Azúcar, then the preview end screen (the app stops before the unsupported explanation, as designed)."
+      ],
+      "concepts": [
+        "A template is drawn once per interaction type and state; the rule text and examples are lesson data",
+        "The example audio must carry the rising question intonation, so the existing word recordings cannot be reused"
+      ],
+      "dor_participation": "Device check and design decision; no code typed.",
+      "understanding_demonstrated": "Not checked in this step.",
+      "interview_takeaway": "Design before code: a proposal in words, then a Figma template with its states, then the owner approves before the component is built.",
+      "open_questions": [
+        "Final title wording (\"שאלה במילה אחת\" is still a draft)"
+      ],
+      "next_step": "Dor approves the Figma template; then add audioAssetId to explanation examples, build explanation-screen.tsx and the openingSteps step."
     }
   ],
   "entry_template": {

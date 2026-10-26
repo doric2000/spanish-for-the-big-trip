@@ -325,6 +325,16 @@
           "states": [
             "Default"
           ]
+        },
+        "explanation": {
+          "id": "119:2638",
+          "states": [
+            "Default",
+            "Playing",
+            "Audio error"
+          ],
+          "added": "2026-10-26, card 06.1, waiting for Dor approval",
+          "notes": "Rule card with a large ¿ mark; each example a ticket with Spanish (LTR), Hebrew meaning, a rising-intonation arrow and a play button (Lesson / Turn play 114:2195). Audio error reuses the vocabulary card alert and reload copy."
         }
       },
       "template_contract": "All learner text is a text property; character avatars and scene posters take the unit's approved image as an image fill; answers, scenario replies and dialogue turns are slots so a unit can hold any number. Long Spanish uses vocabulary State=Long text. Copy that is not yet approved stays [טקסט מאושר]; the 1A summary copy was approved on 2026-10-16 (docs/curriculum/unit1a-content.json#summary_review).",
