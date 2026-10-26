@@ -66,7 +66,7 @@ Dor and the agent build the app together. Dor wants hands-on understanding of ev
 
 ## Design (Figma)
 
-Before designing, building or changing any screen or UI component, load the design and component skills without being asked (Dor, 2026-10-17): `vercel-react-native-skills` always, `vercel-composition-patterns` for shared lesson components, `ui-ux-pro-max` for layout, copy or accessibility decisions, and the Figma `figma-design-to-code` skill when implementing a Figma frame.
+Before designing, building or changing any screen or UI component, load the design and component skills without being asked (Dor, 2026-10-17): `vercel-react-native-skills` always, `vercel-composition-patterns` for shared lesson components, `ui-ux-pro-max` for layout, copy or accessibility decisions, and the Figma `figma-design-to-code` skill when implementing a Figma frame. In Claude Code, `.claude/hooks/require-design-skills.mjs` blocks Figma tools and edits to mobile `.tsx` files or the theme until `ui-ux-pro-max` and both Vercel skills are loaded (again after a context compaction); other agents follow the same rule by hand (Dor, 2026-10-26).
 
 One reusable template per interaction type and meaningful state (hint, error, success), with representative content (Dor, 2026-10-16). Add Figma work only for a new interaction, layout or state, or a real usability issue — not per phrase or audio change. Shared React Native components render lesson data; verify the real flow in the app.
 
