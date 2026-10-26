@@ -472,9 +472,9 @@
       "id": "u1a-dialogue",
       "type": "dialogue",
       "review": {
-        "status": "needs_review",
+        "status": "approved",
         "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
-        "note": "Reopened by Dor on 2026-10-26: the two mirrored turns were too shallow. Six-turn middle version approved; exact text and audio pending."
+        "note": "Reopened by Dor on 2026-10-26: the two mirrored turns were too shallow. Dor approved the title and the exact six turns with their translations on 2026-10-26 (card 06.2). Audio remains pending (07.2)."
       },
       "titleHe": "השיחה עם חואן",
       "translationInitiallyVisible": false,
