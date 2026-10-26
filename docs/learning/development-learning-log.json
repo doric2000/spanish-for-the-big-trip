@@ -3477,7 +3477,8 @@
       "evidence": [
         "content tests pass and validate VALID DRAFT; mobile typecheck and lint clean, tests 58/58",
         "Seed run by the agent with supabase db query --linked on spanish-for-trip-dev: C01-U01 revision 1 draft, 21 activities, digest c279111f… matches. No progress reset: activity order unchanged.",
-        "All six dialogue recordings are pending, so per-line and whole-dialogue playback is covered only by code tests until card 07.2."
+        "All six dialogue recordings are pending, so per-line and whole-dialogue playback is covered only by code tests until card 07.2.",
+        "Dor-reported on the iPhone (2026-10-26): the dialogue, each line's own translation, \"ממשיכים\", \"חזרה\", and \"חזרה\" on ננסה יחד, all working. Resume in the middle of the dialogue was not reported."
       ],
       "concepts": [
         "Playing lines one after another: the screen keeps which line the run is on; each line starts when it is cued and its file is loaded, and reports when its clip ends (didJustFinish), which moves the run to the next line with a recording",
@@ -3485,14 +3486,14 @@
         "Measuring with onLayout: each line records its y position so the run can scroll it into view",
         "'חזרה' changes only what is on screen; the saved progress on the server is untouched"
       ],
-      "dor_participation": "Design and copy approval; no code typed. Device check pending.",
-      "understanding_demonstrated": "Not checked yet.",
+      "dor_participation": "Design and copy approval and the iPhone check; no code typed.",
+      "understanding_demonstrated": "Not checked: the question about tapping line 5 during the whole-dialogue run on line 3 was asked but not answered yet.",
       "interview_takeaway": "A sequence of audio clips built from independent players coordinated by a small piece of parent state, instead of one complex player.",
       "open_questions": [
         "Dialogue audio (07.2)",
         "The practice check u1a-practice-listen now follows the dialogue; its choices and feedback are still drafts"
       ],
-      "next_step": "Dor checks the dialogue and the back button on the iPhone."
+      "next_step": "Card 06.3: recording and self-comparison inside the lesson, in a new chat."
     }
   ],
   "entry_template": {
