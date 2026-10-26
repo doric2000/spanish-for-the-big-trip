@@ -606,11 +606,11 @@
       "id": "u1a-speak-decline",
       "type": "speak_reveal",
       "review": {
-        "status": "needs_review",
+        "status": "approved",
         "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
-        "note": "Added 2026-10-26 (middle version). Exact prompt is a draft."
+        "note": "Added 2026-10-26 (middle version). Dor rewrote and approved the exact prompt on 2026-10-26 (card 06.3); only punctuation and the line break were normalized. Content approval does not verify audio or the device flow."
       },
-      "promptHe": "חואן מציע לכם עוד קפה, אבל כבר שתיתם.\nמה תגידו לו בספרדית?",
+      "promptHe": "חואן מציע לכם עוד קפה, אבל אחד כבר הספיק לכם להיום.\nמה תענו לו?",
       "modelTextEs": "No, gracias.",
       "audioAssetId": "juan-no-gracias-v1",
       "alternativeHe": "לתרגל בקול בלי הקלטה",
