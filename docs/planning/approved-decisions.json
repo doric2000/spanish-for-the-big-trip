@@ -3,7 +3,7 @@
   "recorded_on": "2026-10-13",
   "updated_on": "2026-10-17",
   "authority": "Dor's direct planning decisions and subsequent explicit choices in stage01",
-  "status": "Stage02 active: entry wording/action and Juan visual identity v1 approved; dedicated per-character folder policy saved. Other learner stages/voices/flow remain pending; owned build stays stage04.",
+  "status": "Decisions record. Plan and live status: docs/LAUNCH_PLAN.md",
   "product_identity": {
     "status": "accepted by Dor",
     "accepted_on": "2026-10-14",
@@ -181,7 +181,7 @@
     }
   ],
   "schedule_note": "Working first flow and measured production in week1; provisional2–3week full-course planning window, recalibrated after two representative units. No promised App Store date or skipped joint checkpoints.",
-  "next_action": "See docs/planning/work-plan.json#delivery.next_action",
+  "next_action": "See docs/LAUNCH_PLAN.md",
   "verified_sources": [
     {
       "url": "https://developer.apple.com/programs/enroll/",
@@ -522,7 +522,7 @@
     "first_human_result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
     "comparison_ref": "docs/research/pronunciation/gracias-comparison-2026-10-16.json",
     "latest_human_trial_ref": "docs/research/pronunciation/gracias-c-as-k-result-2026-10-16.json",
-    "current_status_ref": "docs/planning/work-plan.json#delivery"
+    "current_status_ref": "docs/LAUNCH_PLAN.md"
   },
   "interaction_curriculum": {
     "path": "docs/curriculum/curriculum-plan.json",
@@ -532,7 +532,7 @@
     "unit_outlines": 57,
     "generator": ".codex-review/build_course_plan.py",
     "status": "16chapters57outlines; first3plus4units unchanged; exact copy/reviews remain incremental",
-    "delivery_ref": "docs/planning/work-plan.json#delivery",
+    "delivery_ref": "docs/LAUNCH_PLAN.md",
     "legacy_bank": "docs/curriculum/pilot-spec.json",
     "legacy_mapping": "docs/curriculum/curriculum-plan.json#legacy_content.legacy_lesson_mapping",
     "first_delivery": "Complete1A proves the flow; finish all3units ofC01, then all4units ofC02. Public release contains only complete verified chapters."
@@ -546,7 +546,7 @@
     "pronunciation_timing": "after_working_unit",
     "native_build": "stage04"
   },
-  "delivery_workflow_ref": "docs/planning/work-plan.json#delivery",
+  "delivery_workflow_ref": "docs/LAUNCH_PLAN.md",
   "sequential_opening_chapters": {
     "accepted_on": "2026-10-16",
     "policy": "complete_chapters_in_order",
@@ -594,7 +594,7 @@
   "stage03_content_data_api": {
     "accepted_on": "2026-10-16",
     "authority": "Dor selected self-comparison completion and wait-for-save, then requested Implement the proposed plan.",
-    "work_plan": "docs/planning/work-plan.json#delivery",
+    "work_plan": "docs/LAUNCH_PLAN.md",
     "development_sequence": "Finish planning/build/checks for all C01 before beginning C02; weekly launch target is both complete opening chapters.",
     "speaking": "Self-comparison confirmation with microphone-free alternative; no pronunciation correctness inferred.",
     "network": "Wait for acknowledgement; keep one user-scoped pending request and retry same ID/body.",
@@ -675,5 +675,12 @@
     "answer_tag": "The TAG label on an answer is hidden when the answer has no tag text (1A has none).",
     "back_view": "Returning to a solved listen-select is view-only: playback works, answers are locked, 'ממשיכים' sends nothing (same rule as stage 05 'חזרה').",
     "copy": "Feedback wording: docs/curriculum/unit1a-content.json#supported_comprehension_check.feedback_review"
+  },
+  "mvp_scope_2026_10_26": {
+    "decided_by": "Dor, 2026-10-26, answering the launch-plan questions",
+    "budget": "Free tiers, plus small one-time payments that Dor approves before each one (for example one ElevenLabs month, about 6 USD, for licensed final audio).",
+    "mvp_features": "A daily reminder (local notification) and a day streak are part of the MVP.",
+    "order": "A 1A pilot with 2-4 beginners on TestFlight comes before the deep C01/C02 content work.",
+    "plan_ref": "docs/LAUNCH_PLAN.md"
   }
 }
