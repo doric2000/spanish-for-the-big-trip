@@ -3504,7 +3504,7 @@
       "evidence": [
         "mobile typecheck and lint clean, tests 65/65; content tests pass. The content did not change, so no reseed; Dor's progress is on 1a-speak-thanks, so no reset.",
         "The recording hook is tested against the native timing contracts (refused permission, the finish event before playback, a missing finish event, leaving mid-take). These tests cannot prove the microphone or the speaker on a device.",
-        "Device check pending: Dor records on the first practice and refuses the microphone on the second.",
+        "Dor's iPhone (2026-10-26): recording and self-replay work, the refused microphone shows the pink card, and the way without recording continues. Server evidence: 1a-speak-thanks saved with mode recording, u1a-speak-decline saved with mode without_microphone (after a one-time reset of Dor's own progress to the coffee practice); both outcomes self_compared, no score.",
         "Dor's iPhone (2026-10-26): moving from the first speaking practice to the second threw 'Unable to find the native shared object' in the cleanup. Cause: expo-audio releases the native recorder before the screen's own cleanup runs, and the cleanup read recorder.isRecording. Fix: the hook keeps its own takeRunning flag and guards the stop. A new test reproduces the release; it failed before the fix and passes after (mobile 66/66)."
       ],
       "concepts": [
@@ -3518,10 +3518,10 @@
       "understanding_demonstrated": "pending",
       "interview_takeaway": "Microphone access treated as something the learner may refuse: the lesson still completes, and the choice is saved as data, not as a failure.",
       "open_questions": [
-        "Wording of u1a-speak-decline is still a draft (needs_review)",
-        "Model recordings (07.2)"
+        "Model recordings (07.2)",
+        "Understanding check not yet answered: why the screen waits for the iOS finish event before playing the take"
       ],
-      "next_step": "Dor's iPhone check of both paths; then close card 06.3."
+      "next_step": "Card 06.3 closed; next card 06.4 (word arrangement) in a new chat."
     }
   ],
   "entry_template": {
