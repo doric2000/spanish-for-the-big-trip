@@ -1,7 +1,7 @@
 {
   "version": 1,
   "adopted_on": "2026-10-16",
-  "delivery_status_ref": "docs/planning/work-plan.json#delivery",
+  "delivery_status_ref": "docs/LAUNCH_PLAN.md",
   "workflow": "docs/DEVELOPMENT_GUIDE.md",
   "tools": [
     {
@@ -59,7 +59,7 @@
         "Supabase Auth",
         "Supabase Storage"
       ],
-      "status": "selected; Dor-reported project provisioning and SQL Editor evidence recorded on2026-10-16; live status: work-plan.json#delivery"
+      "status": "selected; Dor-reported project provisioning and SQL Editor evidence recorded on2026-10-16; live status: docs/LAUNCH_PLAN.md"
     },
     {
       "area": "database_tooling",
@@ -205,7 +205,7 @@
     "imagegen"
   ],
   "connections": {
-    "supabase": "CLI 2.121.0 (repository devDependency), logged in by Dor and linked to spanish-for-trip-dev; since 2026-10-26 the agent runs seeds, SQL checks, migrations and own-progress resets with db query/db push --linked (AGENTS.md). No MCP connection configured. Live status: work-plan.json#delivery",
+    "supabase": "CLI 2.121.0 (repository devDependency), logged in by Dor and linked to spanish-for-trip-dev; since 2026-10-26 the agent runs seeds, SQL checks, migrations and own-progress resets with db query/db push --linked (AGENTS.md). No MCP connection configured. Live status: docs/LAUNCH_PLAN.md",
     "expo": "Individual official skills installed; no additional MCP permission configured",
     "vercel": "Official Vercel MCP (https://mcp.vercel.com, OAuth) connected by Dor on 2026-10-25 as a Claude connector, chosen over the vercel/vercel-plugin (same MCP plus 37 mostly unrelated skills, session hooks and default-on telemetry). Used read-only: deployment status, build events and runtime logs of the api project. Deploys still happen only by pushing main; environment variables and secrets stay with Dor in the Vercel dashboard."
   },

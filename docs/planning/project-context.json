@@ -248,7 +248,7 @@
     "old_preview_status": "The old unit5 preview is superseded; it does not include the required grammar preparation",
     "production_status": "Modules 1-3 implemented as six web lessons with 86 prerecorded synthetic Mexican Spanish clips. Modules 4-10 remain curriculum only."
   },
-  "current_request_scope": "Dor explicitly opened04 on2026-10-16 for Supabase setup in small joint checkpoints. Live status and next action: work-plan.json#delivery; observed participation is in development-learning-log.json. Reuse03 content/storage/API contracts and retain unresolved03 learning questions. Dor performs assigned account/settings/check actions; Codex writes code and explains. Project creation, SQL, provider configuration and native build await their relevant checkpoints. C01 focus; no C02 planning/build.",
+  "current_request_scope": "Plan and live status: docs/LAUNCH_PLAN.md (one card per chat).",
   "eas_project": {
     "owner": "doric2000",
     "slug": "spanish-for-the-big-trip",
@@ -540,7 +540,7 @@
     "first_human_result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
     "comparison_ref": "docs/research/pronunciation/gracias-comparison-2026-10-16.json",
     "latest_human_trial_ref": "docs/research/pronunciation/gracias-c-as-k-result-2026-10-16.json",
-    "current_status_ref": "docs/planning/work-plan.json#delivery"
+    "current_status_ref": "docs/LAUNCH_PLAN.md"
   },
   "curriculum_coverage_review": {
     "date": "2026-10-16",
@@ -599,17 +599,17 @@
     "unit_outlines": 57,
     "generator": ".codex-review/build_course_plan.py",
     "status": "16chapters57outlines; first3plus4units unchanged; exact copy/reviews remain incremental",
-    "delivery_ref": "docs/planning/work-plan.json#delivery",
+    "delivery_ref": "docs/LAUNCH_PLAN.md",
     "legacy_bank": "docs/curriculum/pilot-spec.json",
     "legacy_mapping": "docs/curriculum/curriculum-plan.json#legacy_content.legacy_lesson_mapping",
     "first_delivery": "Complete1A proves the flow; finish all3units ofC01, then all4units ofC02. Public release contains only complete verified chapters."
   },
-  "delivery_workflow_ref": "docs/planning/work-plan.json#delivery",
+  "delivery_workflow_ref": "docs/LAUNCH_PLAN.md",
   "toolchain_ref": "docs/planning/toolchain.json",
   "stage02_handoff": "docs/planning/stage-handoffs/02-unit-planning.json",
   "sequential_opening_chapters": {
     "decisions_ref": "docs/planning/approved-decisions.json#sequential_opening_chapters",
-    "delivery_ref": "docs/planning/work-plan.json#delivery"
+    "delivery_ref": "docs/LAUNCH_PLAN.md"
   },
   "stage03_handoff": "docs/planning/stage-handoffs/03-content-data-api.json"
 }

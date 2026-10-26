@@ -1,7 +1,7 @@
 {
   "version": 4,
   "researched_on": "2026-10-13",
-  "status": "stage04_unit_revisions_verified_learning_checkpoint",
+  "status": "History only since 2026-10-26. Plan and live status: docs/LAUNCH_PLAN.md",
   "updated_on": "2026-10-16",
   "workspace": "C:/Users/doric/Documents/SpanishForTrip",
   "current_chat_role": "Guide Dor through small stage04 Supabase setup checkpoints; he performs assigned account/settings actions and Codex writes/explains code. Wait for each assigned result. Carry forward the unresolved03 learning checkpoint.",
@@ -502,7 +502,8 @@
         "Speech practice is recorded as practice rather than automatic fluency scoring"
       ],
       "limits": "No unreviewed bulk course transfer or automated pronunciation scoring in this first flow.",
-      "prompt_addition": "השלב הנוכחי הוא 06. ניישם רק את המסך הבא שאושר ביחידה, ונבדוק אותו יחד במכשיר לפני מעבר למסך נוסף. קח בחשבון שמירה וחזרה מההתחלה."
+      "prompt_addition": "השלב הנוכחי הוא 06. ניישם רק את המסך הבא שאושר ביחידה, ונבדוק אותו יחד במכשיר לפני מעבר למסך נוסף. קח בחשבון שמירה וחזרה מההתחלה.",
+      "status": "superseded_by_launch_plan_2026_10_26 (docs/LAUNCH_PLAN.md)"
     },
     {
       "id": "07",
@@ -529,7 +530,8 @@
       ],
       "limits": "Review media with each unit, not only after the whole course. One longest representative audition before a new batch.",
       "prompt_addition": "השלב הנוכחי הוא 07. נתחיל בסצנה אחת ובאיור אחד, נבחן אותו יחד ורק אחר כך נוסיף את התנועה והשמע. אין לייצר את כל נכסי הקורס באצווה.",
-      "design_note": "Initial Figma UX/UI is stage02; this stage finishes reviewed art/audio/motion after the learning flow is validated."
+      "design_note": "Initial Figma UX/UI is stage02; this stage finishes reviewed art/audio/motion after the learning flow is validated.",
+      "status": "superseded_by_launch_plan_2026_10_26 (docs/LAUNCH_PLAN.md)"
     },
     {
       "id": "08",
@@ -557,7 +559,8 @@
         "Both Google and Apple sign-in still work in the installed cloud-backed build; no guest bypass is added to meet the deadline"
       ],
       "limits": "API host has not been selected in advance. Do not enroll, pay, publish publicly or expose credentials merely because a plan mentions these steps.",
-      "prompt_addition": "השלב הנוכחי הוא 08. קודם נסקור את מסלול האירוח, העלות והבנייה שכבר אושרו. תן לי פעולה מעשית אחת לפריסה או התקנה, ונבדוק שהגרסה עובדת גם בלי השרת במחשב."
+      "prompt_addition": "השלב הנוכחי הוא 08. קודם נסקור את מסלול האירוח, העלות והבנייה שכבר אושרו. תן לי פעולה מעשית אחת לפריסה או התקנה, ונבדוק שהגרסה עובדת גם בלי השרת במחשב.",
+      "status": "superseded_by_launch_plan_2026_10_26 (docs/LAUNCH_PLAN.md)"
     },
     {
       "id": "09",
@@ -583,7 +586,8 @@
         "Portfolio/interview statements match what Dor actually performed and understood"
       ],
       "limits": "A small usability trial is not evidence of language proficiency or long-term learning effectiveness. Tests have already been run throughout the earlier stages.",
-      "prompt_addition": "השלב הנוכחי הוא 09. נכין בדיקה קצרה של היחידה עם מתחילים, נבחן תוצאה אחת בכל פעם ונחליט יחד מה לתקן ומה למדנו לפני הרחבה."
+      "prompt_addition": "השלב הנוכחי הוא 09. נכין בדיקה קצרה של היחידה עם מתחילים, נבחן תוצאה אחת בכל פעם ונחליט יחד מה לתקן ומה למדנו לפני הרחבה.",
+      "status": "superseded_by_launch_plan_2026_10_26 (docs/LAUNCH_PLAN.md)"
     },
     {
       "id": "10",
@@ -609,7 +613,8 @@
         "Only justified engine changes are introduced"
       ],
       "limits": "Repeat this stage in a new chat per lesson or agreed small content increment. Do not generate the remaining ten-module course automatically.",
-      "prompt_addition": "השלב הנוכחי הוא 10 עבור היחידה הבאה שנבחרה. נשתמש במנוע הקיים, נעבור על שלב אחד של התוכן בכל פעם, ונרחיב רק אחרי התיקונים והבדיקה המשותפת."
+      "prompt_addition": "השלב הנוכחי הוא 10 עבור היחידה הבאה שנבחרה. נשתמש במנוע הקיים, נעבור על שלב אחד של התוכן בכל פעם, ונרחיב רק אחרי התיקונים והבדיקה המשותפת.",
+      "status": "superseded_by_launch_plan_2026_10_26 (docs/LAUNCH_PLAN.md)"
     }
   ],
   "approved_decisions_reference": "docs/planning/approved-decisions.json",
@@ -674,7 +679,7 @@
     "daily_time": "4-5 hours, variable",
     "verification": "Dor reports successful Apple browser login, active membership and access to Certificates, Identifiers & Profiles, plus successful Expo browser login/dashboard access. Actual signing, CLI authentication, cloud build and iPhone install remain unverified; see the stage01 learning log."
   },
-  "next_action": "Revision metadata/lifecycle/immutability/access SQL check passed with Dor's exact supplied result. Review why a learner's started revision1 must remain when revision2 changes an activity; wait for his brief explanation before the next small storage-model increment. No repeat check, real lesson import/publication or native build.",
+  "next_action": "See docs/LAUNCH_PLAN.md",
   "division_of_work": {
     "authority": "Dor's explicit clarification on 2026-10-15",
     "code_implementation": "Codex writes/edits code within the current agreed stage and explains meaningful parts; standing authorization, no repeated coding approval.",
@@ -771,7 +776,7 @@
     "first_human_result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
     "comparison_ref": "docs/research/pronunciation/gracias-comparison-2026-10-16.json",
     "latest_human_trial_ref": "docs/research/pronunciation/gracias-c-as-k-result-2026-10-16.json",
-    "current_status_ref": "docs/planning/work-plan.json#delivery"
+    "current_status_ref": "docs/LAUNCH_PLAN.md"
   },
   "active_curriculum_plan": {
     "path": "docs/curriculum/curriculum-plan.json",
@@ -781,7 +786,7 @@
     "unit_outlines": 57,
     "generator": ".codex-review/build_course_plan.py",
     "status": "16chapters57outlines; first3plus4units unchanged; exact copy/reviews remain incremental",
-    "delivery_ref": "docs/planning/work-plan.json#delivery",
+    "delivery_ref": "docs/LAUNCH_PLAN.md",
     "legacy_bank": "docs/curriculum/pilot-spec.json",
     "legacy_mapping": "docs/curriculum/curriculum-plan.json#legacy_content.legacy_lesson_mapping",
     "first_delivery": "Complete1A proves the flow; finish all3units ofC01, then all4units ofC02. Public release contains only complete verified chapters."
@@ -789,9 +794,8 @@
   "delivery": {
     "adopted_on": "2026-10-16",
     "authority": "Dor: PLEASE IMPLEMENT THIS PLAN",
-    "current_stage": "06",
-    "current_checkpoint": "stage06_explanation",
-    "status_source": "This object and stage statuses are authoritative; other artifacts are dated evidence or references.",
+    "status_ref": "docs/LAUNCH_PLAN.md",
+    "status_source": "Since 2026-10-26 docs/LAUNCH_PLAN.md is the only status source; this object keeps the references and policies adopted on 2026-10-16.",
     "course_plan_ref": "docs/curriculum/curriculum-plan.json",
     "content_ref": "content/units/unit1a.json",
     "storage_model_ref": "content/storage-model.json",
@@ -800,7 +804,6 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "2026-10-26: stage 06 in progress. Done: the listen-select screen 'ננסה יחד' (u1a-primer-listen), verified by Dor on the iPhone (learning log stage06-listen-select-2026-10-25). Dor reopened 1A's content as too shallow and approved a deeper sequence (docs/curriculum/unit1a-content.json#depth_revision_2026_10_26): café/azúcar cards, an explanation of one-word questions, an offer check, a six-turn coffee dialogue and a spoken offer in the scenario (21 activities). Because the new explanation comes before 'ננסה יחד', the app now stops after the last card until the explanation screen exists. The draft (21 activities, digest 5063f715…) is stored in spanish-for-trip-dev and Dor's 1A progress was reset by the agent through the linked CLI (database rule in AGENTS.md, 2026-10-26). Next: draw the explanation template in Figma, show Dor, build it; then the dialogue (Figma per-line play and translation toggles drawn 2026-10-25/26, awaiting Dor's approval). Before building each later unit, run the depth checklist in docs/research/curriculum-depth/2026-10-26-chapter-depth-proposal.md#6 with Dor. Voice source options: docs/research/audio/2026-10-26-character-voice-options.md (decision pending). Deployment status and logs are read through the Vercel MCP (toolchain.json#connections.vercel). Approved media to Supabase Storage when the first approved files exist. Public-release gates (draft setting on Vercel, Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [

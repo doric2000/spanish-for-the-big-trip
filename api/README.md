@@ -1,6 +1,6 @@
 # שרת ה-API
 
-שרת NestJS קטן שיושב בין האפליקציה ל-Supabase. הוא מאמת את המשתמש לפי ה-token, קורא את תוכן היחידה עם המפתח הסודי, ומחזיר ללומד רק את מה שמותר לו לראות (`projectUnit` מתוך `../content/`). החוזה המלא נמצא ב-[content/api-contract.json](../content/api-contract.json), ומצב העבודה ב-[work-plan.json#delivery](../docs/planning/work-plan.json).
+שרת NestJS קטן שיושב בין האפליקציה ל-Supabase. הוא מאמת את המשתמש לפי ה-token, קורא את תוכן היחידה עם המפתח הסודי, ומחזיר ללומד רק את מה שמותר לו לראות (`projectUnit` מתוך `../content/`). החוזה המלא נמצא ב-[content/api-contract.json](../content/api-contract.json), ומצב העבודה ב-[docs/LAUNCH_PLAN.md](../docs/LAUNCH_PLAN.md).
 
 ## הרצה
 

@@ -54,7 +54,7 @@
     "agent": "Current readback confirms פרק ראשון, exact current copy including Dor newline, Heebo fonts and original layout. One image fill in345x280 artwork frame4:80; previous vector4:81 hidden. New artwork is a discrete scene asset; learner UI text/button remain editable. Reference, scene and full393x852 screenshot visually checked: coherent identity, complete face/wave, no answer text, no clipping/overlap.",
     "dor": "Coauthored entry and first action; edited entry newline; approved Juan visual identity and separate character folders; corrected playback label and approved Hola card with הכרטיס נראה טוב וברור. Authorized remaining planned expressions and voice choice. No new Present-mode test or technical mastery inferred."
   },
-  "remaining": "See docs/planning/work-plan.json#delivery; remaining copy reviewed jointly, no immediate Speech Studio task.",
+  "remaining": "See docs/LAUNCH_PLAN.md; remaining copy reviewed jointly, no immediate Speech Studio task.",
   "vocabulary_preparation": {
     "status": "hola_layout_approved_remaining_four_rendered_pending_review",
     "source": {
@@ -638,7 +638,7 @@
       "No."
     ],
     "copy_status": "New feedback and assessment progress policy are drafts for joint review",
-    "next": "See docs/planning/work-plan.json#delivery",
+    "next": "See docs/LAUNCH_PLAN.md",
     "first_human_result_ref": "docs/research/pronunciation/hola-human-result-2026-10-16.json",
     "latest_human_trial_ref": "docs/research/pronunciation/gracias-c-as-k-result-2026-10-16.json"
   },
@@ -660,7 +660,7 @@
     "authoring_policy_ref": "docs/curriculum/curriculum-plan.json#unit_authoring_contract.realistic_context_he",
     "runtime_activity_ref": "content/units/unit1a.json#activities[id=1a-speak-thanks]",
     "next_content_review_ref": "content/drafts/unit1a-recall-summary.json",
-    "next_he": "תרגול האריחים, נוסחי העזרה וזרימת תרחיש הסיום אושרו ושולבו. בהמשך סוקרים חזרה וסיכום ואת המלל המפורט שנוסף לתרחיש. הסטטוס הטכני הנפרד נשאר ב-work-plan.json#delivery."
+    "next_he": "תרגול האריחים, נוסחי העזרה וזרימת תרחיש הסיום אושרו ושולבו. בהמשך סוקרים חזרה וסיכום ואת המלל המפורט שנוסף לתרחיש. הסטטוס הטכני הנפרד נשאר ב-docs/LAUNCH_PLAN.md."
   },
   "arrange_greeting_review": {
     "date": "2026-10-16",
@@ -675,7 +675,7 @@
     "draft_ref": "content/drafts/unit1a-arrange-greeting.json",
     "runtime_activity_ref": "content/units/unit1a.json#activities[id=1a-arrange-greeting]",
     "next_content_review_ref": "content/drafts/unit1a-recall-summary.json",
-    "technical_status_ref": "docs/planning/work-plan.json#delivery",
+    "technical_status_ref": "docs/LAUNCH_PLAN.md",
     "exact_copy_approval": {
       "date": "2026-10-16",
       "authority_he": "כן, מתאים וברור.",
@@ -691,7 +691,7 @@
     "runtime_activity_ref": "content/units/unit1a.json#activities[id=1a-ending-scenario]",
     "draft_history_ref": "content/drafts/unit1a-ending-scenario.json",
     "next_content_review_ref": "content/drafts/unit1a-recall-summary.json",
-    "technical_status_ref": "docs/planning/work-plan.json#delivery"
+    "technical_status_ref": "docs/LAUNCH_PLAN.md"
   },
   "mobile_opening_preview_ref": "docs/evidence/checks/unit1a-mobile-opening-preview-2026-10-16.json",
   "summary_review": {

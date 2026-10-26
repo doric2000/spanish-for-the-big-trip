@@ -1,6 +1,6 @@
 # Mobile app — technical notes
 
-**All workflow and product rules are in [../AGENTS.md](../AGENTS.md)** and take precedence over the generic Expo guidance below. Current stage and next action: `../docs/planning/work-plan.json#delivery`. This file holds only Expo/React Native technical rules for `mobile/`.
+**All workflow and product rules are in [../AGENTS.md](../AGENTS.md)** and take precedence over the generic Expo guidance below. Plan and status: `../docs/LAUNCH_PLAN.md`. This file holds only Expo/React Native technical rules for `mobile/`.
 
 ## Local rules for this app
 

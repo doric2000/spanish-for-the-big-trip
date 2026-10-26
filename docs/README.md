@@ -5,7 +5,8 @@
 | תיקייה | מה יש בה |
 | --- | --- |
 | [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md) | דרך העבודה המשותפת: מי עושה מה ואיך לומדים תוך כדי |
-| [planning/](planning/) | תוכנית העבודה והסטטוס (`work-plan.json#delivery`), ההחלטות המאושרות, הכלים וסיכומי השלבים |
+| [LAUNCH_PLAN.md](LAUNCH_PLAN.md) | תוכנית ההשקה והסטטוס: כרטיס אחד בכל צ'אט |
+| [planning/](planning/) | היסטוריית השלבים 01–05, ההחלטות המאושרות, הכלים וסיכומי השלבים |
 | [learning/](learning/) | יומן הלמידה של דור ומדיניות התיעוד שלו |
 | [curriculum/](curriculum/) | תוכנית הלימוד הפעילה, גרסת PDF, תוכן 1A שנסקר ומאגר התוכן הקודם |
 | [design/](design/) | קטלוג התבניות של Figma |
