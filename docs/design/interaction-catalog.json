@@ -311,7 +311,8 @@
             "Hint",
             "Retry",
             "Correct"
-          ]
+          ],
+          "approved": "Dor, 2026-10-26, card 06.4, with six changes: \"חזרה\" in every state (footer: \"חזרה\" and \"בדיקה\" at twice its width); the hint is a small pill under the tiles and its card replaces it; taps only, no dragging; a wrong order stays pink in place until the first change; the success sheet has \"חזרה\" and \"ממשיכים\"; the codes show the real position (1A·16/21)."
         },
         "bounded_scenario": {
           "id": "89:1838",

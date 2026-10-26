@@ -3522,6 +3522,32 @@
         "Understanding check not yet answered: why the screen waits for the iOS finish event before playing the take"
       ],
       "next_step": "Card 06.3 closed; next card 06.4 (word arrangement) in a new chat."
+    },
+    {
+      "id": "stage06-arrange-screen-2026-10-26",
+      "stage_id": "06",
+      "goal": "Card 06.4: the word-arrangement screen (1a-arrange-greeting) with a server check, a hint recorded as help, and feedback.",
+      "practical_owner": "Dor approved the Figma template 88:1844 with six changes (\"חזרה\" in every state; the hint as a small pill under the tiles; taps only, no dragging; a wrong order stays pink until the first change; the success sheet with \"חזרה\" and \"ממשיכים\"; real position codes 1A·16/21). Claude updated the template, built the screen and the tests.",
+      "practical_action": "Code: mobile/src/lesson/arrange-screen.tsx and lesson-sheet.tsx (new: the stamp and the success and continue sheets, now shared with listen-select), opening-data.ts (arrange step, arrange and help responses), opening-preview.tsx, vocabulary-card-screen.tsx (shared tear line), theme.ts (hint label colour). Tests: tests/opening-preview.test.cjs.",
+      "evidence": [
+        "mobile typecheck and lint clean, tests 69/69; content tests 65/65. The content did not change, so no reseed. Dor's progress in the development database is on 1a-arrange-greeting (version 21), so no reset is needed for the device check.",
+        "The server already checked the order (content/src/progress.ts, tests in content/tests/arrange.test.ts); the app sends only the tile ids and never receives the expected order.",
+        "Not yet verified on the iPhone: wrong order, hint, right order, \"חזרה\"."
+      ],
+      "concepts": [
+        "The client sends what the learner did (the tile order), the server decides the outcome: the right answer never reaches the phone",
+        "Accessibility: a tap alternative instead of dragging (WCAG 2.2, dragging movements)",
+        "A hint is recorded on the server as help, so the completion is marked correct_with_help",
+        "Extracting shared components (lesson-sheet.tsx) once a second screen needs the same stamp and sheets"
+      ],
+      "dor_participation": "Design approval; no code typed.",
+      "understanding_demonstrated": "pending",
+      "interview_takeaway": "A drag-and-drop style exercise built with taps only, and graded on the server so the answer key never ships in the app.",
+      "open_questions": [
+        "Device check by Dor",
+        "Dor proposed (2026-10-26) generating Juan's scene pictures for every situation while assembling the chapter; recorded under card 07.5 as an open decision"
+      ],
+      "next_step": "Dor checks the screen on the iPhone; then card 06.4 closes."
     }
   ],
   "entry_template": {
