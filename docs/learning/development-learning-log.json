@@ -3450,7 +3450,8 @@
       "evidence": [
         "Dor-reported on the iPhone: sign-in, the seven cards including Café and Azúcar, then the preview end screen (the app stops before the unsupported explanation, as designed).",
         "content 65/65 and validate VALID DRAFT; mobile typecheck and lint clean, tests 54/54; api unit 24/24, e2e 10/10, lint and build clean",
-        "Seed run by the agent with supabase db query --linked: C01-U01 revision 1 draft, 21 activities, digest_matches true (digest 7cf6e648…). No progress reset: activity order unchanged."
+        "Seed run by the agent with supabase db query --linked: C01-U01 revision 1 draft, 21 activities, digest_matches true (digest 7cf6e648…). No progress reset: activity order unchanged.",
+        "Dor-reported on the iPhone (2026-10-26): Azúcar → explanation → ננסה יחד → the coffee question → end screen, all working. Resume in the middle of the explanation was not checked on the device because his saved progress is already past it; the resume mechanism is unchanged since stage 05 and the explanation position is covered by the frontierIndex test."
       ],
       "concepts": [
         "A template is drawn once per interaction type and state; the rule text and examples are lesson data",
@@ -3459,12 +3460,13 @@
         "An optional field in the content contract (audioAssetId) is validated against the media list and projected only when present"
       ],
       "dor_participation": "Device check and design decision; no code typed.",
-      "understanding_demonstrated": "Not checked in this step.",
+      "understanding_demonstrated": "Not checked. The check question asked was about Spanish content (why the flat word recording cannot serve as the question example), not about development; Dor pointed that out. He did reason correctly that reopening the app could not show anything new because his progress was past the screen.",
       "interview_takeaway": "Design before code: a proposal in words, then a Figma template with its states, then the owner approves before the component is built.",
       "open_questions": [
-        "Final title wording (\"שאלה במילה אחת\" is still a draft)"
+        "Final title wording (\"שאלה במילה אחת\" is still a draft)",
+        "No back button on ננסה יחד (Dor noticed on the device); scheduled in card 06.2"
       ],
-      "next_step": "Dor checks on the iPhone: Azúcar → explanation → ננסה יחד → u1a-check-offer, back and forth, and leaving and reopening mid-way."
+      "next_step": "Card 06.2: the dialogue screen and the back button on ננסה יחד, in a new chat."
     }
   ],
   "entry_template": {
