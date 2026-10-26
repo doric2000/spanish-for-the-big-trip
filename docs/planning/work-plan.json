@@ -790,7 +790,7 @@
     "adopted_on": "2026-10-16",
     "authority": "Dor: PLEASE IMPLEMENT THIS PLAN",
     "current_stage": "06",
-    "current_checkpoint": "stage06_dialogue",
+    "current_checkpoint": "stage06_explanation",
     "status_source": "This object and stage statuses are authoritative; other artifacts are dated evidence or references.",
     "course_plan_ref": "docs/curriculum/curriculum-plan.json",
     "content_ref": "content/units/unit1a.json",
@@ -800,7 +800,7 @@
     "pipeline": "Reviewed JSON -> validation -> published Supabase revision -> NestJS -> React Native -> saved progress",
     "pronunciation": "retained_deferred_after_working_unit",
     "native_build": "stage04_after_native_auth_configuration; no build now",
-    "next_action": "2026-10-25: stage 06 in progress. Done: the listen-select screen 'ננסה יחד' (u1a-primer-listen, Figma 84:1014) with server-decided answers, written hint, same-request retry and view-only back; verified by Dor on the iPhone against the Vercel deployment (learning log stage06-listen-select-2026-10-25). Deployment status and logs are read through the Vercel MCP (toolchain.json#connections.vercel). Next: the dialogue (u1a-dialogue): draw the per-turn play button in Figma first (approved-decisions.json#stage05_dialogue_template), show Dor, then build; then the rest of 1A in lesson order. Approved media to Supabase Storage when the first approved files exist. Public-release gates (draft setting on Vercel, Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
+    "next_action": "2026-10-26: stage 06 in progress. Done: the listen-select screen 'ננסה יחד' (u1a-primer-listen), verified by Dor on the iPhone (learning log stage06-listen-select-2026-10-25). Dor reopened 1A's content as too shallow and approved a deeper sequence (docs/curriculum/unit1a-content.json#depth_revision_2026_10_26): café/azúcar cards, an explanation of one-word questions, an offer check, a six-turn coffee dialogue and a spoken offer in the scenario (21 activities). Because the new explanation comes before 'ננסה יחד', the app now stops after the last card until the explanation screen exists. Next: Dor runs supabase/seed/generated/1a-draft.sql in the development SQL Editor and resets his own 1A progress; then draw the explanation template in Figma, show Dor, build it; then the dialogue (Figma per-line play and translation toggles drawn 2026-10-25/26, awaiting Dor's approval). Before building each later unit, run the depth checklist in docs/research/curriculum-depth/2026-10-26-chapter-depth-proposal.md#6 with Dor. Voice source options: docs/research/audio/2026-10-26-character-voice-options.md (decision pending). Deployment status and logs are read through the Vercel MCP (toolchain.json#connections.vercel). Approved media to Supabase Storage when the first approved files exist. Public-release gates (draft setting on Vercel, Apple token revocation, privacy policy and manifest, Google consent screen) stay open.",
     "opening_chapters": {
       "policy": "complete_chapters_in_order",
       "production_order": [

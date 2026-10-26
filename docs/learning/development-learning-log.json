@@ -3411,6 +3411,33 @@
         "Add a back button to the listen-select screen (Dor: 'נצטרך להוסיף כפתור חזרה כמובן'); drawn in Figma first",
         "Push after the automated checks, before the device check, while Dor is the only learner (Dor: 'תקבע את זה כלל אם לדעתך זה בטוח ובסדר'); rule and limits in AGENTS.md"
       ]
+    },
+    {
+      "id": "stage06-1a-depth-revision-2026-10-26",
+      "stage_id": "06",
+      "goal": "Deepen unit 1A before building its dialogue: Dor judged the mirrored two-turn greeting too shallow for a trip unit.",
+      "practical_owner": "Dor raised the content problem, chose to send research sub-agents, picked the middle version and corrected three drafts (explanation, practice listen, summary). Claude ran a curriculum-depth and a voice-options research agent, wrote the content, review record and tests, and redrew the dialogue and listen-select templates in Figma (per-line play and translation, back buttons).",
+      "practical_action": "Content: content/units/unit1a.json (21 activities; café/azúcar cards, u1a-explain-question, u1a-check-offer, six-turn dialogue, new practice listen, u1a-speak-decline, spoken coffee node in the scenario, summary body). Record: unit1a-content.json#depth_revision_2026_10_26. Research: docs/research/curriculum-depth/2026-10-26-chapter-depth-proposal.md, docs/research/audio/2026-10-26-character-voice-options.md. Figma evidence: docs/evidence/stage06/.",
+      "evidence": [
+        "content 64/64; mobile 52/52, typecheck and lint clean; api unit 24/24, e2e 10/10, lint and build clean",
+        "Draft seed SQL regenerated (digest 5063f715…); not yet run in Supabase"
+      ],
+      "concepts": [
+        "A dialogue needs a goal and an information gap (offer → yes/no) rather than repetition",
+        "Prepared language: every word used in the dialogue and scenario is introduced earlier in the unit; the validator enforces it",
+        "Changing a draft revision in place leaves saved progress pointing at a position that skips new activities; a reset is needed",
+        "The preview never skips an unsupported preparation screen, so a new explanation hides later screens until it is built"
+      ],
+      "dor_participation": "Product and content decisions and copy corrections in his own words; no code typed.",
+      "understanding_demonstrated": "Not checked in this step. Dor's critique of the dialogue (mirroring, no real trip need) and his correction that the practice repeated the offer check show content judgement, not technical understanding.",
+      "interview_takeaway": "Content quality was treated as a product requirement: research → options with costs → owner decision → validated data change with tests.",
+      "open_questions": [
+        "Learner voice (male, female, both) and voice provider",
+        "Learner-facing goalHe and the summary title still use older wording",
+        "Story fact: Juan offers coffee on the first morning"
+      ],
+      "next_step": "Dor runs the seed SQL and resets his 1A progress; then the explanation template in Figma.",
+      "decisions_after_check": []
     }
   ],
   "entry_template": {
