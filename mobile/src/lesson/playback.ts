@@ -15,11 +15,12 @@ export function usePlayback(source: AudioSource) {
     active.current = true;
     return () => { active.current = false; };
   }, []);
-  async function toggle() {
+  // Plays from the start. Stable: a screen may call it from an effect, as the dialogue
+  // does to play its turns one after another.
+  const play = useCallback(async () => {
     if (actionInProgress.current) return;
     actionInProgress.current = true; setBusy(true); setError(null);
     try {
-      if (player.playing) { player.pause(); return; }
       await setAudioModeAsync({ allowsRecording: false, playsInSilentMode: true, shouldPlayInBackground: false });
       if (!active.current) return;
       await player.seekTo(0);
@@ -31,6 +32,12 @@ export function usePlayback(source: AudioSource) {
       actionInProgress.current = false;
       if (active.current) setBusy(false);
     }
+  }, [player]);
+  const start = useCallback(() => { void play(); }, [play]);
+  function toggle() {
+    if (actionInProgress.current) return;
+    if (player.playing) { player.pause(); return; }
+    start();
   }
   function reload() {
     setError(null);
@@ -41,5 +48,6 @@ export function usePlayback(source: AudioSource) {
   // Stops this player when another one on the same screen starts. Stable, so an effect
   // that calls it runs only when what it watches changes.
   const pause = useCallback(() => { if (player.playing) player.pause(); }, [player]);
-  return { playing: status.playing, loaded: status.isLoaded, busy, failure, toggle: () => { void toggle(); }, reload, pause };
+  // finished: the clip reached its end on this status update.
+  return { playing: status.playing, loaded: status.isLoaded, finished: status.didJustFinish, busy, failure, toggle, reload, pause, start };
 }

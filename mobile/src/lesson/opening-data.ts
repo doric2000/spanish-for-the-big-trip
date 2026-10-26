@@ -9,7 +9,16 @@ export type OpeningStep =
     allowWrittenHint: boolean; characterNameHe: string | null; characterImageAssetId: string | null; characterImageUrl: string | null;
     audioAssetId: string; audioUrl: string | null }
   | { type: 'explanation'; id: string; titleHe: string; generalHe: string;
-    examples: { textEs: string; meaningHe: string; audioAssetId: string | null; audioUrl: string | null }[] };
+    examples: { textEs: string; meaningHe: string; audioAssetId: string | null; audioUrl: string | null }[] }
+  | { type: 'dialogue'; id: string; titleHe: string; translationInitiallyVisible: boolean; turns: DialogueTurn[] };
+
+// One line of the dialogue. The learner's lines carry no character image: they get the
+// plane badge instead (Figma "Lesson / Dialogue turn" 86:913).
+export type DialogueTurn = { id: string; speaker: 'character' | 'learner'; speakerNameHe: string; textEs: string;
+  translationHe: string; imageAssetId: string | null; imageUrl: string | null; audioAssetId: string; audioUrl: string | null };
+
+// The unit's character id for the learner's own lines.
+const LEARNER_ID = 'learner';
 
 // Reads the learner projection from the API, so answers never reach the app.
 export function openingSteps(unit: PublicUnit): OpeningStep[] {
@@ -47,9 +56,26 @@ export function openingSteps(unit: PublicUnit): OpeningStep[] {
       steps.push({ type: 'explanation', id: activity.id, titleHe: activity.titleHe, generalHe: activity.generalHe,
         examples: activity.examples.map(e => ({ textEs: e.textEs, meaningHe: e.meaningHe,
           audioAssetId: e.audioAssetId ?? null, audioUrl: e.audioAssetId ? urlOf(e.audioAssetId) : null })) });
+    } else if (activity.type === 'dialogue') {
+      steps.push({ type: 'dialogue', id: activity.id, titleHe: activity.titleHe,
+        translationInitiallyVisible: activity.translationInitiallyVisible,
+        turns: activity.turns.map(turn => {
+          const imageAssetId = turn.speakerId === LEARNER_ID ? null : imageOf(turn.speakerId);
+          return { id: turn.id, speaker: turn.speakerId === LEARNER_ID ? 'learner' as const : 'character' as const,
+            speakerNameHe: nameOf(turn.speakerId) ?? '', textEs: turn.textEs, translationHe: turn.translationHe,
+            imageAssetId, imageUrl: imageAssetId ? urlOf(imageAssetId) : null,
+            audioAssetId: turn.audioAssetId, audioUrl: urlOf(turn.audioAssetId) };
+        }) });
     } else break;
   }
   return steps;
+}
+
+// The whole-dialogue run: the next line with a recording after `from`, or null at the
+// end. Lines without a recording are skipped.
+export function nextPlayable(playable: readonly boolean[], from: number) {
+  for (let i = from + 1; i < playable.length; i++) if (playable[i]) return i;
+  return null;
 }
 
 export function moveOpeningStep(index: number, direction: 'next' | 'back', count: number) {

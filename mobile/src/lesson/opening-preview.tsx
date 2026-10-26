@@ -7,6 +7,7 @@ import type { AttemptResult, Progress } from '../../../content/src/progress-type
 import { fetchUnit, startUnit, submitAttempt, type UnitFailure } from '../api/units';
 import { supabase } from '../auth/supabase';
 import { theme as t } from '../theme';
+import { DialogueScreen } from './dialogue-screen';
 import { EntryScreen } from './entry-screen';
 import { ExplanationScreen } from './explanation-screen';
 import type { SaveState } from './lesson-button';
@@ -189,6 +190,15 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
     audio={step.examples.map(e => e.audioAssetId ? audioFor(e.audioAssetId, e.audioUrl) : null)}
     save={shownSave} onNext={advance} onBack={back} onClose={onClose} />;
 
+  if (step?.type === 'dialogue') return <DialogueScreen key={step.id} content={step} header={header}
+    avatars={step.turns.map(turn => {
+      const source = turn.imageAssetId ? imageFor(turn.imageAssetId, turn.imageUrl) : null;
+      const crop = turn.imageAssetId ? faceCropFor(turn.imageAssetId) : null;
+      return source && crop ? { source, crop } : null;
+    })}
+    audio={step.turns.map(turn => audioFor(turn.audioAssetId, turn.audioUrl))}
+    save={shownSave} onNext={advance} onBack={back} onClose={onClose} />;
+
   if (step?.type === 'listen_select') {
     const avatarSource = step.characterImageAssetId ? imageFor(step.characterImageAssetId, step.characterImageUrl) : null;
     const crop = step.characterImageAssetId ? faceCropFor(step.characterImageAssetId) : null;
@@ -198,7 +208,7 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
       avatar={avatarSource && crop ? { source: avatarSource, crop } : null}
       audio={audioFor(step.audioAssetId, step.audioUrl)} reviewOnly={index < frontier} save={shownSave}
       onAnswer={response => tap(response, false)}
-      onContinue={() => setIndex(current => moveOpeningStep(current, 'next', steps.length))} onClose={onClose} />;
+      onContinue={() => setIndex(current => moveOpeningStep(current, 'next', steps.length))} onBack={back} onClose={onClose} />;
   }
 
   // The end of the supported prefix: a development boundary, not lesson completion.
@@ -215,7 +225,7 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
         </View>
         {steps.length ? <>
           <Text accessibilityRole="header" style={styles.title}>סיימתם את מקטע הסקירה</Text>
-          <Text style={styles.body}>ראינו את הכניסה, את הכנת המילים ואת הבדיקה הראשונה. השיחה והתרגולים יתחברו בהמשך.</Text>
+          <Text style={styles.body}>ראינו את הכניסה, את הכנת המילים, את הבדיקות ואת השיחה. התרגולים יתחברו בהמשך.</Text>
           <Text style={styles.note}>זו סקירת פיתוח. ההתקדמות נשמרת בחשבון, ומכאן היא תמשיך כשהמסך הבא ייבנה.</Text>
         </> : <Text accessibilityRole="alert" style={styles.error}>לא נמצאו מסכים לסקירה.</Text>}
       </View>

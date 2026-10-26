@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, ClipPath, Defs, G, Line, Path, Rect } from 'react-native-svg';
 import type { AttemptResult } from '../../../content/src/progress-types';
 import { retro } from '../theme';
-import { LessonDarkButton, LessonSaveError, type SaveState } from './lesson-button';
+import { LessonButtonRow, LessonDarkButton, LessonSaveError, LessonSecondaryButton, LessonSheetSecondaryButton, type SaveState } from './lesson-button';
 import { LessonAvatar } from './lesson-avatar';
 import { LessonHeader } from './lesson-header';
 import type { FaceCrop } from './media';
@@ -18,7 +18,8 @@ import { usePlayback } from './playback';
 // the radio poster, pick its meaning. States Question, Hint, Retry and Correct, each
 // decided only by the server's reply; the app never knows the correct answer. No score
 // or timer; replay and the written hint never block. A solved check seen again through
-// "חזרה" is view-only (approved by Dor, 2026-10-25).
+// "חזרה" is view-only (approved by Dor, 2026-10-25). "חזרה" shows in every state and only
+// moves the view back (Figma Back 114:2197/114:2205, approved by Dor 2026-10-26).
 const c = retro.colors;
 const f = retro.fonts;
 const POSTER_H = 232, FRAME = 6, DISC = 88, STAMP = 116;
@@ -33,12 +34,12 @@ type Props = {
   header: { code: string; index: number; count: number }; unitShort: string; reviewOnly: boolean; save: SaveState;
   // Resolves with the server's reply, or null when it was not confirmed (the save error says why).
   onAnswer: (response: LessonResponse) => Promise<AttemptResult | null>;
-  onContinue: () => void; onClose: () => void;
+  onContinue: () => void; onBack: () => void; onClose: () => void;
 };
 
 type Feedback = { kind: 'retry'; messageHe: string } | { kind: 'correct'; choiceId: string; messageHe: string };
 
-export function ListenSelectScreen({ content, avatar, audio, header, unitShort, reviewOnly, save, onAnswer, onContinue, onClose }: Props) {
+export function ListenSelectScreen({ content, avatar, audio, header, unitShort, reviewOnly, save, onAnswer, onContinue, onBack, onClose }: Props) {
   const insets = useSafeAreaInsets();
   const { width: windowWidth } = useWindowDimensions();
   const column = Math.min(windowWidth, 600) - 40;
@@ -114,12 +115,14 @@ export function ListenSelectScreen({ content, avatar, audio, header, unitShort, 
       {save.busy ? <ActivityIndicator color={c.gold} /> : null}
     </ScrollView>
     {/* Feedback stays pinned to the bottom while the column scrolls. */}
-    <View style={[styles.bottom, { paddingHorizontal: save.errorHe && !feedback && !locked ? gutter : 0 }]}>
+    <View style={[styles.bottom, { paddingHorizontal: !feedback && !locked ? gutter : 0 }]}>
       <LessonSaveError message={save.errorHe} />
       {feedback ? <FeedbackSheet key={feedback.kind === 'correct' ? 'correct' : `retry-${lastWrong?.tap ?? 0}`}
-        feedback={feedback} bottomInset={insets.bottom} onContinue={onContinue} />
-        : locked ? <ContinueSheet bottomInset={insets.bottom} onContinue={onContinue} />
-          : <View style={{ height: Math.max(insets.bottom, 20) }} />}
+        feedback={feedback} bottomInset={insets.bottom} onContinue={onContinue} onBack={onBack} />
+        : locked ? <ContinueSheet bottomInset={insets.bottom} onContinue={onContinue} onBack={onBack} />
+          : <View style={{ paddingTop: 12, paddingBottom: Math.max(insets.bottom, 20) }}>
+            <LessonSecondaryButton label="חזרה" disabled={save.busy} onPress={onBack} />
+          </View>}
     </View>
   </View>;
 }
@@ -214,9 +217,9 @@ function Stamp({ code }: { code: string }) {
 }
 
 // Bottom sheet (Figma "Lesson / Feedback" 78:321), sliding up in 0.34s. Retry: pink,
-// message only. Success: cream, message and "ממשיכים", which is only navigation: the
-// correct choice already moved the saved progress on.
-function FeedbackSheet({ feedback, bottomInset, onContinue }: { feedback: Feedback; bottomInset: number; onContinue: () => void }) {
+// the message and "חזרה". Success: cream, the message, "חזרה" and "ממשיכים", which is only
+// navigation: the correct choice already moved the saved progress on.
+function FeedbackSheet({ feedback, bottomInset, onContinue, onBack }: { feedback: Feedback; bottomInset: number; onContinue: () => void; onBack: () => void }) {
   const reduceMotion = useReducedMotion();
   const rise = useSharedValue(reduceMotion ? 0 : 1);
   useEffect(() => {
@@ -224,22 +227,33 @@ function FeedbackSheet({ feedback, bottomInset, onContinue }: { feedback: Feedba
   }, [reduceMotion, rise]);
   const style = useAnimatedStyle(() => ({ transform: [{ translateY: rise.value * 160 }] }));
   if (feedback.kind === 'retry') return <Animated.View style={[styles.sheet, styles.retrySheet, { paddingBottom: Math.max(bottomInset, 20) + 24 }, style]}>
-    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" accessible={false}>
-      <Path d="M3 12C2.99812 14.0611 3.7037 16.0603 4.99882 17.6636C6.29394 19.2669 8.10012 20.3771 10.1155 20.8087C12.1308 21.2403 14.2333 20.967 16.0714 20.0347C17.9095 19.1023 19.3719 17.5673 20.2142 15.6862C21.0564 13.8051 21.2276 11.6919 20.6989 9.69981C20.1703 7.7077 18.9739 5.9574 17.3098 4.74142C15.6457 3.52545 13.6146 2.9175 11.556 3.01916C9.4975 3.12083 7.53622 3.92597 6 5.3" strokeWidth={2.2} strokeLinecap="round" stroke={c.plum} />
-      <Path d="M3 4V8.5H7.5" strokeWidth={2.2} strokeLinecap="round" stroke={c.plum} />
-    </Svg>
-    <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.retryText}>{feedback.messageHe}</Text>
+    <View style={styles.retryRow}>
+      <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" accessible={false}>
+        <Path d="M3 12C2.99812 14.0611 3.7037 16.0603 4.99882 17.6636C6.29394 19.2669 8.10012 20.3771 10.1155 20.8087C12.1308 21.2403 14.2333 20.967 16.0714 20.0347C17.9095 19.1023 19.3719 17.5673 20.2142 15.6862C21.0564 13.8051 21.2276 11.6919 20.6989 9.69981C20.1703 7.7077 18.9739 5.9574 17.3098 4.74142C15.6457 3.52545 13.6146 2.9175 11.556 3.01916C9.4975 3.12083 7.53622 3.92597 6 5.3" strokeWidth={2.2} strokeLinecap="round" stroke={c.plum} />
+        <Path d="M3 4V8.5H7.5" strokeWidth={2.2} strokeLinecap="round" stroke={c.plum} />
+      </Svg>
+      <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.retryText}>{feedback.messageHe}</Text>
+    </View>
+    <LessonSheetSecondaryButton label="חזרה" onPress={onBack} />
   </Animated.View>;
   return <Animated.View style={[styles.sheet, styles.successSheet, { paddingBottom: Math.max(bottomInset, 20) + 14 }, style]}>
     <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.successText}>{feedback.messageHe}</Text>
-    <LessonDarkButton label="ממשיכים" onPress={onContinue} />
+    <SheetActions onContinue={onContinue} onBack={onBack} />
   </Animated.View>;
 }
 
+// Right to left: "חזרה" on the right, the main action on the left at twice its width.
+function SheetActions({ onContinue, onBack }: { onContinue: () => void; onBack: () => void }) {
+  return <LessonButtonRow>
+    <View style={styles.back}><LessonSheetSecondaryButton label="חזרה" onPress={onBack} /></View>
+    <View style={styles.next}><LessonDarkButton label="ממשיכים" onPress={onContinue} /></View>
+  </LessonButtonRow>;
+}
+
 // A solved check seen again: nothing to answer, only the way forward.
-function ContinueSheet({ bottomInset, onContinue }: { bottomInset: number; onContinue: () => void }) {
+function ContinueSheet({ bottomInset, onContinue, onBack }: { bottomInset: number; onContinue: () => void; onBack: () => void }) {
   return <View style={[styles.sheet, styles.successSheet, { paddingBottom: Math.max(bottomInset, 20) + 14 }]}>
-    <LessonDarkButton label="ממשיכים" onPress={onContinue} />
+    <SheetActions onContinue={onContinue} onBack={onBack} />
   </View>;
 }
 
@@ -330,10 +344,13 @@ const styles = StyleSheet.create({
   tagText: { flex: 1, fontFamily: f.bold, fontSize: 21, lineHeight: 28, writingDirection: 'rtl' },
   bottom: {},
   sheet: { borderTopLeftRadius: 26, borderTopRightRadius: 26, paddingTop: 22, paddingHorizontal: 24 },
-  retrySheet: { backgroundColor: c.pink, flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
+  retrySheet: { backgroundColor: c.pink, gap: 14 },
+  retryRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
   retryText: { flex: 1, fontFamily: f.body, fontSize: 17, lineHeight: 26, color: c.plum, writingDirection: 'rtl' },
   successSheet: { backgroundColor: c.cream, gap: 14 },
   successText: { fontFamily: f.bold, fontSize: 19, lineHeight: 28, color: c.night, writingDirection: 'rtl' },
+  back: { flex: 1 },
+  next: { flex: 2 },
   disabled: { opacity: 0.5 },
   pressed: { opacity: 0.85, transform: [{ scale: 0.98 }] },
 });

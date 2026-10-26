@@ -23,9 +23,10 @@ const projected = (source, urls = {}) => projectUnit(source, urls, {}, { allowDr
 test('mobile preview reads the actual preparation prefix and never skips an unsupported interaction', () => {
   const learnerUnit = projected(unit);
   const steps = data.openingSteps(learnerUnit);
-  // Entry, seven cards, the explanation and two checks; the dialogue is not built yet.
-  assert.equal(JSON.stringify(steps.map(s => s.type)), JSON.stringify(['entry', ...Array(7).fill('vocabulary'), 'explanation', 'listen_select', 'listen_select']));
-  assert.equal(unit.activities[steps.length].type, 'dialogue');
+  // Entry, seven cards, the explanation, two checks, the dialogue and the practice check;
+  // speaking is not built yet.
+  assert.equal(JSON.stringify(steps.map(s => s.type)), JSON.stringify(['entry', ...Array(7).fill('vocabulary'), 'explanation', 'listen_select', 'listen_select', 'dialogue', 'listen_select']));
+  assert.equal(unit.activities[steps.length].type, 'speak_reveal');
   assert.equal(steps[0].bodyHe, unit.activities[0].bodyHe);
   assert.equal(steps[0].actionLabelHe, unit.activities[0].actionLabelHe);
   assert.equal(steps[0].sceneAssetId, 'juan-hostel-v1');
@@ -34,7 +35,7 @@ test('mobile preview reads the actual preparation prefix and never skips an unsu
   assert.equal(steps[0].characterNameHe, 'חואן');
   assert.equal(steps[1].characterNameHe, 'חואן');
   const interrupted = structuredClone(learnerUnit);
-  interrupted.activities.splice(2, 0, { type: 'dialogue', id: 'new-required-preparation' });
+  interrupted.activities.splice(2, 0, { type: 'speak_reveal', id: 'new-required-preparation' });
   assert.equal(data.openingSteps(interrupted).length, 2, 'do not skip unseen preparation to render later cards');
 });
 
@@ -95,7 +96,8 @@ test('media URLs come only from the server projection: pending audio stays null 
   assert.equal(cards[0].expressionEs, 'Hola');
   assert.equal(cards[0].audioUrl, null, 'pending audio is not served');
   assert.equal(cards[1].audioUrl, urls['juan-buenos-dias-v1']);
-  const urlsOf = s => s.type === 'entry' ? [s.sceneUrl] : s.type === 'explanation' ? s.examples.map(e => e.audioUrl) : [s.audioUrl];
+  const urlsOf = s => s.type === 'entry' ? [s.sceneUrl] : s.type === 'explanation' ? s.examples.map(e => e.audioUrl)
+    : s.type === 'dialogue' ? s.turns.flatMap(t => [t.audioUrl, t.imageUrl]) : [s.audioUrl];
   assert.equal(data.openingSteps(projected(unit)).flatMap(urlsOf).every(url => url === null), true, 'nothing hosted yet');
   const check = data.openingSteps(projected(unit, urls)).find(s => s.type === 'listen_select');
   assert.equal(check.audioUrl, null, 'the pending Hola recording is not served on the check either');
@@ -267,8 +269,10 @@ test('the server progress decides where the lesson resumes; past the supported s
   assert.equal(data.frontierIndex(steps, at('u1a-vocab-azucar')), 7);
   assert.equal(data.frontierIndex(steps, at('u1a-explain-question')), 8);
   assert.equal(data.frontierIndex(steps, at('u1a-check-offer')), 10);
-  // The dialogue is not built yet: the preview ends there.
-  assert.equal(data.frontierIndex(steps, at('u1a-dialogue')), steps.length);
+  assert.equal(data.frontierIndex(steps, at('u1a-dialogue')), 11);
+  assert.equal(data.frontierIndex(steps, at('u1a-practice-listen')), 12);
+  // Speaking is not built yet: the preview ends there.
+  assert.equal(data.frontierIndex(steps, at('1a-speak-thanks')), steps.length);
   assert.equal(data.frontierIndex(steps, at(null, 'completed')), steps.length);
 });
 
@@ -362,6 +366,58 @@ test('listen-select screen: unit copy only from data, states only from the serve
   assert.doesNotMatch(screen, /alignSelf: 'center'/);
   // Figma's TAG code label is not drawn (Dor, 2026-10-25).
   assert.equal(screen.includes('TAG'), false);
+});
+
+test('listen-select screen: "חזרה" in every state only moves the view back', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/listen-select-screen.tsx'), 'utf8');
+  // Question and hint: on the dark background. Retry, correct and a solved check seen again: on the sheet.
+  assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{onBack\} \/>/);
+  assert.equal(screen.match(/<LessonSheetSecondaryButton label="חזרה" onPress=\{onBack\} \/>/g).length, 2);
+  assert.match(screen, /<ContinueSheet [^>]*onBack=\{onBack\}/);
+  assert.match(screen, /<FeedbackSheet [^]*onBack=\{onBack\} \/>/);
+  const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
+  assert.match(preview, /<ListenSelectScreen [^]*onBack=\{back\} onClose=\{onClose\} \/>/);
+  assert.match(preview, /const back = \(\) => \{ if \(!save\.busy\) setIndex\(current => moveOpeningStep\(current, 'back', steps\.length\)\); \};/);
+});
+
+test('the dialogue step carries every line with its speaker, translation and own recording', () => {
+  const source = unit.activities.find(a => a.type === 'dialogue');
+  const step = data.openingSteps(projected(unit)).find(s => s.type === 'dialogue');
+  assert.equal(step.id, 'u1a-dialogue');
+  assert.equal(step.titleHe, source.titleHe);
+  assert.equal(step.translationInitiallyVisible, false);
+  assert.equal(JSON.stringify(step.turns.map(t => [t.id, t.textEs, t.translationHe, t.audioAssetId])),
+    JSON.stringify(source.turns.map(t => [t.id, t.textEs, t.translationHe, t.audioAssetId])));
+  assert.equal(JSON.stringify(step.turns.map(t => t.speaker)), JSON.stringify(['character', 'learner', 'character', 'learner', 'character', 'learner']));
+  assert.equal(JSON.stringify([...new Set(step.turns.map(t => t.speakerNameHe))]), JSON.stringify(['חואן', 'אתם']));
+  // Juan's lines show his approved face; the learner's lines show the plane badge.
+  assert.equal(step.turns.every(t => t.imageAssetId === (t.speaker === 'learner' ? null : 'juan-reference-v1')), true);
+  assert.equal(step.turns.every(t => t.audioUrl === null), true, 'all six recordings are pending');
+});
+
+test('the whole-dialogue run plays lines with a recording in order and skips the rest', () => {
+  const playable = [true, false, true, false, false, true];
+  assert.equal(data.nextPlayable(playable, -1), 0);
+  assert.equal(data.nextPlayable(playable, 0), 2);
+  assert.equal(data.nextPlayable(playable, 2), 5);
+  assert.equal(data.nextPlayable(playable, 5), null);
+  assert.equal(data.nextPlayable(Array(6).fill(false), -1), null, 'no recording: the button is disabled');
+});
+
+test('dialogue screen: lesson copy only from data, one line at a time, disabled play without a file', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/dialogue-screen.tsx'), 'utf8');
+  for (const copy of ['השיחה עם', 'חואן', 'אתם', 'Hola', 'Café', 'שלום', 'juan']) assert.equal(screen.includes(copy), false, copy);
+  assert.match(screen, /<TurnPlay label=\{`השמעה: \$\{turn\.textEs\}`\} playing=\{false\} disabled/);
+  assert.match(screen, /disabled=\{first === null\} onPress=\{toggleAll\}/);
+  // Starting one line stops the other; tapping another line ends the run.
+  assert.match(screen, /if \(current !== index\) pause\(\);\s*\}, \[current, index, pause\]\)/);
+  assert.match(screen, /setSequence\(running => running === index \? running : null\)/);
+  // Each line's translation is its own.
+  assert.match(screen, /translated: shown\.includes\(turn\.id\)/);
+  assert.match(screen, /accessibilityLanguage="es-MX"/);
+  assert.doesNotMatch(screen, /alignSelf: 'center'|row-reverse|textAlign: 'right'/);
+  const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
+  assert.match(preview, /<DialogueScreen [^]*save=\{shownSave\} onNext=\{advance\} onBack=\{back\} onClose=\{onClose\} \/>/);
 });
 
 test('the lesson flow keeps an answer on its screen and moves only on continue', () => {

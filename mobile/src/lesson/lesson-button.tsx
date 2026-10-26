@@ -53,6 +53,12 @@ export function LessonOutlineButton(props: Common) {
   return <Base {...props} style={styles.outline} labelStyle={styles.onCream} />;
 }
 
+// Secondary on a feedback sheet (Figma "Lesson / Feedback" Back 114:2205): outlined
+// night teal on cream or pink, full 56pt touch target.
+export function LessonSheetSecondaryButton(props: Common) {
+  return <Base {...props} style={styles.sheetSecondary} labelStyle={styles.onGold} />;
+}
+
 export function LessonAudioButton({ playing, busy, ...props }: Common & { playing: boolean; busy?: boolean }) {
   return <Base {...props} busy={busy} style={styles.audio} labelStyle={styles.onSunset}>
     {/* Media icons keep pointing right in a right-to-left layout, as on iOS. */}
@@ -74,6 +80,7 @@ const styles = StyleSheet.create({
   primary: { backgroundColor: c.gold },
   secondary: { borderWidth: 1.5, borderColor: c.cream },
   outline: { minHeight: 48, borderWidth: 1.5, borderColor: c.night },
+  sheetSecondary: { borderWidth: 1.5, borderColor: c.night },
   dark: { backgroundColor: c.night },
   audio: { backgroundColor: c.sunset },
   disabled: { opacity: 0.5 },
