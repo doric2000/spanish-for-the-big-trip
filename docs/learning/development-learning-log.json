@@ -3494,6 +3494,32 @@
         "The practice check u1a-practice-listen now follows the dialogue; its choices and feedback are still drafts"
       ],
       "next_step": "Card 06.3: recording and self-comparison inside the lesson, in a new chat."
+    },
+    {
+      "id": "stage06-speak-screen-2026-10-26",
+      "stage_id": "06",
+      "goal": "Card 06.3: recording and self-comparison inside the lesson (1a-speak-thanks, u1a-speak-decline), with the way without a microphone.",
+      "practical_owner": "Dor approved the Figma template 87:1543 with four changes (no scene picture until 07.5, no help button, the model play button disabled until 07.2, the learner's mark next to the model line instead of Juan's face). Claude updated the template, built the screen, the recording hook and the tests, and committed and pushed.",
+      "practical_action": "Code: mobile/src/lesson/speak-screen.tsx and recording.ts (new), opening-data.ts (speak step, self_comparison response), opening-preview.tsx (compare), lesson-avatar.tsx (LearnerBadge shared with the dialogue), lesson-button.tsx (LessonRecordButton, MicIcon). Tests: tests/self-recording.test.cjs (new), opening-preview.test.cjs.",
+      "evidence": [
+        "mobile typecheck and lint clean, tests 65/65; content tests pass. The content did not change, so no reseed; Dor's progress is on 1a-speak-thanks, so no reset.",
+        "The recording hook is tested against the native timing contracts (refused permission, the finish event before playback, a missing finish event, leaving mid-take). These tests cannot prove the microphone or the speaker on a device.",
+        "Device check pending: Dor records on the first practice and refuses the microphone on the second."
+      ],
+      "concepts": [
+        "Runtime permission: the app asks once; after a refusal iOS does not ask again, so the screen offers the device settings and a way to continue without the microphone",
+        "A custom hook (useSelfRecording) keeps the native recording flow in one place, separate from what the screen draws",
+        "The server records only how the learner compared (recording or without_microphone), never a score; the take stays on the phone",
+        "AppState: when the app comes back from Settings, the screen checks the permission again"
+      ],
+      "dor_participation": "Design approval and decisions; no code typed.",
+      "understanding_demonstrated": "pending",
+      "interview_takeaway": "Microphone access treated as something the learner may refuse: the lesson still completes, and the choice is saved as data, not as a failure.",
+      "open_questions": [
+        "Wording of u1a-speak-decline is still a draft (needs_review)",
+        "Model recordings (07.2)"
+      ],
+      "next_step": "Dor's iPhone check of both paths; then close card 06.3."
     }
   ],
   "entry_template": {
