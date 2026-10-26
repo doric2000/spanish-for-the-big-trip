@@ -118,6 +118,22 @@
       "note": "Voice source not chosen yet (research 2026-10-26); joint listening review pending."
     },
     {
+      "id": "juan-cafe-question-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "¿Café? as a question with a rising voice, for u1a-explain-question (approved by Dor 2026-10-26: the word recording cannot be reused). Voice source and listening review pending."
+    },
+    {
+      "id": "juan-azucar-question-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "¿Azúcar? as a question with a rising voice, for u1a-explain-question (approved by Dor 2026-10-26: the word recording cannot be reused). Voice source and listening review pending."
+    },
+    {
       "id": "dialogue-turn-3-v1",
       "kind": "audio",
       "status": "pending",
@@ -347,11 +363,13 @@
       "examples": [
         {
           "textEs": "¿Café?",
-          "meaningHe": "קפה?"
+          "meaningHe": "קפה?",
+          "audioAssetId": "juan-cafe-question-v1"
         },
         {
           "textEs": "¿Azúcar?",
-          "meaningHe": "סוכר?"
+          "meaningHe": "סוכר?",
+          "audioAssetId": "juan-azucar-question-v1"
         }
       ],
       "required": true,

@@ -33,7 +33,7 @@ export function projectActivity(activity: Activity, scenarioNodeId?: string) {
       ...(activity.sceneCaption ? { sceneCaption: activity.sceneCaption } : {}),
       ...(activity.characterId ? { characterId: activity.characterId } : {}) };
     case 'vocabulary_card': return { ...common, type: activity.type, expressionEs: activity.expressionEs, meaningHe: activity.meaningHe, characterId: activity.characterId, audioAssetId: activity.audioAssetId };
-    case 'explanation': return { ...common, type: activity.type, titleHe: activity.titleHe, generalHe: activity.generalHe, examples: activity.examples.map(e => ({ textEs: e.textEs, meaningHe: e.meaningHe })) };
+    case 'explanation': return { ...common, type: activity.type, titleHe: activity.titleHe, generalHe: activity.generalHe, examples: activity.examples.map(e => ({ textEs: e.textEs, meaningHe: e.meaningHe, ...(e.audioAssetId ? { audioAssetId: e.audioAssetId } : {}) })) };
     case 'dialogue': return { ...common, type: activity.type, titleHe: activity.titleHe, translationInitiallyVisible: activity.translationInitiallyVisible, turns: activity.turns.map(t => ({ id: t.id, speakerId: t.speakerId, textEs: t.textEs, translationHe: t.translationHe, audioAssetId: t.audioAssetId })) };
     case 'listen_select': return { ...common, type: activity.type, titleHe: activity.titleHe, promptHe: activity.promptHe, audioAssetId: activity.audioAssetId,
       ...(activity.characterId ? { characterId: activity.characterId } : {}), choices: activity.choices.map(c => ({ id: c.id, textHe: c.textHe })), allowWrittenHint: activity.allowWrittenHint, scored: activity.scored };

@@ -196,6 +196,21 @@ test('entry poster details are optional, projected when present and checked agai
   assert.ok(scene.type === 'entry'); scene.characterId = 'nobody'; invalid(unknown, 'Unknown character');
 });
 
+test('explanation examples carry their own optional audio, checked against the media list', () => {
+  const explanation = projectUnit(realDraft(), {}, {}, { allowDraft: true }).activities.find(a => a.type === 'explanation')!;
+  assert.ok(explanation.type === 'explanation');
+  assert.deepEqual(explanation.examples.map(e => e.audioAssetId), ['juan-cafe-question-v1', 'juan-azucar-question-v1']);
+  const bare = realDraft(); const activity = bare.activities.find(a => a.type === 'explanation')!;
+  assert.ok(activity.type === 'explanation');
+  for (const example of activity.examples) delete example.audioAssetId;
+  assert.equal(validateUnit(bare).success, true, 'the audio stays optional');
+  const projected = projectActivity(activity);
+  assert.ok(projected.type === 'explanation');
+  assert.equal(projected.examples.some(e => 'audioAssetId' in e), false);
+  const unknown = realDraft(); const broken = unknown.activities.find(a => a.type === 'explanation')!;
+  assert.ok(broken.type === 'explanation'); broken.examples[0]!.audioAssetId = 'nothing'; invalid(unknown, 'Unknown audio asset: nothing');
+});
+
 test('attempt input rejects client-selected user, correctness, raw audio and unknown response fields', () => {
   const state = begin(); const valid = request(state, { kind: 'continue' });
   for (const key of ['userId', 'correct', 'audio', 'completed']) assert.equal(AttemptRequestSchema.safeParse({ ...valid, [key]: 'injected' }).success, false);

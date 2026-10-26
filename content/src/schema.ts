@@ -50,7 +50,8 @@ const arrange = z.strictObject({
 
 const explanation = z.strictObject({
   ...base, type: z.literal('explanation'), titleHe: text, generalHe: text,
-  examples: z.array(z.strictObject({ textEs: text, meaningHe: text })).min(1),
+  // An example may have its own recording, e.g. a question said with a rising voice.
+  examples: z.array(z.strictObject({ textEs: text, meaningHe: text, audioAssetId: id.optional() })).min(1),
 });
 const speaking = z.strictObject({
   ...base, type: z.literal('speak_reveal'), promptHe: text,
@@ -183,6 +184,9 @@ export const UnitSchema = z.strictObject({
         assetRef(turn.audioAssetId, 'audio', [...path, 'turns', j, 'audioAssetId']);
       });
     }
+    if (activity.type === 'explanation') activity.examples.forEach((example, j) => {
+      if (example.audioAssetId !== undefined) assetRef(example.audioAssetId, 'audio', [...path, 'examples', j, 'audioAssetId']);
+    });
     if (activity.type === 'listen_select') {
       unique(activity.choices.map(c => c.id), [...path, 'choices']);
       if (!activity.choices.some(c => c.id === activity.correctChoiceId)) issue([...path, 'correctChoiceId'], 'Correct answer does not exist in choices');
