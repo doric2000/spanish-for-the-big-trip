@@ -23,10 +23,10 @@ const projected = (source, urls = {}) => projectUnit(source, urls, {}, { allowDr
 test('mobile preview reads the actual preparation prefix and never skips an unsupported interaction', () => {
   const learnerUnit = projected(unit);
   const steps = data.openingSteps(learnerUnit);
-  // Entry, seven cards, the explanation, two checks, the dialogue and the practice check;
-  // speaking is not built yet.
-  assert.equal(JSON.stringify(steps.map(s => s.type)), JSON.stringify(['entry', ...Array(7).fill('vocabulary'), 'explanation', 'listen_select', 'listen_select', 'dialogue', 'listen_select']));
-  assert.equal(unit.activities[steps.length].type, 'speak_reveal');
+  // Entry, seven cards, the explanation, two checks, the dialogue, the practice check and
+  // two speaking practices; arranging words is not built yet.
+  assert.equal(JSON.stringify(steps.map(s => s.type)), JSON.stringify(['entry', ...Array(7).fill('vocabulary'), 'explanation', 'listen_select', 'listen_select', 'dialogue', 'listen_select', 'speak', 'speak']));
+  assert.equal(unit.activities[steps.length].type, 'arrange');
   assert.equal(steps[0].bodyHe, unit.activities[0].bodyHe);
   assert.equal(steps[0].actionLabelHe, unit.activities[0].actionLabelHe);
   assert.equal(steps[0].sceneAssetId, 'juan-hostel-v1');
@@ -35,7 +35,7 @@ test('mobile preview reads the actual preparation prefix and never skips an unsu
   assert.equal(steps[0].characterNameHe, 'חואן');
   assert.equal(steps[1].characterNameHe, 'חואן');
   const interrupted = structuredClone(learnerUnit);
-  interrupted.activities.splice(2, 0, { type: 'speak_reveal', id: 'new-required-preparation' });
+  interrupted.activities.splice(2, 0, { type: 'arrange', id: 'new-required-preparation' });
   assert.equal(data.openingSteps(interrupted).length, 2, 'do not skip unseen preparation to render later cards');
 });
 
@@ -271,8 +271,10 @@ test('the server progress decides where the lesson resumes; past the supported s
   assert.equal(data.frontierIndex(steps, at('u1a-check-offer')), 10);
   assert.equal(data.frontierIndex(steps, at('u1a-dialogue')), 11);
   assert.equal(data.frontierIndex(steps, at('u1a-practice-listen')), 12);
-  // Speaking is not built yet: the preview ends there.
-  assert.equal(data.frontierIndex(steps, at('1a-speak-thanks')), steps.length);
+  assert.equal(data.frontierIndex(steps, at('1a-speak-thanks')), 13);
+  assert.equal(data.frontierIndex(steps, at('u1a-speak-decline')), 14);
+  // Arranging words is not built yet: the preview ends there.
+  assert.equal(data.frontierIndex(steps, at('1a-arrange-greeting')), steps.length);
   assert.equal(data.frontierIndex(steps, at(null, 'completed')), steps.length);
 });
 
@@ -425,4 +427,61 @@ test('the lesson flow keeps an answer on its screen and moves only on continue',
   assert.match(preview, /onAnswer=\{response => tap\(response, false\)\}/);
   assert.match(preview, /void tap\(\{ kind: 'continue' \}, true\)/);
   assert.match(preview, /reviewOnly=\{index < frontier\}/);
+});
+
+test('the speaking steps carry the prompt, the model line and its own recording', () => {
+  const steps = data.openingSteps(projected(unit)).filter(s => s.type === 'speak');
+  assert.equal(JSON.stringify(steps.map(s => s.id)), JSON.stringify(['1a-speak-thanks', 'u1a-speak-decline']));
+  for (const step of steps) {
+    const source = unit.activities.find(a => a.id === step.id);
+    assert.equal(step.promptHe, source.promptHe);
+    assert.equal(step.modelTextEs, source.modelTextEs);
+    assert.equal(step.alternativeHe, source.alternativeHe);
+    assert.equal(step.audioAssetId, source.audioAssetId);
+    assert.equal(step.modelNoteHe, null);
+    assert.equal(step.audioUrl, null, 'the model recordings are pending');
+  }
+  // The optional note under the model comes through when the unit has one.
+  const withNote = projected(unit);
+  const greet = withNote.activities.find(a => a.id === '1a-review-greet');
+  withNote.activities = [greet];
+  assert.equal(data.openingSteps(withNote)[0].modelNoteHe, greet.modelNoteHe);
+});
+
+test('a self-comparison passes the server schema, carries no score, and restores only exactly', () => {
+  const { AttemptRequestSchema } = require(path.join(root, 'content/dist/src/api-contract.js'));
+  const me = '00000000-0000-4000-8000-0000000000aa';
+  const progress = { status: 'in_progress', currentActivityId: '1a-speak-thanks', revision: 1, progressVersion: 14 };
+  for (const mode of ['recording', 'without_microphone']) {
+    const response = { kind: 'self_comparison', mode, compared: true };
+    const request = data.attemptRequest(progress, '00000000-0000-4000-8000-000000000006', response);
+    assert.equal(AttemptRequestSchema.safeParse(request).success, true, mode);
+    assert.equal(JSON.stringify(request.response), JSON.stringify(response));
+    const saved = r => JSON.stringify({ userId: me, unitId: 'C01-U01', request: r });
+    assert.equal(JSON.stringify(data.restorablePending(saved(request), me, 'C01-U01', progress)), JSON.stringify(request));
+    assert.equal(data.restorablePending(saved({ ...request, response: { ...response, compared: false } }), me, 'C01-U01', progress), null);
+    assert.equal(data.restorablePending(saved({ ...request, response: { ...response, score: 90 } }), me, 'C01-U01', progress), null);
+  }
+  const unknown = data.attemptRequest(progress, '00000000-0000-4000-8000-000000000007', { kind: 'self_comparison', mode: 'typed', compared: true });
+  assert.equal(data.restorablePending(JSON.stringify({ userId: me, unitId: 'C01-U01', request: unknown }), me, 'C01-U01', progress), null);
+});
+
+test('speak screen: lesson copy only from data, both paths report a comparison, nothing is uploaded', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/speak-screen.tsx'), 'utf8');
+  for (const copy of ['חואן', 'הכובע', 'Gracias', 'קפה', 'לתרגל בקול', 'juan']) assert.equal(screen.includes(copy), false, copy);
+  assert.match(screen, /\{content\.alternativeHe\}/);
+  assert.match(screen, /continueRow\('recording'\)/);
+  assert.match(screen, /continueRow\('without_microphone'\)/);
+  // A step seen again opens on the model; refusing the microphone offers the way without it.
+  assert.match(screen, /useState<Phase>\(reviewOnly \? 'model' : 'ready'\)/);
+  assert.match(screen, /<SheetButton label=\{content\.alternativeHe\} onPress=\{\(\) => setPhase\('model'\)\} \/>/);
+  // Without its recording the model's play button is disabled.
+  assert.match(screen, /<LessonAudioButton label="השמעה" playing=\{false\} disabled/);
+  // Comments may say there is no score; the code may not show one.
+  assert.doesNotMatch(screen.replace(/\/\/.*$/gm, ''), /score|ציון|row-reverse|textAlign: 'right'/i);
+  const recording = fs.readFileSync(path.join(__dirname, '../src/lesson/recording.ts'), 'utf8');
+  assert.doesNotMatch(recording, /fetch\(|upload|supabase|storage/i, 'the take never leaves the phone');
+  const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
+  assert.match(preview, /void tap\(\{ kind: 'self_comparison', mode, compared: true \}, true\)/);
+  assert.match(preview, /<SpeakScreen [^]*reviewOnly=\{index < frontier\} save=\{shownSave\}\s*onCompare=\{compare\} onBack=\{back\} onClose=\{onClose\} \/>/);
 });

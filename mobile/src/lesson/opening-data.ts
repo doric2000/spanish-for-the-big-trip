@@ -10,7 +10,9 @@ export type OpeningStep =
     audioAssetId: string; audioUrl: string | null }
   | { type: 'explanation'; id: string; titleHe: string; generalHe: string;
     examples: { textEs: string; meaningHe: string; audioAssetId: string | null; audioUrl: string | null }[] }
-  | { type: 'dialogue'; id: string; titleHe: string; translationInitiallyVisible: boolean; turns: DialogueTurn[] };
+  | { type: 'dialogue'; id: string; titleHe: string; translationInitiallyVisible: boolean; turns: DialogueTurn[] }
+  | { type: 'speak'; id: string; promptHe: string; modelTextEs: string; modelNoteHe: string | null; alternativeHe: string;
+    audioAssetId: string; audioUrl: string | null };
 
 // One line of the dialogue. The learner's lines carry no character image: they get the
 // plane badge instead (Figma "Lesson / Dialogue turn" 86:913).
@@ -66,6 +68,11 @@ export function openingSteps(unit: PublicUnit): OpeningStep[] {
             imageAssetId, imageUrl: imageAssetId ? urlOf(imageAssetId) : null,
             audioAssetId: turn.audioAssetId, audioUrl: urlOf(turn.audioAssetId) };
         }) });
+    } else if (activity.type === 'speak_reveal') {
+      // The model is the learner's own line, so the step carries no character.
+      steps.push({ type: 'speak', id: activity.id, promptHe: activity.promptHe, modelTextEs: activity.modelTextEs,
+        modelNoteHe: activity.modelNoteHe ?? null, alternativeHe: activity.alternativeHe,
+        audioAssetId: activity.audioAssetId, audioUrl: urlOf(activity.audioAssetId) });
     } else break;
   }
   return steps;
@@ -93,16 +100,20 @@ export function frontierIndex(steps: readonly OpeningStep[], progress: ServerPro
   return index === -1 ? steps.length : index;
 }
 
-// What a tap sends: "continue", one answer, or the written hint. Never an outcome:
-// the server decides whether a choice is correct.
-export type LessonResponse = { kind: 'continue' } | { kind: 'choice'; choiceId: string } | { kind: 'written_hint' };
+// What a tap sends: "continue", one answer, the written hint, or that the learner
+// compared themselves with the model. Never an outcome: the server decides whether a
+// choice is correct, and speaking has no score at all.
+export type ComparisonMode = 'recording' | 'without_microphone';
+export type LessonResponse = { kind: 'continue' } | { kind: 'choice'; choiceId: string } | { kind: 'written_hint' }
+  | { kind: 'self_comparison'; mode: ComparisonMode; compared: true };
 
 // Copies only the known fields, so a saved request with anything extra no longer matches.
 function cleanResponse(response: unknown): LessonResponse | null {
   if (!response || typeof response !== 'object') return null;
-  const { kind, choiceId } = response as { kind?: unknown; choiceId?: unknown };
+  const { kind, choiceId, mode, compared } = response as { kind?: unknown; choiceId?: unknown; mode?: unknown; compared?: unknown };
   if (kind === 'continue' || kind === 'written_hint') return { kind };
   if (kind === 'choice' && typeof choiceId === 'string') return { kind, choiceId };
+  if (kind === 'self_comparison' && (mode === 'recording' || mode === 'without_microphone') && compared === true) return { kind, mode, compared };
   return null;
 }
 

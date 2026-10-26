@@ -13,7 +13,8 @@ import { ExplanationScreen } from './explanation-screen';
 import type { SaveState } from './lesson-button';
 import { audioFor, faceCropFor, imageFor } from './media';
 import { ListenSelectScreen } from './listen-select-screen';
-import { activityCode, attemptRequest, frontierIndex, type LessonRequest, type LessonResponse, moveOpeningStep, openingSteps, restorablePending, sameTap, type OpeningStep, unitCodes } from './opening-data';
+import { SpeakScreen } from './speak-screen';
+import { activityCode, attemptRequest, type ComparisonMode, frontierIndex, type LessonRequest, type LessonResponse, moveOpeningStep, openingSteps, restorablePending, sameTap, type OpeningStep, unitCodes } from './opening-data';
 import { clearPending, readPending, savePending } from './pending-store';
 import { VocabularyCardScreen } from './vocabulary-card-screen';
 
@@ -160,6 +161,13 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
     if (index < frontier) { setIndex(current => moveOpeningStep(current, 'next', steps.length)); return; }
     void tap({ kind: 'continue' }, true);
   };
+  // Speaking: the learner compared their line with the model, by recording or aloud.
+  // There is no outcome to show, so a confirmed comparison moves on like "continue".
+  const compare = (mode: ComparisonMode) => {
+    if (save.busy) return;
+    if (index < frontier) { setIndex(current => moveOpeningStep(current, 'next', steps.length)); return; }
+    void tap({ kind: 'self_comparison', mode, compared: true }, true);
+  };
   const back = () => { if (!save.busy) setIndex(current => moveOpeningStep(current, 'back', steps.length)); };
   // A save error belongs to the step where the tap happened.
   const shownSave = index === frontier ? save : { busy: false, errorHe: null };
@@ -199,6 +207,10 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
     audio={step.turns.map(turn => audioFor(turn.audioAssetId, turn.audioUrl))}
     save={shownSave} onNext={advance} onBack={back} onClose={onClose} />;
 
+  if (step?.type === 'speak') return <SpeakScreen key={step.id} content={step} header={header}
+    audio={audioFor(step.audioAssetId, step.audioUrl)} reviewOnly={index < frontier} save={shownSave}
+    onCompare={compare} onBack={back} onClose={onClose} />;
+
   if (step?.type === 'listen_select') {
     const avatarSource = step.characterImageAssetId ? imageFor(step.characterImageAssetId, step.characterImageUrl) : null;
     const crop = step.characterImageAssetId ? faceCropFor(step.characterImageAssetId) : null;
@@ -225,7 +237,7 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
         </View>
         {steps.length ? <>
           <Text accessibilityRole="header" style={styles.title}>סיימתם את מקטע הסקירה</Text>
-          <Text style={styles.body}>ראינו את הכניסה, את הכנת המילים, את הבדיקות ואת השיחה. התרגולים יתחברו בהמשך.</Text>
+          <Text style={styles.body}>ראינו את הכניסה, את הכנת המילים, את הבדיקות, את השיחה ואת תרגול הדיבור. שאר התרגולים יתחברו בהמשך.</Text>
           <Text style={styles.note}>זו סקירת פיתוח. ההתקדמות נשמרת בחשבון, ומכאן היא תמשיך כשהמסך הבא ייבנה.</Text>
         </> : <Text accessibilityRole="alert" style={styles.error}>לא נמצאו מסכים לסקירה.</Text>}
       </View>

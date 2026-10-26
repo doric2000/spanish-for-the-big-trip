@@ -5,10 +5,9 @@ import type { AudioSource } from 'expo-audio';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Line, Path, Rect } from 'react-native-svg';
-import { Plane } from '../retro/art';
 import { retro } from '../theme';
 import { LessonAudioButton, LessonButton, LessonButtonRow, LessonSaveError, LessonSecondaryButton, type SaveState } from './lesson-button';
-import { LessonAvatar } from './lesson-avatar';
+import { LearnerBadge, LessonAvatar } from './lesson-avatar';
 import { LessonHeader } from './lesson-header';
 import type { FaceCrop } from './media';
 import { nextPlayable } from './opening-data';
@@ -155,7 +154,7 @@ function PlayableTurn({ source, index, current, cued, onStart, onFinish, onStop,
 function TurnCard({ turn, avatar, width, translated, onTranslate, playing, play }: TurnProps & { playing: boolean; play: ReactNode }) {
   const learner = turn.speaker === 'learner';
   const badge = learner
-    ? <View style={styles.learnerBadge}><Plane size={26} color={c.cream} /></View>
+    ? <LearnerBadge size={BADGE} />
     : avatar ? <LessonAvatar {...avatar} size={BADGE} /> : <View style={styles.badgeSpace} />;
   const body = <View style={[styles.card, learner ? styles.learnerCard : styles.characterCard, { width }]}>
     {playing ? <View pointerEvents="none" style={[styles.outline, { borderColor: learner ? c.cream : c.sunset }]} /> : null}
@@ -243,10 +242,6 @@ const styles = StyleSheet.create({
   characterTurn: { justifyContent: 'flex-start', transform: [{ rotate: '1deg' }] },
   learnerTurn: { justifyContent: 'flex-end', transform: [{ rotate: '-1.2deg' }] },
   badgeSpace: { width: BADGE },
-  learnerBadge: {
-    width: BADGE, height: BADGE, borderRadius: BADGE / 2, backgroundColor: c.sea, borderWidth: 3, borderColor: c.cream,
-    alignItems: 'center', justifyContent: 'center',
-  },
   card: { paddingTop: 14, paddingBottom: 16, paddingHorizontal: 16, gap: 6, borderRadius: 20, ...shadow },
   // The sharp corner points at the speaker: top right for Juan, top left for the learner.
   characterCard: { backgroundColor: c.cream, borderTopStartRadius: 6 },

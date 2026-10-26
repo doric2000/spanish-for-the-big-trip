@@ -71,6 +71,22 @@ export function LessonAudioButton({ playing, busy, ...props }: Common & { playin
   </Base>;
 }
 
+// Audio style with the microphone (Figma Speak "Record" 87:1452): starts a new take.
+export function LessonRecordButton(props: Common) {
+  return <Base {...props} style={styles.audio} labelStyle={styles.onSunset}>
+    <MicIcon size={20} color={c.plum} />
+  </Base>;
+}
+
+// Figma "Icon / Mic" 77:243, drawn on a 48pt grid.
+export function MicIcon({ size, color }: { size: number; color: string }) {
+  return <Svg width={size} height={size} viewBox="0 0 48 48" fill="none" accessible={false}>
+    <Path d="M30 12C30 8.68629 27.3137 6 24 6C20.6863 6 18 8.68629 18 12V22C18 25.3137 20.6863 28 24 28C27.3137 28 30 25.3137 30 22V12Z" fill={color} />
+    <Path d="M11 22C11 25.4478 12.3696 28.7544 14.8076 31.1924C17.2456 33.6304 20.5522 35 24 35M24 35C27.4478 35 30.7544 33.6304 33.1924 31.1924C35.6304 28.7544 37 25.4478 37 22M24 35V42M24 42H17M24 42H31"
+      strokeWidth={size < 30 ? 4 : 2.2} strokeLinecap="round" stroke={color} />
+  </Svg>;
+}
+
 export function LessonButtonRow({ children }: { children: ReactNode }) {
   return <View style={styles.row}>{children}</View>;
 }
