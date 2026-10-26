@@ -674,9 +674,9 @@
       "id": "1a-ending-scenario",
       "type": "bounded_scenario",
       "review": {
-        "status": "needs_review",
+        "status": "approved",
         "source": "docs/research/curriculum-depth/unit1a-ending-scenario-2026-10-26.md#הצעה-א",
-        "note": "Rewritten 2026-10-26 (card 06.5): Dor rejected copies of the dialogue and forced choices, and chose proposal A (the learner makes the coffee and offers it), moving café/azúcar to production. Exact node wording awaits Dor's review."
+        "note": "Dor chose proposal A (the learner makes the coffee and offers it; café/azúcar move to production) and approved the exact wording of the four nodes on 2026-10-26 (card 06.5), with the offer prompt changed to \"מה תגידו לו?\". Audio for Juan's Sí, gracias is pending (07.2); content approval does not verify the device flow."
       },
       "titleHe": "פוגשים שוב את חואן",
       "startNodeId": "greeting",
