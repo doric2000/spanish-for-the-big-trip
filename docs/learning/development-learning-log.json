@@ -3541,10 +3541,9 @@
         "Extracting shared components (lesson-sheet.tsx) once a second screen needs the same stamp and sheets"
       ],
       "dor_participation": "Design approval and the device check; no code typed.",
-      "understanding_demonstrated": "pending",
+      "understanding_demonstrated": "Asked why the app sends the tile order and not 'right' or 'wrong', Dor answered in his own words (2026-10-26): the app does not know whether he was right; that is a secret in the database that only the server can reach. Added in discussion: if the app decided, a modified app could report 'correct' without solving.",
       "interview_takeaway": "A drag-and-drop style exercise built with taps only, and graded on the server so the answer key never ships in the app.",
       "open_questions": [
-        "Understanding check not yet answered: why does the app send the tile ids and not \"correct\" or \"wrong\"?",
         "When to make Juan's scene pictures (Dor's proposal, open decision under card 07.5)"
       ],
       "next_step": "Card 06.4 closed; next card 06.5 (closing scenario) in a new chat."
