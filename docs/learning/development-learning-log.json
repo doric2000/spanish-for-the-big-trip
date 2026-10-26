@@ -3532,7 +3532,7 @@
       "evidence": [
         "mobile typecheck and lint clean, tests 69/69; content tests 65/65. The content did not change, so no reseed. Dor's progress in the development database is on 1a-arrange-greeting (version 21), so no reset is needed for the device check.",
         "The server already checked the order (content/src/progress.ts, tests in content/tests/arrange.test.ts); the app sends only the tile ids and never receives the expected order.",
-        "Not yet verified on the iPhone: wrong order, hint, right order, \"חזרה\"."
+        "Dor's iPhone (2026-10-26): \"everything works great\". Server evidence for 1a-arrange-greeting, in order: arrange [dias, buenos] -> retry; help help-arrange-greeting -> help; arrange [buenos, dias] -> correct_with_help. Progress moved on to 1a-ending-scenario."
       ],
       "concepts": [
         "The client sends what the learner did (the tile order), the server decides the outcome: the right answer never reaches the phone",
@@ -3540,14 +3540,14 @@
         "A hint is recorded on the server as help, so the completion is marked correct_with_help",
         "Extracting shared components (lesson-sheet.tsx) once a second screen needs the same stamp and sheets"
       ],
-      "dor_participation": "Design approval; no code typed.",
+      "dor_participation": "Design approval and the device check; no code typed.",
       "understanding_demonstrated": "pending",
       "interview_takeaway": "A drag-and-drop style exercise built with taps only, and graded on the server so the answer key never ships in the app.",
       "open_questions": [
-        "Device check by Dor",
-        "Dor proposed (2026-10-26) generating Juan's scene pictures for every situation while assembling the chapter; recorded under card 07.5 as an open decision"
+        "Understanding check not yet answered: why does the app send the tile ids and not \"correct\" or \"wrong\"?",
+        "When to make Juan's scene pictures (Dor's proposal, open decision under card 07.5)"
       ],
-      "next_step": "Dor checks the screen on the iPhone; then card 06.4 closes."
+      "next_step": "Card 06.4 closed; next card 06.5 (closing scenario) in a new chat."
     }
   ],
   "entry_template": {
