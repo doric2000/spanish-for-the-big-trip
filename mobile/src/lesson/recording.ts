@@ -36,9 +36,17 @@ export function useSelfRecording() {
   });
   const recorderState = useAudioRecorderState(recorder, 200);
 
+  // Whether a take is running, kept here and not read from the recorder: when the screen
+  // closes, expo-audio releases the native recorder before this cleanup runs, and any
+  // read of the released object throws (found on Dor's iPhone, 2026-10-26).
+  const takeRunning = useRef(false);
+
   // Leaving the screen mid-take stops the microphone and gives the speaker back.
   useEffect(() => () => {
-    if (recorder.isRecording) void recorder.stop().catch(() => {});
+    if (takeRunning.current) {
+      takeRunning.current = false;
+      try { void recorder.stop().catch(() => {}); } catch { /* Already released, which also stops it. */ }
+    }
     void setAudioModeAsync({ allowsRecording: false }).catch(() => {});
   }, [recorder]);
 
@@ -63,6 +71,7 @@ export function useSelfRecording() {
       // Passing options creates a fresh file for each take on iOS SDK57.
       await recorder.prepareToRecordAsync(RecordingPresets.HIGH_QUALITY);
       recorder.record();
+      takeRunning.current = true;
       setUri(null);
       return 'recording';
     } catch {
@@ -80,6 +89,7 @@ export function useSelfRecording() {
       timeout = setTimeout(() => reject(new Error('Recording finalization timed out')), 5000);
     });
     try {
+      takeRunning.current = false;
       // Native stop() can return before iOS finishes writing the audio file.
       const [, file] = await Promise.all([recorder.stop(), finished]);
       await setAudioModeAsync({ allowsRecording: false });

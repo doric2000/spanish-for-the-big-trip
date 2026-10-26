@@ -76,6 +76,13 @@ function createHook({ granted = true, canAskAgain = false } = {}) {
     finishFile(uri) { onRecorderStatus({ isFinished: true, hasError: false, url: uri }); },
     expireFinalization() { [...timers].forEach((run) => run()); },
     unmount() { cleanups.forEach((effect) => effect()?.()); },
+    // expo-audio frees the native recorder first when the screen closes; after that any
+    // use of the JavaScript object throws (Dor's iPhone, 2026-10-26).
+    release() {
+      const gone = () => { throw new Error('Unable to find the native shared object'); };
+      Object.defineProperty(recorder, 'isRecording', { get: gone });
+      recorder.stop = gone;
+    },
   };
 }
 
@@ -134,4 +141,19 @@ test('leaving the screen mid-take stops the microphone', async () => {
   await Promise.resolve();
   assert.equal(hook.recorder.isRecording, false);
   assert.equal(hook.audioModes.at(-1).allowsRecording, false);
+});
+
+test('closing the screen after expo-audio released the recorder does not throw', async () => {
+  // Moving to the next practice without recording: nothing to stop.
+  const idle = createHook();
+  idle.release();
+  assert.doesNotThrow(() => idle.unmount());
+  assert.equal(idle.audioModes.at(-1).allowsRecording, false);
+  // Closing mid-take: the stop attempt fails quietly, the speaker is still given back.
+  const mid = createHook();
+  await mid.render().start();
+  mid.release();
+  assert.doesNotThrow(() => mid.unmount());
+  await Promise.resolve();
+  assert.equal(mid.audioModes.at(-1).allowsRecording, false);
 });
