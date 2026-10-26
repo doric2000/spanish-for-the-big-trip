@@ -7,6 +7,7 @@ import type { AttemptResult, Progress } from '../../../content/src/progress-type
 import { fetchUnit, startUnit, submitAttempt, type UnitFailure } from '../api/units';
 import { supabase } from '../auth/supabase';
 import { theme as t } from '../theme';
+import { ArrangeScreen } from './arrange-screen';
 import { DialogueScreen } from './dialogue-screen';
 import { EntryScreen } from './entry-screen';
 import { ExplanationScreen } from './explanation-screen';
@@ -223,6 +224,10 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
       onContinue={() => setIndex(current => moveOpeningStep(current, 'next', steps.length))} onBack={back} onClose={onClose} />;
   }
 
+  if (step?.type === 'arrange') return <ArrangeScreen key={step.id} content={step} header={header} unitShort={unitCodes(unitId).short}
+    reviewOnly={index < frontier} save={shownSave} onAnswer={response => tap(response, false)}
+    onContinue={() => setIndex(current => moveOpeningStep(current, 'next', steps.length))} onBack={back} onClose={onClose} />;
+
   // The end of the supported prefix: a development boundary, not lesson completion.
   return <>
     <StatusBar style="dark" />
@@ -237,7 +242,7 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
         </View>
         {steps.length ? <>
           <Text accessibilityRole="header" style={styles.title}>סיימתם את מקטע הסקירה</Text>
-          <Text style={styles.body}>ראינו את הכניסה, את הכנת המילים, את הבדיקות, את השיחה ואת תרגול הדיבור. שאר התרגולים יתחברו בהמשך.</Text>
+          <Text style={styles.body}>ראינו את הכניסה, את הכנת המילים, את הבדיקות, את השיחה, את תרגול הדיבור ואת סידור המילים. שאר התרגולים יתחברו בהמשך.</Text>
           <Text style={styles.note}>זו סקירת פיתוח. ההתקדמות נשמרת בחשבון, ומכאן היא תמשיך כשהמסך הבא ייבנה.</Text>
         </> : <Text accessibilityRole="alert" style={styles.error}>לא נמצאו מסכים לסקירה.</Text>}
       </View>

@@ -23,10 +23,10 @@ const projected = (source, urls = {}) => projectUnit(source, urls, {}, { allowDr
 test('mobile preview reads the actual preparation prefix and never skips an unsupported interaction', () => {
   const learnerUnit = projected(unit);
   const steps = data.openingSteps(learnerUnit);
-  // Entry, seven cards, the explanation, two checks, the dialogue, the practice check and
-  // two speaking practices; arranging words is not built yet.
-  assert.equal(JSON.stringify(steps.map(s => s.type)), JSON.stringify(['entry', ...Array(7).fill('vocabulary'), 'explanation', 'listen_select', 'listen_select', 'dialogue', 'listen_select', 'speak', 'speak']));
-  assert.equal(unit.activities[steps.length].type, 'arrange');
+  // Entry, seven cards, the explanation, two checks, the dialogue, the practice check,
+  // two speaking practices and arranging words; the scenario is not built yet.
+  assert.equal(JSON.stringify(steps.map(s => s.type)), JSON.stringify(['entry', ...Array(7).fill('vocabulary'), 'explanation', 'listen_select', 'listen_select', 'dialogue', 'listen_select', 'speak', 'speak', 'arrange']));
+  assert.equal(unit.activities[steps.length].type, 'bounded_scenario');
   assert.equal(steps[0].bodyHe, unit.activities[0].bodyHe);
   assert.equal(steps[0].actionLabelHe, unit.activities[0].actionLabelHe);
   assert.equal(steps[0].sceneAssetId, 'juan-hostel-v1');
@@ -35,7 +35,7 @@ test('mobile preview reads the actual preparation prefix and never skips an unsu
   assert.equal(steps[0].characterNameHe, 'חואן');
   assert.equal(steps[1].characterNameHe, 'חואן');
   const interrupted = structuredClone(learnerUnit);
-  interrupted.activities.splice(2, 0, { type: 'arrange', id: 'new-required-preparation' });
+  interrupted.activities.splice(2, 0, { type: 'bounded_scenario', id: 'new-required-preparation' });
   assert.equal(data.openingSteps(interrupted).length, 2, 'do not skip unseen preparation to render later cards');
 });
 
@@ -97,7 +97,7 @@ test('media URLs come only from the server projection: pending audio stays null 
   assert.equal(cards[0].audioUrl, null, 'pending audio is not served');
   assert.equal(cards[1].audioUrl, urls['juan-buenos-dias-v1']);
   const urlsOf = s => s.type === 'entry' ? [s.sceneUrl] : s.type === 'explanation' ? s.examples.map(e => e.audioUrl)
-    : s.type === 'dialogue' ? s.turns.flatMap(t => [t.audioUrl, t.imageUrl]) : [s.audioUrl];
+    : s.type === 'dialogue' ? s.turns.flatMap(t => [t.audioUrl, t.imageUrl]) : s.type === 'arrange' ? [] : [s.audioUrl];
   assert.equal(data.openingSteps(projected(unit)).flatMap(urlsOf).every(url => url === null), true, 'nothing hosted yet');
   const check = data.openingSteps(projected(unit, urls)).find(s => s.type === 'listen_select');
   assert.equal(check.audioUrl, null, 'the pending Hola recording is not served on the check either');
@@ -273,8 +273,9 @@ test('the server progress decides where the lesson resumes; past the supported s
   assert.equal(data.frontierIndex(steps, at('u1a-practice-listen')), 12);
   assert.equal(data.frontierIndex(steps, at('1a-speak-thanks')), 13);
   assert.equal(data.frontierIndex(steps, at('u1a-speak-decline')), 14);
-  // Arranging words is not built yet: the preview ends there.
-  assert.equal(data.frontierIndex(steps, at('1a-arrange-greeting')), steps.length);
+  assert.equal(data.frontierIndex(steps, at('1a-arrange-greeting')), 15);
+  // The scenario is not built yet: the preview ends there.
+  assert.equal(data.frontierIndex(steps, at('1a-ending-scenario')), steps.length);
   assert.equal(data.frontierIndex(steps, at(null, 'completed')), steps.length);
 });
 
@@ -374,9 +375,13 @@ test('listen-select screen: "חזרה" in every state only moves the view back',
   const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/listen-select-screen.tsx'), 'utf8');
   // Question and hint: on the dark background. Retry, correct and a solved check seen again: on the sheet.
   assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{onBack\} \/>/);
-  assert.equal(screen.match(/<LessonSheetSecondaryButton label="חזרה" onPress=\{onBack\} \/>/g).length, 2);
+  assert.equal(screen.match(/<LessonSheetSecondaryButton label="חזרה" onPress=\{onBack\} \/>/g).length, 1, 'the retry sheet');
   assert.match(screen, /<ContinueSheet [^>]*onBack=\{onBack\}/);
+  assert.match(screen, /<SuccessSheet [^>]*onBack=\{onBack\} \/>/);
   assert.match(screen, /<FeedbackSheet [^]*onBack=\{onBack\} \/>/);
+  // The success and continue sheets share one row: "חזרה" and "ממשיכים".
+  const sheet = fs.readFileSync(path.join(__dirname, '../src/lesson/lesson-sheet.tsx'), 'utf8');
+  assert.match(sheet, /<LessonSheetSecondaryButton label="חזרה" onPress=\{onBack\} \/>[^]*<LessonDarkButton label="ממשיכים" onPress=\{onContinue\} \/>/);
   const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
   assert.match(preview, /<ListenSelectScreen [^]*onBack=\{back\} onClose=\{onClose\} \/>/);
   assert.match(preview, /const back = \(\) => \{ if \(!save\.busy\) setIndex\(current => moveOpeningStep\(current, 'back', steps\.length\)\); \};/);
@@ -484,4 +489,60 @@ test('speak screen: lesson copy only from data, both paths report a comparison, 
   const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
   assert.match(preview, /void tap\(\{ kind: 'self_comparison', mode, compared: true \}, true\)/);
   assert.match(preview, /<SpeakScreen [^]*reviewOnly=\{index < frontier\} save=\{shownSave\}\s*onCompare=\{compare\} onBack=\{back\} onClose=\{onClose\} \/>/);
+});
+
+test('the arrange step carries the tiles in the unit order and the hint id, never the answer or the hint text', () => {
+  const step = data.openingSteps(projected(unit)).find(s => s.type === 'arrange');
+  const source = unit.activities.find(a => a.id === '1a-arrange-greeting');
+  assert.equal(step.id, source.id);
+  assert.equal(step.titleHe, source.titleHe);
+  assert.equal(step.promptHe, source.promptHe);
+  assert.equal(JSON.stringify(step.tiles), JSON.stringify(source.tiles));
+  assert.equal(step.helpId, 'help-arrange-greeting');
+  const text = JSON.stringify(step);
+  const hint = unit.help.find(h => h.id === 'help-arrange-greeting');
+  for (const secret of ['expectedTileIds', source.feedback.correctHe, source.feedback.retryHe, hint.bodyHe]) assert.equal(text.includes(secret), false, secret);
+  // An arrangement without help shows no hint.
+  const bare = projected(unit);
+  bare.activities = [{ ...bare.activities.find(a => a.id === source.id), helpIds: [] }];
+  assert.equal(data.openingSteps(bare)[0].helpId, null);
+});
+
+test('word-order and hint requests pass the server schema, carry no outcome and restore only exactly', () => {
+  const { AttemptRequestSchema } = require(path.join(root, 'content/dist/src/api-contract.js'));
+  const me = '00000000-0000-4000-8000-0000000000aa';
+  const progress = { status: 'in_progress', currentActivityId: '1a-arrange-greeting', revision: 1, progressVersion: 15 };
+  const saved = r => JSON.stringify({ userId: me, unitId: 'C01-U01', request: r });
+  for (const response of [{ kind: 'arrange', tileIds: ['dias', 'buenos'] }, { kind: 'help', helpId: 'help-arrange-greeting' }]) {
+    const request = data.attemptRequest(progress, '00000000-0000-4000-8000-000000000008', response);
+    assert.equal(AttemptRequestSchema.safeParse(request).success, true, response.kind);
+    assert.equal(JSON.stringify(request.response), JSON.stringify(response));
+    assert.equal(JSON.stringify(data.restorablePending(saved(request), me, 'C01-U01', progress)), JSON.stringify(request));
+    assert.equal(data.restorablePending(saved({ ...request, response: { ...response, outcome: 'correct' } }), me, 'C01-U01', progress), null);
+    assert.equal(data.restorablePending(saved(request), me, 'C01-U01', { ...progress, progressVersion: 16 }), null);
+  }
+  const bad = data.attemptRequest(progress, '00000000-0000-4000-8000-000000000009', { kind: 'arrange', tileIds: ['buenos', 7] });
+  assert.equal(data.restorablePending(saved(bad), me, 'C01-U01', progress), null);
+  // Another order is a new tap with a new requestId.
+  const sent = data.attemptRequest(progress, '00000000-0000-4000-8000-00000000000a', { kind: 'arrange', tileIds: ['dias', 'buenos'] });
+  assert.equal(data.sameTap(sent, progress, { kind: 'arrange', tileIds: ['dias', 'buenos'] }), true);
+  assert.equal(data.sameTap(sent, progress, { kind: 'arrange', tileIds: ['buenos', 'dias'] }), false);
+});
+
+test('arrange screen: lesson copy only from data, the server decides, taps only, "חזרה" in every state', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/arrange-screen.tsx'), 'utf8');
+  for (const copy of ['Buenos', 'días', 'מברכים', 'בוקר טוב', 'הביטוי מתחיל', 'ננסה שוב', 'expectedTileIds']) assert.equal(screen.includes(copy), false, copy);
+  assert.match(screen, /onAnswer\(\{ kind: 'arrange', tileIds: slots as string\[\] \}\)/);
+  assert.match(screen, /onAnswer\(\{ kind: 'help', helpId: content\.helpId \}\)/);
+  assert.match(screen, /result\.outcome === 'correct' \|\| result\.outcome === 'correct_with_help'/);
+  assert.match(screen, /result\.outcome === 'retry'/);
+  // Check stays disabled until every slot holds a tile; no dragging.
+  assert.match(screen, /<LessonButton label="בדיקה" busy=\{save\.busy\} disabled=\{!full\}/);
+  assert.doesNotMatch(screen, /Gesture|PanResponder|onLongPress|row-reverse|textAlign: 'right'/);
+  // "חזרה" while arranging; the success and continue sheets carry it too.
+  assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{onBack\} \/>/);
+  assert.match(screen, /<SuccessSheet [^>]*onBack=\{onBack\} \/>/);
+  assert.match(screen, /<ContinueSheet [^>]*onBack=\{onBack\} \/>/);
+  const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
+  assert.match(preview, /<ArrangeScreen [^]*reviewOnly=\{index < frontier\} save=\{shownSave\} onAnswer=\{response => tap\(response, false\)\}[^]*onBack=\{back\} onClose=\{onClose\} \/>/);
 });

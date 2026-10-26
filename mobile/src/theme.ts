@@ -18,7 +18,7 @@ export const theme = {
 export const retro = {
   colors: {
     night: '#0D3B40', deep: '#174F52', sea: '#1C6E6B', sunset: '#F26B3A', pink: '#F4A6A0',
-    gold: '#F9B233', plum: '#2B1B33', cream: '#FFF3DC', stamp: '#E0563A', inkMuted: '#3E5E5F',
+    gold: '#F9B233', plum: '#2B1B33', cream: '#FFF3DC', stamp: '#E0563A', inkMuted: '#3E5E5F', rust: '#A8402B',
   },
   // Loaded in the root layout from the @expo-google-fonts packages.
   fonts: {

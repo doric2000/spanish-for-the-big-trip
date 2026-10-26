@@ -96,7 +96,7 @@ export function VocabularyCardScreen({ card, avatar, audio, position, header, ne
 }
 
 // Ticket tear line (Figma 78:338): notches in the screen colour and a dashed line.
-function Perforation({ width }: { width: number }) {
+export function Perforation({ width }: { width: number }) {
   return <Svg width={width} height={24} accessible={false} style={styles.perforation}>
     <Line x1={20} x2={width - 20} y1={11} y2={11} stroke={c.night} strokeWidth={2} strokeDasharray="6 4" />
     <Circle cx={0} cy={12} r={12} fill={c.night} />

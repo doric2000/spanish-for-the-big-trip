@@ -12,7 +12,8 @@ export type OpeningStep =
     examples: { textEs: string; meaningHe: string; audioAssetId: string | null; audioUrl: string | null }[] }
   | { type: 'dialogue'; id: string; titleHe: string; translationInitiallyVisible: boolean; turns: DialogueTurn[] }
   | { type: 'speak'; id: string; promptHe: string; modelTextEs: string; modelNoteHe: string | null; alternativeHe: string;
-    audioAssetId: string; audioUrl: string | null };
+    audioAssetId: string; audioUrl: string | null }
+  | { type: 'arrange'; id: string; titleHe: string; promptHe: string; tiles: { id: string; textEs: string }[]; helpId: string | null };
 
 // One line of the dialogue. The learner's lines carry no character image: they get the
 // plane badge instead (Figma "Lesson / Dialogue turn" 86:913).
@@ -73,6 +74,11 @@ export function openingSteps(unit: PublicUnit): OpeningStep[] {
       steps.push({ type: 'speak', id: activity.id, promptHe: activity.promptHe, modelTextEs: activity.modelTextEs,
         modelNoteHe: activity.modelNoteHe ?? null, alternativeHe: activity.alternativeHe,
         audioAssetId: activity.audioAssetId, audioUrl: urlOf(activity.audioAssetId) });
+    } else if (activity.type === 'arrange') {
+      // Tiles in the unit's order, which is already mixed; the expected order and the
+      // hint text come only in the server's reply.
+      steps.push({ type: 'arrange', id: activity.id, titleHe: activity.titleHe, promptHe: activity.promptHe,
+        tiles: activity.tiles.map(t => ({ id: t.id, textEs: t.textEs })), helpId: activity.helpIds[0] ?? null });
     } else break;
   }
   return steps;
@@ -100,19 +106,23 @@ export function frontierIndex(steps: readonly OpeningStep[], progress: ServerPro
   return index === -1 ? steps.length : index;
 }
 
-// What a tap sends: "continue", one answer, the written hint, or that the learner
+// What a tap sends: "continue", one answer or word order, a hint, or that the learner
 // compared themselves with the model. Never an outcome: the server decides whether a
-// choice is correct, and speaking has no score at all.
+// choice or an order is correct, and speaking has no score at all.
 export type ComparisonMode = 'recording' | 'without_microphone';
 export type LessonResponse = { kind: 'continue' } | { kind: 'choice'; choiceId: string } | { kind: 'written_hint' }
-  | { kind: 'self_comparison'; mode: ComparisonMode; compared: true };
+  | { kind: 'self_comparison'; mode: ComparisonMode; compared: true }
+  | { kind: 'arrange'; tileIds: string[] } | { kind: 'help'; helpId: string };
 
 // Copies only the known fields, so a saved request with anything extra no longer matches.
 function cleanResponse(response: unknown): LessonResponse | null {
   if (!response || typeof response !== 'object') return null;
-  const { kind, choiceId, mode, compared } = response as { kind?: unknown; choiceId?: unknown; mode?: unknown; compared?: unknown };
+  const { kind, choiceId, mode, compared, tileIds, helpId } = response as { kind?: unknown; choiceId?: unknown; mode?: unknown;
+    compared?: unknown; tileIds?: unknown; helpId?: unknown };
   if (kind === 'continue' || kind === 'written_hint') return { kind };
   if (kind === 'choice' && typeof choiceId === 'string') return { kind, choiceId };
+  if (kind === 'arrange' && Array.isArray(tileIds) && tileIds.every(id => typeof id === 'string')) return { kind, tileIds: [...tileIds] };
+  if (kind === 'help' && typeof helpId === 'string') return { kind, helpId };
   if (kind === 'self_comparison' && (mode === 'recording' || mode === 'without_microphone') && compared === true) return { kind, mode, compared };
   return null;
 }
