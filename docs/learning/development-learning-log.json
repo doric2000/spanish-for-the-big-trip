@@ -3504,13 +3504,15 @@
       "evidence": [
         "mobile typecheck and lint clean, tests 65/65; content tests pass. The content did not change, so no reseed; Dor's progress is on 1a-speak-thanks, so no reset.",
         "The recording hook is tested against the native timing contracts (refused permission, the finish event before playback, a missing finish event, leaving mid-take). These tests cannot prove the microphone or the speaker on a device.",
-        "Device check pending: Dor records on the first practice and refuses the microphone on the second."
+        "Device check pending: Dor records on the first practice and refuses the microphone on the second.",
+        "Dor's iPhone (2026-10-26): moving from the first speaking practice to the second threw 'Unable to find the native shared object' in the cleanup. Cause: expo-audio releases the native recorder before the screen's own cleanup runs, and the cleanup read recorder.isRecording. Fix: the hook keeps its own takeRunning flag and guards the stop. A new test reproduces the release; it failed before the fix and passes after (mobile 66/66)."
       ],
       "concepts": [
         "Runtime permission: the app asks once; after a refusal iOS does not ask again, so the screen offers the device settings and a way to continue without the microphone",
         "A custom hook (useSelfRecording) keeps the native recording flow in one place, separate from what the screen draws",
         "The server records only how the learner compared (recording or without_microphone), never a score; the take stays on the phone",
-        "AppState: when the app comes back from Settings, the screen checks the permission again"
+        "AppState: when the app comes back from Settings, the screen checks the permission again",
+        "Cleanup order: hooks clean up in the order they were declared, so a library hook can free a native object before a later effect's cleanup uses it"
       ],
       "dor_participation": "Design approval and decisions; no code typed.",
       "understanding_demonstrated": "pending",
