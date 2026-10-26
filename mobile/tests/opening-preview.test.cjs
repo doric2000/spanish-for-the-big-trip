@@ -20,17 +20,12 @@ const data = compile('../src/lesson/opening-data.ts');
 // The same projection the API returns (content/ is built first: npm --prefix ../content run build).
 const { projectUnit } = require(path.join(root, 'content/dist/src/api-contract.js'));
 const projected = (source, urls = {}) => projectUnit(source, urls, {}, { allowDraft: true });
-// The explanation screen is not built yet, so the real preview stops before the
-// listen-select checks. Tests of those screens use the unit without it.
-const withoutExplanation = source => ({ ...source, activities: source.activities.filter(a => a.type !== 'explanation') });
-
 test('mobile preview reads the actual preparation prefix and never skips an unsupported interaction', () => {
   const learnerUnit = projected(unit);
   const steps = data.openingSteps(learnerUnit);
-  // Entry and seven cards; the explanation that follows is not built yet.
-  assert.equal(steps.length, 8);
-  assert.equal(steps[7].type, 'vocabulary');
-  assert.equal(unit.activities[8].type, 'explanation');
+  // Entry, seven cards, the explanation and two checks; the dialogue is not built yet.
+  assert.equal(JSON.stringify(steps.map(s => s.type)), JSON.stringify(['entry', ...Array(7).fill('vocabulary'), 'explanation', 'listen_select', 'listen_select']));
+  assert.equal(unit.activities[steps.length].type, 'dialogue');
   assert.equal(steps[0].bodyHe, unit.activities[0].bodyHe);
   assert.equal(steps[0].actionLabelHe, unit.activities[0].actionLabelHe);
   assert.equal(steps[0].sceneAssetId, 'juan-hostel-v1');
@@ -39,7 +34,7 @@ test('mobile preview reads the actual preparation prefix and never skips an unsu
   assert.equal(steps[0].characterNameHe, 'חואן');
   assert.equal(steps[1].characterNameHe, 'חואן');
   const interrupted = structuredClone(learnerUnit);
-  interrupted.activities.splice(2, 0, { type: 'explanation', id: 'new-required-preparation' });
+  interrupted.activities.splice(2, 0, { type: 'dialogue', id: 'new-required-preparation' });
   assert.equal(data.openingSteps(interrupted).length, 2, 'do not skip unseen preparation to render later cards');
 });
 
@@ -100,9 +95,39 @@ test('media URLs come only from the server projection: pending audio stays null 
   assert.equal(cards[0].expressionEs, 'Hola');
   assert.equal(cards[0].audioUrl, null, 'pending audio is not served');
   assert.equal(cards[1].audioUrl, urls['juan-buenos-dias-v1']);
-  assert.equal(data.openingSteps(projected(unit)).every(s => (s.type === 'entry' ? s.sceneUrl : s.audioUrl) === null), true, 'nothing hosted yet');
-  const check = data.openingSteps(projected(withoutExplanation(unit), urls)).find(s => s.type === 'listen_select');
+  const urlsOf = s => s.type === 'entry' ? [s.sceneUrl] : s.type === 'explanation' ? s.examples.map(e => e.audioUrl) : [s.audioUrl];
+  assert.equal(data.openingSteps(projected(unit)).flatMap(urlsOf).every(url => url === null), true, 'nothing hosted yet');
+  const check = data.openingSteps(projected(unit, urls)).find(s => s.type === 'listen_select');
   assert.equal(check.audioUrl, null, 'the pending Hola recording is not served on the check either');
+});
+
+test('the explanation step carries the rule and each example with its own question recording', () => {
+  const source = unit.activities.find(a => a.type === 'explanation');
+  const step = data.openingSteps(projected(unit)).find(s => s.type === 'explanation');
+  assert.equal(step.id, 'u1a-explain-question');
+  assert.equal(step.titleHe, source.titleHe);
+  assert.equal(step.generalHe, source.generalHe);
+  assert.equal(JSON.stringify(step.examples.map(e => [e.textEs, e.meaningHe, e.audioAssetId, e.audioUrl])),
+    JSON.stringify([['¿Café?', 'קפה?', 'juan-cafe-question-v1', null], ['¿Azúcar?', 'סוכר?', 'juan-azucar-question-v1', null]]),
+    'pending recordings are not served yet');
+  // The word recordings say Café flat; the example must never fall back to them.
+  assert.notEqual(step.examples[0].audioAssetId, 'juan-cafe-v1');
+  const bare = projected(unit);
+  for (const example of bare.activities.find(a => a.type === 'explanation').examples) delete example.audioAssetId;
+  const silent = data.openingSteps(bare).find(s => s.type === 'explanation');
+  assert.equal(silent.examples.every(e => e.audioAssetId === null && e.audioUrl === null), true, 'an example without audio shows a disabled button');
+});
+
+test('explanation screen: lesson copy only from data, one player per example, disabled play without a file', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/explanation-screen.tsx'), 'utf8');
+  for (const copy of ['שאלה במילה אחת', 'Café', 'קפה', 'ממש כמו בעברית']) assert.equal(screen.includes(copy), false, copy);
+  assert.match(screen, /<PlayButton label=\{`השמעה: \$\{example\.textEs\}`\} playing=\{false\} disabled/);
+  // Starting one example stops the other.
+  assert.match(screen, /if \(current !== index\) pause\(\);\s*\}, \[current, index, pause\]\)/);
+  assert.match(screen, /accessibilityLanguage="es-MX"/);
+  assert.doesNotMatch(screen, /alignSelf: 'center'|row-reverse|textAlign: 'right'/);
+  const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
+  assert.match(preview, /step\?\.type === 'explanation'[^]*onNext=\{advance\} onBack=\{back\}/);
 });
 
 test('the preview no longer bundles the raw unit with its answers', () => {
@@ -240,8 +265,9 @@ test('the server progress decides where the lesson resumes; past the supported s
   assert.equal(data.frontierIndex(steps, at('u1a-entry')), 0);
   assert.equal(data.frontierIndex(steps, at(steps[3].id)), 3);
   assert.equal(data.frontierIndex(steps, at('u1a-vocab-azucar')), 7);
-  // The explanation is not built yet: the preview ends there.
-  assert.equal(data.frontierIndex(steps, at('u1a-explain-question')), steps.length);
+  assert.equal(data.frontierIndex(steps, at('u1a-explain-question')), 8);
+  assert.equal(data.frontierIndex(steps, at('u1a-check-offer')), 10);
+  // The dialogue is not built yet: the preview ends there.
   assert.equal(data.frontierIndex(steps, at('u1a-dialogue')), steps.length);
   assert.equal(data.frontierIndex(steps, at(null, 'completed')), steps.length);
 });
@@ -279,7 +305,7 @@ test('a saved tap is restored only for the same learner, unit and exact server p
 });
 
 test('the listen-select step carries the question and choices but never the answer or the expression', () => {
-  const check = data.openingSteps(projected(withoutExplanation(unit))).find(s => s.type === 'listen_select');
+  const check = data.openingSteps(projected(unit)).find(s => s.type === 'listen_select');
   const source = unit.activities.find(a => a.id === 'u1a-primer-listen');
   assert.equal(check.titleHe, 'ננסה יחד');
   assert.equal(check.promptHe, source.promptHe);

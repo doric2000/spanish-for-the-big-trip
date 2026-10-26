@@ -8,6 +8,7 @@ import { fetchUnit, startUnit, submitAttempt, type UnitFailure } from '../api/un
 import { supabase } from '../auth/supabase';
 import { theme as t } from '../theme';
 import { EntryScreen } from './entry-screen';
+import { ExplanationScreen } from './explanation-screen';
 import type { SaveState } from './lesson-button';
 import { audioFor, faceCropFor, imageFor } from './media';
 import { ListenSelectScreen } from './listen-select-screen';
@@ -183,6 +184,10 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
       nextLabel={index === steps.length - 1 ? 'סיום הסקירה' : steps[index + 1]?.type === 'vocabulary' ? 'הביטוי הבא' : 'ממשיכים'}
       save={shownSave} onNext={advance} onBack={back} onClose={onClose} />;
   }
+
+  if (step?.type === 'explanation') return <ExplanationScreen key={step.id} content={step} header={header}
+    audio={step.examples.map(e => e.audioAssetId ? audioFor(e.audioAssetId, e.audioUrl) : null)}
+    save={shownSave} onNext={advance} onBack={back} onClose={onClose} />;
 
   if (step?.type === 'listen_select') {
     const avatarSource = step.characterImageAssetId ? imageFor(step.characterImageAssetId, step.characterImageUrl) : null;

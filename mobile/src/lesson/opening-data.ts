@@ -7,7 +7,9 @@ export type OpeningStep =
     characterImageAssetId: string | null; characterImageUrl: string | null; audioAssetId: string; audioUrl: string | null }
   | { type: 'listen_select'; id: string; titleHe: string; promptHe: string; choices: { id: string; textHe: string }[];
     allowWrittenHint: boolean; characterNameHe: string | null; characterImageAssetId: string | null; characterImageUrl: string | null;
-    audioAssetId: string; audioUrl: string | null };
+    audioAssetId: string; audioUrl: string | null }
+  | { type: 'explanation'; id: string; titleHe: string; generalHe: string;
+    examples: { textEs: string; meaningHe: string; audioAssetId: string | null; audioUrl: string | null }[] };
 
 // Reads the learner projection from the API, so answers never reach the app.
 export function openingSteps(unit: PublicUnit): OpeningStep[] {
@@ -40,6 +42,11 @@ export function openingSteps(unit: PublicUnit): OpeningStep[] {
         characterNameHe: activity.characterId ? nameOf(activity.characterId) : null,
         characterImageAssetId: imageAssetId, characterImageUrl: imageAssetId ? urlOf(imageAssetId) : null,
         audioAssetId: activity.audioAssetId, audioUrl: urlOf(activity.audioAssetId) });
+    } else if (activity.type === 'explanation') {
+      // An example without its own recording shows a disabled play button.
+      steps.push({ type: 'explanation', id: activity.id, titleHe: activity.titleHe, generalHe: activity.generalHe,
+        examples: activity.examples.map(e => ({ textEs: e.textEs, meaningHe: e.meaningHe,
+          audioAssetId: e.audioAssetId ?? null, audioUrl: e.audioAssetId ? urlOf(e.audioAssetId) : null })) });
     } else break;
   }
   return steps;

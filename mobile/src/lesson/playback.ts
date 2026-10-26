@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { type AudioSource, setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { playAudible } from '../audio-playback';
 
@@ -38,5 +38,8 @@ export function usePlayback(source: AudioSource) {
     catch { setError('הטעינה לא הצליחה. אפשר לנסות שוב.'); }
   }
   const failure = error ?? (status.error ? 'לא הצלחנו לטעון את הדוגמה.' : null);
-  return { playing: status.playing, loaded: status.isLoaded, busy, failure, toggle: () => { void toggle(); }, reload };
+  // Stops this player when another one on the same screen starts. Stable, so an effect
+  // that calls it runs only when what it watches changes.
+  const pause = useCallback(() => { if (player.playing) player.pause(); }, [player]);
+  return { playing: status.playing, loaded: status.isLoaded, busy, failure, toggle: () => { void toggle(); }, reload, pause };
 }
