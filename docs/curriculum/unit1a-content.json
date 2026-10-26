@@ -2,7 +2,7 @@
   "version": 2,
   "stage_id": "02",
   "unit_id": "1A",
-  "updated_on": "2026-10-16",
+  "updated_on": "2026-10-26",
   "workflow": "docs/DEVELOPMENT_GUIDE.md",
   "planning_basis": "docs/curriculum/pilot-spec.json; prototype remains unapproved reference material",
   "learner_goal": {
@@ -723,7 +723,11 @@
         "titleHe": "חזרה קצרה",
         "promptHe": "מה פירוש הביטוי ששמעתם?",
         "expressionEs": "Sí.",
-        "choicesHe": ["לא", "כן", "תודה"],
+        "choicesHe": [
+          "לא",
+          "כן",
+          "תודה"
+        ],
         "correctHe": "כן",
         "feedback": {
           "correctHe": "המשמעות של Sí היא כן.",
@@ -736,7 +740,11 @@
         "titleHe": "חזרה קצרה",
         "promptHe": "מה פירוש הביטוי ששמעתם?",
         "expressionEs": "No.",
-        "choicesHe": ["תודה", "כן", "לא"],
+        "choicesHe": [
+          "תודה",
+          "כן",
+          "לא"
+        ],
         "correctHe": "לא",
         "feedback": {
           "correctHe": "המשמעות של No היא לא.",
@@ -758,5 +766,72 @@
     "design_ref": "Figma Template / Speak 87:1543 with Show character off and Has model note on; preview 96:2086",
     "audio": "Uses the existing pending juan-si-v1, juan-no-v1 and juan-hola-v1 assets; listening review still required.",
     "pending": "Integrate into content/units/unit1a.json (12 → 15 activities); verify the full flow on device."
+  },
+  "depth_revision_2026_10_26": {
+    "status": "sequence_approved; exact_copy_and_audio_pending",
+    "reason": "Dor (2026-10-26): the two mirrored dialogue turns were too shallow; units must model a real trip exchange that the practice builds toward.",
+    "research": "docs/research/curriculum-depth/2026-10-26-chapter-depth-proposal.md#3",
+    "chosen_version": "middle: two new transparent words (café, azúcar), six-turn dialogue, offer -> yes/no + gracias",
+    "approval": {
+      "authority_he": "מעבר להערות שהוספתי אני מאשר",
+      "date": "2026-10-26",
+      "scope": "Activity sequence and the six-turn dialogue. Exact wording of new screens, story fact (Juan offers coffee) and all audio remain for joint review."
+    },
+    "dor_corrections": [
+      "u1a-explain-question: add 'ממש כמו בעברית'.",
+      "u1a-practice-listen: drop 'אם בוקר טוב לכם' and do not repeat the offer check; replaced by understanding Juan's reply (No, gracias).",
+      "1a-summary: first person plural ('תרגלנו') and no 'לברך בחזרה'."
+    ],
+    "dialogue_turns": [
+      [
+        "juan",
+        "Hola. Buenos días.",
+        "שלום. בוקר טוב."
+      ],
+      [
+        "learner",
+        "Hola, buenos días.",
+        "שלום, בוקר טוב."
+      ],
+      [
+        "juan",
+        "¿Café?",
+        "קפה?"
+      ],
+      [
+        "learner",
+        "Sí, gracias.",
+        "כן, תודה."
+      ],
+      [
+        "juan",
+        "¿Azúcar?",
+        "סוכר?"
+      ],
+      [
+        "learner",
+        "No, gracias.",
+        "לא, תודה."
+      ]
+    ],
+    "added_activities": [
+      "u1a-vocab-cafe",
+      "u1a-vocab-azucar",
+      "u1a-explain-question",
+      "u1a-check-offer",
+      "u1a-speak-decline"
+    ],
+    "changed_activities": [
+      "u1a-dialogue",
+      "u1a-practice-listen",
+      "1a-ending-scenario (spoken coffee-offer node after sitting)",
+      "1a-summary (body)"
+    ],
+    "supersedes": "full_dialogue_review.approved_turns (kept as history)",
+    "open": [
+      "Learner-facing goalHe still describes only greeting; propose new wording with Dor.",
+      "Voice source: docs/research/audio/2026-10-26-character-voice-options.md",
+      "1a-summary title still uses 'סיימתם'; confirm person with Dor."
+    ]
   }
 }

@@ -56,18 +56,22 @@ test('authored ending uses prepared expressions and visible nonverbal actions wi
   const unit = realDraft(); const activity = scene(unit);
   assert.equal(unit.completionScenarioId, activity.id);
   assert.equal(unit.activities[unit.activities.indexOf(activity) - 1]!.id, '1a-arrange-greeting');
-  const taught = new Set(unit.languageItems.map(l => l.textEs));
+  // Every Spanish word in the scene was prepared earlier in the unit.
+  const words = (text: string) => text.toLowerCase().replace(/[¿?¡!.,]/g, '').split(/\s+/).filter(Boolean);
+  const taughtWords = new Set(unit.languageItems.flatMap(l => words(l.textEs)));
+  const taught = { has: (text: string) => words(text).every(w => taughtWords.has(w)) };
   for (const node of activity.nodes) {
-    if (node.textEs !== null) assert.ok(taught.has(node.textEs.replace(/\.$/, '')));
+    if (node.textEs !== null) assert.ok(taught.has(node.textEs), node.textEs);
     else {
       assert.ok(node.contextHe);
       assert.equal(node.translationHe, null);
       assert.equal(node.audioAssetId, null);
     }
-    for (const choice of node.choices) assert.ok(taught.has(choice.textEs.replace(/\.$/, '')));
+    for (const choice of node.choices) assert.ok(taught.has(choice.textEs), choice.textEs);
   }
   assert.equal(activity.changedDetail, true);
-  assert.deepEqual(new Set(activity.uses), new Set(unit.preparedLanguage.understand));
+  // A scenario lists only language the learner produces in it.
+  assert.deepEqual(new Set(activity.uses), new Set(unit.preparedLanguage.produce));
 });
 
 test('scenario contract rejects partial speech tuples and context-free nonverbal steps', () => {
@@ -111,13 +115,20 @@ test('both greetings and both seat preferences reach distinct valid outcomes bef
       assert.equal(preferred.state.progress.scenarioNodeId, branch);
       state = { ...preferred.state, progress: startUnit(actor, unit, [preferred.state.progress], []) };
       assert.equal(state.progress.scenarioNodeId, branch, 'resume retains learner preference');
-      const finished = choose(unit, state, 'thanks');
+      let finished = choose(unit, state, 'thanks');
+      // Sitting down leads to Juan's spoken coffee offer; both answers end the scene.
+      const coffee = greeting === 'hola' ? 'yes-thanks' : 'no-thanks';
+      if (preference === 'yes') {
+        assert.equal(finished.result.outcome, 'advanced');
+        assert.equal(finished.state.progress.scenarioNodeId, 'coffee-offer');
+        finished = choose(unit, finished.state, coffee);
+      }
       assert.equal(finished.result.outcome, 'scenario_completed');
       assert.equal(finished.state.progress.status, 'in_progress');
       assert.equal(finished.state.progress.currentActivityId, 'test-review');
       assert.equal(finished.state.progress.completed.at(-1)!.usedHelp, false);
       assert.ok(finished.result.revealed && 'node' in finished.result.revealed);
-      assert.equal(finished.result.revealed.node.id, preference === 'yes' ? 'seated-end' : 'continue-end');
+      assert.equal(finished.result.revealed.node.id, preference === 'no' ? 'continue-end' : coffee === 'yes-thanks' ? 'coffee-end' : 'seated-end');
       assert.ok(finished.result.revealed.node.contextHe);
     }
   }

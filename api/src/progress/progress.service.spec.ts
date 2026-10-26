@@ -104,13 +104,13 @@ describe('ProgressService.submit', () => {
     response: { kind: 'choice', choiceId },
   });
 
-  it('decides a correct answer on the server and moves on to the dialogue', async () => {
+  it('decides a correct answer on the server and moves on to the next check', async () => {
     const { service, progress } = atPrimer();
     const result = await service.submit(learner, 'C01-U01', choose(1, 'hello'));
     expect(result.outcome).toBe('correct');
     expect(result.feedbackHe).toBe('נכון! המשמעות של Hola היא שלום.');
-    expect(result.progress).toMatchObject({ currentActivityId: 'u1a-dialogue', progressVersion: 7 });
-    expect(progress.rows[0]).toMatchObject({ currentActivityId: 'u1a-dialogue', progressVersion: 7 });
+    expect(result.progress).toMatchObject({ currentActivityId: 'u1a-check-offer', progressVersion: 7 });
+    expect(progress.rows[0]).toMatchObject({ currentActivityId: 'u1a-check-offer', progressVersion: 7 });
     expect(progress.attempts).toHaveLength(1);
   });
 

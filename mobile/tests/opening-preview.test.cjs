@@ -20,13 +20,17 @@ const data = compile('../src/lesson/opening-data.ts');
 // The same projection the API returns (content/ is built first: npm --prefix ../content run build).
 const { projectUnit } = require(path.join(root, 'content/dist/src/api-contract.js'));
 const projected = (source, urls = {}) => projectUnit(source, urls, {}, { allowDraft: true });
+// The explanation screen is not built yet, so the real preview stops before the
+// listen-select checks. Tests of those screens use the unit without it.
+const withoutExplanation = source => ({ ...source, activities: source.activities.filter(a => a.type !== 'explanation') });
 
 test('mobile preview reads the actual preparation prefix and never skips an unsupported interaction', () => {
   const learnerUnit = projected(unit);
   const steps = data.openingSteps(learnerUnit);
-  // Entry, five cards and the listen-select check; the dialogue is not built yet.
-  assert.equal(steps.length, 7);
-  assert.equal(steps[6].type, 'listen_select');
+  // Entry and seven cards; the explanation that follows is not built yet.
+  assert.equal(steps.length, 8);
+  assert.equal(steps[7].type, 'vocabulary');
+  assert.equal(unit.activities[8].type, 'explanation');
   assert.equal(steps[0].bodyHe, unit.activities[0].bodyHe);
   assert.equal(steps[0].actionLabelHe, unit.activities[0].actionLabelHe);
   assert.equal(steps[0].sceneAssetId, 'juan-hostel-v1');
@@ -65,9 +69,9 @@ test('entry screen: explicit image size, padded centring, no hard-coded unit cop
 
 test('vocabulary cards carry the character image id; long expressions use the long-text state', () => {
   const cards = data.openingSteps(projected(unit)).filter(s => s.type === 'vocabulary');
-  assert.equal(JSON.stringify(cards.map(c => c.expressionEs)), JSON.stringify(['Hola', 'Buenos días', 'Gracias', 'Sí', 'No']));
+  assert.equal(JSON.stringify(cards.map(c => c.expressionEs)), JSON.stringify(['Hola', 'Buenos días', 'Gracias', 'Sí', 'No', 'Café', 'Azúcar']));
   assert.ok(cards.every(c => c.characterImageAssetId === 'juan-reference-v1' && c.characterImageUrl === null));
-  assert.equal(JSON.stringify(cards.map(c => data.isLongExpression(c.expressionEs))), JSON.stringify([false, true, false, false, false]));
+  assert.equal(JSON.stringify(cards.map(c => data.isLongExpression(c.expressionEs))), JSON.stringify([false, true, false, false, false, false, false]));
 });
 
 test('vocabulary card screen: fixed heading, unit copy from data, disabled play without a file', () => {
@@ -97,7 +101,7 @@ test('media URLs come only from the server projection: pending audio stays null 
   assert.equal(cards[0].audioUrl, null, 'pending audio is not served');
   assert.equal(cards[1].audioUrl, urls['juan-buenos-dias-v1']);
   assert.equal(data.openingSteps(projected(unit)).every(s => (s.type === 'entry' ? s.sceneUrl : s.audioUrl) === null), true, 'nothing hosted yet');
-  const check = data.openingSteps(projected(unit, urls)).find(s => s.type === 'listen_select');
+  const check = data.openingSteps(projected(withoutExplanation(unit), urls)).find(s => s.type === 'listen_select');
   assert.equal(check.audioUrl, null, 'the pending Hola recording is not served on the check either');
 });
 
@@ -235,8 +239,9 @@ test('the server progress decides where the lesson resumes; past the supported s
   const at = (currentActivityId, status = 'in_progress') => ({ status, currentActivityId, revision: 1, progressVersion: 0 });
   assert.equal(data.frontierIndex(steps, at('u1a-entry')), 0);
   assert.equal(data.frontierIndex(steps, at(steps[3].id)), 3);
-  assert.equal(data.frontierIndex(steps, at('u1a-primer-listen')), 6);
-  // The dialogue is not built yet: the preview ends there.
+  assert.equal(data.frontierIndex(steps, at('u1a-vocab-azucar')), 7);
+  // The explanation is not built yet: the preview ends there.
+  assert.equal(data.frontierIndex(steps, at('u1a-explain-question')), steps.length);
   assert.equal(data.frontierIndex(steps, at('u1a-dialogue')), steps.length);
   assert.equal(data.frontierIndex(steps, at(null, 'completed')), steps.length);
 });
@@ -274,7 +279,7 @@ test('a saved tap is restored only for the same learner, unit and exact server p
 });
 
 test('the listen-select step carries the question and choices but never the answer or the expression', () => {
-  const check = data.openingSteps(projected(unit)).find(s => s.type === 'listen_select');
+  const check = data.openingSteps(projected(withoutExplanation(unit))).find(s => s.type === 'listen_select');
   const source = unit.activities.find(a => a.id === 'u1a-primer-listen');
   assert.equal(check.titleHe, 'ננסה יחד');
   assert.equal(check.promptHe, source.promptHe);

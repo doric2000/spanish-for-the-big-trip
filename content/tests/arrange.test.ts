@@ -35,11 +35,11 @@ function rejects(action: () => unknown, status: number) {
   assert.throws(action, error => error instanceof ContractError && error.status === status);
 }
 
-test('1A arrangement follows the approved speaking task and only uses prepared language', () => {
+test('1A arrangement follows the speaking tasks and only uses prepared language', () => {
   const unit = realDraft();
   const activity = arrangement(unit);
   const index = unit.activities.indexOf(activity);
-  assert.equal(unit.activities[index - 1]!.id, '1a-speak-thanks');
+  assert.equal(unit.activities[index - 1]!.id, 'u1a-speak-decline');
   const preparation = unit.activities.findIndex(a => a.introduces.includes('lang-buenos-dias'));
   assert.ok(preparation >= 0 && preparation < index);
   assert.deepEqual(activity.uses, ['lang-buenos-dias']);

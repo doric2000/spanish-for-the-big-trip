@@ -100,6 +100,62 @@
       "path": null,
       "characterId": null,
       "note": "Regeneration or full-dialogue recording and joint listening review remain pending; no historical audition promoted to final."
+    },
+    {
+      "id": "juan-cafe-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Voice source not chosen yet (research 2026-10-26); joint listening review pending."
+    },
+    {
+      "id": "juan-azucar-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Voice source not chosen yet (research 2026-10-26); joint listening review pending."
+    },
+    {
+      "id": "dialogue-turn-3-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Voice source not chosen yet (research 2026-10-26); joint listening review pending."
+    },
+    {
+      "id": "dialogue-turn-4-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": null,
+      "note": "Voice source not chosen yet (research 2026-10-26); joint listening review pending."
+    },
+    {
+      "id": "dialogue-turn-5-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Voice source not chosen yet (research 2026-10-26); joint listening review pending."
+    },
+    {
+      "id": "dialogue-turn-6-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": null,
+      "note": "Voice source not chosen yet (research 2026-10-26); joint listening review pending."
+    },
+    {
+      "id": "juan-no-gracias-v1",
+      "kind": "audio",
+      "status": "pending",
+      "path": null,
+      "characterId": "juan",
+      "note": "Voice source not chosen yet (research 2026-10-26); joint listening review pending."
     }
   ],
   "activities": [
@@ -235,6 +291,79 @@
       "phase": "preparation"
     },
     {
+      "id": "u1a-vocab-cafe",
+      "type": "vocabulary_card",
+      "review": {
+        "status": "needs_review",
+        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
+        "note": "Added in the 2026-10-26 depth revision (middle version, approved by Dor)."
+      },
+      "expressionEs": "Café",
+      "meaningHe": "קפה",
+      "characterId": "juan",
+      "audioAssetId": "juan-cafe-v1",
+      "required": true,
+      "helpIds": [],
+      "introduces": [
+        "lang-cafe"
+      ],
+      "uses": [
+        "lang-cafe"
+      ],
+      "phase": "preparation"
+    },
+    {
+      "id": "u1a-vocab-azucar",
+      "type": "vocabulary_card",
+      "review": {
+        "status": "needs_review",
+        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
+        "note": "Added in the 2026-10-26 depth revision (middle version, approved by Dor)."
+      },
+      "expressionEs": "Azúcar",
+      "meaningHe": "סוכר",
+      "characterId": "juan",
+      "audioAssetId": "juan-azucar-v1",
+      "required": true,
+      "helpIds": [],
+      "introduces": [
+        "lang-azucar"
+      ],
+      "uses": [
+        "lang-azucar"
+      ],
+      "phase": "preparation"
+    },
+    {
+      "id": "u1a-explain-question",
+      "type": "explanation",
+      "review": {
+        "status": "needs_review",
+        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
+        "note": "Dor added \"ממש כמו בעברית\" on 2026-10-26; exact title still a draft."
+      },
+      "titleHe": "שאלה במילה אחת",
+      "generalHe": "בספרדית אפשר לשאול במילה אחת, עם קול שעולה בסוף, ממש כמו בעברית. בכתב, סימן שאלה הפוך ¿ פותח את השאלה.",
+      "examples": [
+        {
+          "textEs": "¿Café?",
+          "meaningHe": "קפה?"
+        },
+        {
+          "textEs": "¿Azúcar?",
+          "meaningHe": "סוכר?"
+        }
+      ],
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-cafe",
+        "lang-azucar"
+      ],
+      "phase": "preparation"
+    },
+    {
       "id": "u1a-primer-listen",
       "type": "listen_select",
       "review": {
@@ -279,12 +408,55 @@
       "phase": "preparation_check"
     },
     {
+      "id": "u1a-check-offer",
+      "type": "listen_select",
+      "review": {
+        "status": "needs_review",
+        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
+        "note": "Checks the intent of an offer, not a translation. Choices and feedback are drafts."
+      },
+      "titleHe": "ננסה יחד",
+      "promptHe": "חואן מחזיק קנקן קפה ושואל אתכם משהו. מה הוא שואל?",
+      "expressionEs": "¿Café?",
+      "audioAssetId": "dialogue-turn-3-v1",
+      "characterId": "juan",
+      "choices": [
+        {
+          "id": "want-coffee",
+          "textHe": "אם תרצו קפה"
+        },
+        {
+          "id": "want-sugar",
+          "textHe": "אם תרצו סוכר"
+        },
+        {
+          "id": "where-coffee",
+          "textHe": "איפה הקפה"
+        }
+      ],
+      "correctChoiceId": "want-coffee",
+      "feedback": {
+        "correctHe": "נכון! חואן מציע לכם קפה.",
+        "retryHe": "לא בדיוק. הקשיבו שוב ונסו עוד פעם."
+      },
+      "allowWrittenHint": true,
+      "scored": false,
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-cafe",
+        "lang-azucar"
+      ],
+      "phase": "preparation_check"
+    },
+    {
       "id": "u1a-dialogue",
       "type": "dialogue",
       "review": {
-        "status": "approved",
-        "source": "docs/curriculum/unit1a-content.json#full_dialogue_review.approved_turns",
-        "note": "Two-turn script accepted by Dor; original four-turn source remains in review history."
+        "status": "needs_review",
+        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
+        "note": "Reopened by Dor on 2026-10-26: the two mirrored turns were too shallow. Six-turn middle version approved; exact text and audio pending."
       },
       "titleHe": "השיחה עם חואן",
       "translationInitiallyVisible": false,
@@ -299,9 +471,37 @@
         {
           "id": "u1a-dialogue-turn-2",
           "speakerId": "learner",
-          "textEs": "Hola. Buenos días.",
-          "translationHe": "שלום. בוקר טוב.",
+          "textEs": "Hola, buenos días.",
+          "translationHe": "שלום, בוקר טוב.",
           "audioAssetId": "dialogue-turn-2-v1"
+        },
+        {
+          "id": "u1a-dialogue-turn-3",
+          "speakerId": "juan",
+          "textEs": "¿Café?",
+          "translationHe": "קפה?",
+          "audioAssetId": "dialogue-turn-3-v1"
+        },
+        {
+          "id": "u1a-dialogue-turn-4",
+          "speakerId": "learner",
+          "textEs": "Sí, gracias.",
+          "translationHe": "כן, תודה.",
+          "audioAssetId": "dialogue-turn-4-v1"
+        },
+        {
+          "id": "u1a-dialogue-turn-5",
+          "speakerId": "juan",
+          "textEs": "¿Azúcar?",
+          "translationHe": "סוכר?",
+          "audioAssetId": "dialogue-turn-5-v1"
+        },
+        {
+          "id": "u1a-dialogue-turn-6",
+          "speakerId": "learner",
+          "textEs": "No, gracias.",
+          "translationHe": "לא, תודה.",
+          "audioAssetId": "dialogue-turn-6-v1"
         }
       ],
       "required": true,
@@ -309,7 +509,12 @@
       "introduces": [],
       "uses": [
         "lang-hola",
-        "lang-buenos-dias"
+        "lang-buenos-dias",
+        "lang-cafe",
+        "lang-si",
+        "lang-gracias",
+        "lang-azucar",
+        "lang-no"
       ],
       "phase": "dialogue"
     },
@@ -318,31 +523,32 @@
       "type": "listen_select",
       "review": {
         "status": "needs_review",
-        "source": "docs/curriculum/unit1a-content.json#post_dialogue_practice_review.first_activity",
-        "note": "Core question and success feedback accepted; exact retry hint remains a draft."
+        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
+        "note": "Replaced 2026-10-26: Dor found the previous draft repeated the offer check. Now checks understanding of a reply; choices and feedback are drafts."
       },
       "titleHe": "קצת תרגול",
-      "promptHe": "מה פירוש הביטוי ששמעתם?",
-      "expressionEs": "Buenos días.",
-      "audioAssetId": "juan-buenos-dias-v1",
+      "promptHe": "אתם מציעים לחואן סוכר. מה הוא עונה?",
+      "expressionEs": "No, gracias.",
+      "audioAssetId": "juan-no-gracias-v1",
+      "characterId": "juan",
       "choices": [
         {
-          "id": "good-morning",
-          "textHe": "בוקר טוב"
+          "id": "no-sugar",
+          "textHe": "הוא לא רוצה סוכר"
         },
         {
-          "id": "hello",
-          "textHe": "שלום"
+          "id": "wants-sugar",
+          "textHe": "הוא רוצה סוכר"
         },
         {
-          "id": "thanks",
-          "textHe": "תודה"
+          "id": "more-coffee",
+          "textHe": "הוא רוצה עוד קפה"
         }
       ],
-      "correctChoiceId": "good-morning",
+      "correctChoiceId": "no-sugar",
       "feedback": {
-        "correctHe": "המשמעות של Buenos días היא בוקר טוב.",
-        "retryHe": "זה ביטוי שמשתמשים בו בבוקר. הקשיבו שוב ונסו עוד פעם."
+        "correctHe": "נכון! No, gracias זה לא, תודה.",
+        "retryHe": "לא בדיוק. הקשיבו שוב ונסו עוד פעם."
       },
       "allowWrittenHint": true,
       "scored": false,
@@ -350,9 +556,10 @@
       "helpIds": [],
       "introduces": [],
       "uses": [
-        "lang-hola",
-        "lang-buenos-dias",
-        "lang-gracias"
+        "lang-no",
+        "lang-gracias",
+        "lang-azucar",
+        "lang-cafe"
       ],
       "phase": "practice"
     },
@@ -373,6 +580,28 @@
       "helpIds": [],
       "introduces": [],
       "uses": [
+        "lang-gracias"
+      ],
+      "phase": "practice"
+    },
+    {
+      "id": "u1a-speak-decline",
+      "type": "speak_reveal",
+      "review": {
+        "status": "needs_review",
+        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
+        "note": "Added 2026-10-26 (middle version). Exact prompt is a draft."
+      },
+      "promptHe": "חואן מציע לכם עוד קפה, אבל כבר שתיתם.\nמה תגידו לו בספרדית?",
+      "modelTextEs": "No, gracias.",
+      "audioAssetId": "juan-no-gracias-v1",
+      "alternativeHe": "לתרגל בקול בלי הקלטה",
+      "completion": "self_comparison",
+      "required": true,
+      "helpIds": [],
+      "introduces": [],
+      "uses": [
+        "lang-no",
         "lang-gracias"
       ],
       "phase": "practice"
@@ -407,8 +636,8 @@
       "type": "bounded_scenario",
       "review": {
         "status": "needs_review",
-        "source": "docs/curriculum/unit1a-content.json#ending_scenario_review",
-        "note": "Dor approved the greeting, meaningful yes/no seat-offer branches and thanks outcomes. Exact node-level corrective feedback and the added final answer choices remain drafts for full-flow copy review; audio/device verification is pending."
+        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
+        "note": "Greeting, seat offer and thanks approved earlier; the spoken coffee offer was added 2026-10-26 (middle version). New node wording is a draft."
       },
       "titleHe": "פוגשים שוב את חואן",
       "startNodeId": "greeting",
@@ -450,9 +679,32 @@
           "audioAssetId": null,
           "terminal": false,
           "choices": [
-            { "id": "thanks", "textEs": "Gracias.", "textHe": "תודה.", "outcome": "advance", "nextNodeId": "seated-end", "feedbackHe": "הודיתם לחואן על העזרה." },
+            { "id": "thanks", "textEs": "Gracias.", "textHe": "תודה.", "outcome": "advance", "nextNodeId": "coffee-offer", "feedbackHe": "הודיתם לחואן על העזרה." },
             { "id": "hello", "textEs": "Hola.", "textHe": "שלום.", "outcome": "retry", "nextNodeId": null, "feedbackHe": "זו ברכת שלום. כדי להודות לחואן, בחרו בביטוי שלמדתם לתודה." }
           ]
+        },
+        {
+          "id": "coffee-offer",
+          "contextHe": "התיישבתם. חואן מרים את קנקן הקפה.",
+          "promptHe": "מה תענו לחואן?",
+          "textEs": "¿Café?",
+          "translationHe": "קפה?",
+          "audioAssetId": "dialogue-turn-3-v1",
+          "terminal": false,
+          "choices": [
+            { "id": "yes-thanks", "textEs": "Sí, gracias.", "textHe": "כן, תודה.", "outcome": "advance", "nextNodeId": "coffee-end", "feedbackHe": "קיבלתם קפה מחואן." },
+            { "id": "no-thanks", "textEs": "No, gracias.", "textHe": "לא, תודה.", "outcome": "advance", "nextNodeId": "seated-end", "feedbackHe": "סירבתם בנימוס." },
+            { "id": "hello", "textEs": "Hola.", "textHe": "שלום.", "outcome": "retry", "nextNodeId": null, "feedbackHe": "זו ברכת שלום. חואן שואל אם תרצו קפה. ענו בכן או בלא." }
+          ]
+        },
+        {
+          "id": "coffee-end",
+          "contextHe": "אתם יושבים ליד חואן ושותים איתו קפה.",
+          "textEs": null,
+          "translationHe": null,
+          "audioAssetId": null,
+          "terminal": true,
+          "choices": []
         },
         {
           "id": "declined-offer",
@@ -605,12 +857,12 @@
       "id": "1a-summary",
       "type": "summary",
       "review": {
-        "status": "approved",
-        "source": "docs/curriculum/unit1a-content.json#summary_review",
-        "note": "Dor approved the exact title, body and action label on 2026-10-16. Display in the app remains unverified."
+        "status": "needs_review",
+        "source": "docs/curriculum/unit1a-content.json#depth_revision_2026_10_26",
+        "note": "Body rewritten per Dor 2026-10-26 (\"תרגלנו\", no \"לברך בחזרה\"). Title unchanged."
       },
       "titleHe": "סיימתם את המפגש הראשון",
-      "bodyHe": "תרגלתם לברך בחזרה, לענות כן או לא ולהודות.\nביחידה הבאה נלמד לבקש לשמוע שוב כשלא הבנו.",
+      "bodyHe": "תרגלנו להגיד שלום ובוקר טוב, להבין הצעה ולענות עליה בכן או לא, ולהודות.\nביחידה הבאה נלמד לבקש לשמוע שוב כשלא הבנו.",
       "actionLabelHe": "חזרה למפה",
       "required": true,
       "helpIds": [],
@@ -656,6 +908,16 @@
       "id": "lang-no",
       "textEs": "No",
       "meaningHe": "לא"
+    },
+    {
+      "id": "lang-cafe",
+      "textEs": "Café",
+      "meaningHe": "קפה"
+    },
+    {
+      "id": "lang-azucar",
+      "textEs": "Azúcar",
+      "meaningHe": "סוכר"
     }
   ],
   "preparedLanguage": {
@@ -664,7 +926,9 @@
       "lang-buenos-dias",
       "lang-gracias",
       "lang-si",
-      "lang-no"
+      "lang-no",
+      "lang-cafe",
+      "lang-azucar"
     ],
     "produce": [
       "lang-gracias",

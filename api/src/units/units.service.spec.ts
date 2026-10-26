@@ -17,7 +17,7 @@ describe('UnitsService.learnerUnit', () => {
   it('returns the 1A draft without answers when drafts are allowed', async () => {
     const unit = await service(fakeRevisions([unit1aPayload()]), true).learnerUnit('C01-U01');
     expect(unit.id).toBe('C01-U01');
-    expect(unit.activities).toHaveLength(16);
+    expect(unit.activities).toHaveLength(21);
     // No media is hosted yet, so every url is null in draft mode.
     expect(unit.media.every(m => m.url === null)).toBe(true);
     const text = JSON.stringify(unit);

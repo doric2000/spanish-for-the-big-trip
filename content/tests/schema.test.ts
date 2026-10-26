@@ -25,15 +25,16 @@ function exercise(unit: Unit) {
   return activity;
 }
 
-test('real 1A draft retains all five expressions and the reviewed dialogue', () => {
+test('real 1A draft keeps its expressions and the six-turn coffee dialogue', () => {
   const unit = draft();
   assert.equal(unit.id, 'C01-U01');
   assert.deepEqual(unit.aliases, ['1A']);
   assert.equal(unit.status, 'draft');
-  assert.deepEqual(unit.activities.filter(a => a.type === 'vocabulary_card').map(a => a.expressionEs), ['Hola', 'Buenos días', 'Gracias', 'Sí', 'No']);
+  assert.deepEqual(unit.activities.filter(a => a.type === 'vocabulary_card').map(a => a.expressionEs), ['Hola', 'Buenos días', 'Gracias', 'Sí', 'No', 'Café', 'Azúcar']);
   const dialogue = unit.activities.find(a => a.type === 'dialogue');
   assert.ok(dialogue?.type === 'dialogue');
-  assert.deepEqual(dialogue.turns.map(t => t.textEs), ['Hola. Buenos días.', 'Hola. Buenos días.']);
+  assert.deepEqual(dialogue.turns.map(t => t.textEs), ['Hola. Buenos días.', 'Hola, buenos días.', '¿Café?', 'Sí, gracias.', '¿Azúcar?', 'No, gracias.']);
+  assert.deepEqual(dialogue.turns.map(t => t.speakerId), ['juan', 'learner', 'juan', 'learner', 'juan', 'learner']);
 });
 
 test('current draft cannot pass the publication gate', () => {
