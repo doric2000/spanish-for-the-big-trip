@@ -10,7 +10,7 @@ import {
   ServiceUnavailableException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AttemptRequestSchema } from '@spanish-for-trip/content/api-contract';
+import { AttemptRequestSchema, projectActivity } from '@spanish-for-trip/content/api-contract';
 import { applyAttempt, attemptFingerprint, type AttemptResult, ContractError, type Progress, startUnit } from '@spanish-for-trip/content/progress';
 import { type Unit, validateUnit } from '@spanish-for-trip/content/schema';
 import type { VerifiedUser } from '../auth/auth.guard.js';
@@ -18,6 +18,8 @@ import { API_CONFIG, type ApiConfig } from '../config.js';
 import { UnitRevisionsRepository } from '../units/unit-revisions.repository.js';
 import { UnitsService } from '../units/units.service.js';
 import { ProgressRepository, type StartStatus } from './progress.repository.js';
+
+export type StartResult = { status: StartStatus; progress: Progress; scenario: ReturnType<typeof projectActivity> | null };
 
 // The rules (what may start, which revision, prerequisites) come from the tested pure
 // code in content/src/progress.ts. This service loads what it needs, asks those rules,
@@ -33,7 +35,22 @@ export class ProgressService {
     @Inject(API_CONFIG) private readonly config: ApiConfig,
   ) {}
 
-  async start(user: VerifiedUser, unitId: string): Promise<{ status: StartStatus; progress: Progress }> {
+  async start(user: VerifiedUser, unitId: string): Promise<StartResult> {
+    const started = await this.startOrResume(user, unitId);
+    return { ...started, scenario: await this.currentScenario(started.progress) };
+  }
+
+  // A learner who left in the middle of a scenario resumes at the same node. The unit
+  // route projects only the start node, so the start reply carries the current one,
+  // projected the same way (no answers, no branch destinations).
+  private async currentScenario(progress: Progress): Promise<StartResult['scenario']> {
+    if (progress.status !== 'in_progress' || !progress.scenarioNodeId) return null;
+    const unit = await this.pinnedUnit(progress.unitId, progress.revision);
+    const activity = unit.activities.find(a => a.id === progress.currentActivityId);
+    return activity?.type === 'bounded_scenario' ? projectActivity(activity, progress.scenarioNodeId) : null;
+  }
+
+  private async startOrResume(user: VerifiedUser, unitId: string): Promise<{ status: StartStatus; progress: Progress }> {
     const unit = await this.units.latestUnit(unitId);
     const own = await this.storage(() => this.progress.forUnit(user.userId, unitId));
     const prerequisites = unit.requires.length ? await this.completedUnits(user.userId) : { progress: [], units: [] };

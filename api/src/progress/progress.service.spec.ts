@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import type { Progress } from '@spanish-for-trip/content/progress';
 import { fakeProgress } from '../../test/fake-progress.js';
-import { fakeRevisions, publishedFixture, unit1aPayload } from '../../test/unit1a.js';
+import { fakeRevisions, PRIVATE_FIELDS, publishedFixture, unit1aPayload } from '../../test/unit1a.js';
 import type { VerifiedUser } from '../auth/auth.guard.js';
 import type { ApiConfig } from '../config.js';
 import type { UnitRevisionsRepository } from '../units/unit-revisions.repository.js';
@@ -47,6 +47,22 @@ describe('ProgressService.start', () => {
     const again = await service.start(learner, 'C01-U01');
     expect(again.status).toBe('existing');
     expect(progress.writes).toHaveLength(1);
+  });
+
+  it('resumes a scenario at the node the learner left, without answers', async () => {
+    const row: Progress = { userId: learner.userId, unitId: 'C01-U01', revision: 1, status: 'in_progress',
+      currentActivityId: '1a-ending-scenario', progressVersion: 20, scenarioNodeId: 'coffee-answer', usedHelpForCurrent: false, completed: [] };
+    const { service } = setup([unit1aPayload()], true, [row]);
+    const result = await service.start(learner, 'C01-U01');
+    expect(result.status).toBe('existing');
+    expect(result.scenario).toMatchObject({ id: '1a-ending-scenario', node: { id: 'coffee-answer', textEs: 'Sí, gracias.' } });
+    const text = JSON.stringify(result.scenario);
+    for (const field of [...PRIVATE_FIELDS, '"translationHe"', '"textHe"', '"outcome"']) expect(text).not.toContain(field);
+  });
+
+  it('returns no scenario when the current activity is not one', async () => {
+    const { service } = setup([unit1aPayload()], true);
+    expect((await service.start(learner, 'C01-U01')).scenario).toBeNull();
   });
 
   it('keeps learners apart: each gets their own row', async () => {

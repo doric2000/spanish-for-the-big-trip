@@ -18,7 +18,7 @@
       "method": "POST",
       "path": "/v1/units/:unitId/start",
       "body": {},
-      "returns": "Own active pinned Progress, existing completion for the same latest revision, or a newly started latest revision after prerequisites. Transaction/uniqueness makes retries idempotent."
+      "returns": "Own active pinned Progress, existing completion for the same latest revision, or a newly started latest revision after prerequisites. Transaction/uniqueness makes retries idempotent. Also returns scenario: when the current activity is a bounded_scenario, its projection at the learner's current node (so leaving mid-scenario resumes at the same node), otherwise null."
     },
     {
       "method": "GET",
