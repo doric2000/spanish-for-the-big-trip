@@ -148,9 +148,11 @@ function PlayableTurn({ source, index, current, cued, onStart, onFinish, onStop,
   </View>;
 }
 
-// One line (Figma "Lesson / Dialogue turn" 86:913). Juan's card: cream with a postage
-// stamp, tilted +1°, avatar on the right. The learner's: gold, tilted −1.2°, the plane
-// badge on the left. Playing adds an outline and sound bars.
+// One line (Figma "Lesson / Dialogue turn" 86:913, layout approved by Dor 2026-10-28).
+// Juan's card: cream with a postage stamp, tilted +1°, avatar on the right. The
+// learner's: gold, tilted −1.2°, the plane badge on the left. The name sits alone on
+// top, play beside the Spanish line, and "הצגת תרגום" at the bottom; the translation
+// takes its place, and tapping it hides it again. Playing adds an outline and sound bars.
 function TurnCard({ turn, avatar, width, translated, onTranslate, playing, play }: TurnProps & { playing: boolean; play: ReactNode }) {
   const learner = turn.speaker === 'learner';
   const badge = learner
@@ -158,22 +160,24 @@ function TurnCard({ turn, avatar, width, translated, onTranslate, playing, play 
     : avatar ? <LessonAvatar {...avatar} size={BADGE} /> : <View style={styles.badgeSpace} />;
   const body = <View style={[styles.card, learner ? styles.learnerCard : styles.characterCard, { width }]}>
     {playing ? <View pointerEvents="none" style={[styles.outline, { borderColor: learner ? c.cream : c.sunset }]} /> : null}
-    {/* Right to left: the translation toggle on the right, then play, the name and the bars. */}
     <View style={styles.speakerRow}>
-      <TranslationToggle shown={translated} textEs={turn.textEs} onPress={onTranslate} />
-      {play}
       <Text style={[styles.speakerName, learner && styles.learnerName]}>{turn.speakerNameHe}</Text>
       {playing ? <SoundBars color={learner ? c.night : c.sunset} /> : null}
     </View>
+    {/* Spanish reads left to right: play first, then the line. */}
     <View style={styles.spanishLine}>
+      {play}
       <Text selectable accessibilityLanguage="es-MX" style={styles.spanish}>{turn.textEs}</Text>
     </View>
-    {translated ? <>
-      <Svg width="100%" height={2} accessible={false}>
-        <Line x1={0} x2="100%" y1={1} y2={1} stroke={c.night} strokeWidth={2} strokeDasharray="5.9 3.93" />
-      </Svg>
-      <Text style={styles.translation}>{turn.translationHe}</Text>
-    </> : null}
+    {translated
+      ? <Pressable accessibilityRole="button" accessibilityLabel={`הסתרת תרגום: ${turn.translationHe}`} accessibilityState={{ expanded: true }}
+        onPress={onTranslate} style={styles.translated}>
+        <Svg width="100%" height={2} accessible={false}>
+          <Line x1={0} x2="100%" y1={1} y2={1} stroke={c.night} strokeWidth={2} strokeDasharray="5.9 3.93" />
+        </Svg>
+        <Text style={styles.translation}>{turn.translationHe}</Text>
+      </Pressable>
+      : <TranslationLink textEs={turn.textEs} onPress={onTranslate} />}
     {learner ? null : <Postage />}
   </View>;
   // In the right-to-left row the first child sits on the right.
@@ -198,15 +202,15 @@ function TurnPlay({ label, playing, disabled = false, busy = false, onPress }: {
   </Pressable>;
 }
 
-// Figma "Lesson / Turn translation" 117:2284: outlined when hidden, night teal when shown.
-function TranslationToggle({ shown, textEs, onPress }: { shown: boolean; textEs: string; onPress: () => void }) {
-  const ink = shown ? c.gold : c.night;
-  return <Pressable accessibilityRole="button" accessibilityLabel={`תרגום: ${textEs}`} accessibilityState={{ expanded: shown }}
-    onPress={onPress} hitSlop={8} style={({ pressed }) => [styles.toggle, shown && styles.toggleShown, pressed && styles.pressed]}>
-    <Text style={[styles.toggleLabel, { color: ink }]}>תרגום</Text>
+// Figma "Lesson / Turn translation" 117:2284: a quiet underlined link with the eye icon,
+// at the card's start (right) edge. Slop brings the short link to a 44pt target.
+function TranslationLink({ textEs, onPress }: { textEs: string; onPress: () => void }) {
+  return <Pressable accessibilityRole="button" accessibilityLabel={`הצגת תרגום: ${textEs}`} accessibilityState={{ expanded: false }}
+    onPress={onPress} hitSlop={12} style={({ pressed }) => [styles.link, pressed && styles.linkPressed]}>
+    <Text style={styles.linkLabel}>הצגת תרגום</Text>
     <Svg width={16} height={16} viewBox="0 0 16 16" fill="none" accessible={false}>
-      <Path d="M1.66667 8C1.66667 8 4 3.66667 8 3.66667C12 3.66667 14.3333 8 14.3333 8C14.3333 8 12 12.3333 8 12.3333C4 12.3333 1.66667 8 1.66667 8Z" strokeWidth={2.2} stroke={ink} />
-      <Circle cx={8} cy={8} r={2} strokeWidth={2.2} stroke={ink} />
+      <Path d="M1.66667 8C1.66667 8 4 3.66667 8 3.66667C12 3.66667 14.3333 8 14.3333 8C14.3333 8 12 12.3333 8 12.3333C4 12.3333 1.66667 8 1.66667 8Z" strokeWidth={2.2} stroke={c.night} />
+      <Circle cx={8} cy={8} r={2} strokeWidth={2.2} stroke={c.night} />
     </Svg>
   </Pressable>;
 }
@@ -252,18 +256,16 @@ const styles = StyleSheet.create({
   learnerName: { color: c.night },
   bars: { flexDirection: 'row', alignItems: 'center', gap: 2 },
   bar: { width: 3, borderRadius: 2 },
-  // Spanish reads left to right and starts at the card's left edge.
-  spanishLine: { direction: 'ltr', alignSelf: 'stretch' },
-  spanish: { fontFamily: f.heavy, fontSize: 27, lineHeight: 34, color: c.night, textAlign: 'left', writingDirection: 'ltr' },
+  // Spanish reads left to right and starts at the card's left edge, after play.
+  spanishLine: { direction: 'ltr', alignSelf: 'stretch', flexDirection: 'row', alignItems: 'center', gap: 12 },
+  spanish: { flex: 1, fontFamily: f.heavy, fontSize: 27, lineHeight: 34, color: c.night, textAlign: 'left', writingDirection: 'ltr' },
+  translated: { gap: 6 },
   translation: { fontFamily: f.body, fontSize: 18, lineHeight: 28, color: c.inkMuted, writingDirection: 'rtl' },
   postage: { position: 'absolute', top: -14, end: 10, transform: [{ rotate: '6deg' }] },
   play: { width: 36, height: 36, borderRadius: 18, backgroundColor: c.sunset, alignItems: 'center', justifyContent: 'center' },
-  toggle: {
-    height: 28, minWidth: 60, borderRadius: 14, borderWidth: 1.5, borderColor: c.night, paddingHorizontal: 10,
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4,
-  },
-  toggleShown: { backgroundColor: c.night },
-  toggleLabel: { fontFamily: f.bold, fontSize: 13, writingDirection: 'rtl' },
+  link: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 2 },
+  linkPressed: { opacity: 0.6 },
+  linkLabel: { fontFamily: f.medium, fontSize: 14, lineHeight: 20, color: c.night, textDecorationLine: 'underline', writingDirection: 'rtl' },
   errorStack: { gap: 10 },
   alert: { backgroundColor: c.pink, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10 },
   alertText: { fontFamily: f.body, fontSize: 15, lineHeight: 22, color: c.plum, writingDirection: 'rtl' },

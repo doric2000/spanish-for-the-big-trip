@@ -423,8 +423,12 @@ test('dialogue screen: lesson copy only from data, one line at a time, disabled 
   assert.match(screen, /translated: shown\.includes\(turn\.id\)/);
   assert.match(screen, /accessibilityLanguage="es-MX"/);
   assert.doesNotMatch(screen, /alignSelf: 'center'|row-reverse|textAlign: 'right'/);
+  // Approved turn layout (2026-10-28): play beside the Spanish line, the translation link at the bottom.
+  assert.match(screen, /<View style=\{styles\.spanishLine\}>\s*\{play\}\s*<Text selectable accessibilityLanguage="es-MX"/);
+  assert.match(screen, /: <TranslationLink textEs=\{turn\.textEs\} onPress=\{onTranslate\} \/>/);
+  assert.match(screen, /accessibilityLabel=\{`הסתרת תרגום: \$\{turn\.translationHe\}`\}[^]*onPress=\{onTranslate\}/);
   const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
-  assert.match(preview, /<DialogueScreen [^]*save=\{shownSave\} onNext=\{advance\} onBack=\{back\} onClose=\{onClose\} \/>/);
+  assert.match(preview, /<DialogueScreen[^]*save=\{shownSave\} onNext=\{advance\} onBack=\{back\} onClose=\{onClose\} \/>/);
 });
 
 test('the lesson flow keeps an answer on its screen and moves only on continue', () => {
