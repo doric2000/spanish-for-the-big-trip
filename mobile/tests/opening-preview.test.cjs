@@ -376,17 +376,16 @@ test('listen-select screen: unit copy only from data, states only from the serve
 
 test('listen-select screen: "חזרה" in every state only moves the view back', () => {
   const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/listen-select-screen.tsx'), 'utf8');
-  // Question and hint: on the dark background. Retry, correct and a solved check seen again: on the sheet.
+  // Question, hint and retry: a plain button on the dark background. Correct and a solved
+  // check seen again: on the sheet.
   assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{onBack\} \/>/);
-  assert.match(screen, /<RetrySheet messageHe=\{feedback\.messageHe\} bottomInset=\{bottomInset\} onBack=\{onBack\} \/>/);
   assert.match(screen, /<ContinueSheet [^>]*onBack=\{onBack\}/);
   assert.match(screen, /<SuccessSheet [^>]*onBack=\{onBack\} \/>/);
-  assert.match(screen, /<FeedbackSheet [^]*onBack=\{onBack\} \/>/);
   // The success and continue sheets share one row: "חזרה" and "ממשיכים".
   const sheet = fs.readFileSync(path.join(__dirname, '../src/lesson/lesson-sheet.tsx'), 'utf8');
   assert.match(sheet, /<LessonSheetSecondaryButton label="חזרה" onPress=\{onBack\} \/>[^]*<LessonDarkButton label="ממשיכים" onPress=\{onContinue\} \/>/);
-  // The pink retry sheet carries "חזרה" too.
-  assert.match(sheet, /export function RetrySheet[^]*<LessonSheetSecondaryButton label="חזרה" onPress=\{onBack\} \/>/);
+  // No retry sheet: its "חזרה" read as "try again" on the iPhone (Dor, 2026-10-28).
+  assert.doesNotMatch(sheet, /RetrySheet/);
   const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
   assert.match(preview, /<ListenSelectScreen [^]*onBack=\{back\} onClose=\{onClose\} \/>/);
   assert.match(preview, /const back = \(\) => \{ if \(!save\.busy\) setIndex\(current => moveOpeningStep\(current, 'back', steps\.length\)\); \};/);
@@ -633,7 +632,7 @@ test('scenario screen: lesson copy only from data, the server decides, translati
   // Each node starts fresh.
   assert.match(screen, /<NodeView key=\{props\.node\.id\}/);
   assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{onBack\} \/>/);
-  assert.match(screen, /<RetrySheet [^>]*onBack=\{onBack\} \/>/);
+  assert.doesNotMatch(screen, /RetrySheet/);
   assert.match(screen, /<SuccessSheet [^]*?onBack=\{back\} \/>/);
   assert.match(screen, /<ContinueSheet [^>]*onBack=\{onBack\} \/>/);
   assert.match(screen, /<LessonSecondaryButton label="חזרה" onPress=\{onBack\} \/>[^]*<LessonButton label="ממשיכים" onPress=\{onContinue\} \/>/);
@@ -643,4 +642,29 @@ test('scenario screen: lesson copy only from data, the server decides, translati
   // Resuming mid-scenario: the start reply's node wins over the unit's start node.
   assert.match(preview, /scenarioNodes: resumedNodes\(started\.scenario\)/);
   assert.match(preview, /const node = nodes\[step\.id\] \?\? step\.node;/);
+});
+
+test('a wrong answer lights up for a moment, the message stays under the answers, and there is no retry sheet', () => {
+  const sheet = fs.readFileSync(path.join(__dirname, '../src/lesson/lesson-sheet.tsx'), 'utf8');
+  assert.match(sheet, /export const RETRY_FLASH_MS = 1200;/);
+  // Each flash restarts the timer, and leaving the screen clears it.
+  assert.match(sheet, /useEffect\(\(\) => \(\) => \{ if \(timer\.current\) clearTimeout\(timer\.current\); \}, \[\]\);/);
+  assert.match(sheet, /if \(timer\.current\) clearTimeout\(timer\.current\);\s*setFlashing\(value\);\s*timer\.current = setTimeout\(\(\) => setFlashing\(null\), RETRY_FLASH_MS\);/);
+  assert.match(sheet, /export function RetryNote[^]*accessibilityRole="alert" accessibilityLiveRegion="polite"/);
+  for (const [file, answers] of [['scenario-screen.tsx', '<PhraseTicket'], ['listen-select-screen.tsx', '<AnswerTag'], ['arrange-screen.tsx', '<TrayTile']]) {
+    const screen = fs.readFileSync(path.join(__dirname, '../src/lesson', file), 'utf8');
+    assert.doesNotMatch(screen, /RetrySheet|FeedbackSheet/, file);
+    assert.match(screen, /useRetryFlash</, file);
+    // The note comes after the answers, inside the scrolling column.
+    const note = screen.indexOf('<RetryNote key=');
+    assert.ok(note > screen.indexOf(answers) && note < screen.indexOf('</ScrollView>'), file);
+  }
+  for (const file of ['scenario-screen.tsx', 'listen-select-screen.tsx']) {
+    const screen = fs.readFileSync(path.join(__dirname, '../src/lesson', file), 'utf8');
+    // Pink only while flashing, then the answer looks as before and stays tappable.
+    assert.match(screen, /return flashing === choiceId \? 'wrong' : 'default';/, file);
+    assert.match(screen, /scrollToEnd\(\{ animated: !reduceMotion \}\)/, file);
+  }
+  const arrange = fs.readFileSync(path.join(__dirname, '../src/lesson/arrange-screen.tsx'), 'utf8');
+  assert.match(arrange, /feedback\?\.kind === 'retry' && flashing !== null \? 'wrong' : 'placed'/);
 });

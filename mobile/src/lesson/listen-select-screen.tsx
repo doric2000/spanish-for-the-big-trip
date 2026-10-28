@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, type ImageSourcePropType, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 import type { AudioSource } from 'expo-audio';
@@ -10,14 +10,15 @@ import { retro } from '../theme';
 import { LessonSaveError, LessonSecondaryButton, type SaveState } from './lesson-button';
 import { LessonAvatar } from './lesson-avatar';
 import { LessonHeader } from './lesson-header';
-import { CheckIcon, ContinueSheet, RetrySheet, Stamp, SuccessSheet } from './lesson-sheet';
+import { CheckIcon, ContinueSheet, RetryNote, Stamp, SuccessSheet, useRetryFlash } from './lesson-sheet';
 import type { FaceCrop } from './media';
 import type { LessonResponse } from './opening-data';
 import { usePlayback } from './playback';
 
 // Listen and select (Figma "Template / Listen select" 84:1014): hear the expression on
 // the radio poster, pick its meaning. States Question, Hint, Retry and Correct, each
-// decided only by the server's reply; the app never knows the correct answer. No score
+// decided only by the server's reply; the app never knows the correct answer. A wrong
+// answer lights up pink for a moment and the message stays under the answers. No score
 // or timer; replay and the written hint never block. A solved check seen again through
 // "חזרה" is view-only (approved by Dor, 2026-10-25). "חזרה" shows in every state and only
 // moves the view back (Figma Back 114:2197/114:2205, approved by Dor 2026-10-26).
@@ -46,8 +47,10 @@ export function ListenSelectScreen({ content, avatar, audio, header, unitShort, 
   const column = Math.min(windowWidth, 600) - 40;
   const gutter = (windowWidth - column) / 2;
   const [expressionEs, setExpressionEs] = useState<string | null>(null);
-  const [wrong, setWrong] = useState<string[]>([]);
+  const [flashing, flash] = useRetryFlash<string>();
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const scroll = useRef<ScrollView>(null);
+  const reduceMotion = useReducedMotion();
   const [lastWrong, setLastWrong] = useState<{ id: string; tap: number } | null>(null);
   const solved = feedback?.kind === 'correct';
   // A solved check seen again keeps playback; answers and the hint are locked.
@@ -60,9 +63,11 @@ export function ListenSelectScreen({ content, avatar, audio, header, unitShort, 
     if (result.outcome === 'correct' || result.outcome === 'correct_with_help') {
       setFeedback({ kind: 'correct', choiceId, messageHe: result.feedbackHe ?? '' });
     } else if (result.outcome === 'retry') {
-      setWrong(current => current.includes(choiceId) ? current : [...current, choiceId]);
+      flash(choiceId);
       setLastWrong(current => ({ id: choiceId, tap: (current?.tap ?? 0) + 1 }));
       setFeedback({ kind: 'retry', messageHe: result.feedbackHe ?? '' });
+      // The message sits under the answers, which may be below the fold on a small phone.
+      requestAnimationFrame(() => scroll.current?.scrollToEnd({ animated: !reduceMotion }));
     }
   }
   async function showHint() {
@@ -73,14 +78,14 @@ export function ListenSelectScreen({ content, avatar, audio, header, unitShort, 
 
   const tagState = (choiceId: string): TagState => {
     if (feedback?.kind === 'correct') return feedback.choiceId === choiceId ? 'right' : 'dimmed';
-    return wrong.includes(choiceId) ? 'wrong' : 'default';
+    return flashing === choiceId ? 'wrong' : 'default';
   };
   const pad = (n: number) => String(n).padStart(2, '0');
 
   return <View style={styles.root}>
     <StatusBar style="light" />
     <LessonHeader code={header.code} index={header.index} count={header.count} onClose={onClose} topInset={insets.top} />
-    <ScrollView contentInsetAdjustmentBehavior="never" contentContainerStyle={[styles.content, { paddingHorizontal: gutter }]}>
+    <ScrollView ref={scroll} contentInsetAdjustmentBehavior="never" contentContainerStyle={[styles.content, { paddingHorizontal: gutter }]}>
       <View style={styles.heading}>
         <Text accessibilityRole="header" style={styles.title}>{content.titleHe}</Text>
         <Text style={styles.prompt}>{content.promptHe}</Text>
@@ -113,13 +118,13 @@ export function ListenSelectScreen({ content, avatar, audio, header, unitShort, 
           shake={lastWrong?.id === choice.id ? lastWrong.tap : 0}
           disabled={save.busy || solved || locked} onPress={() => { void choose(choice.id); }} />)}
       </View>
+      {feedback?.kind === 'retry' ? <RetryNote key={`retry-${lastWrong?.tap ?? 0}`} messageHe={feedback.messageHe} /> : null}
       {save.busy ? <ActivityIndicator color={c.gold} /> : null}
     </ScrollView>
     {/* Feedback stays pinned to the bottom while the column scrolls. */}
-    <View style={[styles.bottom, { paddingHorizontal: !feedback && !locked ? gutter : 0 }]}>
+    <View style={[styles.bottom, { paddingHorizontal: !solved && !locked ? gutter : 0 }]}>
       <LessonSaveError message={save.errorHe} />
-      {feedback ? <FeedbackSheet key={feedback.kind === 'correct' ? 'correct' : `retry-${lastWrong?.tap ?? 0}`}
-        feedback={feedback} bottomInset={insets.bottom} onContinue={onContinue} onBack={onBack} />
+      {feedback?.kind === 'correct' ? <SuccessSheet messageHe={feedback.messageHe} bottomInset={insets.bottom} onContinue={onContinue} onBack={onBack} />
         : locked ? <ContinueSheet bottomInset={insets.bottom} onContinue={onContinue} onBack={onBack} />
           : <View style={{ paddingTop: 12, paddingBottom: Math.max(insets.bottom, 20) }}>
             <LessonSecondaryButton label="חזרה" disabled={save.busy} onPress={onBack} />
@@ -154,8 +159,8 @@ function Disc({ label, playing, disabled = false, busy = false, onPress }: { lab
 
 type TagState = 'default' | 'wrong' | 'right' | 'dimmed';
 
-// Luggage-tag answer (Figma "Lesson / Answer tag" 78:280). A wrong tag shakes and stays
-// tappable; after the right one the others dim. The small code label is hidden: 1A answers have
+// Luggage-tag answer (Figma "Lesson / Answer tag" 78:280). A wrong tag shakes and is pink
+// for a moment, then looks as before and stays tappable; after the right one the others dim. The small code label is hidden: 1A answers have
 // no tag text (approved by Dor, 2026-10-25).
 function AnswerTag({ textHe, state, shake, disabled, onPress }: { textHe: string; state: TagState; shake: number; disabled: boolean; onPress: () => void }) {
   const reduceMotion = useReducedMotion();
@@ -196,12 +201,6 @@ function FlapBoard({ text }: { text: string }) {
       <View style={styles.flapSplit} />
     </View>)}
   </View>;
-}
-
-// Bottom sheet (Figma "Lesson / Feedback" 78:321): the shared retry and success sheets.
-function FeedbackSheet({ feedback, bottomInset, onContinue, onBack }: { feedback: Feedback; bottomInset: number; onContinue: () => void; onBack: () => void }) {
-  if (feedback.kind === 'correct') return <SuccessSheet messageHe={feedback.messageHe} bottomInset={bottomInset} onContinue={onContinue} onBack={onBack} />;
-  return <RetrySheet messageHe={feedback.messageHe} bottomInset={bottomInset} onBack={onBack} />;
 }
 
 function EyeIcon() {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 import type { AudioSource } from 'expo-audio';
@@ -10,14 +10,15 @@ import { retro } from '../theme';
 import { BADGE, TurnCard, type TurnAvatar, type TurnLine, TurnPlay } from './dialogue-turn';
 import { LessonButton, LessonButtonRow, LessonSaveError, LessonSecondaryButton, type SaveState } from './lesson-button';
 import { LessonHeader } from './lesson-header';
-import { CheckIcon, ContinueSheet, RetrySheet, Stamp, SuccessSheet } from './lesson-sheet';
+import { CheckIcon, ContinueSheet, RetryNote, Stamp, SuccessSheet, useRetryFlash } from './lesson-sheet';
 import { type LessonResponse, type ScenarioNode, scenarioNodeOf } from './opening-data';
 import { usePlayback } from './playback';
 
 // Ending scenario (Figma "Template / Scenario" 89:1838, approved by Dor 2026-10-28):
 // one node at a time. The context in Hebrew, Juan's line on the shared turn card, and
 // the answers in Spanish only. States Choice, Translation, Nonverbal (no line from Juan),
-// Retry, Advance and End, each decided only by the server's reply. Juan's translation
+// Retry, Advance and End, each decided only by the server's reply. A wrong answer lights
+// up pink for a moment and the message stays under the answers, which stay tappable. Juan's translation
 // comes from the server on a tap, is registered as help and then stays open. At the end
 // node it comes with the node, since the scenario is complete. "חזרה" shows in every
 // state and only moves the view back.
@@ -49,8 +50,10 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
   const gutter = (windowWidth - column) / 2;
   // The card leaves room for Juan's 56pt avatar and a margin, as in the dialogue.
   const card = column - BADGE - 10 - 16;
-  const [wrong, setWrong] = useState<string[]>([]);
+  const [flashing, flash] = useRetryFlash<string>();
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const scroll = useRef<ScrollView>(null);
+  const reduceMotion = useReducedMotion();
   const [lastWrong, setLastWrong] = useState<{ id: string; tap: number } | null>(null);
   const [translationHe, setTranslationHe] = useState<string | null>(null);
   const [translated, setTranslated] = useState(false);
@@ -66,9 +69,11 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
     if ((result.outcome === 'advanced' || result.outcome === 'scenario_completed') && next) {
       setFeedback({ kind: 'advance', choiceId, messageHe: result.feedbackHe ?? '', next });
     } else if (result.outcome === 'retry') {
-      setWrong(current => current.includes(choiceId) ? current : [...current, choiceId]);
+      flash(choiceId);
       setLastWrong(current => ({ id: choiceId, tap: (current?.tap ?? 0) + 1 }));
       setFeedback({ kind: 'retry', messageHe: result.feedbackHe ?? '' });
+      // The message sits under the answers, which may be below the fold on a small phone.
+      requestAnimationFrame(() => scroll.current?.scrollToEnd({ animated: !reduceMotion }));
     }
   }
   // Once shown, the translation stays. Before the end it is asked for as help.
@@ -87,7 +92,7 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
 
   const ticketState = (choiceId: string): TicketState => {
     if (feedback?.kind === 'advance') return feedback.choiceId === choiceId ? 'right' : 'dimmed';
-    return wrong.includes(choiceId) ? 'wrong' : 'default';
+    return flashing === choiceId ? 'wrong' : 'default';
   };
   const pad = (n: number) => String(n).padStart(2, '0');
   // Asking for the translation needs the scenario to be current on the server; the end
@@ -108,7 +113,7 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
   return <View style={styles.root}>
     <StatusBar style="light" />
     <LessonHeader code={header.code} index={header.index} count={header.count} onClose={onClose} topInset={insets.top} />
-    <ScrollView contentInsetAdjustmentBehavior="never" contentContainerStyle={[styles.content, { paddingHorizontal: gutter }]}>
+    <ScrollView ref={scroll} contentInsetAdjustmentBehavior="never" contentContainerStyle={[styles.content, { paddingHorizontal: gutter }]}>
       <Text accessibilityRole="header" style={styles.title}>{content.titleHe}</Text>
       {node.terminal ? <>
         {/* End: Juan's last line, then what happens, in larger type. */}
@@ -123,24 +128,23 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
             shake={lastWrong?.id === choice.id ? lastWrong.tap : 0}
             disabled={save.busy || advanced || locked} onPress={() => { void choose(choice.id); }} />)}
         </View>
+        {feedback?.kind === 'retry' ? <RetryNote key={`retry-${lastWrong?.tap ?? 0}`} messageHe={feedback.messageHe} /> : null}
       </>}
       {save.busy ? <ActivityIndicator color={c.gold} /> : null}
     </ScrollView>
     {/* Feedback stays pinned to the bottom while the column scrolls. */}
-    <View style={{ paddingHorizontal: feedback || locked ? 0 : gutter }}>
+    <View style={{ paddingHorizontal: advanced || locked ? 0 : gutter }}>
       <LessonSaveError message={save.errorHe} />
       {feedback?.kind === 'advance'
         ? <SuccessSheet messageHe={feedback.messageHe} bottomInset={insets.bottom} onContinue={() => onShowNode(feedback.next)} onBack={back} />
-        : feedback?.kind === 'retry'
-          ? <RetrySheet key={`retry-${lastWrong?.tap ?? 0}`} messageHe={feedback.messageHe} bottomInset={insets.bottom} onBack={onBack} />
-          : locked ? <ContinueSheet bottomInset={insets.bottom} onContinue={onContinue} onBack={onBack} />
-            : <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 20) }]}>
-              {node.terminal ? <LessonButtonRow>
-                {/* Right to left: back on the right, the main action on the left. */}
-                <View style={styles.back}><LessonSecondaryButton label="חזרה" onPress={onBack} /></View>
-                <View style={styles.next}><LessonButton label="ממשיכים" onPress={onContinue} /></View>
-              </LessonButtonRow> : <LessonSecondaryButton label="חזרה" disabled={save.busy} onPress={onBack} />}
-            </View>}
+        : locked ? <ContinueSheet bottomInset={insets.bottom} onContinue={onContinue} onBack={onBack} />
+          : <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 20) }]}>
+            {node.terminal ? <LessonButtonRow>
+              {/* Right to left: back on the right, the main action on the left. */}
+              <View style={styles.back}><LessonSecondaryButton label="חזרה" onPress={onBack} /></View>
+              <View style={styles.next}><LessonButton label="ממשיכים" onPress={onContinue} /></View>
+            </LessonButtonRow> : <LessonSecondaryButton label="חזרה" disabled={save.busy} onPress={onBack} />}
+          </View>}
     </View>
   </View>;
 }
@@ -164,8 +168,8 @@ type TicketState = 'default' | 'wrong' | 'right' | 'dimmed';
 
 // Spanish phrase ticket (Figma "Lesson / Phrase ticket" 78:309, Direction=LTR, approved
 // 2026-10-28). It reads left to right: the hole, the perforation, the phrase and, at the
-// right end, the mark. A wrong ticket shakes, turns pink and stays tappable; after the
-// right one the others dim.
+// right end, the mark. A wrong ticket shakes and is pink for a moment, then looks as
+// before and stays tappable; after the right one the others dim.
 function PhraseTicket({ textEs, state, shake, disabled, onPress }: { textEs: string; state: TicketState; shake: number; disabled: boolean; onPress: () => void }) {
   const reduceMotion = useReducedMotion();
   const offset = useSharedValue(0);

@@ -8,7 +8,7 @@ import type { AttemptResult } from '../../../content/src/progress-types';
 import { retro } from '../theme';
 import { LessonButton, LessonButtonRow, LessonSaveError, LessonSecondaryButton, type SaveState } from './lesson-button';
 import { LessonHeader } from './lesson-header';
-import { ContinueSheet, Stamp, SuccessSheet } from './lesson-sheet';
+import { ContinueSheet, RetryNote, Stamp, SuccessSheet, useRetryFlash } from './lesson-sheet';
 import type { LessonResponse } from './opening-data';
 import { Perforation } from './vocabulary-card-screen';
 
@@ -16,7 +16,8 @@ import { Perforation } from './vocabulary-card-screen';
 // rebuild a prepared expression from word tiles on a boarding pass. Tap a tile to drop
 // it into the next free slot, tap a placed tile to send it back; there is no dragging.
 // "בדיקה" sends the order and the server decides: the app never knows the right order.
-// A wrong order stays in place in pink and the first change clears it. The hint comes
+// A wrong order stays in place: the tiles are pink for a moment, the message stays
+// under the tray, and the first change clears it. The hint comes
 // from the server, which records it as help. "חזרה" shows in every state.
 const c = retro.colors;
 const f = retro.fonts;
@@ -47,6 +48,7 @@ export function ArrangeScreen({ content, header, unitShort, reviewOnly, save, on
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [hint, setHint] = useState<{ titleHe: string; bodyHe: string } | null>(null);
   const [wrongTaps, setWrongTaps] = useState(0);
+  const [flashing, flash] = useRetryFlash<number>();
   const solved = feedback?.kind === 'correct';
   // A solved check seen again through "חזרה" is view-only: nothing to arrange.
   const locked = reviewOnly && !solved;
@@ -77,6 +79,7 @@ export function ArrangeScreen({ content, header, unitShort, reviewOnly, save, on
     } else if (result.outcome === 'retry') {
       setFeedback({ kind: 'retry', messageHe: result.feedbackHe ?? '' });
       setWrongTaps(n => n + 1);
+      flash(wrongTaps + 1);
     }
   }
   async function showHint() {
@@ -86,7 +89,7 @@ export function ArrangeScreen({ content, header, unitShort, reviewOnly, save, on
     if (revealed && 'bodyHe' in revealed && !('type' in revealed)) setHint({ titleHe: revealed.titleHe, bodyHe: revealed.bodyHe });
   }
 
-  const slotState = (id: string | null): TileState => id === null ? 'ghost' : solved ? 'right' : feedback?.kind === 'retry' ? 'wrong' : 'placed';
+  const slotState = (id: string | null): TileState => id === null ? 'ghost' : solved ? 'right' : feedback?.kind === 'retry' && flashing !== null ? 'wrong' : 'placed';
   const pad = (n: number) => String(n).padStart(2, '0');
   const code = `${unitShort}·${pad(header.index + 1)}`;
 
@@ -124,9 +127,7 @@ export function ArrangeScreen({ content, header, unitShort, reviewOnly, save, on
       </View>
       <View style={styles.messages}>
         {hint ? <HintBox titleHe={hint.titleHe} bodyHe={hint.bodyHe} /> : null}
-        {feedback?.kind === 'retry' ? <View style={styles.retryBox}>
-          <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.retryText}>{feedback.messageHe}</Text>
-        </View> : null}
+        {feedback?.kind === 'retry' ? <RetryNote key={`retry-${wrongTaps}`} messageHe={feedback.messageHe} /> : null}
         {content.helpId && !hint && !solved && !locked ? <Pressable accessibilityRole="button" accessibilityLabel="רמז"
           disabled={save.busy} onPress={() => { void showHint(); }} style={({ pressed }) => [styles.hintPill, pressed && styles.pressed]}>
           <Text style={styles.hintPillLabel}>רמז</Text>
@@ -265,8 +266,6 @@ const styles = StyleSheet.create({
   hintText: { flex: 1, gap: 2 },
   hintTitle: { fontFamily: f.heavy, fontSize: 14, lineHeight: 20, color: c.rust, writingDirection: 'rtl' },
   hintBody: { fontFamily: f.body, fontSize: 17, lineHeight: 26, color: c.night, writingDirection: 'rtl' },
-  retryBox: { backgroundColor: c.pink, borderRadius: 16, paddingHorizontal: 16, paddingVertical: 12 },
-  retryText: { fontFamily: f.body, fontSize: 17, lineHeight: 26, color: c.plum, writingDirection: 'rtl' },
   hintPill: {
     alignSelf: 'center', height: 44, borderRadius: 22, backgroundColor: c.cream, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 6,
     shadowColor: '#000', shadowOpacity: 0.25, shadowRadius: 6, shadowOffset: { width: 0, height: 6 },

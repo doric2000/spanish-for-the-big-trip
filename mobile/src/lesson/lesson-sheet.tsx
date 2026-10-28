@@ -1,12 +1,13 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useReducedMotion, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { retro } from '../theme';
 import { LessonButtonRow, LessonDarkButton, LessonSheetSecondaryButton } from './lesson-button';
 
-// Shared by the checks that the server marks right or wrong (listen-select, arrange):
-// the success stamp, the bottom sheet's rise, and the sheets that offer "ממשיכים".
+// Shared by the checks that the server marks right or wrong (listen-select, arrange,
+// scenario): the success stamp, the bottom sheet's rise, the sheets that offer "ממשיכים",
+// and the retry note with its short flash.
 const c = retro.colors;
 const f = retro.fonts;
 const STAMP = 116;
@@ -31,19 +32,31 @@ export function SuccessSheet({ messageHe, bottomInset, onContinue, onBack }: { m
   </Animated.View>;
 }
 
-// Retry: pink, the server's message and "חזרה". Another answer stays possible above it.
-export function RetrySheet({ messageHe, bottomInset, onBack }: { messageHe: string; bottomInset: number; onBack: () => void }) {
-  const style = useSheetRise();
-  return <Animated.View style={[styles.sheet, styles.retrySheet, { paddingBottom: Math.max(bottomInset, 20) + 24 }, style]}>
-    <View style={styles.retryRow}>
-      <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" accessible={false}>
-        <Path d="M3 12C2.99812 14.0611 3.7037 16.0603 4.99882 17.6636C6.29394 19.2669 8.10012 20.3771 10.1155 20.8087C12.1308 21.2403 14.2333 20.967 16.0714 20.0347C17.9095 19.1023 19.3719 17.5673 20.2142 15.6862C21.0564 13.8051 21.2276 11.6919 20.6989 9.69981C20.1703 7.7077 18.9739 5.9574 17.3098 4.74142C15.6457 3.52545 13.6146 2.9175 11.556 3.01916C9.4975 3.12083 7.53622 3.92597 6 5.3" strokeWidth={2.2} strokeLinecap="round" stroke={c.plum} />
-        <Path d="M3 4V8.5H7.5" strokeWidth={2.2} strokeLinecap="round" stroke={c.plum} />
-      </Svg>
-      <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.retryText}>{messageHe}</Text>
-    </View>
-    <LessonSheetSecondaryButton label="חזרה" onPress={onBack} />
-  </Animated.View>;
+// Retry (Figma Retry on 89:1838, 84:1014 and 88:1844, approved by Dor 2026-10-28): no
+// sheet. The wrong answer lights up pink for a moment, then the server's message stays
+// under the answers and the learner answers again; "חזרה" stays a plain button below.
+export const RETRY_FLASH_MS = 1200;
+
+// The answer that is lit up as wrong right now, or null. Each flash restarts the timer,
+// and leaving the screen clears it.
+export function useRetryFlash<T>() {
+  const [flashing, setFlashing] = useState<T | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
+  const flash = useCallback((value: T) => {
+    if (timer.current) clearTimeout(timer.current);
+    setFlashing(value);
+    timer.current = setTimeout(() => setFlashing(null), RETRY_FLASH_MS);
+  }, []);
+  return [flashing, flash] as const;
+}
+
+// The server's retry message, under the answers. Give it a new key on each wrong answer so
+// VoiceOver reads it again.
+export function RetryNote({ messageHe }: { messageHe: string }) {
+  return <View style={styles.retryNote}>
+    <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.retryText}>{messageHe}</Text>
+  </View>;
 }
 
 // A solved check seen again: nothing to answer, only the way forward.
@@ -88,9 +101,8 @@ export function CheckIcon({ size, color }: { size: number; color: string }) {
 
 const styles = StyleSheet.create({
   sheet: { borderTopLeftRadius: 26, borderTopRightRadius: 26, paddingTop: 22, paddingHorizontal: 24, backgroundColor: c.cream, gap: 14 },
-  retrySheet: { backgroundColor: c.pink },
-  retryRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
-  retryText: { flex: 1, fontFamily: f.body, fontSize: 17, lineHeight: 26, color: c.plum, writingDirection: 'rtl' },
+  retryNote: { backgroundColor: c.pink, borderRadius: 16, paddingHorizontal: 16, paddingVertical: 12 },
+  retryText: { fontFamily: f.body, fontSize: 17, lineHeight: 26, color: c.plum, writingDirection: 'rtl' },
   successText: { fontFamily: f.bold, fontSize: 19, lineHeight: 28, color: c.night, writingDirection: 'rtl' },
   back: { flex: 1 },
   next: { flex: 2 },
