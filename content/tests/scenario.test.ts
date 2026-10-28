@@ -96,11 +96,52 @@ test('scenario projection separates Hebrew actions from speech and exposes only 
   assert.equal(shown.node.contextHe, activity.nodes[1]!.contextHe);
   assert.equal(shown.node.promptHe, activity.nodes[1]!.promptHe);
   assert.equal(shown.node.textEs, null);
-  assert.equal(shown.node.translationHe, null);
+  assert.equal('translationHe' in shown.node, false);
   assert.equal(shown.node.audioAssetId, null);
   const output = JSON.stringify(shown);
   for (const key of ['nextNodeId', 'outcome', 'feedbackHe', 'review', 'nodes']) assert.equal(output.includes(`"${key}":`), false, key);
   assert.equal(output.includes('sugar-answer'), false);
+});
+
+test('a spoken line hides its translation and the Hebrew choice labels until the learner asks for them', () => {
+  const activity = scene(realDraft());
+  const shown = projectActivity(activity, 'greeting');
+  assert.ok('node' in shown);
+  assert.equal(shown.node.textEs, 'Buenos días.');
+  assert.equal('translationHe' in shown.node, false);
+  assert.ok(shown.node.choices.length > 0);
+  for (const choice of shown.node.choices) assert.equal('textHe' in choice, false, choice.id);
+  assert.equal(JSON.stringify(shown).includes('בוקר טוב'), false);
+});
+
+test('asking for Juan\'s translation is registered as help, stays on the node and then advances normally', () => {
+  const unit = withAuthoredScene(); const initial = beginScene(unit);
+  const asked = submit(unit, initial, { kind: 'scenario_translation', nodeId: 'greeting' });
+  assert.equal(asked.result.outcome, 'help');
+  assert.deepEqual(asked.result.revealed, { translationHe: 'בוקר טוב.' });
+  assert.equal(asked.state.progress.scenarioNodeId, 'greeting');
+  assert.equal(asked.state.progress.usedHelpForCurrent, true);
+  const again = submit(unit, asked.state, { kind: 'scenario_translation', nodeId: 'greeting' });
+  assert.equal(again.state.progress.scenarioNodeId, 'greeting');
+  const advanced = choose(unit, again.state, 'buenos-dias');
+  assert.equal(advanced.state.progress.scenarioNodeId, 'offer-coffee');
+  // Assistance on a line is kept for the whole scene and recorded when the scene completes.
+  const offered = choose(unit, advanced.state, 'cafe');
+  assert.equal(offered.state.progress.scenarioNodeId, 'coffee-answer');
+  const finished = choose(unit, offered.state, 'azucar');
+  assert.equal(finished.state.progress.currentActivityId, 'test-review');
+  assert.equal(finished.state.progress.completed.at(-1)!.usedHelp, true);
+});
+
+test('translation requests are refused for silent nodes, other nodes and finished scenes', () => {
+  const unit = withAuthoredScene(); const initial = beginScene(unit);
+  rejects(() => submit(unit, initial, { kind: 'scenario_translation', nodeId: 'offer-coffee' }), 409);
+  const greeted = choose(unit, initial, 'hola').state;
+  rejects(() => submit(unit, greeted, { kind: 'scenario_translation', nodeId: 'greeting' }), 409);
+  rejects(() => submit(unit, greeted, { kind: 'scenario_translation', nodeId: 'offer-coffee' }), 400);
+  const answered = choose(unit, choose(unit, greeted, 'cafe').state, 'azucar').state;
+  assert.equal(answered.progress.currentActivityId, 'test-review');
+  rejects(() => submit(unit, answered, { kind: 'scenario_translation', nodeId: 'sugar-answer' }), 400);
 });
 
 test('every greeting leads through the coffee and sugar offers to the answer from Juan before recap', () => {

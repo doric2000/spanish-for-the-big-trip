@@ -37,6 +37,7 @@
     "choice": "Listen-select choiceId; server decides correctness.",
     "arrange": "Ordered tileIds containing each available tile exactly once. Missing, duplicate or unknown IDs return400; wrong order stays in place and marks corrective assistance. Answer order and feedback remain private until submission. Pre-submit editing/shuffling is local UI state, not an attempt.",
     "scenario_choice": "Current nodeId and choiceId; server decides next node or retry.",
+    "scenario_translation": "Current nodeId of a spoken scenario line; returns its Hebrew translation as assistance (revealed.translationHe), stays on the node and does not advance. Refused when the node has no translation.",
     "self_comparison": "compared=true and mode=recording|without_microphone; no pronunciation judgment.",
     "written_hint": "Allowed written expression; stays in place and marks assistance.",
     "help": "Allowed helpId; stays in place and marks assistance.",
@@ -101,7 +102,7 @@
     "promptHe": "Learner action prompt. Required for nonterminal nonverbal choice nodes.",
     "speech": "textEs, translationHe and audioAssetId are either all present or all null. Nonverbal nodes require contextHe. Existing spoken-only nodes remain valid.",
     "playback": "Play only non-null audioAssetId. A gesture or outcome does not fabricate Spanish speech or require a recording.",
-    "projection": "Only the requested current node and its choices are public; branch destinations, outcomes, feedback and reviews remain private.",
+    "projection": "Only the requested current node and its choices are public; branch destinations, outcomes, feedback and reviews remain private. Choices carry only textEs (no Hebrew labels), and a spoken line's translationHe is withheld until a scenario_translation request is recorded as help.",
     "progression": "Both accepted and declined seat preferences advance. Resume preserves scenarioNodeId and usedHelpForCurrent. Completion reveals the final context before moving to recap; it does not skip review/summary."
   }
 }

@@ -11,6 +11,6 @@ export type Progress = {
 };
 export type AttemptResult = {
   outcome: Evidence | 'retry' | 'advanced' | 'help'; feedbackHe: string | null;
-  revealed: ReturnType<typeof projectActivity> | { expressionEs: string } | { titleHe: string; bodyHe: string; audioAssetId: string | null } | null;
+  revealed: ReturnType<typeof projectActivity> | { expressionEs: string } | { titleHe: string; bodyHe: string; audioAssetId: string | null } | { translationHe: string } | null;
   progress: Progress;
 };

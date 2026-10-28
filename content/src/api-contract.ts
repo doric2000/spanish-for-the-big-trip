@@ -11,6 +11,7 @@ export const AttemptRequestSchema = z.strictObject({
     z.strictObject({ kind: z.literal('choice'), choiceId: id }),
     z.strictObject({ kind: z.literal('arrange'), tileIds: z.array(id).min(1) }),
     z.strictObject({ kind: z.literal('scenario_choice'), nodeId: id, choiceId: id }),
+    z.strictObject({ kind: z.literal('scenario_translation'), nodeId: id }),
     z.strictObject({ kind: z.literal('self_comparison'), mode: z.enum(['recording', 'without_microphone']), compared: z.literal(true) }),
     z.strictObject({ kind: z.literal('written_hint') }),
     z.strictObject({ kind: z.literal('help'), helpId: id }),
@@ -46,8 +47,9 @@ export function projectActivity(activity: Activity, scenarioNodeId?: string) {
         id: node.id,
         ...(node.contextHe ? { contextHe: node.contextHe } : {}),
         ...(node.promptHe ? { promptHe: node.promptHe } : {}),
-        textEs: node.textEs, translationHe: node.translationHe, audioAssetId: node.audioAssetId,
-        terminal: node.terminal, choices: node.choices.map(c => ({ id: c.id, textEs: c.textEs, textHe: c.textHe })),
+        // The translation of Juan's line is withheld until the learner asks for it (a registered help).
+        textEs: node.textEs, audioAssetId: node.audioAssetId,
+        terminal: node.terminal, choices: node.choices.map(c => ({ id: c.id, textEs: c.textEs })),
       } };
     }
     case 'summary': return { ...common, type: activity.type, titleHe: activity.titleHe, bodyHe: activity.bodyHe, actionLabelHe: activity.actionLabelHe };

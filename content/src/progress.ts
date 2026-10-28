@@ -91,6 +91,12 @@ export function applyAttempt(actor: VerifiedActor | null, unit: Unit, state: Sub
     feedbackHe = completed ? activity.feedback.correctHe : activity.feedback.retryHe;
   } else if (activity.type === 'speak_reveal' && response.kind === 'self_comparison') {
     outcome = 'self_compared'; completed = true;
+  } else if (activity.type === 'bounded_scenario' && response.kind === 'scenario_translation') {
+    // Asking for Juan's translation is assistance: it stays on the same node and does not advance.
+    const node = activity.nodes.find(n => n.id === progress.scenarioNodeId);
+    if (!node || response.nodeId !== node.id) throw new ContractError(409, 'Scenario node changed');
+    if (node.translationHe === null) throw new ContractError(400, 'This scenario line has no translation');
+    outcome = 'help'; progress.usedHelpForCurrent = true; revealed = { translationHe: node.translationHe };
   } else if (activity.type === 'bounded_scenario' && response.kind === 'scenario_choice') {
     const node = activity.nodes.find(n => n.id === progress.scenarioNodeId);
     if (!node || response.nodeId !== node.id) throw new ContractError(409, 'Scenario node changed');
