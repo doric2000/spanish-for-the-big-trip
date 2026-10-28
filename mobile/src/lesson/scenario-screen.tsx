@@ -18,8 +18,9 @@ import { usePlayback } from './playback';
 // one node at a time. The context in Hebrew, Juan's line on the shared turn card, and
 // the answers in Spanish only. States Choice, Translation, Nonverbal (no line from Juan),
 // Retry, Advance and End, each decided only by the server's reply. Juan's translation
-// comes from the server on the first tap and is registered as help; later taps only hide
-// and show it. "חזרה" shows in every state and only moves the view back.
+// comes from the server on a tap, is registered as help and then stays open. At the end
+// node it comes with the node, since the scenario is complete. "חזרה" shows in every
+// state and only moves the view back.
 // Open (card 06.5): the scene image above the context.
 const c = retro.colors;
 const f = retro.fonts;
@@ -70,10 +71,10 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
       setFeedback({ kind: 'retry', messageHe: result.feedbackHe ?? '' });
     }
   }
-  // Only the first tap asks the server (and counts as help); after that it is a toggle.
+  // Once shown, the translation stays. Before the end it is asked for as help.
   async function translate() {
-    if (translationHe !== null) { setTranslated(shown => !shown); return; }
-    if (save.busy) return;
+    if (node.terminal) { setTranslated(true); return; }
+    if (save.busy || translated) return;
     const result = await onAnswer({ kind: 'scenario_translation', nodeId: node.id });
     if (result?.revealed && 'translationHe' in result.revealed) {
       setTranslationHe(result.revealed.translationHe);
@@ -89,15 +90,17 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
     return wrong.includes(choiceId) ? 'wrong' : 'default';
   };
   const pad = (n: number) => String(n).padStart(2, '0');
-  // Asking for the translation needs the scenario to be current on the server.
-  const canTranslate = !reviewOnly && !advanced;
+  // Asking for the translation needs the scenario to be current on the server; the end
+  // node already has it.
+  const canTranslate = !translated && (node.terminal ? node.translationHe !== null : !reviewOnly && !advanced);
+  const onTranslate = canTranslate ? () => { void translate(); } : null;
   const line: TurnLine | null = node.textEs === null ? null
-    : { speaker: 'character', speakerNameHe: content.characterNameHe, textEs: node.textEs, translationHe: translationHe ?? '' };
+    : { speaker: 'character', speakerNameHe: content.characterNameHe, textEs: node.textEs, translationHe: translationHe ?? node.translationHe ?? '' };
   const juan = line ? <View>
     {audio ? <PlayableLine key={node.id} source={audio} turn={line} avatar={avatar} width={card} translated={translated}
-      onTranslate={canTranslate || translationHe !== null ? () => { void translate(); } : null} />
+      onTranslate={onTranslate} />
       : <TurnCard turn={line} avatar={avatar} width={card} translated={translated} playing={false}
-        onTranslate={canTranslate || translationHe !== null ? () => { void translate(); } : null}
+        onTranslate={onTranslate}
         play={<TurnPlay label={`השמעה: ${line.textEs}`} playing={false} disabled onPress={() => {}} />} />}
     {node.terminal ? <Stamp code={`${unitShort}·${pad(header.index + 1)}`} style={styles.stamp} /> : null}
   </View> : null;
@@ -159,10 +162,10 @@ function PlayableLine({ source, ...props }: { source: AudioSource; turn: TurnLin
 
 type TicketState = 'default' | 'wrong' | 'right' | 'dimmed';
 
-// Spanish phrase ticket (Figma "Lesson / Phrase ticket" 78:309, Spanish-only version
-// approved 2026-10-28). It reads left to right: the mark, the phrase, the perforation and
-// the hole. A wrong ticket shakes, turns pink and stays tappable; after the right one the
-// others dim.
+// Spanish phrase ticket (Figma "Lesson / Phrase ticket" 78:309, Direction=LTR, approved
+// 2026-10-28). It reads left to right: the hole, the perforation, the phrase and, at the
+// right end, the mark. A wrong ticket shakes, turns pink and stays tappable; after the
+// right one the others dim.
 function PhraseTicket({ textEs, state, shake, disabled, onPress }: { textEs: string; state: TicketState; shake: number; disabled: boolean; onPress: () => void }) {
   const reduceMotion = useReducedMotion();
   const offset = useSharedValue(0);
@@ -177,13 +180,12 @@ function PhraseTicket({ textEs, state, shake, disabled, onPress }: { textEs: str
     <Pressable accessibilityRole="radio" accessibilityLabel={textEs} accessibilityLanguage="es-MX"
       accessibilityState={{ checked: state === 'right', disabled }} disabled={disabled} onPress={onPress}
       style={({ pressed }) => [styles.ticket, ticketBackground[state], pressed && styles.pressed]}>
+      <Svg width={12} height={12} accessible={false}><Circle cx={6} cy={6} r={6} fill={c.night} /></Svg>
+      <Svg width={2} height={36} accessible={false}><Line x1={1} x2={1} y1={0} y2={36} stroke={c.night} strokeWidth={2} strokeDasharray="3.6 3.6" /></Svg>
+      <Text style={[styles.ticketText, { color: ink }]}>{textEs}</Text>
       {state === 'wrong' ? <Svg width={24} height={24} viewBox="0 0 24 24" accessible={false}>
         <Path d="M6 6L12 12M12 12L18 18M12 12L18 6M12 12L6 18" strokeWidth={3} strokeLinecap="round" stroke={c.plum} />
       </Svg> : state === 'right' ? <CheckIcon size={24} color={c.night} /> : null}
-      <Text style={[styles.ticketText, { color: ink }]}>{textEs}</Text>
-      <Svg width={2} height={36} accessible={false}><Line x1={1} x2={1} y1={0} y2={36} stroke={c.night} strokeWidth={2} strokeDasharray="3.6 3.6" /></Svg>
-      <Svg width={12} height={12} accessible={false}><Circle cx={6} cy={6} r={6} fill={c.night} /></Svg>
-      <View style={styles.ticketRest} />
     </Pressable>
   </Animated.View>;
 }
@@ -207,14 +209,14 @@ const styles = StyleSheet.create({
   alert: { backgroundColor: c.pink, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10 },
   alertText: { fontFamily: f.body, fontSize: 15, lineHeight: 22, color: c.plum, writingDirection: 'rtl' },
   answers: { gap: 10 },
-  // Spanish reads left to right whatever the app direction; the rounded end is on the left.
+  // Spanish reads left to right whatever the app direction, so here start is the left:
+  // the hole's end has the small radius, the mark's end the large one.
   ticket: {
-    direction: 'ltr', minHeight: 60, flexDirection: 'row', alignItems: 'center', gap: 12, paddingStart: 18, paddingEnd: 16, paddingVertical: 12,
-    borderTopStartRadius: 26, borderBottomStartRadius: 26, borderTopEndRadius: 12, borderBottomEndRadius: 12,
-    shadowColor: '#000', shadowOpacity: 0.25, shadowRadius: 4, shadowOffset: { width: 0, height: 8 },
+    direction: 'ltr', minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: 12, paddingStart: 16, paddingEnd: 18, paddingVertical: 14,
+    borderTopStartRadius: 12, borderBottomStartRadius: 12, borderTopEndRadius: 26, borderBottomEndRadius: 26,
+    shadowColor: '#000', shadowOpacity: 0.25, shadowRadius: 8, shadowOffset: { width: 0, height: 8 },
   },
-  ticketText: { fontFamily: f.heavy, fontSize: 22, lineHeight: 28, textAlign: 'left', writingDirection: 'ltr' },
-  ticketRest: { flex: 1 },
+  ticketText: { flex: 1, fontFamily: f.heavy, fontSize: 26, lineHeight: 32, textAlign: 'left', writingDirection: 'ltr' },
   footer: { paddingTop: 12 },
   back: { flex: 1 },
   next: { flex: 2 },

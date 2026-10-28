@@ -27,7 +27,8 @@ export function TurnCard({ turn, avatar, width, translated, onTranslate, playing
     ? <LearnerBadge size={BADGE} />
     : avatar ? <LessonAvatar {...avatar} size={BADGE} /> : <View style={styles.badgeSpace} />;
   const body = <View style={[styles.card, learner ? styles.learnerCard : styles.characterCard, { width }]}>
-    {playing ? <View pointerEvents="none" style={[styles.outline, { borderColor: learner ? c.cream : c.sunset }]} /> : null}
+    {playing ? <View pointerEvents="none" style={[styles.outline, learner ? styles.learnerOutline : styles.characterOutline,
+      { borderColor: learner ? c.cream : c.sunset }]} /> : null}
     <View style={styles.speakerRow}>
       <Text style={[styles.speakerName, learner && styles.learnerName]}>{turn.speakerNameHe}</Text>
       {playing ? <SoundBars color={learner ? c.night : c.sunset} /> : null}
@@ -100,6 +101,7 @@ function Postage() {
   </View>;
 }
 
+const RADIUS = 20, SHARP = 6, OUTLINE = 5;
 const shadow = { shadowColor: '#000', shadowOpacity: 0.35, shadowRadius: 13, shadowOffset: { width: 0, height: 14 } };
 
 const styles = StyleSheet.create({
@@ -108,11 +110,15 @@ const styles = StyleSheet.create({
   characterTurn: { justifyContent: 'flex-start', transform: [{ rotate: '1deg' }] },
   learnerTurn: { justifyContent: 'flex-end', transform: [{ rotate: '-1.2deg' }] },
   badgeSpace: { width: BADGE },
-  card: { paddingTop: 14, paddingBottom: 16, paddingHorizontal: 16, gap: 6, borderRadius: 20, ...shadow },
+  card: { paddingTop: 14, paddingBottom: 16, paddingHorizontal: 16, gap: 6, borderRadius: RADIUS, ...shadow },
   // The sharp corner points at the speaker: top right for Juan, top left for the learner.
-  characterCard: { backgroundColor: c.cream, borderTopStartRadius: 6 },
-  learnerCard: { backgroundColor: c.gold, borderTopEndRadius: 6 },
-  outline: { position: 'absolute', top: -5, bottom: -5, start: -5, end: -5, borderWidth: 3, borderRadius: 24 },
+  characterCard: { backgroundColor: c.cream, borderTopStartRadius: SHARP },
+  learnerCard: { backgroundColor: c.gold, borderTopEndRadius: SHARP },
+  // Playing (Figma 86:1186): 5pt outside the card, each corner the card's radius plus 5,
+  // so the sharp corner by the speaker stays sharp.
+  outline: { position: 'absolute', top: -OUTLINE, bottom: -OUTLINE, start: -OUTLINE, end: -OUTLINE, borderWidth: 3, borderRadius: RADIUS + OUTLINE },
+  characterOutline: { borderTopStartRadius: SHARP + OUTLINE },
+  learnerOutline: { borderTopEndRadius: SHARP + OUTLINE },
   speakerRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   speakerName: { fontFamily: f.bold, fontSize: 14, lineHeight: 20, color: c.inkMuted, writingDirection: 'rtl' },
   learnerName: { color: c.night },

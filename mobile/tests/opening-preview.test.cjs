@@ -434,6 +434,13 @@ test('dialogue screen: lesson copy only from data, one line at a time, disabled 
   assert.match(turn, /: <TranslationLink textEs=\{turn\.textEs\} onPress=\{onTranslate\} \/>/);
   assert.match(turn, /accessibilityLabel=\{`הסתרת תרגום: \$\{turn\.translationHe\}`\}[^]*onPress=\{onTranslate\}/);
   assert.doesNotMatch(turn, /חואן|Hola|row-reverse|textAlign: 'right'/);
+  // The playing outline follows the card: each corner is the card's radius plus the offset,
+  // so the sharp corner by the speaker stays sharp (Figma 86:1186, Dor's iPhone 2026-10-28).
+  assert.match(turn, /outline: \{[^}]*borderRadius: RADIUS \+ OUTLINE/);
+  assert.match(turn, /characterOutline: \{ borderTopStartRadius: SHARP \+ OUTLINE \}/);
+  assert.match(turn, /learnerOutline: \{ borderTopEndRadius: SHARP \+ OUTLINE \}/);
+  assert.match(turn, /characterCard: \{[^}]*borderTopStartRadius: SHARP/);
+  assert.match(turn, /learnerCard: \{[^}]*borderTopEndRadius: SHARP/);
   const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
   assert.match(preview, /<DialogueScreen[^]*save=\{shownSave\} onNext=\{advance\} onBack=\{back\} onClose=\{onClose\} \/>/);
 });
@@ -568,8 +575,10 @@ test('the scenario step shows the start node in Spanish only: no translation, no
   assert.equal(step.node.id, source.startNodeId);
   assert.equal(step.node.textEs, 'Buenos días.');
   assert.equal(JSON.stringify(step.node.choices), JSON.stringify(source.nodes[0].choices.map(c => ({ id: c.id, textEs: c.textEs }))));
+  // The start node is no end node, so its translation stays on the server until asked for.
+  assert.equal(step.node.translationHe, null);
   const text = JSON.stringify(step);
-  for (const field of ['"translationHe"', '"textHe"', '"outcome"', '"nextNodeId"', '"feedbackHe"']) assert.equal(text.includes(field), false, field);
+  for (const field of ['בוקר טוב', '"textHe"', '"outcome"', '"nextNodeId"', '"feedbackHe"']) assert.equal(text.includes(field), false, field);
   // Every node's recording is looked up by id, because the next node comes only with an answer.
   assert.equal(step.mediaUrls['juan-si-gracias-v1'], null, 'pending audio is not served');
 });
@@ -584,6 +593,8 @@ test('a scenario node comes from any projection of the scenario: the unit, the s
   const end = data.scenarioNodeOf(projectActivity(source, 'sugar-answer'));
   assert.equal(end.terminal, true);
   assert.equal(end.choices.length, 0);
+  assert.equal(end.translationHe, 'לא, תודה.', 'the end node carries its translation');
+  assert.equal(silent.translationHe, null);
   for (const other of [null, { translationHe: 'בוקר טוב.' }, { expressionEs: 'Hola' }, projectActivity(unit.activities[0])]) {
     assert.equal(data.scenarioNodeOf(other), null);
   }
@@ -604,14 +615,21 @@ test('scenario answers and translations pass the server schema, carry no outcome
   assert.equal(data.restorablePending(saved(noNode), me, 'C01-U01', progress), null);
 });
 
-test('scenario screen: lesson copy only from data, the server decides, translation asked once, "חזרה" in every state', () => {
+test('scenario screen: lesson copy only from data, the server decides, translation stays once shown, "חזרה" in every state', () => {
   const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/scenario-screen.tsx'), 'utf8');
   for (const copy of ['חואן', 'Buenos', 'Café', 'Azúcar', 'gracias', 'בוקר טוב', 'איך תענו', 'nextNodeId', 'feedbackHe:']) assert.equal(screen.includes(copy), false, copy);
   assert.match(screen, /onAnswer\(\{ kind: 'scenario_choice', nodeId: node\.id, choiceId \}\)/);
   assert.match(screen, /result\.outcome === 'advanced' \|\| result\.outcome === 'scenario_completed'/);
   assert.match(screen, /result\.outcome === 'retry'/);
-  // The first tap asks the server (registered help); later taps only toggle.
-  assert.match(screen, /if \(translationHe !== null\) \{ setTranslated\(shown => !shown\); return; \}[^]*onAnswer\(\{ kind: 'scenario_translation', nodeId: node\.id \}\)/);
+  // The end node shows its own translation; before that a tap asks the server (registered
+  // help). Once shown the link is gone, so it cannot be hidden again.
+  assert.match(screen, /if \(node\.terminal\) \{ setTranslated\(true\); return; \}[^]*onAnswer\(\{ kind: 'scenario_translation', nodeId: node\.id \}\)/);
+  assert.match(screen, /const canTranslate = !translated && /);
+  assert.doesNotMatch(screen, /setTranslated\(shown => !shown\)/);
+  // The ticket reads left to right as in Figma 78:309: hole, perforation, phrase, mark.
+  const ticket = screen.slice(screen.indexOf('function PhraseTicket'));
+  const order = ['<Circle cx={6}', '<Line x1={1}', 'styles.ticketText', "state === 'wrong' ? <Svg"].map(s => ticket.indexOf(s));
+  assert.ok(order.every((at, i) => at > 0 && (i === 0 || at > order[i - 1])), `ticket order ${order}`);
   // Each node starts fresh.
   assert.match(screen, /<NodeView key=\{props\.node\.id\}/);
   assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{onBack\} \/>/);
