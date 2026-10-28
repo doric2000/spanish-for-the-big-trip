@@ -3640,7 +3640,7 @@
       "open_questions": [
         "Scene image per node is still not in the content schema."
       ],
-      "next_step": "Short understanding check with Dor on the 06.5 code (absolute vs in-flow positioning, the retry timer cleanup), then a new chat for the scenario scene images."
+      "next_step": "Dor closed card 06.5 and postponed the understanding check (2026-10-28); no understanding demonstrated yet for this entry. Scene images moved to 07.5. Next: card 06.6 in a new chat."
     }
   ],
   "entry_template": {
