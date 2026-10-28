@@ -3618,6 +3618,29 @@
         "The last line (No, gracias.) offers no translation, because after the scenario ends the server no longer accepts a translation request for it."
       ],
       "next_step": "Dor runs the scenario on the iPhone: a wrong answer, the translation, leaving mid-scenario and returning, then the end."
+    },
+    {
+      "id": "stage06-scenario-iphone-fixes-2026-10-28",
+      "stage_id": "06",
+      "goal": "Card 06.5: fix what Dor found on the iPhone in the scenario: the reply ticket order, the playing outline, the translation, and the misleading retry sheet.",
+      "practical_owner": "Claude implemented, tested, committed and pushed under the standing authorization; Dor found the issues on the iPhone and decided the new retry behavior.",
+      "practical_action": "Content: the end node carries its translation (e04b2ab). App: ticket order and sizes from Figma 78:309 LTR, outline corners follow the card, translation stays open once shown and the end node shows its own (4b7a06b). Figma: the playing outline radii and the new retry state on 89:1838, 84:1014 and 88:1844, sent to Dor for approval.",
+      "evidence": [
+        "Content 69/69 (new: the end node carries its translation, no help recorded), API 26/26, e2e 10/10; mobile typecheck and lint clean, tests 73/73 (new: ticket order, outline corners, translation stays).",
+        "Not yet checked again on the iPhone; the retry change waits for Dor's Figma approval."
+      ],
+      "concepts": [
+        "Compare the build to the exact template values (get_design_context), not by eye: the order inside an LTR element in an RTL app is easy to flip",
+        "An outline around a shape with mixed corner radii needs each corner's radius plus the offset",
+        "A label must say what the button does: \"חזרה\" in a red retry sheet read as 'try again'"
+      ],
+      "dor_participation": "Dor tested on the iPhone, reported the four issues, and chose: feedback under the answers, the change on all three screens, and a translation at the end.",
+      "understanding_demonstrated": "Not yet checked.",
+      "interview_takeaway": "Device testing catches what unit tests cannot: visual order, shape fidelity and misleading affordances; the fix starts from the approved design, not from the code.",
+      "open_questions": [
+        "Scene image per node is still not in the content schema."
+      ],
+      "next_step": "After Dor approves the retry frames: RetryNote and a short flash on the three screens, then the iPhone check."
     }
   ],
   "entry_template": {
