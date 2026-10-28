@@ -7,10 +7,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, ClipPath, Defs, G, Line, Path, Rect } from 'react-native-svg';
 import type { AttemptResult } from '../../../content/src/progress-types';
 import { retro } from '../theme';
-import { LessonSaveError, LessonSecondaryButton, LessonSheetSecondaryButton, type SaveState } from './lesson-button';
+import { LessonSaveError, LessonSecondaryButton, type SaveState } from './lesson-button';
 import { LessonAvatar } from './lesson-avatar';
 import { LessonHeader } from './lesson-header';
-import { CheckIcon, ContinueSheet, Stamp, SuccessSheet, useSheetRise } from './lesson-sheet';
+import { CheckIcon, ContinueSheet, RetrySheet, Stamp, SuccessSheet } from './lesson-sheet';
 import type { FaceCrop } from './media';
 import type { LessonResponse } from './opening-data';
 import { usePlayback } from './playback';
@@ -198,25 +198,10 @@ function FlapBoard({ text }: { text: string }) {
   </View>;
 }
 
-// Bottom sheet (Figma "Lesson / Feedback" 78:321). Retry: pink, the message and "חזרה".
-// Success: the shared cream sheet with "חזרה" and "ממשיכים".
+// Bottom sheet (Figma "Lesson / Feedback" 78:321): the shared retry and success sheets.
 function FeedbackSheet({ feedback, bottomInset, onContinue, onBack }: { feedback: Feedback; bottomInset: number; onContinue: () => void; onBack: () => void }) {
   if (feedback.kind === 'correct') return <SuccessSheet messageHe={feedback.messageHe} bottomInset={bottomInset} onContinue={onContinue} onBack={onBack} />;
   return <RetrySheet messageHe={feedback.messageHe} bottomInset={bottomInset} onBack={onBack} />;
-}
-
-function RetrySheet({ messageHe, bottomInset, onBack }: { messageHe: string; bottomInset: number; onBack: () => void }) {
-  const style = useSheetRise();
-  return <Animated.View style={[styles.sheet, styles.retrySheet, { paddingBottom: Math.max(bottomInset, 20) + 24 }, style]}>
-    <View style={styles.retryRow}>
-      <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" accessible={false}>
-        <Path d="M3 12C2.99812 14.0611 3.7037 16.0603 4.99882 17.6636C6.29394 19.2669 8.10012 20.3771 10.1155 20.8087C12.1308 21.2403 14.2333 20.967 16.0714 20.0347C17.9095 19.1023 19.3719 17.5673 20.2142 15.6862C21.0564 13.8051 21.2276 11.6919 20.6989 9.69981C20.1703 7.7077 18.9739 5.9574 17.3098 4.74142C15.6457 3.52545 13.6146 2.9175 11.556 3.01916C9.4975 3.12083 7.53622 3.92597 6 5.3" strokeWidth={2.2} strokeLinecap="round" stroke={c.plum} />
-        <Path d="M3 4V8.5H7.5" strokeWidth={2.2} strokeLinecap="round" stroke={c.plum} />
-      </Svg>
-      <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.retryText}>{messageHe}</Text>
-    </View>
-    <LessonSheetSecondaryButton label="חזרה" onPress={onBack} />
-  </Animated.View>;
 }
 
 function EyeIcon() {
@@ -294,10 +279,6 @@ const styles = StyleSheet.create({
   },
   tagText: { flex: 1, fontFamily: f.bold, fontSize: 21, lineHeight: 28, writingDirection: 'rtl' },
   bottom: {},
-  sheet: { borderTopLeftRadius: 26, borderTopRightRadius: 26, paddingTop: 22, paddingHorizontal: 24 },
-  retrySheet: { backgroundColor: c.pink, gap: 14 },
-  retryRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
-  retryText: { flex: 1, fontFamily: f.body, fontSize: 17, lineHeight: 26, color: c.plum, writingDirection: 'rtl' },
   disabled: { opacity: 0.5 },
   pressed: { opacity: 0.85, transform: [{ scale: 0.98 }] },
 });

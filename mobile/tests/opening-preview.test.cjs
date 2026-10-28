@@ -24,9 +24,10 @@ test('mobile preview reads the actual preparation prefix and never skips an unsu
   const learnerUnit = projected(unit);
   const steps = data.openingSteps(learnerUnit);
   // Entry, seven cards, the explanation, two checks, the dialogue, the practice check,
-  // two speaking practices and arranging words; the scenario is not built yet.
-  assert.equal(JSON.stringify(steps.map(s => s.type)), JSON.stringify(['entry', ...Array(7).fill('vocabulary'), 'explanation', 'listen_select', 'listen_select', 'dialogue', 'listen_select', 'speak', 'speak', 'arrange']));
-  assert.equal(unit.activities[steps.length].type, 'bounded_scenario');
+  // two speaking practices, arranging words, the scenario and the review (two checks and
+  // speaking); the summary is not built yet.
+  assert.equal(JSON.stringify(steps.map(s => s.type)), JSON.stringify(['entry', ...Array(7).fill('vocabulary'), 'explanation', 'listen_select', 'listen_select', 'dialogue', 'listen_select', 'speak', 'speak', 'arrange', 'scenario', 'listen_select', 'listen_select', 'speak']));
+  assert.equal(unit.activities[steps.length].type, 'summary');
   assert.equal(steps[0].bodyHe, unit.activities[0].bodyHe);
   assert.equal(steps[0].actionLabelHe, unit.activities[0].actionLabelHe);
   assert.equal(steps[0].sceneAssetId, 'juan-hostel-v1');
@@ -35,7 +36,7 @@ test('mobile preview reads the actual preparation prefix and never skips an unsu
   assert.equal(steps[0].characterNameHe, 'חואן');
   assert.equal(steps[1].characterNameHe, 'חואן');
   const interrupted = structuredClone(learnerUnit);
-  interrupted.activities.splice(2, 0, { type: 'bounded_scenario', id: 'new-required-preparation' });
+  interrupted.activities.splice(2, 0, { type: 'summary', id: 'new-required-preparation' });
   assert.equal(data.openingSteps(interrupted).length, 2, 'do not skip unseen preparation to render later cards');
 });
 
@@ -97,7 +98,8 @@ test('media URLs come only from the server projection: pending audio stays null 
   assert.equal(cards[0].audioUrl, null, 'pending audio is not served');
   assert.equal(cards[1].audioUrl, urls['juan-buenos-dias-v1']);
   const urlsOf = s => s.type === 'entry' ? [s.sceneUrl] : s.type === 'explanation' ? s.examples.map(e => e.audioUrl)
-    : s.type === 'dialogue' ? s.turns.flatMap(t => [t.audioUrl, t.imageUrl]) : s.type === 'arrange' ? [] : [s.audioUrl];
+    : s.type === 'dialogue' ? s.turns.flatMap(t => [t.audioUrl, t.imageUrl]) : s.type === 'arrange' ? []
+      : s.type === 'scenario' ? [s.characterImageUrl, ...Object.values(s.mediaUrls)] : [s.audioUrl];
   assert.equal(data.openingSteps(projected(unit)).flatMap(urlsOf).every(url => url === null), true, 'nothing hosted yet');
   const check = data.openingSteps(projected(unit, urls)).find(s => s.type === 'listen_select');
   assert.equal(check.audioUrl, null, 'the pending Hola recording is not served on the check either');
@@ -274,8 +276,9 @@ test('the server progress decides where the lesson resumes; past the supported s
   assert.equal(data.frontierIndex(steps, at('1a-speak-thanks')), 13);
   assert.equal(data.frontierIndex(steps, at('u1a-speak-decline')), 14);
   assert.equal(data.frontierIndex(steps, at('1a-arrange-greeting')), 15);
-  // The scenario is not built yet: the preview ends there.
-  assert.equal(data.frontierIndex(steps, at('1a-ending-scenario')), steps.length);
+  assert.equal(data.frontierIndex(steps, at('1a-ending-scenario')), 16);
+  // The summary is not built yet: the preview ends there.
+  assert.equal(data.frontierIndex(steps, at('1a-summary')), steps.length);
   assert.equal(data.frontierIndex(steps, at(null, 'completed')), steps.length);
 });
 
@@ -375,13 +378,15 @@ test('listen-select screen: "חזרה" in every state only moves the view back',
   const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/listen-select-screen.tsx'), 'utf8');
   // Question and hint: on the dark background. Retry, correct and a solved check seen again: on the sheet.
   assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{onBack\} \/>/);
-  assert.equal(screen.match(/<LessonSheetSecondaryButton label="חזרה" onPress=\{onBack\} \/>/g).length, 1, 'the retry sheet');
+  assert.match(screen, /<RetrySheet messageHe=\{feedback\.messageHe\} bottomInset=\{bottomInset\} onBack=\{onBack\} \/>/);
   assert.match(screen, /<ContinueSheet [^>]*onBack=\{onBack\}/);
   assert.match(screen, /<SuccessSheet [^>]*onBack=\{onBack\} \/>/);
   assert.match(screen, /<FeedbackSheet [^]*onBack=\{onBack\} \/>/);
   // The success and continue sheets share one row: "חזרה" and "ממשיכים".
   const sheet = fs.readFileSync(path.join(__dirname, '../src/lesson/lesson-sheet.tsx'), 'utf8');
   assert.match(sheet, /<LessonSheetSecondaryButton label="חזרה" onPress=\{onBack\} \/>[^]*<LessonDarkButton label="ממשיכים" onPress=\{onContinue\} \/>/);
+  // The pink retry sheet carries "חזרה" too.
+  assert.match(sheet, /export function RetrySheet[^]*<LessonSheetSecondaryButton label="חזרה" onPress=\{onBack\} \/>/);
   const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
   assert.match(preview, /<ListenSelectScreen [^]*onBack=\{back\} onClose=\{onClose\} \/>/);
   assert.match(preview, /const back = \(\) => \{ if \(!save\.busy\) setIndex\(current => moveOpeningStep\(current, 'back', steps\.length\)\); \};/);
@@ -421,12 +426,14 @@ test('dialogue screen: lesson copy only from data, one line at a time, disabled 
   assert.match(screen, /setSequence\(running => running === index \? running : null\)/);
   // Each line's translation is its own.
   assert.match(screen, /translated: shown\.includes\(turn\.id\)/);
-  assert.match(screen, /accessibilityLanguage="es-MX"/);
   assert.doesNotMatch(screen, /alignSelf: 'center'|row-reverse|textAlign: 'right'/);
-  // Approved turn layout (2026-10-28): play beside the Spanish line, the translation link at the bottom.
-  assert.match(screen, /<View style=\{styles\.spanishLine\}>\s*\{play\}\s*<Text selectable accessibilityLanguage="es-MX"/);
-  assert.match(screen, /: <TranslationLink textEs=\{turn\.textEs\} onPress=\{onTranslate\} \/>/);
-  assert.match(screen, /accessibilityLabel=\{`הסתרת תרגום: \$\{turn\.translationHe\}`\}[^]*onPress=\{onTranslate\}/);
+  // Approved turn layout (2026-10-28), shared with the scenario: play beside the Spanish
+  // line, the translation link at the bottom.
+  const turn = fs.readFileSync(path.join(__dirname, '../src/lesson/dialogue-turn.tsx'), 'utf8');
+  assert.match(turn, /<View style=\{styles\.spanishLine\}>\s*\{play\}\s*<Text selectable accessibilityLanguage="es-MX"/);
+  assert.match(turn, /: <TranslationLink textEs=\{turn\.textEs\} onPress=\{onTranslate\} \/>/);
+  assert.match(turn, /accessibilityLabel=\{`הסתרת תרגום: \$\{turn\.translationHe\}`\}[^]*onPress=\{onTranslate\}/);
+  assert.doesNotMatch(turn, /חואן|Hola|row-reverse|textAlign: 'right'/);
   const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
   assert.match(preview, /<DialogueScreen[^]*save=\{shownSave\} onNext=\{advance\} onBack=\{back\} onClose=\{onClose\} \/>/);
 });
@@ -440,14 +447,14 @@ test('the lesson flow keeps an answer on its screen and moves only on continue',
 
 test('the speaking steps carry the prompt, the model line and its own recording', () => {
   const steps = data.openingSteps(projected(unit)).filter(s => s.type === 'speak');
-  assert.equal(JSON.stringify(steps.map(s => s.id)), JSON.stringify(['1a-speak-thanks', 'u1a-speak-decline']));
+  assert.equal(JSON.stringify(steps.map(s => s.id)), JSON.stringify(['1a-speak-thanks', 'u1a-speak-decline', '1a-review-greet']));
   for (const step of steps) {
     const source = unit.activities.find(a => a.id === step.id);
     assert.equal(step.promptHe, source.promptHe);
     assert.equal(step.modelTextEs, source.modelTextEs);
     assert.equal(step.alternativeHe, source.alternativeHe);
     assert.equal(step.audioAssetId, source.audioAssetId);
-    assert.equal(step.modelNoteHe, null);
+    assert.equal(step.modelNoteHe, source.modelNoteHe ?? null);
     assert.equal(step.audioUrl, null, 'the model recordings are pending');
   }
   // The optional note under the model comes through when the unit has one.
@@ -549,4 +556,73 @@ test('arrange screen: lesson copy only from data, the server decides, taps only,
   assert.match(screen, /<ContinueSheet [^>]*onBack=\{onBack\} \/>/);
   const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
   assert.match(preview, /<ArrangeScreen [^]*reviewOnly=\{index < frontier\} save=\{shownSave\} onAnswer=\{response => tap\(response, false\)\}[^]*onBack=\{back\} onClose=\{onClose\} \/>/);
+});
+
+test('the scenario step shows the start node in Spanish only: no translation, no Hebrew answers, no destinations', () => {
+  const step = data.openingSteps(projected(unit)).find(s => s.type === 'scenario');
+  const source = unit.activities.find(a => a.type === 'bounded_scenario');
+  assert.equal(step.id, '1a-ending-scenario');
+  assert.equal(step.titleHe, source.titleHe);
+  assert.equal(step.characterNameHe, 'חואן');
+  assert.equal(step.characterImageAssetId, 'juan-reference-v1');
+  assert.equal(step.node.id, source.startNodeId);
+  assert.equal(step.node.textEs, 'Buenos días.');
+  assert.equal(JSON.stringify(step.node.choices), JSON.stringify(source.nodes[0].choices.map(c => ({ id: c.id, textEs: c.textEs }))));
+  const text = JSON.stringify(step);
+  for (const field of ['"translationHe"', '"textHe"', '"outcome"', '"nextNodeId"', '"feedbackHe"']) assert.equal(text.includes(field), false, field);
+  // Every node's recording is looked up by id, because the next node comes only with an answer.
+  assert.equal(step.mediaUrls['juan-si-gracias-v1'], null, 'pending audio is not served');
+});
+
+test('a scenario node comes from any projection of the scenario: the unit, the start reply or an answer', () => {
+  const { projectActivity } = require(path.join(root, 'content/dist/src/api-contract.js'));
+  const source = unit.activities.find(a => a.type === 'bounded_scenario');
+  const silent = data.scenarioNodeOf(projectActivity(source, 'offer-coffee'));
+  assert.equal(silent.textEs, null, 'the learner offers first: no line from Juan');
+  assert.equal(silent.audioAssetId, null);
+  assert.equal(JSON.stringify(silent.choices.map(c => c.textEs)), JSON.stringify(['¿Café?', '¿Azúcar?', 'Sí, gracias.']));
+  const end = data.scenarioNodeOf(projectActivity(source, 'sugar-answer'));
+  assert.equal(end.terminal, true);
+  assert.equal(end.choices.length, 0);
+  for (const other of [null, { translationHe: 'בוקר טוב.' }, { expressionEs: 'Hola' }, projectActivity(unit.activities[0])]) {
+    assert.equal(data.scenarioNodeOf(other), null);
+  }
+});
+
+test('scenario answers and translations pass the server schema, carry no outcome and restore only exactly', () => {
+  const { AttemptRequestSchema } = require(path.join(root, 'content/dist/src/api-contract.js'));
+  const me = '00000000-0000-4000-8000-0000000000aa';
+  const progress = { status: 'in_progress', currentActivityId: '1a-ending-scenario', revision: 1, progressVersion: 16 };
+  const saved = r => JSON.stringify({ userId: me, unitId: 'C01-U01', request: r });
+  for (const response of [{ kind: 'scenario_choice', nodeId: 'greeting', choiceId: 'hola' }, { kind: 'scenario_translation', nodeId: 'greeting' }]) {
+    const request = data.attemptRequest(progress, '00000000-0000-4000-8000-00000000000b', response);
+    assert.equal(AttemptRequestSchema.safeParse(request).success, true, response.kind);
+    assert.equal(JSON.stringify(data.restorablePending(saved(request), me, 'C01-U01', progress)), JSON.stringify(request));
+    assert.equal(data.restorablePending(saved({ ...request, response: { ...response, outcome: 'advance' } }), me, 'C01-U01', progress), null);
+  }
+  const noNode = data.attemptRequest(progress, '00000000-0000-4000-8000-00000000000c', { kind: 'scenario_choice', choiceId: 'hola' });
+  assert.equal(data.restorablePending(saved(noNode), me, 'C01-U01', progress), null);
+});
+
+test('scenario screen: lesson copy only from data, the server decides, translation asked once, "חזרה" in every state', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/scenario-screen.tsx'), 'utf8');
+  for (const copy of ['חואן', 'Buenos', 'Café', 'Azúcar', 'gracias', 'בוקר טוב', 'איך תענו', 'nextNodeId', 'feedbackHe:']) assert.equal(screen.includes(copy), false, copy);
+  assert.match(screen, /onAnswer\(\{ kind: 'scenario_choice', nodeId: node\.id, choiceId \}\)/);
+  assert.match(screen, /result\.outcome === 'advanced' \|\| result\.outcome === 'scenario_completed'/);
+  assert.match(screen, /result\.outcome === 'retry'/);
+  // The first tap asks the server (registered help); later taps only toggle.
+  assert.match(screen, /if \(translationHe !== null\) \{ setTranslated\(shown => !shown\); return; \}[^]*onAnswer\(\{ kind: 'scenario_translation', nodeId: node\.id \}\)/);
+  // Each node starts fresh.
+  assert.match(screen, /<NodeView key=\{props\.node\.id\}/);
+  assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{onBack\} \/>/);
+  assert.match(screen, /<RetrySheet [^>]*onBack=\{onBack\} \/>/);
+  assert.match(screen, /<SuccessSheet [^]*?onBack=\{back\} \/>/);
+  assert.match(screen, /<ContinueSheet [^>]*onBack=\{onBack\} \/>/);
+  assert.match(screen, /<LessonSecondaryButton label="חזרה" onPress=\{onBack\} \/>[^]*<LessonButton label="ממשיכים" onPress=\{onContinue\} \/>/);
+  assert.doesNotMatch(screen, /row-reverse|textAlign: 'right'|alignSelf: 'center'/);
+  const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
+  assert.match(preview, /<ScenarioScreen [^]*reviewOnly=\{index < frontier\} save=\{shownSave\} onAnswer=\{response => tap\(response, false\)\}[^]*onBack=\{back\} onClose=\{onClose\} \/>/);
+  // Resuming mid-scenario: the start reply's node wins over the unit's start node.
+  assert.match(preview, /scenarioNodes: resumedNodes\(started\.scenario\)/);
+  assert.match(preview, /const node = nodes\[step\.id\] \?\? step\.node;/);
 });

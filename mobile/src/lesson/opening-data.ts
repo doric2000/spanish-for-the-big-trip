@@ -1,4 +1,4 @@
-import type { PublicUnit } from '../../../content/src/api-contract';
+import type { PublicActivity, PublicUnit } from '../../../content/src/api-contract';
 
 export type OpeningStep =
   | { type: 'entry'; id: string; titleHe: string; bodyHe: string; actionLabelHe: string; sceneAssetId: string; sceneUrl: string | null;
@@ -13,7 +13,23 @@ export type OpeningStep =
   | { type: 'dialogue'; id: string; titleHe: string; translationInitiallyVisible: boolean; turns: DialogueTurn[] }
   | { type: 'speak'; id: string; promptHe: string; modelTextEs: string; modelNoteHe: string | null; alternativeHe: string;
     audioAssetId: string; audioUrl: string | null }
-  | { type: 'arrange'; id: string; titleHe: string; promptHe: string; tiles: { id: string; textEs: string }[]; helpId: string | null };
+  | { type: 'arrange'; id: string; titleHe: string; promptHe: string; tiles: { id: string; textEs: string }[]; helpId: string | null }
+  | { type: 'scenario'; id: string; titleHe: string; node: ScenarioNode; characterNameHe: string;
+    characterImageAssetId: string | null; characterImageUrl: string | null; mediaUrls: Readonly<Record<string, string | null>> };
+
+// The one node the server shows: Juan's line (null when the moment has no words), and
+// the answers in Spanish only. Which answer is right, and where it leads, stays on the server.
+export type ScenarioNode = { id: string; contextHe: string | null; promptHe: string | null; textEs: string | null;
+  audioAssetId: string | null; terminal: boolean; choices: { id: string; textEs: string }[] };
+
+// The node of a projected scenario (from the unit, the start reply or an answer's reply);
+// null for anything else.
+export function scenarioNodeOf(revealed: unknown): ScenarioNode | null {
+  if (!revealed || typeof revealed !== 'object' || (revealed as { type?: unknown }).type !== 'bounded_scenario') return null;
+  const { node } = revealed as Extract<PublicActivity, { type: 'bounded_scenario' }>;
+  return { id: node.id, contextHe: node.contextHe ?? null, promptHe: node.promptHe ?? null, textEs: node.textEs,
+    audioAssetId: node.audioAssetId, terminal: node.terminal, choices: node.choices.map(c => ({ id: c.id, textEs: c.textEs })) };
+}
 
 // One line of the dialogue. The learner's lines carry no character image: they get the
 // plane badge instead (Figma "Lesson / Dialogue turn" 86:913).
@@ -79,6 +95,15 @@ export function openingSteps(unit: PublicUnit): OpeningStep[] {
       // hint text come only in the server's reply.
       steps.push({ type: 'arrange', id: activity.id, titleHe: activity.titleHe, promptHe: activity.promptHe,
         tiles: activity.tiles.map(t => ({ id: t.id, textEs: t.textEs })), helpId: activity.helpIds[0] ?? null });
+    } else if (activity.type === 'bounded_scenario') {
+      // The scenario has no speaker field: its character is the unit's one character.
+      const character = unit.characters.find(c => c.id !== LEARNER_ID);
+      const imageAssetId = character?.imageAssetId ?? null;
+      steps.push({ type: 'scenario', id: activity.id, titleHe: activity.titleHe, node: scenarioNodeOf(activity)!,
+        characterNameHe: character?.displayNameHe ?? '', characterImageAssetId: imageAssetId,
+        characterImageUrl: imageAssetId ? urlOf(imageAssetId) : null,
+        // Each node names its own recording, and the next node arrives only with an answer.
+        mediaUrls: Object.fromEntries(unit.media.map(m => [m.id, m.url])) });
     } else break;
   }
   return steps;
@@ -112,17 +137,20 @@ export function frontierIndex(steps: readonly OpeningStep[], progress: ServerPro
 export type ComparisonMode = 'recording' | 'without_microphone';
 export type LessonResponse = { kind: 'continue' } | { kind: 'choice'; choiceId: string } | { kind: 'written_hint' }
   | { kind: 'self_comparison'; mode: ComparisonMode; compared: true }
-  | { kind: 'arrange'; tileIds: string[] } | { kind: 'help'; helpId: string };
+  | { kind: 'arrange'; tileIds: string[] } | { kind: 'help'; helpId: string }
+  | { kind: 'scenario_choice'; nodeId: string; choiceId: string } | { kind: 'scenario_translation'; nodeId: string };
 
 // Copies only the known fields, so a saved request with anything extra no longer matches.
 function cleanResponse(response: unknown): LessonResponse | null {
   if (!response || typeof response !== 'object') return null;
-  const { kind, choiceId, mode, compared, tileIds, helpId } = response as { kind?: unknown; choiceId?: unknown; mode?: unknown;
-    compared?: unknown; tileIds?: unknown; helpId?: unknown };
+  const { kind, choiceId, mode, compared, tileIds, helpId, nodeId } = response as { kind?: unknown; choiceId?: unknown; mode?: unknown;
+    compared?: unknown; tileIds?: unknown; helpId?: unknown; nodeId?: unknown };
   if (kind === 'continue' || kind === 'written_hint') return { kind };
   if (kind === 'choice' && typeof choiceId === 'string') return { kind, choiceId };
   if (kind === 'arrange' && Array.isArray(tileIds) && tileIds.every(id => typeof id === 'string')) return { kind, tileIds: [...tileIds] };
   if (kind === 'help' && typeof helpId === 'string') return { kind, helpId };
+  if (kind === 'scenario_choice' && typeof nodeId === 'string' && typeof choiceId === 'string') return { kind, nodeId, choiceId };
+  if (kind === 'scenario_translation' && typeof nodeId === 'string') return { kind, nodeId };
   if (kind === 'self_comparison' && (mode === 'recording' || mode === 'without_microphone') && compared === true) return { kind, mode, compared };
   return null;
 }

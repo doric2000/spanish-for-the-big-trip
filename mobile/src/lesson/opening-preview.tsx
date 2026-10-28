@@ -14,8 +14,9 @@ import { ExplanationScreen } from './explanation-screen';
 import type { SaveState } from './lesson-button';
 import { audioFor, faceCropFor, imageFor } from './media';
 import { ListenSelectScreen } from './listen-select-screen';
+import { ScenarioScreen } from './scenario-screen';
 import { SpeakScreen } from './speak-screen';
-import { activityCode, attemptRequest, type ComparisonMode, frontierIndex, type LessonRequest, type LessonResponse, moveOpeningStep, openingSteps, restorablePending, sameTap, type OpeningStep, unitCodes } from './opening-data';
+import { activityCode, attemptRequest, type ComparisonMode, frontierIndex, type LessonRequest, type LessonResponse, moveOpeningStep, openingSteps, restorablePending, sameTap, type OpeningStep, type ScenarioNode, scenarioNodeOf, unitCodes } from './opening-data';
 import { clearPending, readPending, savePending } from './pending-store';
 import { VocabularyCardScreen } from './vocabulary-card-screen';
 
@@ -55,7 +56,13 @@ function Action({ title, onPress, secondary = false }: { title: string; onPress:
 }
 
 type Ready = { unitId: string; userId: string; activityCount: number; steps: OpeningStep[]; progress: Progress;
-  restored: LessonRequest | null };
+  restored: LessonRequest | null; scenarioNodes: Record<string, ScenarioNode> };
+
+// The scenario node from a start reply, by activity id; the unit itself has only the start node.
+function resumedNodes(scenario: { id: string } | null): Record<string, ScenarioNode> {
+  const node = scenarioNodeOf(scenario);
+  return scenario && node ? { [scenario.id]: node } : {};
+}
 type Load = { status: 'loading' } | { status: 'failed'; reason: UnitFailure } | ({ status: 'ready' } & Ready);
 
 type PreviewProps = { onOpenRecorder: () => void; onOpenAccount?: () => void; onClose: () => void };
@@ -82,7 +89,7 @@ export default function OpeningPreview(props: PreviewProps) {
       if (saved && !restored) await clearPending(unit.unit.id);
       if (!active) return;
       setLoad({ status: 'ready', unitId: unit.unit.id, userId, activityCount: unit.unit.activities.length,
-        steps: openingSteps(unit.unit), progress: started.progress, restored });
+        steps: openingSteps(unit.unit), progress: started.progress, restored, scenarioNodes: resumedNodes(started.scenario) });
     })();
     return () => { active = false; };
   }, [attempt]);
@@ -100,13 +107,15 @@ export default function OpeningPreview(props: PreviewProps) {
   </View>;
 }
 
-function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial, restored, onOpenRecorder, onOpenAccount, onClose }: PreviewProps & Ready) {
+function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial, restored, scenarioNodes, onOpenRecorder, onOpenAccount, onClose }: PreviewProps & Ready) {
   // The server's progress is the truth; index is only what is on screen. "חזרה" moves
   // the view back without touching the saved progress (approved by Dor, 2026-10-25).
   const [progress, setProgress] = useState(initial);
   const frontier = frontierIndex(steps, progress);
   const [index, setIndex] = useState(frontier);
   const [save, setSave] = useState<SaveState>({ busy: false, errorHe: null });
+  // Where each scenario stands, so "חזרה" and a resume come back to the same node.
+  const [nodes, setNodes] = useState(scenarioNodes);
   // The tap the server has not confirmed yet, also kept in the Keychain so that a
   // resend after closing the app reuses its requestId.
   const pending = useRef<LessonRequest | null>(restored);
@@ -138,7 +147,10 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
       pending.current = null;
       const saved = await startUnit(apiUrl(), unitId, token);
       if (!mounted.current) return null;
-      if (saved.ok) { setProgress(saved.progress); setIndex(frontierIndex(steps, saved.progress)); }
+      if (saved.ok) {
+        setProgress(saved.progress); setIndex(frontierIndex(steps, saved.progress));
+        setNodes(current => ({ ...current, ...resumedNodes(saved.scenario) }));
+      }
     }
     setSave({ busy: false, errorHe: saveMessages[sent.reason] });
     return null;
@@ -228,6 +240,20 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
     reviewOnly={index < frontier} save={shownSave} onAnswer={response => tap(response, false)}
     onContinue={() => setIndex(current => moveOpeningStep(current, 'next', steps.length))} onBack={back} onClose={onClose} />;
 
+  if (step?.type === 'scenario') {
+    const node = nodes[step.id] ?? step.node;
+    const avatarSource = step.characterImageAssetId ? imageFor(step.characterImageAssetId, step.characterImageUrl) : null;
+    const crop = step.characterImageAssetId ? faceCropFor(step.characterImageAssetId) : null;
+    // Answers stay on the screen to show the feedback; "ממשיכים" shows the next node,
+    // and after the last one moves on like any finished check.
+    return <ScenarioScreen key={step.id} content={step} node={node} header={header} unitShort={unitCodes(unitId).short}
+      avatar={avatarSource && crop ? { source: avatarSource, crop } : null}
+      audio={node.audioAssetId ? audioFor(node.audioAssetId, step.mediaUrls[node.audioAssetId] ?? null) : null}
+      reviewOnly={index < frontier} save={shownSave} onAnswer={response => tap(response, false)}
+      onShowNode={next => setNodes(current => ({ ...current, [step.id]: next }))}
+      onContinue={() => setIndex(current => moveOpeningStep(current, 'next', steps.length))} onBack={back} onClose={onClose} />;
+  }
+
   // The end of the supported prefix: a development boundary, not lesson completion.
   return <>
     <StatusBar style="dark" />
@@ -242,7 +268,7 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
         </View>
         {steps.length ? <>
           <Text accessibilityRole="header" style={styles.title}>סיימתם את מקטע הסקירה</Text>
-          <Text style={styles.body}>ראינו את הכניסה, את הכנת המילים, את הבדיקות, את השיחה, את תרגול הדיבור ואת סידור המילים. שאר התרגולים יתחברו בהמשך.</Text>
+          <Text style={styles.body}>ראינו את הכניסה, את הכנת המילים, את הבדיקות, את השיחה, את תרגול הדיבור, את סידור המילים ואת התרחיש המסכם. שאר התרגולים יתחברו בהמשך.</Text>
           <Text style={styles.note}>זו סקירת פיתוח. ההתקדמות נשמרת בחשבון, ומכאן היא תמשיך כשהמסך הבא ייבנה.</Text>
         </> : <Text accessibilityRole="alert" style={styles.error}>לא נמצאו מסכים לסקירה.</Text>}
       </View>

@@ -1,11 +1,13 @@
-import type { AttemptRequest, PublicUnit } from '../../../content/src/api-contract';
+import type { AttemptRequest, PublicActivity, PublicUnit } from '../../../content/src/api-contract';
 import type { AttemptResult, Progress } from '../../../content/src/progress-types';
 
 // conflict (409): the progress moved on elsewhere, or the request id was reused.
 export type UnitFailure = 'not_configured' | 'unreachable' | 'unauthorized' | 'not_found' | 'conflict' | 'server';
 type Failure = { ok: false; reason: UnitFailure };
 export type UnitResult = { ok: true; unit: PublicUnit } | Failure;
-export type StartResult = { ok: true; status: 'started' | 'existing' | 'completed'; progress: Progress } | Failure;
+// scenario: the current scenario at the learner's node, so leaving mid-scenario resumes there.
+type Started = { status: 'started' | 'existing' | 'completed'; progress: Progress; scenario: PublicActivity | null };
+export type StartResult = ({ ok: true } & Started) | Failure;
 export type AttemptOutcome = { ok: true; result: AttemptResult } | Failure;
 
 type Call = { baseUrl: string | undefined; path: string; accessToken: string; body?: unknown; fetchImpl: typeof fetch; timeoutMs: number };
@@ -53,7 +55,7 @@ export async function startUnit(
   baseUrl: string | undefined, unitId: string, accessToken: string,
   fetchImpl: typeof fetch = fetch, timeoutMs = 10_000,
 ): Promise<StartResult> {
-  const result = await callApi<{ status: 'started' | 'existing' | 'completed'; progress: Progress }>(
+  const result = await callApi<Started>(
     { baseUrl, path: `${unitPath(unitId)}/start`, accessToken, body: {}, fetchImpl, timeoutMs });
   return result.ok ? { ok: true, ...result.data } : result;
 }
