@@ -1,0 +1,28 @@
+{
+  "shared": "Style: premium stylized 3D story illustration matching the reference images: tactile fabric, sculpted forms, natural adult proportions, subtle expressive faces, soft warm cinematic light; color harmony terracotta, sage green, cream and natural wood. Not photorealistic, not flat vector, not childish. No text, letters, numbers, labels, speech bubbles, UI, logos or watermarks.",
+  "jobs": [
+    {
+      "id": "kitchen-background",
+      "refs": ["assets/characters/juan/scenes/unit1a-entry-hostel-v1.png"],
+      "size": "1536x1024",
+      "prompt": "The reference image shows the hostel common room; keep its exact style, light and materials. Create the kitchen of the same South American travelers' hostel in the early morning, with NO people at all. Learner's point of view standing at a wooden counter: on the counter in the lower foreground a full glass coffee pot with light steam and a small glass sugar jar with a spoon. Behind: open wooden shelves with a few mugs, cream textured walls, a window with soft morning light, leafy plants, a small round wooden table with two chairs on one side. Keep the middle of the image calm and slightly empty, because a character will be placed there later. Render to the edges.",
+      "out": "assets/backgrounds/hostel-kitchen-morning-v1.png"
+    },
+    {
+      "id": "juan-sleepy-empty-mug",
+      "refs": ["assets/characters/juan/juan-reference-v1.png"],
+      "size": "1024x1536",
+      "background": "transparent",
+      "prompt": "Exactly the same man as the reference image, Juan: same face, brown eyes, thick brows, dark brown wavy hair with the loose curl above his forehead, short neat beard and mustache, warm medium tan skin; same terracotta rolled-sleeve overshirt over a cream T-shirt, olive trousers, off-white sneakers, narrow ochre woven bracelet on his RIGHT wrist. No backpack. A single full-body cutout of Juan on a fully transparent background, no floor, no shadow, no scenery. Pose: he has just woken up, still sleepy, hair slightly tousled, heavy eyelids, a small sleepy smile, holding an EMPTY mug loosely in one hand, giving a small nod toward the viewer. Natural five-finger hands. Whole body inside the frame.",
+      "out": "assets/characters/juan/poses/juan-sleepy-empty-mug-v1.png"
+    },
+    {
+      "id": "juan-holds-out-mug",
+      "refs": ["assets/characters/juan/juan-reference-v1.png"],
+      "size": "1024x1536",
+      "background": "transparent",
+      "prompt": "Exactly the same man as the reference image, Juan: same face, brown eyes, thick brows, dark brown wavy hair with the loose curl above his forehead, short neat beard and mustache, warm medium tan skin; same terracotta rolled-sleeve overshirt over a cream T-shirt, olive trousers, off-white sneakers, narrow ochre woven bracelet on his RIGHT wrist. No backpack. A single full-body cutout of Juan on a fully transparent background, no floor, no shadow, no scenery. Pose: awake now, a warm grateful smile, holding his empty mug out toward the viewer with one hand as if to have it filled. Natural five-finger hands. Whole body inside the frame.",
+      "out": "assets/characters/juan/poses/juan-holds-out-mug-v1.png"
+    }
+  ]
+}
