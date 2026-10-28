@@ -325,7 +325,7 @@
             "Advance",
             "End"
           ],
-          "approved": "Dor, 2026-10-28, card 06.5, after two rounds: Juan's line is the shared dialogue turn (new turn layout); the translation appears only after the learner taps \"הצגת תרגום\", which the server records as help and which cannot be hidden again; replies are Spanish only, with no Hebrew under them, on the LTR variant of the phrase ticket (78:309, Direction=LTR: hole and perforation on the left, mark at the end); all three replies fit above \"חזרה\" even with the translation open. Scene images per node are still to be placed (layered backgrounds and Juan poses)."
+          "approved": "Dor, 2026-10-28, card 06.5, after two rounds: Juan's line is the shared dialogue turn (new turn layout); the translation appears only after the learner taps \"הצגת תרגום\", which the server records as help and which cannot be hidden again; replies are Spanish only, with no Hebrew under them, on the LTR variant of the phrase ticket (78:309, Direction=LTR: hole and perforation on the left, mark at the end); all three replies fit above \"חזרה\" even with the translation open. The End state also offers \"הצגת תרגום\" (Dor, 2026-10-28, after the iPhone check): there the translation comes with the node, because the scenario is already complete and nothing is recorded as help. Scene images per node are still to be placed (layered backgrounds and Juan poses)."
         },
         "summary": {
           "id": "90:1719",

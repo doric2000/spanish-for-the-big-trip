@@ -204,3 +204,13 @@ test('lost-response replay does not repeat the coffee offer and a changed choice
   assert.deepEqual(replay.result, first.result);
   rejects(() => applyAttempt(actor, unit, first.state, { ...attempt, response: { kind: 'scenario_choice', nodeId: 'offer-coffee', choiceId: 'azucar' } }), 409);
 });
+
+test('the end node carries its translation: the scenario is complete, so it is no longer help', () => {
+  const unit = withAuthoredScene(); const initial = beginScene(unit);
+  const finished = choose(unit, choose(unit, choose(unit, initial, 'buenos-dias').state, 'cafe').state, 'azucar');
+  assert.equal(finished.result.outcome, 'scenario_completed');
+  const shown = finished.result.revealed as { node: { terminal: boolean; translationHe?: string } };
+  assert.equal(shown.node.terminal, true);
+  assert.equal(shown.node.translationHe, 'לא, תודה.');
+  assert.equal(finished.state.progress.completed.at(-1)!.usedHelp, false);
+});
