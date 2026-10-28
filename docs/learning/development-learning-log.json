@@ -3547,6 +3547,30 @@
         "When to make Juan's scene pictures (Dor's proposal, open decision under card 07.5)"
       ],
       "next_step": "Card 06.4 closed; next card 06.5 (closing scenario) in a new chat."
+    },
+    {
+      "id": "stage06-scenario-translation-2026-10-28",
+      "stage_id": "06",
+      "goal": "Card 06.5, server part: Juan's Hebrew translation is withheld until the learner asks for it, and asking is recorded as help without advancing the scenario node.",
+      "practical_owner": "Codex (implementation). Dor has not yet approved Figma template 89:1838 and has not run the device check.",
+      "practical_action": "Content: content/src/api-contract.ts (scenario_translation request kind; choices expose only textEs; translationHe hidden from the projection), content/src/progress.ts (rule: same node, usedHelpForCurrent, refused for silent lines), content/src/progress-types.ts, content/api-contract.json, content/tests/scenario.test.ts (4 new or changed tests).",
+      "evidence": [
+        "content tests 68/68 (scenario 9/9); api tests 24/24. No content change to the unit JSON, so no reseed of the development database.",
+        "The screen scenario-screen.tsx and its openingSteps step are not built: they wait for Dor's approval of Figma template 89:1838."
+      ],
+      "concepts": [
+        "Projection as an allowlist: the phone gets only what the current screen may show; a hidden translation never leaves the server until it is asked for",
+        "Assistance is recorded server-side and does not move the learner: a help request keeps the same node and sets usedHelpForCurrent",
+        "Guard clauses in a pure rule function (node mismatch gives 409, a line without translation gives 400) keep stale requests and invalid requests apart"
+      ],
+      "dor_participation": "Pending. Dor approves the screen template 89:1838 and then runs the device check.",
+      "understanding_demonstrated": "Pending. Not inferred from passing tests.",
+      "interview_takeaway": "Why the server, not the app, decides what a learner may see: the app is code anyone can change.",
+      "open_questions": [
+        "Dor: approve Figma template 89:1838 (the six states, where the translation button sits, and where the scene images go).",
+        "Whether the learner's Hebrew choice labels are needed anywhere else in the scenario (they are removed from the projection now)."
+      ],
+      "next_step": "After Dor approves the template: insert the approved images in Figma and register them in the unit media, then build scenario-screen.tsx and the openingSteps step."
     }
   ],
   "entry_template": {
