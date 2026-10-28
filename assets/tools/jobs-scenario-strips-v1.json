@@ -1,0 +1,212 @@
+[
+  {
+    "id": "scenario-greeting",
+    "background": "assets/backgrounds/hostel-kitchen-morning-v1.png",
+    "layers": [
+      {
+        "src": "assets/characters/juan/poses/juan-sleepy-empty-mug-v2.png",
+        "x": 1080,
+        "height": 560,
+        "bottom": 860
+      }
+    ],
+    "crop": [
+      0,
+      290,
+      1536
+    ],
+    "size": [
+      1050,
+      492
+    ],
+    "ratio": 2.1341463414634148
+  },
+  {
+    "id": "scenario-offer-coffee",
+    "background": "assets/backgrounds/hostel-kitchen-counter-clear-v1.png",
+    "layers": [
+      {
+        "src": "assets/characters/juan/poses/juan-holds-out-mug-v2.png",
+        "x": 1060,
+        "height": 560,
+        "bottom": 860
+      },
+      {
+        "src": "assets/props/learner-hand-holds-pot-v1.png",
+        "x": 380,
+        "height": 460,
+        "bottom": 1010
+      }
+    ],
+    "crop": [
+      0,
+      290,
+      1536
+    ],
+    "size": [
+      1050,
+      492
+    ],
+    "ratio": 2.1341463414634148
+  },
+  {
+    "id": "scenario-coffee-answer",
+    "background": "assets/backgrounds/hostel-kitchen-morning-v1.png",
+    "layers": [
+      {
+        "src": "assets/characters/juan/poses/juan-full-mug-thanks-v1.png",
+        "x": 1080,
+        "height": 520,
+        "bottom": 880
+      }
+    ],
+    "crop": [
+      0,
+      290,
+      1536
+    ],
+    "size": [
+      1050,
+      492
+    ],
+    "ratio": 2.1341463414634148
+  },
+  {
+    "id": "scenario-sugar-answer",
+    "background": "assets/backgrounds/hostel-kitchen-table-nook-v1.png",
+    "layers": [
+      {
+        "src": "assets/characters/juan/poses/juan-seated-coffee-v1.png",
+        "x": 760,
+        "height": 470,
+        "bottom": 800
+      }
+    ],
+    "crop": [
+      0,
+      290,
+      1536
+    ],
+    "size": [
+      1050,
+      492
+    ],
+    "ratio": 2.1341463414634148
+  },
+  {
+    "id": "scenario-greeting-scene",
+    "background": "assets/backgrounds/hostel-kitchen-morning-v1.png",
+    "layers": [
+      {
+        "src": "assets/characters/juan/poses/juan-sleepy-empty-mug-v2.png",
+        "x": 955,
+        "height": 630,
+        "bottom": 860
+      }
+    ],
+    "crop": [
+      170,
+      0,
+      1051
+    ],
+    "size": [
+      1170,
+      1140
+    ],
+    "ratio": 1.0263157894736843
+  },
+  {
+    "id": "scenario-offer-coffee-scene",
+    "background": "assets/backgrounds/hostel-kitchen-counter-clear-v1.png",
+    "layers": [
+      {
+        "src": "assets/characters/juan/poses/juan-holds-out-mug-v2.png",
+        "x": 935,
+        "height": 630,
+        "bottom": 860
+      },
+      {
+        "src": "assets/props/learner-hand-holds-pot-v1.png",
+        "x": 380,
+        "height": 460,
+        "bottom": 1010
+      }
+    ],
+    "crop": [
+      170,
+      0,
+      1051
+    ],
+    "size": [
+      1170,
+      1140
+    ],
+    "ratio": 1.0263157894736843
+  },
+  {
+    "id": "scenario-coffee-answer-scene",
+    "background": "assets/backgrounds/hostel-kitchen-morning-v1.png",
+    "layers": [
+      {
+        "src": "assets/characters/juan/poses/juan-full-mug-thanks-v1.png",
+        "x": 955,
+        "height": 590,
+        "bottom": 880
+      }
+    ],
+    "crop": [
+      170,
+      0,
+      1051
+    ],
+    "size": [
+      1170,
+      1140
+    ],
+    "ratio": 1.0263157894736843
+  },
+  {
+    "id": "scenario-sugar-answer-scene",
+    "background": "assets/backgrounds/hostel-kitchen-table-nook-v1.png",
+    "layers": [
+      {
+        "src": "assets/characters/juan/poses/juan-seated-coffee-v1.png",
+        "x": 760,
+        "height": 540,
+        "bottom": 800
+      }
+    ],
+    "crop": [
+      250,
+      0,
+      1051
+    ],
+    "size": [
+      1170,
+      1140
+    ],
+    "ratio": 1.0263157894736843
+  },
+  {
+    "id": "scenario-sugar-answer-end",
+    "background": "assets/backgrounds/hostel-kitchen-table-nook-v1.png",
+    "layers": [
+      {
+        "src": "assets/characters/juan/poses/juan-seated-coffee-v1.png",
+        "x": 760,
+        "height": 470,
+        "bottom": 800
+      }
+    ],
+    "crop": [
+      100,
+      120,
+      1336
+    ],
+    "size": [
+      1170,
+      840
+    ],
+    "ratio": 1.3928571428571428
+  }
+]
