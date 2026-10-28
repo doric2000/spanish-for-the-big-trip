@@ -276,6 +276,7 @@
         },
         "listen_select": {
           "id": "84:1014",
+          "retry": "Dor, 2026-10-28, card 06.5, after the iPhone check (the pink sheet's \"חזרה\" read as \"try again\"): no retry sheet. The wrong answer is pink with ✗ for about 1.2s, then looks as before and stays tappable; the server's message stays in a pink note under the answers until the next answer; \"חזרה\" stays a plain button. Two frames: Retry (the flash) and Retry settled.",
           "states": [
             "Question",
             "Hint",
@@ -306,6 +307,7 @@
         },
         "arrange": {
           "id": "88:1844",
+          "retry": "Dor, 2026-10-28, card 06.5, after the iPhone check (the pink sheet's \"חזרה\" read as \"try again\"): no retry sheet. The wrong answer is pink with ✗ for about 1.2s, then looks as before and stays tappable; the server's message stays in a pink note under the answers until the next answer; \"חזרה\" stays a plain button. Two frames: Retry (the flash) and Retry settled.",
           "states": [
             "Empty",
             "Partial",
@@ -317,6 +319,7 @@
         },
         "bounded_scenario": {
           "id": "89:1838",
+          "retry": "Dor, 2026-10-28, card 06.5, after the iPhone check (the pink sheet's \"חזרה\" read as \"try again\"): no retry sheet. The wrong answer is pink with ✗ for about 1.2s, then looks as before and stays tappable; the server's message stays in a pink note under the answers until the next answer; \"חזרה\" stays a plain button. Two frames: Retry (the flash) and Retry settled.",
           "states": [
             "Choice",
             "Translation",
