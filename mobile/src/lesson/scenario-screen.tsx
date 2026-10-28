@@ -107,7 +107,6 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
       : <TurnCard turn={line} avatar={avatar} width={card} translated={translated} playing={false}
         onTranslate={onTranslate}
         play={<TurnPlay label={`השמעה: ${line.textEs}`} playing={false} disabled onPress={() => {}} />} />}
-    {node.terminal ? <Stamp code={`${unitShort}·${pad(header.index + 1)}`} style={styles.stamp} /> : null}
   </View> : null;
 
   return <View style={styles.root}>
@@ -116,9 +115,10 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
     <ScrollView ref={scroll} contentInsetAdjustmentBehavior="never" contentContainerStyle={[styles.content, { paddingHorizontal: gutter }]}>
       <Text accessibilityRole="header" style={styles.title}>{content.titleHe}</Text>
       {node.terminal ? <>
-        {/* End: Juan's last line, then what happens, in larger type. */}
+        {/* End: Juan's last line, what happens in larger type, then the stamp under it. */}
         {juan}
         {node.contextHe ? <Text style={styles.ending}>{node.contextHe}</Text> : null}
+        <View style={styles.stampRow}><Stamp code={`${unitShort}·${pad(header.index + 1)}`} style={styles.stamp} /></View>
       </> : <>
         {node.contextHe ? <Text style={styles.context}>{node.contextHe}</Text> : null}
         {juan}
@@ -207,8 +207,10 @@ const styles = StyleSheet.create({
   context: { fontFamily: f.body, fontSize: 17, lineHeight: 26, color: c.cream, writingDirection: 'rtl' },
   ending: { fontFamily: f.bold, fontSize: 21, lineHeight: 32, color: c.cream, writingDirection: 'rtl' },
   prompt: { fontFamily: f.bold, fontSize: 17, lineHeight: 24, color: c.cream, writingDirection: 'rtl' },
-  // The stamp sits on the free left side of Juan's card.
-  stamp: { top: -20, end: 0 },
+  // Under the ending text, centered and in the flow, so it never covers Juan's line
+  // (Figma End 89:1771, Dor 2026-10-28). The column gap plus 8 makes the approved 24.
+  stampRow: { alignItems: 'center', marginTop: 8 },
+  stamp: { position: 'relative' },
   lineStack: { gap: 10 },
   alert: { backgroundColor: c.pink, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10 },
   alertText: { fontFamily: f.body, fontSize: 15, lineHeight: 22, color: c.plum, writingDirection: 'rtl' },

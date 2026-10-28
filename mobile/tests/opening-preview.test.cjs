@@ -668,3 +668,13 @@ test('a wrong answer lights up for a moment, the message stays under the answers
   const arrange = fs.readFileSync(path.join(__dirname, '../src/lesson/arrange-screen.tsx'), 'utf8');
   assert.match(arrange, /feedback\?\.kind === 'retry' && flashing !== null \? 'wrong' : 'placed'/);
 });
+
+test('the scenario end stamp sits under the ending text, not on Juan\'s card', () => {
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/scenario-screen.tsx'), 'utf8');
+  const juan = screen.slice(screen.indexOf('const juan = '), screen.indexOf('</View> : null;'));
+  assert.doesNotMatch(juan, /<Stamp/);
+  const ending = screen.indexOf('<Text style={styles.ending}>');
+  const stamp = screen.indexOf('<Stamp code=');
+  assert.ok(ending > 0 && stamp > ending && stamp < screen.indexOf('</> : <>'));
+  assert.match(screen, /stampRow: \{ alignItems: 'center', marginTop: 8 \},\s*stamp: \{ position: 'relative' \},/);
+});
