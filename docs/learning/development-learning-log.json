@@ -3594,6 +3594,30 @@
         "Device check of the new dialogue turn layout."
       ],
       "next_step": "Place the scene images in the scenario, then build scenario-screen.tsx with the LTR replies and the help-recorded translation."
+    },
+    {
+      "id": "stage06-scenario-screen-2026-10-28",
+      "stage_id": "06",
+      "goal": "Card 06.5: build the scenario screen from template 89:1838, wire it into the lesson, and resume a learner who left mid-scenario at the same node.",
+      "practical_owner": "Claude implemented, tested, committed and pushed under the standing authorization; Dor has not run it yet.",
+      "practical_action": "API: ProgressService.start also returns the scenario projected at the learner's node (9319022). App: scenario-screen.tsx, the shared turn card in dialogue-turn.tsx, RetrySheet moved to lesson-sheet.tsx, a scenario step in openingSteps and the preview keeps each scenario's node (db5e8d8).",
+      "evidence": [
+        "API tests 26/26 (new: resume at coffee-answer without answers or Hebrew), e2e 10/10; content 68/68; mobile typecheck and lint clean, tests 73/73.",
+        "Not yet checked on the iPhone."
+      ],
+      "concepts": [
+        "Server-held state must be readable on resume: the unit route showed only the start node, so the start reply now carries the current one",
+        "A projection (allowlist) reused in a second route keeps the same privacy rule: no answers, no destinations",
+        "Extracting a shared component when a second screen needs it, not before"
+      ],
+      "dor_participation": "None yet in this step; the iPhone check and the understanding check are next.",
+      "understanding_demonstrated": "Not yet checked.",
+      "interview_takeaway": "Resumable multi-step flows: the server owns the position, and every entry point (start, answer) returns enough to render it.",
+      "open_questions": [
+        "Scene image per node (template band) is not in the content schema yet.",
+        "The last line (No, gracias.) offers no translation, because after the scenario ends the server no longer accepts a translation request for it."
+      ],
+      "next_step": "Dor runs the scenario on the iPhone: a wrong answer, the translation, leaving mid-scenario and returning, then the end."
     }
   ],
   "entry_template": {
