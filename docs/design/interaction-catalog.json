@@ -290,7 +290,8 @@
             "Translation shown",
             "Playing"
           ],
-          "approved": "Dor, 2026-10-26, card 06.2. Turns are a slot: 1A's six turns scroll between the heading and the controls, and playing the whole dialogue scrolls to the current turn. A turn without its recording shows a disabled play button; the whole-dialogue button plays only the turns that have one and is disabled when none has."
+          "approved": "Dor, 2026-10-26, card 06.2. Turns are a slot: 1A's six turns scroll between the heading and the controls, and playing the whole dialogue scrolls to the current turn. A turn without its recording shows a disabled play button; the whole-dialogue button plays only the turns that have one and is disabled when none has.",
+          "turn_layout": "Dor, 2026-10-28, card 06.5 (shared turn 86:913, so also in the scenario): the top row holds only the speaker name; the play button sits beside the Spanish line; translation is a quiet underlined link with the eye icon (\"הצגת תרגום\") at the bottom of the card, and the translation itself takes its place under the dashed fold. Tapping the shown translation hides it in the dialogue."
         },
         "speak_reveal": {
           "id": "87:1543",
@@ -318,10 +319,13 @@
           "id": "89:1838",
           "states": [
             "Choice",
+            "Translation",
+            "Nonverbal",
             "Retry",
             "Advance",
             "End"
-          ]
+          ],
+          "approved": "Dor, 2026-10-28, card 06.5, after two rounds: Juan's line is the shared dialogue turn (new turn layout); the translation appears only after the learner taps \"הצגת תרגום\", which the server records as help and which cannot be hidden again; replies are Spanish only, with no Hebrew under them, on the LTR variant of the phrase ticket (78:309, Direction=LTR: hole and perforation on the left, mark at the end); all three replies fit above \"חזרה\" even with the translation open. Scene images per node are still to be placed (layered backgrounds and Juan poses)."
         },
         "summary": {
           "id": "90:1719",

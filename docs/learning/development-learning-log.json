@@ -3571,6 +3571,29 @@
         "Whether the learner's Hebrew choice labels are needed anywhere else in the scenario (they are removed from the projection now)."
       ],
       "next_step": "After Dor approves the template: insert the approved images in Figma and register them in the unit media, then build scenario-screen.tsx and the openingSteps step."
+    },
+    {
+      "id": "stage06-scenario-template-approval-2026-10-28",
+      "stage_id": "06",
+      "goal": "Card 06.5: approve the scenario template 89:1838 and bring the shared dialogue turn to the approved layout.",
+      "practical_owner": "Dor reviewed all screens in two rounds and asked for two changes; Claude changed Figma and the dialogue screen.",
+      "practical_action": "Figma: dialogue turn 86:913 (name alone on top, play beside the Spanish line, translation as a quiet link at the bottom), Turn translation 117:2284 restyled, Phrase ticket 78:309 gained Direction=LTR variants used by the scenario replies, scenario spacing so three replies fit above the back button. Code: mobile/src/lesson/dialogue-screen.tsx and tests/opening-preview.test.cjs. Docs: interaction-catalog.json, LAUNCH_PLAN.md.",
+      "evidence": [
+        "Dor (2026-10-28): the play and translation buttons together looked bad and the translation should move; then: Spanish-only replies must be LTR, not RTL. Approved both templates after the second round.",
+        "mobile typecheck and lint clean, tests 69/69. Not yet checked on the iPhone."
+      ],
+      "concepts": [
+        "Text direction per content, not per screen: an RTL app shows Spanish-only rows left to right",
+        "Changing a shared component changes every screen that uses it, so the dialogue moved with the scenario",
+        "A small link still needs a 44pt touch target (hitSlop)"
+      ],
+      "dor_participation": "Design review in two rounds with two concrete changes; asked to always receive every screen of a template before approving.",
+      "understanding_demonstrated": "Dor spotted on his own that Spanish-only options were laid out right to left and said the direction must follow the language. Not yet asked about the code.",
+      "interview_takeaway": "Bidirectional UI: the layout direction follows the content language inside an RTL app.",
+      "open_questions": [
+        "Device check of the new dialogue turn layout."
+      ],
+      "next_step": "Place the scene images in the scenario, then build scenario-screen.tsx with the LTR replies and the help-recorded translation."
     }
   ],
   "entry_template": {
