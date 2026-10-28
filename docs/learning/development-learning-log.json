@@ -3624,10 +3624,10 @@
       "stage_id": "06",
       "goal": "Card 06.5: fix what Dor found on the iPhone in the scenario: the reply ticket order, the playing outline, the translation, and the misleading retry sheet.",
       "practical_owner": "Claude implemented, tested, committed and pushed under the standing authorization; Dor found the issues on the iPhone and decided the new retry behavior.",
-      "practical_action": "Content: the end node carries its translation (e04b2ab). App: ticket order and sizes from Figma 78:309 LTR, outline corners follow the card, translation stays open once shown and the end node shows its own (4b7a06b). Figma: the playing outline radii and the new retry state on 89:1838, 84:1014 and 88:1844, sent to Dor for approval.",
+      "practical_action": "Content: the end node carries its translation (e04b2ab). App: ticket order and sizes from Figma 78:309 LTR, outline corners follow the card, translation stays open once shown and the end node shows its own (4b7a06b). Figma: the playing outline radii and the new retry state on 89:1838, 84:1014 and 88:1844, sent to Dor for approval. After Dor approved the frames: RetryNote and useRetryFlash in lesson-sheet.tsx, used by the scenario, listen-select and arrange (53eae36, 77369c8).",
       "evidence": [
-        "Content 69/69 (new: the end node carries its translation, no help recorded), API 26/26, e2e 10/10; mobile typecheck and lint clean, tests 73/73 (new: ticket order, outline corners, translation stays).",
-        "Not yet checked again on the iPhone; the retry change waits for Dor's Figma approval."
+        "Content 69/69, API 26/26, e2e 10/10; mobile typecheck and lint clean, tests 74/74 (new: ticket order, outline corners, translation stays, retry note under the answers on all three screens with a timed flash and no sheet).",
+        "Not yet checked again on the iPhone."
       ],
       "concepts": [
         "Compare the build to the exact template values (get_design_context), not by eye: the order inside an LTR element in an RTL app is easy to flip",
@@ -3640,7 +3640,7 @@
       "open_questions": [
         "Scene image per node is still not in the content schema."
       ],
-      "next_step": "After Dor approves the retry frames: RetryNote and a short flash on the three screens, then the iPhone check."
+      "next_step": "Dor checks on the iPhone: a wrong answer in the scenario and in listen-select (flash, note, answer again), playing a line (outline), the translation staying open, leaving mid-scenario and returning, and the end with its translation."
     }
   ],
   "entry_template": {
