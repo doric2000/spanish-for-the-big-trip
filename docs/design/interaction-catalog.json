@@ -328,7 +328,19 @@
             "Advance",
             "End"
           ],
-          "approved": "Dor, 2026-10-28, card 06.5, after two rounds: Juan's line is the shared dialogue turn (new turn layout); the translation appears only after the learner taps \"הצגת תרגום\", which the server records as help and which cannot be hidden again; replies are Spanish only, with no Hebrew under them, on the LTR variant of the phrase ticket (78:309, Direction=LTR: hole and perforation on the left, mark at the end); all three replies fit above \"חזרה\" even with the translation open. The End state also offers \"הצגת תרגום\" (Dor, 2026-10-28, after the iPhone check): there the translation comes with the node, because the scenario is already complete and nothing is recorded as help. In End the success stamp sits centered under the ending text, never on Juan's card (Dor, 2026-10-28, after the iPhone check showed it covering \"No, gracias.\"). Scene images per node are still to be placed (layered backgrounds and Juan poses)."
+          "sceneFirst": {
+            "id": "144:1080",
+            "states": [
+              "Scene",
+              "Scene · coffee-answer",
+              "Scene · Translation",
+              "Scene · Nonverbal",
+              "Answers (= Choice)",
+              "End"
+            ],
+            "approved": "Dor, 2026-10-29, card 06.6, after rejecting a 350x110 and a 350x164 strip as too small: each node opens on its scene, a full-width 390x380 image with the title on a pill, the context and Juan's line, with \"חזרה\" and \"לענות\". \"לענות\" shows the answers under a 350x164 strip of the same scene (89:1838 with the title moved into the strip's pill); \"חזרה\" there returns to the scene. End shows a 390x280 scene. One composed image per node and slot, made from the approved layers by assets/tools/compose-scenes.py (jobs-unit1a-scenario-scenes-v1.json), never mirrored."
+          },
+          "approved": "Dor, 2026-10-28, card 06.5, after two rounds: Juan's line is the shared dialogue turn (new turn layout); the translation appears only after the learner taps \"הצגת תרגום\", which the server records as help and which cannot be hidden again; replies are Spanish only, with no Hebrew under them, on the LTR variant of the phrase ticket (78:309, Direction=LTR: hole and perforation on the left, mark at the end); all three replies fit above \"חזרה\" even with the translation open. The End state also offers \"הצגת תרגום\" (Dor, 2026-10-28, after the iPhone check): there the translation comes with the node, because the scenario is already complete and nothing is recorded as help. In End the success stamp sits centered under the ending text, never on Juan's card (Dor, 2026-10-28, after the iPhone check showed it covering \"No, gracias.\"). Scene images per node: see sceneFirst (card 06.6)."
         },
         "summary": {
           "id": "90:1719",

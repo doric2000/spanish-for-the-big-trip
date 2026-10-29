@@ -3641,6 +3641,29 @@
         "Scene image per node is still not in the content schema."
       ],
       "next_step": "Dor closed card 06.5 and postponed the understanding check (2026-10-28); no understanding demonstrated yet for this entry. Scene images moved to 07.5. Next: card 06.6 in a new chat."
+    },
+    {
+      "id": "stage06-scenario-scene-images-2026-10-29",
+      "stage_id": "06",
+      "goal": "Card 06.6: give every scenario node a scene image large enough to read the situation, without pushing the answers below the fold.",
+      "practical_owner": "Claude composed the images, built the Figma drafts, implemented, tested, reseeded the dev database and rewound Dor's progress under the standing authorization; Dor rejected the small strips and chose and approved the layout.",
+      "practical_action": "Commits 6168b86 (content, images), 3fd0102 (screen). Images: assets/tools/compose-scenes.py composes each node from the approved background and Juan pose layers (never mirrored) and cuts a band at the slot's ratio; seven JPEGs in assets/characters/juan/scenes/. Figma: 350x110 and 350x164 strips were rejected as too small; Dor chose scene first (144:1080): a full-width 390x380 scene with \"לענות\", then the answers under a 350x164 strip of the same scene; the end shows 390x280. Content: optional sceneAssetId and stripAssetId on a scenario node, validated as image assets (a strip only on a non-terminal node with a scene) and passed through the learner projection. App: scenario-screen.tsx gains an answering state; \"חזרה\" on the answers returns to the scene.",
+      "evidence": [
+        "Content 70/70 (new: ids, projection, strip on a terminal node and an audio asset as scene are rejected); mobile typecheck and lint clean, tests 76/76; API 26/26, e2e 10/10 on a rerun (the first run failed once right after a 57-second import).",
+        "Dev database: draft reseeded (21 activities, digest matches); Dor's progress rewound to the scenario's greeting node (3 scenario attempts deleted after reading them)."
+      ],
+      "concepts": [
+        "Content priority and progressive disclosure: show the scene first, the answers on demand, instead of shrinking both to fit one screen",
+        "Pre-composed images per slot instead of runtime layering: fewer moving parts on the device, and the composition is reviewable as a file",
+        "An optional schema field with a cross-field rule (strip only where answers exist) keeps bad content out before it reaches the app"
+      ],
+      "dor_participation": "Dor rejected two strip sizes, asked to check the design skills, chose option B (scene first) and approved the Figma draft and one composed image per node.",
+      "understanding_demonstrated": "Not yet checked.",
+      "interview_takeaway": "When content does not fit, change the flow, not the size: splitting the screen into scene and answers kept the image readable and the answers reachable.",
+      "open_questions": [
+        "Image slots for the dialogue, speak and arrange templates, Juan's place on the vocabulary card, and a character for 1a-review-greet are still open."
+      ],
+      "next_step": "Dor checks the scenario on the iPhone; then the earlier 1A scenes in a new chat."
     }
   ],
   "entry_template": {
