@@ -66,6 +66,9 @@ const scenario = z.strictObject({
   nodes: z.array(z.strictObject({
     id, contextHe: text.optional(), promptHe: text.optional(),
     textEs: text.nullable(), translationHe: text.nullable(), audioAssetId: id.nullable(),
+    // The node's scene (Figma "Scene first" 144:1080): a full-width image, and a narrow
+    // strip of the same scene above the answers. The end node has no answers, so no strip.
+    sceneAssetId: id.optional(), stripAssetId: id.optional(),
     terminal: z.boolean(),
     choices: z.array(z.strictObject({
       id, textEs: text, textHe: text,
@@ -210,6 +213,9 @@ export const UnitSchema = z.strictObject({
         if (!hasSpeech && !node.contextHe) issue([...path, 'nodes', j, 'contextHe'], 'Nonverbal scenario nodes require visible context');
         if (!hasSpeech && !node.terminal && !node.promptHe) issue([...path, 'nodes', j, 'promptHe'], 'Nonverbal choice nodes require a learner prompt');
         if (node.audioAssetId !== null) assetRef(node.audioAssetId, 'audio', [...path, 'nodes', j, 'audioAssetId']);
+        if (node.sceneAssetId) assetRef(node.sceneAssetId, 'image', [...path, 'nodes', j, 'sceneAssetId']);
+        if (node.stripAssetId) assetRef(node.stripAssetId, 'image', [...path, 'nodes', j, 'stripAssetId']);
+        if (node.stripAssetId && (node.terminal || !node.sceneAssetId)) issue([...path, 'nodes', j, 'stripAssetId'], 'A strip belongs to a non-terminal node with a scene');
         unique(node.choices.map(c => c.id), [...path, 'nodes', j, 'choices']);
         if (node.terminal === (node.choices.length > 0)) issue([...path, 'nodes', j], 'Only terminal nodes have no choices');
         for (const choice of node.choices) {

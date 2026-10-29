@@ -50,6 +50,8 @@ export function projectActivity(activity: Activity, scenarioNodeId?: string) {
         // The translation of Juan's line is withheld until the learner asks for it (a registered help).
         // At the end node the scenario is already complete, so there is no help left to record.
         textEs: node.textEs, ...(node.terminal && node.translationHe ? { translationHe: node.translationHe } : {}), audioAssetId: node.audioAssetId,
+        ...(node.sceneAssetId ? { sceneAssetId: node.sceneAssetId } : {}),
+        ...(node.stripAssetId ? { stripAssetId: node.stripAssetId } : {}),
         terminal: node.terminal, choices: node.choices.map(c => ({ id: c.id, textEs: c.textEs })),
       } };
     }

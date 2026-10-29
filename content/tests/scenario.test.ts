@@ -214,3 +214,22 @@ test('the end node carries its translation: the scenario is complete, so it is n
   assert.equal(shown.node.translationHe, 'לא, תודה.');
   assert.equal(finished.state.progress.completed.at(-1)!.usedHelp, false);
 });
+
+test('every node names its scene image, the answer nodes also a strip, and both reach the learner projection', () => {
+  const real = scene(realDraft());
+  for (const node of real.nodes) {
+    assert.equal(node.sceneAssetId, `unit1a-scenario-${node.id}-scene-v1`);
+    assert.equal(node.stripAssetId, node.terminal ? undefined : `unit1a-scenario-${node.id}-strip-v1`);
+  }
+  const shown = projectActivity(real, 'offer-coffee') as { node: { sceneAssetId?: string; stripAssetId?: string } };
+  assert.equal(shown.node.sceneAssetId, 'unit1a-scenario-offer-coffee-scene-v1');
+  assert.equal(shown.node.stripAssetId, 'unit1a-scenario-offer-coffee-strip-v1');
+  const unit = realDraft(); const nodes = scene(unit).nodes;
+  nodes.find(n => n.terminal)!.stripAssetId = 'unit1a-scenario-greeting-strip-v1';
+  nodes.find(n => n.id === 'greeting')!.sceneAssetId = 'juan-buenos-dias-v1';
+  const checked = validateUnit(unit);
+  assert.ok(!checked.success);
+  const messages = checked.error.issues.map(i => i.message);
+  assert.ok(messages.includes('A strip belongs to a non-terminal node with a scene'));
+  assert.ok(messages.includes('Unknown image asset: juan-buenos-dias-v1'));
+});

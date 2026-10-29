@@ -1,7 +1,8 @@
-"""Compose the scenario strips from the approved layers: a background, a Juan pose and an
+"""Compose the scenario scene images from the approved layers: a background, a Juan pose and an
 optional prop. Poses are never mirrored (the bracelet stays on Juan's right wrist).
 
-Run from the repository root: python assets/tools/compose-scenes.py <jobs.json> <out-dir>
+Run from the repository root:
+  python assets/tools/compose-scenes.py assets/tools/jobs-unit1a-scenario-scenes-v1.json assets/characters/juan/scenes
 Each job places layers in background pixels (1536x1024) and crops a band of the strip's ratio.
 """
 import json, sys
@@ -28,5 +29,6 @@ if __name__ == '__main__':
     jobs = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
     out = Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
     for job in jobs:
-        compose(job).save(out / f"{job['id']}.png", optimize=True)
+        # JPEG: the strips are photographic and ship in the app bundle.
+        compose(job).save(out / f"{job['id']}.jpg", quality=85, optimize=True, progressive=True)
         print(job['id'])

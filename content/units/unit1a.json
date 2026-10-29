@@ -46,6 +46,62 @@
       "note": "Existing approved first-scene reference; no new generation."
     },
     {
+      "id": "unit1a-scenario-greeting-scene-v1",
+      "kind": "image",
+      "status": "approved",
+      "path": "assets/characters/juan/scenes/unit1a-scenario-greeting-scene-v1.jpg",
+      "characterId": "juan",
+      "note": "Dor approved the scene-first scenario on 2026-10-29 (Figma 144:1080). Composed from approved layers by assets/tools/compose-scenes.py; never mirrored. Full-width scene."
+    },
+    {
+      "id": "unit1a-scenario-greeting-strip-v1",
+      "kind": "image",
+      "status": "approved",
+      "path": "assets/characters/juan/scenes/unit1a-scenario-greeting-strip-v1.jpg",
+      "characterId": "juan",
+      "note": "Dor approved the scene-first scenario on 2026-10-29 (Figma 144:1080). Composed from approved layers by assets/tools/compose-scenes.py; never mirrored. Strip above the answers."
+    },
+    {
+      "id": "unit1a-scenario-offer-coffee-scene-v1",
+      "kind": "image",
+      "status": "approved",
+      "path": "assets/characters/juan/scenes/unit1a-scenario-offer-coffee-scene-v1.jpg",
+      "characterId": "juan",
+      "note": "Dor approved the scene-first scenario on 2026-10-29 (Figma 144:1080). Composed from approved layers by assets/tools/compose-scenes.py; never mirrored. Full-width scene."
+    },
+    {
+      "id": "unit1a-scenario-offer-coffee-strip-v1",
+      "kind": "image",
+      "status": "approved",
+      "path": "assets/characters/juan/scenes/unit1a-scenario-offer-coffee-strip-v1.jpg",
+      "characterId": "juan",
+      "note": "Dor approved the scene-first scenario on 2026-10-29 (Figma 144:1080). Composed from approved layers by assets/tools/compose-scenes.py; never mirrored. Strip above the answers."
+    },
+    {
+      "id": "unit1a-scenario-coffee-answer-scene-v1",
+      "kind": "image",
+      "status": "approved",
+      "path": "assets/characters/juan/scenes/unit1a-scenario-coffee-answer-scene-v1.jpg",
+      "characterId": "juan",
+      "note": "Dor approved the scene-first scenario on 2026-10-29 (Figma 144:1080). Composed from approved layers by assets/tools/compose-scenes.py; never mirrored. Full-width scene."
+    },
+    {
+      "id": "unit1a-scenario-coffee-answer-strip-v1",
+      "kind": "image",
+      "status": "approved",
+      "path": "assets/characters/juan/scenes/unit1a-scenario-coffee-answer-strip-v1.jpg",
+      "characterId": "juan",
+      "note": "Dor approved the scene-first scenario on 2026-10-29 (Figma 144:1080). Composed from approved layers by assets/tools/compose-scenes.py; never mirrored. Strip above the answers."
+    },
+    {
+      "id": "unit1a-scenario-sugar-answer-scene-v1",
+      "kind": "image",
+      "status": "approved",
+      "path": "assets/characters/juan/scenes/unit1a-scenario-sugar-answer-scene-v1.jpg",
+      "characterId": "juan",
+      "note": "Dor approved the scene-first scenario on 2026-10-29 (Figma 144:1080). Composed from approved layers by assets/tools/compose-scenes.py; never mirrored. Full-width scene."
+    },
+    {
       "id": "juan-hola-v1",
       "kind": "audio",
       "status": "pending",
@@ -689,6 +745,8 @@
           "textEs": "Buenos días.",
           "translationHe": "בוקר טוב.",
           "audioAssetId": "juan-buenos-dias-v1",
+          "sceneAssetId": "unit1a-scenario-greeting-scene-v1",
+          "stripAssetId": "unit1a-scenario-greeting-strip-v1",
           "terminal": false,
           "choices": [
             {
@@ -732,6 +790,8 @@
           "textEs": null,
           "translationHe": null,
           "audioAssetId": null,
+          "sceneAssetId": "unit1a-scenario-offer-coffee-scene-v1",
+          "stripAssetId": "unit1a-scenario-offer-coffee-strip-v1",
           "terminal": false,
           "choices": [
             {
@@ -767,6 +827,8 @@
           "textEs": "Sí, gracias.",
           "translationHe": "כן, תודה.",
           "audioAssetId": "juan-si-gracias-v1",
+          "sceneAssetId": "unit1a-scenario-coffee-answer-scene-v1",
+          "stripAssetId": "unit1a-scenario-coffee-answer-strip-v1",
           "terminal": false,
           "choices": [
             {
@@ -801,6 +863,7 @@
           "textEs": "No, gracias.",
           "translationHe": "לא, תודה.",
           "audioAssetId": "juan-no-gracias-v1",
+          "sceneAssetId": "unit1a-scenario-sugar-answer-scene-v1",
           "terminal": true,
           "choices": []
         }
