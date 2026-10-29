@@ -20,8 +20,10 @@ export type OpeningStep =
 // The one node the server shows: Juan's line (null when the moment has no words), and
 // the answers in Spanish only. Which answer is right, and where it leads, stays on the server.
 // Only the end node carries its translation; before that it is asked for as help.
+// sceneAssetId is the node's full-width scene, stripAssetId the narrow one above the answers.
 export type ScenarioNode = { id: string; contextHe: string | null; promptHe: string | null; textEs: string | null;
-  translationHe: string | null; audioAssetId: string | null; terminal: boolean; choices: { id: string; textEs: string }[] };
+  translationHe: string | null; audioAssetId: string | null; sceneAssetId: string | null; stripAssetId: string | null;
+  terminal: boolean; choices: { id: string; textEs: string }[] };
 
 // The node of a projected scenario (from the unit, the start reply or an answer's reply);
 // null for anything else.
@@ -29,7 +31,8 @@ export function scenarioNodeOf(revealed: unknown): ScenarioNode | null {
   if (!revealed || typeof revealed !== 'object' || (revealed as { type?: unknown }).type !== 'bounded_scenario') return null;
   const { node } = revealed as Extract<PublicActivity, { type: 'bounded_scenario' }>;
   return { id: node.id, contextHe: node.contextHe ?? null, promptHe: node.promptHe ?? null, textEs: node.textEs,
-    translationHe: node.translationHe ?? null, audioAssetId: node.audioAssetId, terminal: node.terminal, choices: node.choices.map(c => ({ id: c.id, textEs: c.textEs })) };
+    translationHe: node.translationHe ?? null, audioAssetId: node.audioAssetId,
+    sceneAssetId: node.sceneAssetId ?? null, stripAssetId: node.stripAssetId ?? null, terminal: node.terminal, choices: node.choices.map(c => ({ id: c.id, textEs: c.textEs })) };
 }
 
 // One line of the dialogue. The learner's lines carry no character image: they get the

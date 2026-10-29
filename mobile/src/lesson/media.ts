@@ -6,6 +6,13 @@ import type { AudioSource } from 'expo-audio';
 const bundledImages: Record<string, ImageSourcePropType> = {
   'juan-hostel-v1': require('../../../assets/characters/juan/scenes/unit1a-entry-hostel-v1.png'),
   'juan-reference-v1': require('../../../assets/characters/juan/juan-reference-v1.png'),
+  'unit1a-scenario-greeting-scene-v1': require('../../../assets/characters/juan/scenes/unit1a-scenario-greeting-scene-v1.jpg'),
+  'unit1a-scenario-greeting-strip-v1': require('../../../assets/characters/juan/scenes/unit1a-scenario-greeting-strip-v1.jpg'),
+  'unit1a-scenario-offer-coffee-scene-v1': require('../../../assets/characters/juan/scenes/unit1a-scenario-offer-coffee-scene-v1.jpg'),
+  'unit1a-scenario-offer-coffee-strip-v1': require('../../../assets/characters/juan/scenes/unit1a-scenario-offer-coffee-strip-v1.jpg'),
+  'unit1a-scenario-coffee-answer-scene-v1': require('../../../assets/characters/juan/scenes/unit1a-scenario-coffee-answer-scene-v1.jpg'),
+  'unit1a-scenario-coffee-answer-strip-v1': require('../../../assets/characters/juan/scenes/unit1a-scenario-coffee-answer-strip-v1.jpg'),
+  'unit1a-scenario-sugar-answer-scene-v1': require('../../../assets/characters/juan/scenes/unit1a-scenario-sugar-answer-scene-v1.jpg'),
 };
 const bundledAudio: Record<string, AudioSource> = {
   'juan-buenos-dias-v1': require('../../../assets/characters/juan/voice/unit1a-buenos-dias-audition-v4/buenos-dias.mp3'),

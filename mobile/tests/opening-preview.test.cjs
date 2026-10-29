@@ -635,7 +635,7 @@ test('scenario screen: lesson copy only from data, the server decides, translati
   assert.doesNotMatch(screen, /RetrySheet/);
   assert.match(screen, /<SuccessSheet [^]*?onBack=\{back\} \/>/);
   assert.match(screen, /<ContinueSheet [^>]*onBack=\{onBack\} \/>/);
-  assert.match(screen, /<LessonSecondaryButton label="חזרה" onPress=\{onBack\} \/>[^]*<LessonButton label="ממשיכים" onPress=\{onContinue\} \/>/);
+  assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{onBack\} \/>[^]*<LessonButton label="ממשיכים" onPress=\{onContinue\} \/>/);
   assert.doesNotMatch(screen, /row-reverse|textAlign: 'right'|alignSelf: 'center'/);
   const preview = fs.readFileSync(path.join(__dirname, '../src/lesson/opening-preview.tsx'), 'utf8');
   assert.match(preview, /<ScenarioScreen [^]*reviewOnly=\{index < frontier\} save=\{shownSave\} onAnswer=\{response => tap\(response, false\)\}[^]*onBack=\{back\} onClose=\{onClose\} \/>/);
@@ -677,4 +677,34 @@ test('the scenario end stamp sits under the ending text, not on Juan\'s card', (
   const stamp = screen.indexOf('<Stamp code=');
   assert.ok(ending > 0 && stamp > ending && stamp < screen.indexOf('</> : <>'));
   assert.match(screen, /stampRow: \{ alignItems: 'center', marginTop: 8 \},\s*stamp: \{ position: 'relative' \},/);
+});
+
+test('scene first: each node opens on its full-width scene, "לענות" shows the answers under the strip, the end stays on its scene', () => {
+  const { projectActivity } = require(path.join(root, 'content/dist/src/api-contract.js'));
+  const unit = JSON.parse(fs.readFileSync(path.join(__dirname, '../../content/units/unit1a.json'), 'utf8'));
+  const source = unit.activities.find(a => a.type === 'bounded_scenario');
+  const greeting = data.scenarioNodeOf(projectActivity(source, 'greeting'));
+  assert.equal(greeting.sceneAssetId, 'unit1a-scenario-greeting-scene-v1');
+  assert.equal(greeting.stripAssetId, 'unit1a-scenario-greeting-strip-v1');
+  const end = data.scenarioNodeOf(projectActivity(source, 'sugar-answer'));
+  assert.equal(end.sceneAssetId, 'unit1a-scenario-sugar-answer-scene-v1');
+  assert.equal(end.stripAssetId, null);
+  // Every scene image is bundled until media is served from Storage.
+  const media = fs.readFileSync(path.join(__dirname, '../src/lesson/media.ts'), 'utf8');
+  for (const node of source.nodes) for (const id of [node.sceneAssetId, node.stripAssetId].filter(Boolean)) {
+    assert.ok(media.includes(`'${id}': require('../../../assets/characters/juan/scenes/${id}.jpg')`), id);
+    assert.ok(fs.existsSync(path.join(__dirname, `../../assets/characters/juan/scenes/${id}.jpg`)), id);
+  }
+  const screen = fs.readFileSync(path.join(__dirname, '../src/lesson/scenario-screen.tsx'), 'utf8');
+  assert.match(screen, /const \[answering, setAnswering\] = useState\(false\);/);
+  assert.match(screen, /const onScene = node\.terminal \|\| !answering;/);
+  assert.match(screen, /<LessonButton label="לענות" disabled=\{save\.busy\} onPress=\{\(\) => setAnswering\(true\)\} \/>/);
+  // On the answers, "חזרה" returns to the node's scene, not to the previous step.
+  assert.match(screen, /<LessonSecondaryButton label="חזרה" disabled=\{save\.busy\} onPress=\{\(\) => setAnswering\(false\)\} \/>/);
+  // The answers render only after "לענות".
+  const scenePart = screen.slice(screen.indexOf('</> : !answering ? <>'), screen.indexOf('</> : <>', screen.indexOf('</> : !answering ? <>')));
+  assert.doesNotMatch(scenePart, /PhraseTicket/);
+  // Explicit image sizes from the approved frames.
+  assert.match(screen, /const SCENE_RATIO = 380 \/ 390;\r?\nconst END_RATIO = 280 \/ 390;\r?\nconst STRIP_RATIO = 164 \/ 350;/);
+  assert.match(screen, /<Image source=\{source\} style=\{\{ width, height \}\} contentFit="cover" accessible=\{false\} \/>/);
 });

@@ -246,8 +246,10 @@ function PreviewSteps({ unitId, userId, activityCount, steps, progress: initial,
     const crop = step.characterImageAssetId ? faceCropFor(step.characterImageAssetId) : null;
     // Answers stay on the screen to show the feedback; "ממשיכים" shows the next node,
     // and after the last one moves on like any finished check.
+    const image = (assetId: string | null) => assetId ? imageFor(assetId, step.mediaUrls[assetId] ?? null) : null;
     return <ScenarioScreen key={step.id} content={step} node={node} header={header} unitShort={unitCodes(unitId).short}
       avatar={avatarSource && crop ? { source: avatarSource, crop } : null}
+      scene={image(node.sceneAssetId)} strip={image(node.stripAssetId)}
       audio={node.audioAssetId ? audioFor(node.audioAssetId, step.mediaUrls[node.audioAssetId] ?? null) : null}
       reviewOnly={index < frontier} save={shownSave} onAnswer={response => tap(response, false)}
       onShowNode={next => setNodes(current => ({ ...current, [step.id]: next }))}

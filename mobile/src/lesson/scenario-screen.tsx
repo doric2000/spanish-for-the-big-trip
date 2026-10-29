@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, type ImageSourcePropType, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Image } from 'expo-image';
 import Animated, { useAnimatedStyle, useReducedMotion, useSharedValue, withSequence, withTiming } from 'react-native-reanimated';
 import type { AudioSource } from 'expo-audio';
 import { StatusBar } from 'expo-status-bar';
@@ -22,7 +23,10 @@ import { usePlayback } from './playback';
 // comes from the server on a tap, is registered as help and then stays open. At the end
 // node it comes with the node, since the scenario is complete. "חזרה" shows in every
 // state and only moves the view back.
-// Open (card 06.5): the scene image above the context.
+// Scene first (Figma 144:1080, approved by Dor 2026-10-29): each node opens on its scene,
+// a full-width image with the context and Juan's line, and "לענות" shows the answers under
+// a narrow strip of the same scene. "חזרה" there returns to the scene. The end node has
+// no answers, so it stays on its scene.
 const c = retro.colors;
 const f = retro.fonts;
 
@@ -30,6 +34,8 @@ type Props = {
   content: { id: string; titleHe: string; characterNameHe: string };
   // The node to show. The parent keeps it, so "חזרה" and a resume return to the same node.
   node: ScenarioNode; avatar: TurnAvatar; audio: AudioSource | null;
+  // The node's images; null shows the title as text instead.
+  scene: ImageSourcePropType | null; strip: ImageSourcePropType | null;
   header: { code: string; index: number; count: number }; unitShort: string; reviewOnly: boolean; save: SaveState;
   // Resolves with the server's reply, or null when it was not confirmed (the save error says why).
   onAnswer: (response: LessonResponse) => Promise<AttemptResult | null>;
@@ -43,7 +49,13 @@ export function ScenarioScreen(props: Props) {
 
 type Feedback = { kind: 'retry'; messageHe: string } | { kind: 'advance'; choiceId: string; messageHe: string; next: ScenarioNode };
 
-function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly, save, onAnswer, onShowNode, onContinue, onBack, onClose }: Props) {
+// Image sizes from the approved frames (390pt wide): the scene 390x380, the end 390x280,
+// the strip 350x164 inside the column.
+const SCENE_RATIO = 380 / 390;
+const END_RATIO = 280 / 390;
+const STRIP_RATIO = 164 / 350;
+
+function NodeView({ content, node, avatar, audio, scene, strip, header, unitShort, reviewOnly, save, onAnswer, onShowNode, onContinue, onBack, onClose }: Props) {
   const insets = useSafeAreaInsets();
   const { width: windowWidth } = useWindowDimensions();
   const column = Math.min(windowWidth, 600) - 40;
@@ -57,9 +69,12 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
   const [lastWrong, setLastWrong] = useState<{ id: string; tap: number } | null>(null);
   const [translationHe, setTranslationHe] = useState<string | null>(null);
   const [translated, setTranslated] = useState(false);
+  // The scene comes first; the answers follow "לענות".
+  const [answering, setAnswering] = useState(false);
   const advanced = feedback?.kind === 'advance';
   // A node seen again after the scenario ended: its answers are locked.
   const locked = reviewOnly && !node.terminal;
+  const onScene = node.terminal || !answering;
 
   async function choose(choiceId: string) {
     if (save.busy || advanced || locked) return;
@@ -113,12 +128,18 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
     <StatusBar style="light" />
     <LessonHeader code={header.code} index={header.index} count={header.count} onClose={onClose} topInset={insets.top} />
     <ScrollView ref={scroll} contentInsetAdjustmentBehavior="never" contentContainerStyle={[styles.content, { paddingHorizontal: gutter }]}>
-      <Text accessibilityRole="header" style={styles.title}>{content.titleHe}</Text>
+      {onScene && scene ? <SceneImage source={scene} titleHe={content.titleHe} width={windowWidth}
+        height={windowWidth * (node.terminal ? END_RATIO : SCENE_RATIO)} gutter={gutter} />
+        : !onScene && strip ? <StripImage source={strip} titleHe={content.titleHe} width={column} />
+          : <Text accessibilityRole="header" style={styles.title}>{content.titleHe}</Text>}
       {node.terminal ? <>
         {/* End: Juan's last line, what happens in larger type, then the stamp under it. */}
         {juan}
         {node.contextHe ? <Text style={styles.ending}>{node.contextHe}</Text> : null}
         <View style={styles.stampRow}><Stamp code={`${unitShort}·${pad(header.index + 1)}`} style={styles.stamp} /></View>
+      </> : !answering ? <>
+        {node.contextHe ? <Text style={styles.context}>{node.contextHe}</Text> : null}
+        {juan}
       </> : <>
         {node.contextHe ? <Text style={styles.context}>{node.contextHe}</Text> : null}
         {juan}
@@ -139,14 +160,36 @@ function NodeView({ content, node, avatar, audio, header, unitShort, reviewOnly,
         ? <SuccessSheet messageHe={feedback.messageHe} bottomInset={insets.bottom} onContinue={() => onShowNode(feedback.next)} onBack={back} />
         : locked ? <ContinueSheet bottomInset={insets.bottom} onContinue={onContinue} onBack={onBack} />
           : <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 20) }]}>
-            {node.terminal ? <LessonButtonRow>
+            {onScene ? <LessonButtonRow>
               {/* Right to left: back on the right, the main action on the left. */}
-              <View style={styles.back}><LessonSecondaryButton label="חזרה" onPress={onBack} /></View>
-              <View style={styles.next}><LessonButton label="ממשיכים" onPress={onContinue} /></View>
-            </LessonButtonRow> : <LessonSecondaryButton label="חזרה" disabled={save.busy} onPress={onBack} />}
+              <View style={styles.back}><LessonSecondaryButton label="חזרה" disabled={save.busy} onPress={onBack} /></View>
+              <View style={styles.next}>{node.terminal ? <LessonButton label="ממשיכים" onPress={onContinue} />
+                : <LessonButton label="לענות" disabled={save.busy} onPress={() => setAnswering(true)} />}</View>
+            </LessonButtonRow> : <LessonSecondaryButton label="חזרה" disabled={save.busy} onPress={() => setAnswering(false)} />}
           </View>}
     </View>
   </View>;
+}
+
+// The scene edge to edge under the header, with the screen title on a pill at its top.
+function SceneImage({ source, titleHe, width, height, gutter }: { source: ImageSourcePropType; titleHe: string; width: number; height: number; gutter: number }) {
+  return <View style={{ width, height, marginHorizontal: -gutter, marginTop: -4 }}>
+    <Image source={source} style={{ width, height }} contentFit="cover" accessible={false} />
+    <TitlePill titleHe={titleHe} />
+  </View>;
+}
+
+// The same scene, narrow, above the answers (the approved poster: cream frame, round corners).
+function StripImage({ source, titleHe, width }: { source: ImageSourcePropType; titleHe: string; width: number }) {
+  const height = width * STRIP_RATIO;
+  return <View style={[styles.strip, { width, height }]}>
+    <Image source={source} style={{ width: width - 12, height: height - 12 }} contentFit="cover" accessible={false} />
+    <TitlePill titleHe={titleHe} />
+  </View>;
+}
+
+function TitlePill({ titleHe }: { titleHe: string }) {
+  return <View style={styles.pill}><Text accessibilityRole="header" style={styles.pillText}>{titleHe}</Text></View>;
 }
 
 function PlayableLine({ source, ...props }: { source: AudioSource; turn: TurnLine; avatar: TurnAvatar; width: number;
@@ -204,6 +247,10 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: c.night },
   content: { paddingTop: 4, paddingBottom: 24, gap: 16 },
   title: { fontFamily: f.poster, fontSize: 50, lineHeight: 54, color: c.cream, writingDirection: 'rtl' },
+  strip: { borderWidth: 6, borderColor: c.cream, borderRadius: 18, overflow: 'hidden' },
+  // At the image's start corner (the right in Hebrew), over a dark pill so it reads on any scene.
+  pill: { position: 'absolute', top: 8, start: 10, backgroundColor: 'rgba(15,51,51,0.78)', borderRadius: 16, paddingHorizontal: 10, paddingVertical: 2 },
+  pillText: { fontFamily: f.poster, fontSize: 24, lineHeight: 30, color: c.cream, writingDirection: 'rtl' },
   context: { fontFamily: f.body, fontSize: 17, lineHeight: 26, color: c.cream, writingDirection: 'rtl' },
   ending: { fontFamily: f.bold, fontSize: 21, lineHeight: 32, color: c.cream, writingDirection: 'rtl' },
   prompt: { fontFamily: f.bold, fontSize: 17, lineHeight: 24, color: c.cream, writingDirection: 'rtl' },
